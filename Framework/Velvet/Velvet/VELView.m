@@ -94,7 +94,19 @@
 }
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
-	CGContextClearRect(context, self.frame);
+	CGRect bounds = self.bounds;
+
+	CGContextClearRect(context, bounds);
+	CGContextClipToRect(context, bounds);
+
+	NSGraphicsContext *previousGraphicsContext = [NSGraphicsContext currentContext];
+
+	NSGraphicsContext *graphicsContext = [NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
+	[NSGraphicsContext setCurrentContext:graphicsContext];
+
+	[self drawRect:bounds];
+	
+	[NSGraphicsContext setCurrentContext:previousGraphicsContext];
 }
 
 @end

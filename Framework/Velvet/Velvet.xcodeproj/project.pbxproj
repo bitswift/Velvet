@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D0D8C39B1478569600FC9015 /* Velvet.h in Headers */ = {isa = PBXBuildFile; fileRef = D0EFFC11147851A80095AB35 /* Velvet.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0D8C3AD14785CEE00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
 		D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
 		D0EFFC0F147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC0D147851A80095AB35 /* InfoPlist.strings */; };
 		D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0EFFC01147851A80095AB35 /* Velvet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Velvet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EFFC04147851A80095AB35 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D0EFFC07147851A80095AB35 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -65,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0D8C3AD14785CEE00FC9015 /* QuartzCore.framework in Frameworks */,
 				D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,6 +110,7 @@
 			children = (
 				D0EFFC04147851A80095AB35 /* Cocoa.framework */,
 				D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */,
+				D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */,
 				D0EFFC06147851A80095AB35 /* Other Frameworks */,
 			);
 			name = Frameworks;

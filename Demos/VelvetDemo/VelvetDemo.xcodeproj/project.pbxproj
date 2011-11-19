@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */; };
 		D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCA4147852A70095AB35 /* Cocoa.framework */; };
 		D0EFFCAF147852A70095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFCAD147852A70095AB35 /* InfoPlist.strings */; };
 		D0EFFCB1147852A70095AB35 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFCB0147852A70095AB35 /* main.m */; };
@@ -67,6 +68,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0EFFCA0147852A70095AB35 /* VelvetDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VelvetDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EFFCA4147852A70095AB35 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D0EFFCA7147852A70095AB35 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -109,6 +111,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */,
 				D0EFFD00147853100095AB35 /* Velvet.framework in Frameworks */,
 				D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */,
 			);
@@ -152,6 +155,7 @@
 				D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */,
 				D0EFFCA4147852A70095AB35 /* Cocoa.framework */,
 				D0EFFCC2147852A70095AB35 /* SenTestingKit.framework */,
+				D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */,
 				D0EFFCA6147852A70095AB35 /* Other Frameworks */,
 			);
 			name = Frameworks;

@@ -1,0 +1,451 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCA4147852A70095AB35 /* Cocoa.framework */; };
+		D0EFFCAF147852A70095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFCAD147852A70095AB35 /* InfoPlist.strings */; };
+		D0EFFCB1147852A70095AB35 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFCB0147852A70095AB35 /* main.m */; };
+		D0EFFCB5147852A70095AB35 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFCB3147852A70095AB35 /* Credits.rtf */; };
+		D0EFFCB8147852A70095AB35 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFCB7147852A70095AB35 /* AppDelegate.m */; };
+		D0EFFCBB147852A70095AB35 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFCB9147852A70095AB35 /* MainMenu.xib */; };
+		D0EFFCC3147852A70095AB35 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCC2147852A70095AB35 /* SenTestingKit.framework */; };
+		D0EFFCC4147852A70095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCA4147852A70095AB35 /* Cocoa.framework */; };
+		D0EFFCCC147852A70095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFCCA147852A70095AB35 /* InfoPlist.strings */; };
+		D0EFFCCF147852A70095AB35 /* VelvetDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFCCE147852A70095AB35 /* VelvetDemoTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D0EFFCC5147852A70095AB35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0EFFC97147852A70095AB35 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D0EFFC9F147852A70095AB35;
+			remoteInfo = VelvetDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D0EFFCA0147852A70095AB35 /* VelvetDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VelvetDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0EFFCA4147852A70095AB35 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		D0EFFCA7147852A70095AB35 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		D0EFFCA8147852A70095AB35 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		D0EFFCA9147852A70095AB35 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D0EFFCAC147852A70095AB35 /* VelvetDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VelvetDemo-Info.plist"; sourceTree = "<group>"; };
+		D0EFFCAE147852A70095AB35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D0EFFCB0147852A70095AB35 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D0EFFCB2147852A70095AB35 /* VelvetDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VelvetDemo-Prefix.pch"; sourceTree = "<group>"; };
+		D0EFFCB4147852A70095AB35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		D0EFFCB6147852A70095AB35 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D0EFFCB7147852A70095AB35 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D0EFFCBA147852A70095AB35 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		D0EFFCC1147852A70095AB35 /* VelvetDemoTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VelvetDemoTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0EFFCC2147852A70095AB35 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		D0EFFCC9147852A70095AB35 /* VelvetDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VelvetDemoTests-Info.plist"; sourceTree = "<group>"; };
+		D0EFFCCB147852A70095AB35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D0EFFCCD147852A70095AB35 /* VelvetDemoTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VelvetDemoTests.h; sourceTree = "<group>"; };
+		D0EFFCCE147852A70095AB35 /* VelvetDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VelvetDemoTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D0EFFC9D147852A70095AB35 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0EFFCBD147852A70095AB35 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFCC3147852A70095AB35 /* SenTestingKit.framework in Frameworks */,
+				D0EFFCC4147852A70095AB35 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D0EFFC95147852A70095AB35 = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCAA147852A70095AB35 /* VelvetDemo */,
+				D0EFFCC7147852A70095AB35 /* VelvetDemoTests */,
+				D0EFFCA3147852A70095AB35 /* Frameworks */,
+				D0EFFCA1147852A70095AB35 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D0EFFCA1147852A70095AB35 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCA0147852A70095AB35 /* VelvetDemo.app */,
+				D0EFFCC1147852A70095AB35 /* VelvetDemoTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D0EFFCA3147852A70095AB35 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCA4147852A70095AB35 /* Cocoa.framework */,
+				D0EFFCC2147852A70095AB35 /* SenTestingKit.framework */,
+				D0EFFCA6147852A70095AB35 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D0EFFCA6147852A70095AB35 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCA7147852A70095AB35 /* AppKit.framework */,
+				D0EFFCA8147852A70095AB35 /* CoreData.framework */,
+				D0EFFCA9147852A70095AB35 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		D0EFFCAA147852A70095AB35 /* VelvetDemo */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCB6147852A70095AB35 /* AppDelegate.h */,
+				D0EFFCB7147852A70095AB35 /* AppDelegate.m */,
+				D0EFFCB9147852A70095AB35 /* MainMenu.xib */,
+				D0EFFCAB147852A70095AB35 /* Supporting Files */,
+			);
+			path = VelvetDemo;
+			sourceTree = "<group>";
+		};
+		D0EFFCAB147852A70095AB35 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCAC147852A70095AB35 /* VelvetDemo-Info.plist */,
+				D0EFFCAD147852A70095AB35 /* InfoPlist.strings */,
+				D0EFFCB0147852A70095AB35 /* main.m */,
+				D0EFFCB2147852A70095AB35 /* VelvetDemo-Prefix.pch */,
+				D0EFFCB3147852A70095AB35 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D0EFFCC7147852A70095AB35 /* VelvetDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCCD147852A70095AB35 /* VelvetDemoTests.h */,
+				D0EFFCCE147852A70095AB35 /* VelvetDemoTests.m */,
+				D0EFFCC8147852A70095AB35 /* Supporting Files */,
+			);
+			path = VelvetDemoTests;
+			sourceTree = "<group>";
+		};
+		D0EFFCC8147852A70095AB35 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCC9147852A70095AB35 /* VelvetDemoTests-Info.plist */,
+				D0EFFCCA147852A70095AB35 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D0EFFC9F147852A70095AB35 /* VelvetDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0EFFCD2147852A70095AB35 /* Build configuration list for PBXNativeTarget "VelvetDemo" */;
+			buildPhases = (
+				D0EFFC9C147852A70095AB35 /* Sources */,
+				D0EFFC9D147852A70095AB35 /* Frameworks */,
+				D0EFFC9E147852A70095AB35 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VelvetDemo;
+			productName = VelvetDemo;
+			productReference = D0EFFCA0147852A70095AB35 /* VelvetDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D0EFFCC0147852A70095AB35 /* VelvetDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0EFFCD5147852A70095AB35 /* Build configuration list for PBXNativeTarget "VelvetDemoTests" */;
+			buildPhases = (
+				D0EFFCBC147852A70095AB35 /* Sources */,
+				D0EFFCBD147852A70095AB35 /* Frameworks */,
+				D0EFFCBE147852A70095AB35 /* Resources */,
+				D0EFFCBF147852A70095AB35 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D0EFFCC6147852A70095AB35 /* PBXTargetDependency */,
+			);
+			name = VelvetDemoTests;
+			productName = VelvetDemoTests;
+			productReference = D0EFFCC1147852A70095AB35 /* VelvetDemoTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D0EFFC97147852A70095AB35 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Emerald Lark";
+			};
+			buildConfigurationList = D0EFFC9A147852A70095AB35 /* Build configuration list for PBXProject "VelvetDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D0EFFC95147852A70095AB35;
+			productRefGroup = D0EFFCA1147852A70095AB35 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D0EFFC9F147852A70095AB35 /* VelvetDemo */,
+				D0EFFCC0147852A70095AB35 /* VelvetDemoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D0EFFC9E147852A70095AB35 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFCAF147852A70095AB35 /* InfoPlist.strings in Resources */,
+				D0EFFCB5147852A70095AB35 /* Credits.rtf in Resources */,
+				D0EFFCBB147852A70095AB35 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0EFFCBE147852A70095AB35 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFCCC147852A70095AB35 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D0EFFCBF147852A70095AB35 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D0EFFC9C147852A70095AB35 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFCB1147852A70095AB35 /* main.m in Sources */,
+				D0EFFCB8147852A70095AB35 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0EFFCBC147852A70095AB35 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFCCF147852A70095AB35 /* VelvetDemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D0EFFCC6147852A70095AB35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D0EFFC9F147852A70095AB35 /* VelvetDemo */;
+			targetProxy = D0EFFCC5147852A70095AB35 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D0EFFCAD147852A70095AB35 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0EFFCAE147852A70095AB35 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D0EFFCB3147852A70095AB35 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0EFFCB4147852A70095AB35 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		D0EFFCB9147852A70095AB35 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0EFFCBA147852A70095AB35 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		D0EFFCCA147852A70095AB35 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0EFFCCB147852A70095AB35 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D0EFFCD0147852A70095AB35 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D0EFFCD1147852A70095AB35 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D0EFFCD3147852A70095AB35 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VelvetDemo/VelvetDemo-Prefix.pch";
+				INFOPLIST_FILE = "VelvetDemo/VelvetDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		D0EFFCD4147852A70095AB35 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VelvetDemo/VelvetDemo-Prefix.pch";
+				INFOPLIST_FILE = "VelvetDemo/VelvetDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		D0EFFCD6147852A70095AB35 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/VelvetDemo.app/Contents/MacOS/VelvetDemo";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VelvetDemo/VelvetDemo-Prefix.pch";
+				INFOPLIST_FILE = "VelvetDemoTests/VelvetDemoTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		D0EFFCD7147852A70095AB35 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/VelvetDemo.app/Contents/MacOS/VelvetDemo";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VelvetDemo/VelvetDemo-Prefix.pch";
+				INFOPLIST_FILE = "VelvetDemoTests/VelvetDemoTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D0EFFC9A147852A70095AB35 /* Build configuration list for PBXProject "VelvetDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0EFFCD0147852A70095AB35 /* Debug */,
+				D0EFFCD1147852A70095AB35 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D0EFFCD2147852A70095AB35 /* Build configuration list for PBXNativeTarget "VelvetDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0EFFCD3147852A70095AB35 /* Debug */,
+				D0EFFCD4147852A70095AB35 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D0EFFCD5147852A70095AB35 /* Build configuration list for PBXNativeTarget "VelvetDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0EFFCD6147852A70095AB35 /* Debug */,
+				D0EFFCD7147852A70095AB35 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D0EFFC97147852A70095AB35 /* Project object */;
+}

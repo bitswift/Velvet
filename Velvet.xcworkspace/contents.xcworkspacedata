@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Demos/VelvetDemo/VelvetDemo.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Framework/Velvet/Velvet.xcodeproj">
    </FileRef>
 </Workspace>

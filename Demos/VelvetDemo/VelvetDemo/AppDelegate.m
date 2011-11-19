@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "SquareView.h"
 #import <Velvet/Velvet.h>
 
 @interface AppDelegate ()
@@ -22,6 +23,9 @@
 @synthesize rootView = m_rootView;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
+	self.rootView = [[SquareView alloc] init];
+	self.rootView.frame = CGRectMake(20, 20, 100, 100);
+	self.hostView.rootView = self.rootView;
 }
 
 @end

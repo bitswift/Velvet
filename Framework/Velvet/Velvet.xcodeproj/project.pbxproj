@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		D0D8C39B1478569600FC9015 /* Velvet.h in Headers */ = {isa = PBXBuildFile; fileRef = D0EFFC11147851A80095AB35 /* Velvet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C3AD14785CEE00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
+		D0D8C39F1478582C00FC9015 /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D8C39D1478582C00FC9015 /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0D8C3A01478582C00FC9015 /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C39E1478582C00FC9015 /* VELNSView.m */; };
 		D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
 		D0EFFC0F147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC0D147851A80095AB35 /* InfoPlist.strings */; };
 		D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */; };
@@ -30,6 +32,8 @@
 
 /* Begin PBXFileReference section */
 		D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D0D8C39D1478582C00FC9015 /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
+		D0D8C39E1478582C00FC9015 /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
 		D0EFFC01147851A80095AB35 /* Velvet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Velvet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EFFC04147851A80095AB35 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D0EFFC07147851A80095AB35 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -85,6 +89,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D0D8C39C147856A400FC9015 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D0D8C39D1478582C00FC9015 /* VELNSView.h */,
+				D0D8C39E1478582C00FC9015 /* VELNSView.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
 		D0EFFBF5147851A80095AB35 = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				D0EFFC11147851A80095AB35 /* Velvet.h */,
+				D0D8C39C147856A400FC9015 /* Classes */,
 				D0EFFC0B147851A80095AB35 /* Supporting Files */,
 			);
 			path = Velvet;
@@ -235,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D0D8C39B1478569600FC9015 /* Velvet.h in Headers */,
+				D0D8C39F1478582C00FC9015 /* VELNSView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0D8C3A01478582C00FC9015 /* VELNSView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

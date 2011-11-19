@@ -14,7 +14,7 @@
 @property (strong) IBOutlet NSWindow *window;
 @property (weak) IBOutlet VELNSView *hostView;
 
-@property (weak) VELView *rootView;
+@property (strong) VELView *rootView;
 @end
 
 @implementation AppDelegate

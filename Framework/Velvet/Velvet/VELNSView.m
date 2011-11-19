@@ -8,6 +8,7 @@
 
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELView.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface VELNSView () {
 	/**
@@ -42,13 +43,16 @@
 
 - (void)setRootView:(VELView *)view; {
 	dispatch_async(m_rootViewQueue, ^{
+		[CATransaction begin];
+		[CATransaction setDisableActions:YES];
+
 		[m_rootView.layer removeFromSuperlayer];
 		m_rootView = view;
 
 		if (view.layer)
 			[self.layer addSublayer:view.layer];
 
-		[self setNeedsDisplay:YES];
+		[CATransaction commit];
 	});
 }
 
@@ -76,7 +80,7 @@
 	m_rootViewQueue = dispatch_queue_create("com.emeraldlark.VELNSView.rootViewQueue", DISPATCH_QUEUE_SERIAL);
 	
 	// set up layer hosting
-	CALayer *layer = [self makeBackingLayer];
+	CALayer *layer = [CALayer layer];
 	[self setLayer:layer];
 	[self setWantsLayer:YES];
 }
@@ -84,6 +88,12 @@
 - (void)dealloc {
 	dispatch_release(m_rootViewQueue);
 	m_rootViewQueue = NULL;
+}
+
+#pragma mark Rendering
+
+- (BOOL)needsDisplay {
+	return [self.layer needsDisplay];
 }
 
 @end

@@ -1,0 +1,438 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
+		D0EFFC0F147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC0D147851A80095AB35 /* InfoPlist.strings */; };
+		D0EFFC13147851A80095AB35 /* Velvet.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFC12147851A80095AB35 /* Velvet.m */; };
+		D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */; };
+		D0EFFC1C147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
+		D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC01147851A80095AB35 /* Velvet.framework */; };
+		D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC23147851A80095AB35 /* InfoPlist.strings */; };
+		D0EFFC28147851A80095AB35 /* VelvetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFC27147851A80095AB35 /* VelvetTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D0EFFC1D147851A80095AB35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0EFFBF7147851A80095AB35 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D0EFFC00147851A80095AB35;
+			remoteInfo = Velvet;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D0EFFC01147851A80095AB35 /* Velvet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Velvet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0EFFC04147851A80095AB35 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		D0EFFC07147851A80095AB35 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		D0EFFC08147851A80095AB35 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		D0EFFC09147851A80095AB35 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D0EFFC0C147851A80095AB35 /* Velvet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Velvet-Info.plist"; sourceTree = "<group>"; };
+		D0EFFC0E147851A80095AB35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D0EFFC10147851A80095AB35 /* Velvet-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Velvet-Prefix.pch"; sourceTree = "<group>"; };
+		D0EFFC11147851A80095AB35 /* Velvet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Velvet.h; sourceTree = "<group>"; };
+		D0EFFC12147851A80095AB35 /* Velvet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Velvet.m; sourceTree = "<group>"; };
+		D0EFFC19147851A80095AB35 /* VelvetTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VelvetTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		D0EFFC22147851A80095AB35 /* VelvetTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VelvetTests-Info.plist"; sourceTree = "<group>"; };
+		D0EFFC24147851A80095AB35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		D0EFFC26147851A80095AB35 /* VelvetTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VelvetTests.h; sourceTree = "<group>"; };
+		D0EFFC27147851A80095AB35 /* VelvetTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VelvetTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D0EFFBFD147851A80095AB35 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0EFFC15147851A80095AB35 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */,
+				D0EFFC1C147851A80095AB35 /* Cocoa.framework in Frameworks */,
+				D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D0EFFBF5147851A80095AB35 = {
+			isa = PBXGroup;
+			children = (
+				D0EFFC0A147851A80095AB35 /* Velvet */,
+				D0EFFC20147851A80095AB35 /* VelvetTests */,
+				D0EFFC03147851A80095AB35 /* Frameworks */,
+				D0EFFC02147851A80095AB35 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D0EFFC02147851A80095AB35 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFC01147851A80095AB35 /* Velvet.framework */,
+				D0EFFC19147851A80095AB35 /* VelvetTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D0EFFC03147851A80095AB35 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFC04147851A80095AB35 /* Cocoa.framework */,
+				D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */,
+				D0EFFC06147851A80095AB35 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D0EFFC06147851A80095AB35 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFC07147851A80095AB35 /* AppKit.framework */,
+				D0EFFC08147851A80095AB35 /* CoreData.framework */,
+				D0EFFC09147851A80095AB35 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		D0EFFC0A147851A80095AB35 /* Velvet */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFC11147851A80095AB35 /* Velvet.h */,
+				D0EFFC12147851A80095AB35 /* Velvet.m */,
+				D0EFFC0B147851A80095AB35 /* Supporting Files */,
+			);
+			path = Velvet;
+			sourceTree = "<group>";
+		};
+		D0EFFC0B147851A80095AB35 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFC0C147851A80095AB35 /* Velvet-Info.plist */,
+				D0EFFC0D147851A80095AB35 /* InfoPlist.strings */,
+				D0EFFC10147851A80095AB35 /* Velvet-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D0EFFC20147851A80095AB35 /* VelvetTests */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFC26147851A80095AB35 /* VelvetTests.h */,
+				D0EFFC27147851A80095AB35 /* VelvetTests.m */,
+				D0EFFC21147851A80095AB35 /* Supporting Files */,
+			);
+			path = VelvetTests;
+			sourceTree = "<group>";
+		};
+		D0EFFC21147851A80095AB35 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFC22147851A80095AB35 /* VelvetTests-Info.plist */,
+				D0EFFC23147851A80095AB35 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D0EFFBFE147851A80095AB35 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D0EFFC00147851A80095AB35 /* Velvet */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0EFFC2B147851A80095AB35 /* Build configuration list for PBXNativeTarget "Velvet" */;
+			buildPhases = (
+				D0EFFBFC147851A80095AB35 /* Sources */,
+				D0EFFBFD147851A80095AB35 /* Frameworks */,
+				D0EFFBFE147851A80095AB35 /* Headers */,
+				D0EFFBFF147851A80095AB35 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Velvet;
+			productName = Velvet;
+			productReference = D0EFFC01147851A80095AB35 /* Velvet.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D0EFFC18147851A80095AB35 /* VelvetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D0EFFC2E147851A80095AB35 /* Build configuration list for PBXNativeTarget "VelvetTests" */;
+			buildPhases = (
+				D0EFFC14147851A80095AB35 /* Sources */,
+				D0EFFC15147851A80095AB35 /* Frameworks */,
+				D0EFFC16147851A80095AB35 /* Resources */,
+				D0EFFC17147851A80095AB35 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D0EFFC1E147851A80095AB35 /* PBXTargetDependency */,
+			);
+			name = VelvetTests;
+			productName = VelvetTests;
+			productReference = D0EFFC19147851A80095AB35 /* VelvetTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D0EFFBF7147851A80095AB35 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Emerald Lark";
+			};
+			buildConfigurationList = D0EFFBFA147851A80095AB35 /* Build configuration list for PBXProject "Velvet" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D0EFFBF5147851A80095AB35;
+			productRefGroup = D0EFFC02147851A80095AB35 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D0EFFC00147851A80095AB35 /* Velvet */,
+				D0EFFC18147851A80095AB35 /* VelvetTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D0EFFBFF147851A80095AB35 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFC0F147851A80095AB35 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0EFFC16147851A80095AB35 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D0EFFC17147851A80095AB35 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D0EFFBFC147851A80095AB35 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFC13147851A80095AB35 /* Velvet.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D0EFFC14147851A80095AB35 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D0EFFC28147851A80095AB35 /* VelvetTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D0EFFC1E147851A80095AB35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D0EFFC00147851A80095AB35 /* Velvet */;
+			targetProxy = D0EFFC1D147851A80095AB35 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D0EFFC0D147851A80095AB35 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0EFFC0E147851A80095AB35 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		D0EFFC23147851A80095AB35 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0EFFC24147851A80095AB35 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D0EFFC29147851A80095AB35 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D0EFFC2A147851A80095AB35 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D0EFFC2C147851A80095AB35 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				INFOPLIST_FILE = "Velvet/Velvet-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		D0EFFC2D147851A80095AB35 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				INFOPLIST_FILE = "Velvet/Velvet-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+		D0EFFC2F147851A80095AB35 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				INFOPLIST_FILE = "VelvetTests/VelvetTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		D0EFFC30147851A80095AB35 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				INFOPLIST_FILE = "VelvetTests/VelvetTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D0EFFBFA147851A80095AB35 /* Build configuration list for PBXProject "Velvet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0EFFC29147851A80095AB35 /* Debug */,
+				D0EFFC2A147851A80095AB35 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D0EFFC2B147851A80095AB35 /* Build configuration list for PBXNativeTarget "Velvet" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0EFFC2C147851A80095AB35 /* Debug */,
+				D0EFFC2D147851A80095AB35 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		D0EFFC2E147851A80095AB35 /* Build configuration list for PBXNativeTarget "VelvetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D0EFFC2F147851A80095AB35 /* Debug */,
+				D0EFFC30147851A80095AB35 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D0EFFBF7147851A80095AB35 /* Project object */;
+}

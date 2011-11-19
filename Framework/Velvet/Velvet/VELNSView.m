@@ -18,6 +18,12 @@
 	VELView *m_rootView;
 }
 
+/**
+ * Configures all the necessary properties on the receiver. This is outside of
+ * an initializer because \c NSView has no true designated initializer.
+ */
+- (void)setUp;
+
 @end
 
 @implementation VELNSView
@@ -48,19 +54,31 @@
 
 #pragma mark Lifecycle
 
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+	if (!self)
+		return nil;
+	
+	[self setUp];
+	return self;
+}
+
 - (id)initWithFrame:(NSRect)frame; {
     self = [super initWithFrame:frame];
 	if (!self)
 		return nil;
 	
+	[self setUp];
+	return self;
+}
+
+- (void)setUp; {
 	m_rootViewQueue = dispatch_queue_create("com.emeraldlark.VELNSView.rootViewQueue", DISPATCH_QUEUE_SERIAL);
 	
 	// set up layer hosting
 	CALayer *layer = [self makeBackingLayer];
 	[self setLayer:layer];
 	[self setWantsLayer:YES];
-
-	return self;
 }
 
 - (void)dealloc {

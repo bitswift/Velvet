@@ -17,6 +17,8 @@
 		D0EFFCC4147852A70095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCA4147852A70095AB35 /* Cocoa.framework */; };
 		D0EFFCCC147852A70095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFCCA147852A70095AB35 /* InfoPlist.strings */; };
 		D0EFFCCF147852A70095AB35 /* VelvetDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFCCE147852A70095AB35 /* VelvetDemoTests.m */; };
+		D0EFFD00147853100095AB35 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCFA147853070095AB35 /* Velvet.framework */; };
+		D0EFFD031478532E0095AB35 /* Velvet.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCFA147853070095AB35 /* Velvet.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,7 +29,42 @@
 			remoteGlobalIDString = D0EFFC9F147852A70095AB35;
 			remoteInfo = VelvetDemo;
 		};
+		D0EFFCF9147853070095AB35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0EFFC01147851A80095AB35;
+			remoteInfo = Velvet;
+		};
+		D0EFFCFB147853070095AB35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0EFFC19147851A80095AB35;
+			remoteInfo = VelvetTests;
+		};
+		D0EFFCFE1478530E0095AB35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D0EFFC00147851A80095AB35;
+			remoteInfo = Velvet;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D0EFFD01147853150095AB35 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D0EFFD031478532E0095AB35 /* Velvet.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D0EFFCA0147852A70095AB35 /* VelvetDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VelvetDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -64,6 +101,7 @@
 		D0EFFCEA147852D50095AB35 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
 		D0EFFCEB147852D50095AB35 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D0EFFCEC147852D50095AB35 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Velvet.xcodeproj; path = ../../Framework/Velvet/Velvet.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0EFFD00147853100095AB35 /* Velvet.framework in Frameworks */,
 				D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -110,6 +149,7 @@
 		D0EFFCA3147852A70095AB35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */,
 				D0EFFCA4147852A70095AB35 /* Cocoa.framework */,
 				D0EFFCC2147852A70095AB35 /* SenTestingKit.framework */,
 				D0EFFCA6147852A70095AB35 /* Other Frameworks */,
@@ -232,6 +272,15 @@
 			path = "Mac OS X";
 			sourceTree = "<group>";
 		};
+		D0EFFCF2147853070095AB35 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCFA147853070095AB35 /* Velvet.framework */,
+				D0EFFCFC147853070095AB35 /* VelvetTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -242,10 +291,12 @@
 				D0EFFC9C147852A70095AB35 /* Sources */,
 				D0EFFC9D147852A70095AB35 /* Frameworks */,
 				D0EFFC9E147852A70095AB35 /* Resources */,
+				D0EFFD01147853150095AB35 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D0EFFCFF1478530E0095AB35 /* PBXTargetDependency */,
 			);
 			name = VelvetDemo;
 			productName = VelvetDemo;
@@ -290,6 +341,12 @@
 			mainGroup = D0EFFC95147852A70095AB35;
 			productRefGroup = D0EFFCA1147852A70095AB35 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D0EFFCF2147853070095AB35 /* Products */;
+					ProjectRef = D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D0EFFC9F147852A70095AB35 /* VelvetDemo */,
@@ -297,6 +354,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D0EFFCFA147853070095AB35 /* Velvet.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Velvet.framework;
+			remoteRef = D0EFFCF9147853070095AB35 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D0EFFCFC147853070095AB35 /* VelvetTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = VelvetTests.octest;
+			remoteRef = D0EFFCFB147853070095AB35 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D0EFFC9E147852A70095AB35 /* Resources */ = {
@@ -360,6 +434,11 @@
 			isa = PBXTargetDependency;
 			target = D0EFFC9F147852A70095AB35 /* VelvetDemo */;
 			targetProxy = D0EFFCC5147852A70095AB35 /* PBXContainerItemProxy */;
+		};
+		D0EFFCFF1478530E0095AB35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Velvet;
+			targetProxy = D0EFFCFE1478530E0095AB35 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -521,6 +600,7 @@
 				D0EFFCD4147852A70095AB35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D0EFFCD5147852A70095AB35 /* Build configuration list for PBXNativeTarget "VelvetDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -529,6 +609,7 @@
 				D0EFFCD7147852A70095AB35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

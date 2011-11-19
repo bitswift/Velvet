@@ -24,9 +24,9 @@
 @property (assign) CGRect bounds;
 
 /**
- * The origin of this view, in its superview's coordinate system.
+ * The center of this view, in its superview's coordinate system.
  */
-@property (assign) CGPoint origin;
+@property (assign) CGPoint center;
 
 /**
  * The layer backing this view. This will be an instance of the `layerClass`

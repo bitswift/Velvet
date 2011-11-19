@@ -15,29 +15,32 @@
 
 #pragma mark Properties
 
-@synthesize origin = m_origin;
-@synthesize bounds = m_bounds;
 @synthesize layer = m_layer;
 
 - (CGRect)frame {
-	// TODO: this needs proper synchronization
-	CGRect bounds = self.bounds;
-	CGPoint origin = self.origin;
-
-	return CGRectMake(
-		origin.x - bounds.size.width / 2,
-		origin.y - bounds.size.height / 2,
-		bounds.size.width,
-		bounds.size.height
-	);
+	return self.layer.frame;
 }
 
 - (void)setFrame:(CGRect)frame {
-	// TODO: this needs proper synchronization
-	CGRect previousBounds = self.bounds;
+	self.layer.frame = frame;
+	[self.layer setNeedsDisplay];
+}
 
-	self.origin = CGPointMake(frame.origin.x + frame.size.width / 2, frame.origin.y + frame.size.height / 2);
-	self.bounds = CGRectMake(previousBounds.origin.x, previousBounds.origin.y, frame.size.width, frame.size.height);
+- (CGRect)bounds {
+	return self.layer.bounds;
+}
+
+- (void)setBounds:(CGRect)bounds {
+	self.layer.bounds = bounds;
+	[self.layer setNeedsDisplay];
+}
+
+- (CGPoint)center {
+	return self.layer.position;
+}
+
+- (void)setCenter:(CGPoint)center {
+	self.layer.position = center;
 }
 
 #pragma mark Layer handling

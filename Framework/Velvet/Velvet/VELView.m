@@ -15,8 +15,30 @@
 
 #pragma mark Properties
 
-@synthesize frame = m_frame;
+@synthesize origin = m_origin;
+@synthesize bounds = m_bounds;
 @synthesize layer = m_layer;
+
+- (CGRect)frame {
+	// TODO: this needs proper synchronization
+	CGRect bounds = self.bounds;
+	CGPoint origin = self.origin;
+
+	return CGRectMake(
+		origin.x - bounds.size.width / 2,
+		origin.y - bounds.size.height / 2,
+		bounds.size.width,
+		bounds.size.height
+	);
+}
+
+- (void)setFrame:(CGRect)frame {
+	// TODO: this needs proper synchronization
+	CGRect previousBounds = self.bounds;
+
+	self.origin = CGPointMake(frame.origin.x + frame.size.width / 2, frame.origin.y + frame.size.height / 2);
+	self.bounds = CGRectMake(previousBounds.origin.x, previousBounds.origin.y, frame.size.width, frame.size.height);
+}
 
 #pragma mark Layer handling
 
@@ -35,9 +57,6 @@
 	// change after initialization
 	m_layer = [[[self class] layerClass] layer];
 	m_layer.delegate = self;
-	
-	// should this be CGRectNull instead?
-	self.frame = CGRectZero;
 
 	return self;
 }
@@ -50,7 +69,7 @@
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
-	CGSize size = self.frame.size;
+	CGSize size = self.bounds.size;
 	size_t width = (size_t)ceil(size.width);
 	
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
@@ -75,6 +94,7 @@
 }
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
+	CGContextClearRect(context, self.frame);
 }
 
 @end

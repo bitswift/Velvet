@@ -19,6 +19,16 @@
 @property (assign) CGRect frame;
 
 /**
+ * The drawing region of this view, relative to its `frame`.
+ */
+@property (assign) CGRect bounds;
+
+/**
+ * The origin of this view, in its superview's coordinate system.
+ */
+@property (assign) CGPoint origin;
+
+/**
  * The layer backing this view. This will be an instance of the `layerClass`
  * specified by the receiver's class.
  */

@@ -8,3 +8,4 @@
 
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELResponder.h>
+#import <Velvet/VELView.h>

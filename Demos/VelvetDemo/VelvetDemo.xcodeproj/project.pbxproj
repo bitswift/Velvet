@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */; };
+		D0D8C3BC14786AFD00FC9015 /* SquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C3BB14786AFD00FC9015 /* SquareView.m */; };
 		D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCA4147852A70095AB35 /* Cocoa.framework */; };
 		D0EFFCAF147852A70095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFCAD147852A70095AB35 /* InfoPlist.strings */; };
 		D0EFFCB1147852A70095AB35 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFCB0147852A70095AB35 /* main.m */; };
@@ -69,6 +70,8 @@
 
 /* Begin PBXFileReference section */
 		D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D0D8C3BA14786AFD00FC9015 /* SquareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareView.h; sourceTree = "<group>"; };
+		D0D8C3BB14786AFD00FC9015 /* SquareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquareView.m; sourceTree = "<group>"; };
 		D0EFFCA0147852A70095AB35 /* VelvetDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VelvetDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EFFCA4147852A70095AB35 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D0EFFCA7147852A70095AB35 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -129,6 +132,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D0D8C3BD14786B0100FC9015 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D0D8C3BA14786AFD00FC9015 /* SquareView.h */,
+				D0D8C3BB14786AFD00FC9015 /* SquareView.m */,
+				D0EFFCB9147852A70095AB35 /* MainMenu.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		D0D8C3BE14786B0E00FC9015 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D0EFFCB6147852A70095AB35 /* AppDelegate.h */,
+				D0EFFCB7147852A70095AB35 /* AppDelegate.m */,
+				D0D8C3BD14786B0100FC9015 /* Views */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
 		D0EFFC95147852A70095AB35 = {
 			isa = PBXGroup;
 			children = (
@@ -174,9 +197,7 @@
 		D0EFFCAA147852A70095AB35 /* VelvetDemo */ = {
 			isa = PBXGroup;
 			children = (
-				D0EFFCB6147852A70095AB35 /* AppDelegate.h */,
-				D0EFFCB7147852A70095AB35 /* AppDelegate.m */,
-				D0EFFCB9147852A70095AB35 /* MainMenu.xib */,
+				D0D8C3BE14786B0E00FC9015 /* Classes */,
 				D0EFFCAB147852A70095AB35 /* Supporting Files */,
 			);
 			path = VelvetDemo;
@@ -420,6 +441,7 @@
 			files = (
 				D0EFFCB1147852A70095AB35 /* main.m in Sources */,
 				D0EFFCB8147852A70095AB35 /* AppDelegate.m in Sources */,
+				D0D8C3BC14786AFD00FC9015 /* SquareView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

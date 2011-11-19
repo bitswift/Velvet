@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0D8C39B1478569600FC9015 /* Velvet.h in Headers */ = {isa = PBXBuildFile; fileRef = D0EFFC11147851A80095AB35 /* Velvet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
 		D0EFFC0F147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC0D147851A80095AB35 /* InfoPlist.strings */; };
-		D0EFFC13147851A80095AB35 /* Velvet.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFC12147851A80095AB35 /* Velvet.m */; };
 		D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */; };
 		D0EFFC1C147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
 		D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC01147851A80095AB35 /* Velvet.framework */; };
@@ -37,7 +37,6 @@
 		D0EFFC0E147851A80095AB35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D0EFFC10147851A80095AB35 /* Velvet-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Velvet-Prefix.pch"; sourceTree = "<group>"; };
 		D0EFFC11147851A80095AB35 /* Velvet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Velvet.h; sourceTree = "<group>"; };
-		D0EFFC12147851A80095AB35 /* Velvet.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Velvet.m; sourceTree = "<group>"; };
 		D0EFFC19147851A80095AB35 /* VelvetTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VelvetTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		D0EFFC22147851A80095AB35 /* VelvetTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VelvetTests-Info.plist"; sourceTree = "<group>"; };
@@ -127,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				D0EFFC11147851A80095AB35 /* Velvet.h */,
-				D0EFFC12147851A80095AB35 /* Velvet.m */,
 				D0EFFC0B147851A80095AB35 /* Supporting Files */,
 			);
 			path = Velvet;
@@ -232,6 +230,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0D8C39B1478569600FC9015 /* Velvet.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,7 +341,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0EFFC13147851A80095AB35 /* Velvet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,6 +506,7 @@
 				D0EFFC2D147851A80095AB35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D0EFFC2E147851A80095AB35 /* Build configuration list for PBXNativeTarget "VelvetTests" */ = {
 			isa = XCConfigurationList;
@@ -516,6 +515,7 @@
 				D0EFFC30147851A80095AB35 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

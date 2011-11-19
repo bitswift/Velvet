@@ -6,8 +6,3 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-@interface Velvet : NSObject
-
-@end

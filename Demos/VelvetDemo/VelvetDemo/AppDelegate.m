@@ -7,14 +7,21 @@
 //
 
 #import "AppDelegate.h"
+#import <Velvet/Velvet.h>
+
+@interface AppDelegate ()
+@property (strong) IBOutlet NSWindow *window;
+@property (weak) IBOutlet VELNSView *hostView;
+
+@property (weak) VELView *rootView;
+@end
 
 @implementation AppDelegate
+@synthesize window = m_window;
+@synthesize hostView = m_hostView;
+@synthesize rootView = m_rootView;
 
-@synthesize window = _window;
-
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
-{
-	// Insert code here to initialize your application
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
 }
 
 @end

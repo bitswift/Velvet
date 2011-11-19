@@ -42,4 +42,39 @@
 	return self;
 }
 
+#pragma mark Rendering
+
+- (void)drawRect:(CGRect)rect; {
+}
+
+#pragma mark CALayer delegate
+
+- (void)displayLayer:(CALayer *)layer {
+	CGSize size = self.frame.size;
+	size_t width = (size_t)ceil(size.width);
+	
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGContextRef context = CGBitmapContextCreate(
+		NULL,
+		width,
+		(size_t)ceil(size.height),
+		8,
+		width * 4,
+		colorSpace,
+		kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Host
+	);
+
+	CGColorSpaceRelease(colorSpace);
+
+	[self drawLayer:layer inContext:context];
+
+	CGImageRef image = CGBitmapContextCreateImage(context);
+	layer.contents = (__bridge_transfer id)image;
+
+	CGContextRelease(context);
+}
+
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
+}
+
 @end

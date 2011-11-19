@@ -40,4 +40,11 @@
  * appropriate.
  */
 - (id)init;
+
+/**
+ * Can be overridden to perform custom drawing.
+ *
+ * The default implementation of this method does nothing.
+ */
+- (void)drawRect:(CGRect)rect;
 @end

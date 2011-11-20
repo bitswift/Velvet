@@ -25,13 +25,7 @@
 	[button setButtonType:NSMomentaryPushInButton];
 	[button setBezelStyle:NSRoundedBezelStyle];
 	[button setTitle:@"Test Button"];
-	[button setWantsLayer:YES];
-	self.button = button;
-
-	[CATransaction begin];
-	[CATransaction setDisableActions:YES];
-	[self.layer addSublayer:button.layer];
-	[CATransaction commit];
+	self.NSView = button;
 
 	return self;
 }

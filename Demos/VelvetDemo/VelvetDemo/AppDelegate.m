@@ -24,8 +24,14 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
 	self.rootView = [[SquareView alloc] init];
-	self.rootView.frame = CGRectMake(20, 20, 100, 100);
+	self.rootView.frame = CGRectMake(20, 20, 200, 200);
 	self.hostView.rootView = self.rootView;
+
+	NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 20)];
+	[button setButtonType:NSMomentaryPushInButton];
+	[button setBezelStyle:NSRoundedBezelStyle];
+	[button setTitle:@"Test Vanilla Button"];
+	[self.hostView addSubview:button];
 }
 
 @end

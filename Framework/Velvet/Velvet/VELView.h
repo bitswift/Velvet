@@ -9,11 +9,11 @@
 #import <Velvet/VELResponder.h>
 
 @class VELContext;
-@class VELNSView;
+@class NSVelvetView;
 
 /**
  * A layer-backed view. A view hierarchy built using this class must ultimately
- * be hosted in a `VELNSView`.
+ * be hosted in a `NSVelvetView`.
  */
 @interface VELView : VELResponder
 /**
@@ -48,15 +48,15 @@
  * The immediate superview of the receiver, or \c nil if the receiver is a root
  * view.
  *
- * @note To obtain the `VELNSView` that the receiver is hosted in, you must use
+ * @note To obtain the `NSVelvetView` that the receiver is hosted in, you must use
  * `[VELView NSView]` instead.
  */
 @property (readonly, weak) VELView *superview;
 
 /**
- * The `VELNSView` that is hosting the furthest ancestor of the receiver.
+ * The `NSVelvetView` that is hosting the furthest ancestor of the receiver.
  */
-@property (readonly, weak) VELNSView *NSView;
+@property (readonly, weak) NSVelvetView *NSView;
 
 /**
  * The window in which the receiver is displayed.
@@ -65,11 +65,11 @@
 
 /**
  * The rendering context for the receiver. This is set when the receiver is
- * added to a `VELView` or `VELNSView`. The receiver should not be used from
+ * added to a `VELView` or `NSVelvetView`. The receiver should not be used from
  * a different `VELContext`.
  *
  * @note This will be the same object for all views rooted at the same
- * `VELNSView`.
+ * `NSVelvetView`.
  */
 @property (readonly, strong) VELContext *context;
 

@@ -12,7 +12,7 @@
 
 @interface AppDelegate ()
 @property (strong) IBOutlet NSWindow *window;
-@property (weak) IBOutlet VELNSView *hostView;
+@property (weak) IBOutlet NSVelvetView *hostView;
 
 @property (strong) VELView *rootView;
 @end

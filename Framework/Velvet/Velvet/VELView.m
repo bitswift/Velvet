@@ -9,12 +9,12 @@
 #import <Velvet/VELView.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/VELContext.h>
-#import <Velvet/VELNSView.h>
+#import <Velvet/NSVelvetView.h>
 #import <Velvet/VELViewPrivate.h>
 
 @interface VELView ()
 @property (readwrite, weak) VELView *superview;
-@property (readwrite, weak) VELNSView *NSView;
+@property (readwrite, weak) NSVelvetView *NSView;
 @property (readwrite, strong) VELContext *context;
 @end
 
@@ -90,8 +90,8 @@
 	});
 }
 
-- (VELNSView *)NSView {
-  	__block VELNSView *view = nil;
+- (NSVelvetView *)NSView {
+  	__block NSVelvetView *view = nil;
 
   	dispatch_sync_recursive(self.context.dispatchQueue, ^{
 		view = m_NSView;
@@ -103,7 +103,7 @@
 		return self.superview.NSView;
 }
 
-- (void)setNSView:(VELNSView *)view {
+- (void)setNSView:(NSVelvetView *)view {
 	// TODO: the threading here isn't really safe, since it depends on having
 	// a valid context with which to synchronize -- sometimes there may be no
 	// context, which could introduce race conditions

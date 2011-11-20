@@ -10,13 +10,13 @@
 #import <Velvet/VELView.h>
 
 @class VELContext;
-@class VELNSView;
+@class NSVelvetView;
 
 /**
  * Private functionality of `VELView` that needs to be exposed to other parts of
  * the framework.
  */
 @interface VELView (VELViewPrivate)
-@property (readwrite, weak) VELNSView *NSView;
+@property (readwrite, weak) NSVelvetView *NSView;
 @property (readwrite, strong) VELContext *context;
 @end

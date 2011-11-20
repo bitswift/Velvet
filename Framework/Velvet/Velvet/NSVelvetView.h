@@ -1,5 +1,5 @@
 //
-//  VELNSView.h
+//  NSVelvetView.h
 //  Velvet
 //
 //  Created by Justin Spahr-Summers on 19.11.11.
@@ -15,7 +15,7 @@
  * A layer-hosted `NSView` that is used to host a `VELView` hierarchy. You must
  * use this class to present a `VELView` and allow it to respond to events.
  */
-@interface VELNSView : NSView
+@interface NSVelvetView : NSView
 /**
  * The root view of a `VELView`-based hierarchy to be displayed in the receiver.
  */

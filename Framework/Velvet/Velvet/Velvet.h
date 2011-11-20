@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
+#import <Velvet/NSVelvetView.h>
 #import <Velvet/VELContext.h>
-#import <Velvet/VELNSView.h>
 #import <Velvet/VELResponder.h>
 #import <Velvet/VELView.h>

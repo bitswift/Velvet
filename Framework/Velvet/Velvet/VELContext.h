@@ -12,7 +12,7 @@
  * Manages the state and resources for an entire Velvet view hierarchy and
  * rendering context.
  *
- * Each `VELNSView` implicitly creates a `VELContext`, which it owns, and uses
+ * Each `NSVelvetView` implicitly creates a `VELContext`, which it owns, and uses
  * it to render its hosted view hierarchy.
  */
 @interface VELContext : NSObject

@@ -1,19 +1,19 @@
 //
-//  VELNSView.m
+//  NSVelvetView.m
 //  Velvet
 //
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
-#import <Velvet/VELNSView.h>
+#import <Velvet/NSVelvetView.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELViewPrivate.h>
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 
-@interface VELNSView ()
+@interface NSVelvetView ()
 @property (nonatomic, readwrite, strong) VELContext *context;
 
 /**
@@ -23,7 +23,7 @@
 - (void)setUp;
 @end
 
-@implementation VELNSView
+@implementation NSVelvetView
 
 #pragma mark Properties
 

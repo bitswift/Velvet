@@ -7,34 +7,31 @@
 //
 
 #import <Velvet/VELNSView.h>
+#import <Velvet/VELContext.h>
 #import <Velvet/VELView.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface VELNSView () {
-	/**
-	 * Used to synchronize access to and operations around the `rootView`.
-	 */
-	dispatch_queue_t m_rootViewQueue;
-	
-	VELView *m_rootView;
-}
+@interface VELNSView ()
+@property (nonatomic, readwrite, strong) VELContext *context;
 
 /**
  * Configures all the necessary properties on the receiver. This is outside of
  * an initializer because \c NSView has no true designated initializer.
  */
 - (void)setUp;
-
 @end
 
 @implementation VELNSView
 
 #pragma mark Properties
 
+@synthesize context = m_context;
+@synthesize rootView = m_rootView;
+
 - (VELView *)rootView; {
 	__block VELView *view = nil;
 
-	dispatch_sync(m_rootViewQueue, ^{
+	dispatch_sync(self.context.dispatchQueue, ^{
 		view = m_rootView;
 	});
 
@@ -42,7 +39,7 @@
 }
 
 - (void)setRootView:(VELView *)view; {
-	dispatch_async(m_rootViewQueue, ^{
+	dispatch_async(self.context.dispatchQueue, ^{
 		[CATransaction begin];
 		[CATransaction setDisableActions:YES];
 
@@ -77,17 +74,12 @@
 }
 
 - (void)setUp; {
-	m_rootViewQueue = dispatch_queue_create("com.emeraldlark.VELNSView.rootViewQueue", DISPATCH_QUEUE_SERIAL);
+	self.context = [[VELContext alloc] init];
 	
 	// set up layer hosting
 	CALayer *layer = [CALayer layer];
 	[self setLayer:layer];
 	[self setWantsLayer:YES];
-}
-
-- (void)dealloc {
-	dispatch_release(m_rootViewQueue);
-	m_rootViewQueue = NULL;
 }
 
 #pragma mark Rendering

@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class VELContext;
 @class VELView;
 
 /**
@@ -19,4 +20,14 @@
  * The root view of a `VELView`-based hierarchy to be displayed in the receiver.
  */
 @property (strong) VELView *rootView;
+
+/**
+ * The context in which to render and manage the receiver's `VELView` hierarchy.
+ * This context is automatically created when the view is initialized, and
+ * should be considered owned by the receiver.
+ *
+ * @note This does not automatically set up the context as the current thread's
+ * context.
+ */
+@property (nonatomic, readonly, strong) VELContext *context;
 @end

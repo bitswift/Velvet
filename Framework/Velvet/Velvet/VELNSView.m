@@ -33,7 +33,6 @@
 		[m_NSView.layer removeFromSuperlayer];
 
 		// TODO: keep all geometry in sync constantly
-		view.layer.frame = view.frame = self.bounds;
 		[self.layer addSublayer:view.layer];
 
 		m_NSView = view;

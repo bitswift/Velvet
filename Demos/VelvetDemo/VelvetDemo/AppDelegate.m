@@ -34,9 +34,22 @@
 	[button setButtonType:NSMomentaryPushInButton];
 	[button setBezelStyle:NSRoundedBezelStyle];
 	[button setTitle:@"Test Button"];
-	self.rootView.NSView = button;
+	//self.rootView.NSView = button;
+	
+	NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"iceberg" withExtension:@"jpg"];
+	NSImage *image = [[NSImage alloc] initWithContentsOfURL:imageURL];
 
-	//NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 200, 200)];
+	NSRect imageRect = NSMakeRect(0, 0, image.size.width, image.size.height);
+	NSImageView *imageView = [[NSImageView alloc] initWithFrame:imageRect];
+	[imageView setBounds:imageRect];
+	[imageView setImage:image];
+
+	NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 300, 300)];
+	[scrollView setBorderType:NSNoBorder];
+	[scrollView setDocumentView:imageView];
+	[scrollView setHasHorizontalScroller:YES];
+	[scrollView setHasVerticalScroller:YES];
+	self.rootView.NSView = scrollView;
 }
 
 @end

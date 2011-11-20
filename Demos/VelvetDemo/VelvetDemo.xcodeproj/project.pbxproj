@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0927BA51479C1E2008F04C4 /* iceberg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0927BA41479C1E2008F04C4 /* iceberg.jpg */; };
 		D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */; };
 		D0D8C3BC14786AFD00FC9015 /* SquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C3BB14786AFD00FC9015 /* SquareView.m */; };
 		D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCA4147852A70095AB35 /* Cocoa.framework */; };
@@ -69,6 +70,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D0927BA41479C1E2008F04C4 /* iceberg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iceberg.jpg; sourceTree = "<group>"; };
 		D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0D8C3BA14786AFD00FC9015 /* SquareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareView.h; sourceTree = "<group>"; };
 		D0D8C3BB14786AFD00FC9015 /* SquareView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SquareView.m; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 		D0EFFCAB147852A70095AB35 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D0927BA41479C1E2008F04C4 /* iceberg.jpg */,
 				D0EFFCAC147852A70095AB35 /* VelvetDemo-Info.plist */,
 				D0EFFCAD147852A70095AB35 /* InfoPlist.strings */,
 				D0EFFCB0147852A70095AB35 /* main.m */,
@@ -405,6 +408,7 @@
 				D0EFFCAF147852A70095AB35 /* InfoPlist.strings in Resources */,
 				D0EFFCB5147852A70095AB35 /* Credits.rtf in Resources */,
 				D0EFFCBB147852A70095AB35 /* MainMenu.xib in Resources */,
+				D0927BA51479C1E2008F04C4 /* iceberg.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

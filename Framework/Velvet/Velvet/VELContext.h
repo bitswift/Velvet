@@ -17,6 +17,12 @@
  */
 @interface VELContext : NSObject
 /**
+ * A serial dispatch queue that can be used to enforce an order for operations
+ * performed with regard to the receiver.
+ */
+@property (nonatomic, readonly) dispatch_queue_t dispatchQueue;
+
+/**
  * The `VELContext` being used on the current thread, or `nil` if the current
  * thread has no context set up.
  */

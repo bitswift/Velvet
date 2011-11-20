@@ -18,6 +18,10 @@
 
 @implementation VELContext
 
+#pragma mark Properties
+
+@synthesize dispatchQueue = m_dispatchQueue;
+
 #pragma mark Context stack
 
 + (NSMutableArray *)currentThreadContextStack; {
@@ -48,6 +52,23 @@
 
 + (void)popCurrentContext; {
 	[[self currentThreadContextStack] removeLastObject];
+}
+
+#pragma mark Lifecycle
+
+- (id)init {
+	self = [super init];
+	if (!self)
+		return nil;
+
+	m_dispatchQueue = dispatch_queue_create("com.emeraldlark.Velvet.VELContext.dispatchQueue", DISPATCH_QUEUE_SERIAL);
+	return self;
+}
+
+- (void)dealloc {
+	dispatch_barrier_sync(m_dispatchQueue, ^{});
+	dispatch_release(m_dispatchQueue);
+	m_dispatchQueue = NULL;
 }
 
 @end

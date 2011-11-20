@@ -30,29 +30,19 @@
 @synthesize context = m_context;
 @synthesize rootView = m_rootView;
 
-- (VELView *)rootView; {
-	__block VELView *view = nil;
-
-	dispatch_sync(self.context.dispatchQueue, ^{
-		view = m_rootView;
-	});
-
-	return view;
-}
-
 - (void)setRootView:(VELView *)view; {
-	dispatch_async(self.context.dispatchQueue, ^{
-		[CATransaction begin];
-		[CATransaction setDisableActions:YES];
+	[CATransaction begin];
+	[CATransaction setDisableActions:YES];
 
-		[m_rootView.layer removeFromSuperlayer];
-		m_rootView = view;
+	[m_rootView.layer removeFromSuperlayer];
+	[self.layer addSublayer:view.layer];
 
-		if (view.layer)
-			[self.layer addSublayer:view.layer];
+	m_rootView.NSView = nil;
+	view.NSView = self;
 
-		[CATransaction commit];
-	});
+	m_rootView = view;
+
+	[CATransaction commit];
 }
 
 #pragma mark Lifecycle

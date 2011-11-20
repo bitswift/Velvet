@@ -19,7 +19,7 @@
 /**
  * The root view of a `VELView`-based hierarchy to be displayed in the receiver.
  */
-@property (strong) VELView *rootView;
+@property (nonatomic, strong) VELView *rootView;
 
 /**
  * The context in which to render and manage the receiver's `VELView` hierarchy.

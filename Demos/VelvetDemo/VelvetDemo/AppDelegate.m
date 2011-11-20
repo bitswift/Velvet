@@ -49,6 +49,8 @@
 	[scrollView setDocumentView:imageView];
 	[scrollView setHasHorizontalScroller:YES];
 	[scrollView setHasVerticalScroller:YES];
+	[scrollView setDrawsBackground:NO];
+	[scrollView setUsesPredominantAxisScrolling:NO];
 	self.rootView.NSView = scrollView;
 }
 

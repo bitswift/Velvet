@@ -14,7 +14,7 @@
 @property (strong) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSVelvetView *hostView;
 
-@property (strong) VELView *rootView;
+@property (strong) VELNSView *rootView;
 @end
 
 @implementation AppDelegate
@@ -23,15 +23,20 @@
 @synthesize rootView = m_rootView;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
+	NSRect windowRect = [self.window contentRectForFrameRect:self.window.frame];
+	CGSize windowSize = windowRect.size;
+
 	self.rootView = [[SquareView alloc] init];
-	self.rootView.frame = CGRectMake(20, 20, 200, 200);
+	self.rootView.frame = CGRectInset(CGRectMake(0, 0, windowSize.width, windowSize.height), 20, 20);
 	self.hostView.rootView = self.rootView;
 
 	NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 20)];
 	[button setButtonType:NSMomentaryPushInButton];
 	[button setBezelStyle:NSRoundedBezelStyle];
-	[button setTitle:@"Test Vanilla Button"];
-	[self.hostView addSubview:button];
+	[button setTitle:@"Test Button"];
+	self.rootView.NSView = button;
+
+	//NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 200, 200)];
 }
 
 @end

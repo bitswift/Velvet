@@ -21,12 +21,6 @@
 	if (!self)
 		return nil;
 
-	NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 20)];
-	[button setButtonType:NSMomentaryPushInButton];
-	[button setBezelStyle:NSRoundedBezelStyle];
-	[button setTitle:@"Test Button"];
-	self.NSView = button;
-
 	return self;
 }
 

@@ -37,8 +37,8 @@
 	[m_rootView.layer removeFromSuperlayer];
 	[self.layer addSublayer:view.layer];
 
-	m_rootView.NSView = nil;
-	view.NSView = self;
+	m_rootView.hostView = nil;
+	view.hostView = self;
 
 	m_rootView = view;
 

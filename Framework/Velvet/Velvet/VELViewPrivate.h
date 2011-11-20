@@ -17,6 +17,6 @@
  * the framework.
  */
 @interface VELView (VELViewPrivate)
-@property (readwrite, weak) NSVelvetView *NSView;
+@property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
 @end

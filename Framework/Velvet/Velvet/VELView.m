@@ -14,7 +14,7 @@
 
 @interface VELView ()
 @property (readwrite, weak) VELView *superview;
-@property (readwrite, weak) NSVelvetView *NSView;
+@property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
 @end
 
@@ -25,7 +25,7 @@
 @synthesize layer = m_layer;
 @synthesize subviews = m_subviews;
 @synthesize superview = m_superview;
-@synthesize NSView = m_NSView;
+@synthesize hostView = m_hostView;
 
 // TODO: we should probably flush the GCD queue of an old context before
 // accepting a new one (to make sure there are no race conditions during
@@ -90,27 +90,27 @@
 	});
 }
 
-- (NSVelvetView *)NSView {
+- (NSVelvetView *)hostView {
   	__block NSVelvetView *view = nil;
 
   	dispatch_sync_recursive(self.context.dispatchQueue, ^{
-		view = m_NSView;
+		view = m_hostView;
 	});
 
 	if (view)
 		return view;
 	else
-		return self.superview.NSView;
+		return self.superview.hostView;
 }
 
-- (void)setNSView:(NSVelvetView *)view {
+- (void)setHostView:(NSVelvetView *)view {
 	// TODO: the threading here isn't really safe, since it depends on having
 	// a valid context with which to synchronize -- sometimes there may be no
 	// context, which could introduce race conditions
 
 	if (!view) {
 		dispatch_async_recursive(self.context.dispatchQueue, ^{
-			m_NSView = nil;
+			m_hostView = nil;
 			self.context = nil;
 		});
 
@@ -121,7 +121,7 @@
 	VELContext *viewContext = view.context;
 
 	dispatch_block_t block = ^{
-		m_NSView = view;
+		m_hostView = view;
 		self.context = viewContext;
 	};
 
@@ -135,7 +135,7 @@
 }
 
 - (NSWindow *)window {
-	return self.NSView.window;
+	return self.hostView.window;
 }
 
 #pragma mark Layer handling

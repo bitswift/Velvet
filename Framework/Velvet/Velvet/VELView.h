@@ -49,14 +49,14 @@
  * view.
  *
  * @note To obtain the `NSVelvetView` that the receiver is hosted in, you must use
- * `[VELView NSView]` instead.
+ * `[VELView hostView]` instead.
  */
 @property (readonly, weak) VELView *superview;
 
 /**
  * The `NSVelvetView` that is hosting the furthest ancestor of the receiver.
  */
-@property (readonly, weak) NSVelvetView *NSView;
+@property (readonly, weak) NSVelvetView *hostView;
 
 /**
  * The window in which the receiver is displayed.

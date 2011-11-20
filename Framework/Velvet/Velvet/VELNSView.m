@@ -8,7 +8,9 @@
 
 #import <Velvet/VELNSView.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
+#import <Velvet/NSVelvetView.h>
 #import <Velvet/VELContext.h>
+#import <Velvet/VELViewPrivate.h>
 
 @implementation VELNSView
 
@@ -30,11 +32,10 @@
 	[view setWantsLayer:YES];
 
 	dispatch_async_recursive(self.context.dispatchQueue, ^{
-		[m_NSView.layer removeFromSuperlayer];
+		CGRect frame = self.frame;
+		view.frame = NSOffsetRect(view.frame, frame.origin.x, frame.origin.y);
 
-		// TODO: keep all geometry in sync constantly
-		[self.layer addSublayer:view.layer];
-
+		[self.hostView addSubview:view];
 		m_NSView = view;
 	});
 }

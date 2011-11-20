@@ -27,6 +27,13 @@ static int compareDispatchQueues (const void *a, const void *b) {
  */
 static void dispatch_multibarrier_array (BOOL asynchronous, const dispatch_queue_t *originalQueues, size_t queueCount, dispatch_block_t block);
 
+void dispatch_async_recursive (dispatch_queue_t queue, dispatch_block_t block) {
+	if (!queue || dispatch_get_current_queue() == queue)
+		block();
+	else
+		dispatch_async(queue, block);
+}
+
 void dispatch_multibarrier_async (dispatch_block_t block, dispatch_queue_t firstQueue, ...) {
 	NSCParameterAssert(block != NULL);
 	NSCParameterAssert(firstQueue != NULL);
@@ -89,6 +96,13 @@ void dispatch_multibarrier_sync (dispatch_block_t block, dispatch_queue_t firstQ
 	va_end(args);
 
 	dispatch_multibarrier_array(NO, queues, queueCount, block);
+}
+
+void dispatch_sync_recursive (dispatch_queue_t queue, dispatch_block_t block) {
+	if (!queue || dispatch_get_current_queue() == queue)
+		block();
+	else
+		dispatch_sync(queue, block);
 }
 
 static void dispatch_multibarrier_array (BOOL asynchronous, const dispatch_queue_t *originalQueues, size_t queueCount, dispatch_block_t block) {

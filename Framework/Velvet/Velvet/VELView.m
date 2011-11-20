@@ -7,8 +7,15 @@
 //
 
 #import <Velvet/VELView.h>
+#import <Velvet/dispatch+SynchronizationAdditions.h>
+#import <Velvet/VELContext.h>
+#import <Velvet/VELNSView.h>
+#import <Velvet/VELViewPrivate.h>
 
 @interface VELView ()
+@property (readwrite, weak) VELView *superview;
+@property (readwrite, weak) VELNSView *NSView;
+@property (readwrite, strong) VELContext *context;
 @end
 
 @implementation VELView
@@ -16,6 +23,14 @@
 #pragma mark Properties
 
 @synthesize layer = m_layer;
+@synthesize subviews = m_subviews;
+@synthesize superview = m_superview;
+@synthesize NSView = m_NSView;
+
+// TODO: we should probably flush the GCD queue of an old context before
+// accepting a new one (to make sure there are no race conditions during
+// a transition)
+@synthesize context = m_context;
 
 - (CGRect)frame {
 	return self.layer.frame;
@@ -43,6 +58,86 @@
 	self.layer.position = center;
 }
 
+- (NSArray *)subviews {
+	__block NSArray *subviews = nil;
+
+	dispatch_sync_recursive(self.context.dispatchQueue, ^{
+		subviews = [m_subviews copy];
+	});
+	
+	return subviews;
+}
+
+- (void)setSubviews:(NSArray *)subviews {
+	dispatch_async_recursive(self.context.dispatchQueue, ^{
+		for (VELView *view in m_subviews) {
+			[view removeFromSuperview];
+		}
+
+		m_subviews = [subviews copy];
+		for (VELView *view in m_subviews) {
+			if (!view.context) {
+				view.context = self.context;
+			} else if (!self.context) {
+				self.context = view.context;
+			} else {
+				NSAssert([view.context isEqual:self.context], @"VELContext of a new subview should match that of its superview");
+			}
+
+			view.superview = self;
+			[self.layer addSublayer:view.layer];
+		}
+	});
+}
+
+- (VELNSView *)NSView {
+  	__block VELNSView *view = nil;
+
+  	dispatch_sync_recursive(self.context.dispatchQueue, ^{
+		view = m_NSView;
+	});
+
+	if (view)
+		return view;
+	else
+		return self.superview.NSView;
+}
+
+- (void)setNSView:(VELNSView *)view {
+	// TODO: the threading here isn't really safe, since it depends on having
+	// a valid context with which to synchronize -- sometimes there may be no
+	// context, which could introduce race conditions
+
+	if (!view) {
+		dispatch_async_recursive(self.context.dispatchQueue, ^{
+			m_NSView = nil;
+			self.context = nil;
+		});
+
+		return;
+	}
+
+	VELContext *selfContext = self.context;
+	VELContext *viewContext = view.context;
+
+	dispatch_block_t block = ^{
+		m_NSView = view;
+		self.context = viewContext;
+	};
+
+	if (selfContext != viewContext) {
+		// if 'selfContext' is NULL, it will (intentionally) short-circuit the list
+		// of arguments here
+		dispatch_multibarrier_async(block, viewContext.dispatchQueue, selfContext.dispatchQueue, NULL);
+	} else {
+		dispatch_async_recursive(selfContext.dispatchQueue, block);
+	}
+}
+
+- (NSWindow *)window {
+	return self.NSView.window;
+}
+
 #pragma mark Layer handling
 
 + (Class)layerClass; {
@@ -67,6 +162,15 @@
 #pragma mark Rendering
 
 - (void)drawRect:(CGRect)rect; {
+}
+
+#pragma mark View hierarchy
+
+- (void)removeFromSuperview; {
+	dispatch_async_recursive(self.context.dispatchQueue, ^{
+		[self.layer removeFromSuperlayer];
+		self.superview = nil;
+	});
 }
 
 #pragma mark CALayer delegate

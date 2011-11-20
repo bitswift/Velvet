@@ -9,7 +9,9 @@
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELView.h>
+#import <Velvet/VELViewPrivate.h>
 #import <QuartzCore/QuartzCore.h>
+#import <objc/runtime.h>
 
 @interface VELNSView ()
 @property (nonatomic, readwrite, strong) VELContext *context;

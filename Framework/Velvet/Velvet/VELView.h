@@ -8,6 +8,9 @@
 
 #import <Velvet/VELResponder.h>
 
+@class VELContext;
+@class VELNSView;
+
 /**
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a `VELNSView`.
@@ -35,6 +38,42 @@
 @property (readonly, strong) CALayer *layer;
 
 /**
+ * The subviews of the receiver, with the first object being the back-most view.
+ * This array can be replaced to completely change the subviews displayed by the
+ * receiver.
+ */
+@property (copy) NSArray *subviews;
+
+/**
+ * The immediate superview of the receiver, or \c nil if the receiver is a root
+ * view.
+ *
+ * @note To obtain the `VELNSView` that the receiver is hosted in, you must use
+ * `[VELView NSView]` instead.
+ */
+@property (readonly, weak) VELView *superview;
+
+/**
+ * The `VELNSView` that is hosting the furthest ancestor of the receiver.
+ */
+@property (readonly, weak) VELNSView *NSView;
+
+/**
+ * The window in which the receiver is displayed.
+ */
+@property (readonly, weak) NSWindow *window;
+
+/**
+ * The rendering context for the receiver. This is set when the receiver is
+ * added to a `VELView` or `VELNSView`. The receiver should not be used from
+ * a different `VELContext`.
+ *
+ * @note This will be the same object for all views rooted at the same
+ * `VELNSView`.
+ */
+@property (readonly, strong) VELContext *context;
+
+/**
  * The class of Core Animation layer to use for this view's backing store.
  */
 + (Class)layerClass;
@@ -57,4 +96,10 @@
  * The default implementation of this method does nothing.
  */
 - (void)drawRect:(CGRect)rect;
+
+/**
+ * Removes the receiver from its `superview`. If the receiver has no superview,
+ * nothing happens.
+ */
+- (void)removeFromSuperview;
 @end

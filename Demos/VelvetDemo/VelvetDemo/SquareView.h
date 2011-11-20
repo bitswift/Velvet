@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
-#import <Velvet/VELView.h>
+#import <Velvet/Velvet.h>
 
 /**
  * Draws a square.

@@ -12,6 +12,8 @@
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */; };
 		D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */; };
+		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
 		D0D8C39B1478569600FC9015 /* Velvet.h in Headers */ = {isa = PBXBuildFile; fileRef = D0EFFC11147851A80095AB35 /* Velvet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C39F1478582C00FC9015 /* NSVelvetView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D8C39D1478582C00FC9015 /* NSVelvetView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C3A01478582C00FC9015 /* NSVelvetView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C39E1478582C00FC9015 /* NSVelvetView.m */; };
@@ -45,6 +47,8 @@
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
 		D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "dispatch+SynchronizationAdditions.h"; sourceTree = "<group>"; };
 		D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "dispatch+SynchronizationAdditions.m"; sourceTree = "<group>"; };
+		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
+		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
 		D0D8C39D1478582C00FC9015 /* NSVelvetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetView.h; sourceTree = "<group>"; };
 		D0D8C39E1478582C00FC9015 /* NSVelvetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetView.m; sourceTree = "<group>"; };
 		D0D8C3A4147859B800FC9015 /* VELResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELResponder.h; sourceTree = "<group>"; };
@@ -121,6 +125,8 @@
 			children = (
 				D0D8C39D1478582C00FC9015 /* NSVelvetView.h */,
 				D0D8C39E1478582C00FC9015 /* NSVelvetView.m */,
+				D01CF3D21479B18400C88D2B /* VELNSView.h */,
+				D01CF3D31479B18400C88D2B /* VELNSView.m */,
 			);
 			name = "AppKit Bridging";
 			sourceTree = "<group>";
@@ -306,6 +312,7 @@
 				D0150FDC147902AE00126F09 /* VELContext.h in Headers */,
 				D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */,
 				D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */,
+				D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +428,7 @@
 				D0D8C3AB14785A1300FC9015 /* VELView.m in Sources */,
 				D0150FDD147902AE00126F09 /* VELContext.m in Sources */,
 				D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */,
+				D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

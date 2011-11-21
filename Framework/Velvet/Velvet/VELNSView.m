@@ -32,8 +32,7 @@
 	[view setWantsLayer:YES];
 
 	dispatch_async_recursive(self.context.dispatchQueue, ^{
-		CGRect frame = self.frame;
-		view.frame = NSOffsetRect(view.frame, frame.origin.x, frame.origin.y);
+		view.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
 
 		[self.hostView addSubview:view];
 		m_NSView = view;

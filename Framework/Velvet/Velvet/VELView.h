@@ -103,6 +103,38 @@
 - (BOOL)isDescendantOfView:(VELView *)view;
 
 /**
+ * Returns the affine transformation that would have to be applied to convert
+ * from the receiver's coordinate system to that of `view`.
+ *
+ * The receiver and `view` must be rooted at the same `NSVelvetView`.
+ */
+- (CGAffineTransform)affineTransformToView:(VELView *)view;
+
+/**
+ * Transforms `point` from the coordinate system of `view` to that of the
+ * receiver using `affineTransformToView:`.
+ */
+- (CGPoint)convertPoint:(CGPoint)point fromView:(VELView *)view;
+
+/**
+ * Transforms `point` from the receiver's coordinate system to that of `view`
+ * using `affineTransformToView:`.
+ */
+- (CGPoint)convertPoint:(CGPoint)point toView:(VELView *)view;
+
+/**
+ * Transforms `rect` from the coordinate system of `view` to that of the
+ * receiver using `affineTransformToView:`.
+ */
+- (CGRect)convertRect:(CGRect)rect fromView:(VELView *)view;
+
+/**
+ * Transforms `rect` from the receiver's coordinate system to that of `view`
+ * using `affineTransformToView:`.
+ */
+- (CGRect)convertRect:(CGRect)rect toView:(VELView *)view;
+
+/**
  * Can be overridden to perform custom drawing.
  *
  * The default implementation of this method does nothing.

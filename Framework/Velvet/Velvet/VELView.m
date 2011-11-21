@@ -1,7 +1,7 @@
 //
 //  VELView.m
 //  Velvet
-//
+//  
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
@@ -16,6 +16,12 @@
 @property (readwrite, weak) VELView *superview;
 @property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
+
+/**
+ * The affine transform needed to move into the coordinate system of the
+ * receiver from its superview.
+ */
+@property (readonly) CGAffineTransform affineTransformFromSuperview;
 @end
 
 @implementation VELView
@@ -91,9 +97,9 @@
 }
 
 - (NSVelvetView *)hostView {
-  	__block NSVelvetView *view = nil;
+	__block NSVelvetView *view = nil;
 
-  	dispatch_sync_recursive(self.context.dispatchQueue, ^{
+	dispatch_sync_recursive(self.context.dispatchQueue, ^{
 		view = m_hostView;
 	});
 
@@ -198,6 +204,70 @@
 		[self.layer removeFromSuperlayer];
 		self.superview = nil;
 	});
+}
+
+#pragma mark Geometry
+
+- (CGAffineTransform)affineTransformFromSuperview {
+	// this will expand in the future to include a 'transform' property
+	CGRect frame = self.frame;
+	return CGAffineTransformMakeTranslation(frame.origin.x, frame.origin.y);
+}
+
+- (CGAffineTransform)affineTransformToView:(VELView *)view; {
+	VELView *parentView = [self ancestorSharedWithView:view];
+	NSAssert(parentView != nil, @"views must share an ancestor in order for an affine transform between them to be valid");
+
+	// FIXME: this is a really naive implementation
+
+	// returns the transformation needed to get from 'fromView' to
+	// 'parentView'
+	CGAffineTransform (^transformFromView)(VELView *) = ^(VELView *fromView){
+		CGAffineTransform affineTransform = CGAffineTransformIdentity;
+
+		while (fromView != parentView) {
+			// work backwards, getting the transformation from the superview to
+			// the subview
+			CGAffineTransform invertedTransform = fromView.affineTransformFromSuperview;
+
+			// then invert that, to get the other direction
+			affineTransform = CGAffineTransformConcat(affineTransform, CGAffineTransformInvert(invertedTransform));
+
+			fromView = fromView.superview;
+		}
+
+		return affineTransform;
+	};
+
+	// get the transformation from self to 'parentView'
+	CGAffineTransform transformFromSelf = transformFromView(self);
+
+	// get the transformation from 'parentView' to 'view'
+	CGAffineTransform transformFromOther = transformFromView(view);
+	CGAffineTransform transformToOther = CGAffineTransformInvert(transformFromOther);
+
+	// combine the two
+	return CGAffineTransformConcat(transformFromSelf, transformToOther);
+}
+
+- (CGPoint)convertPoint:(CGPoint)point fromView:(VELView *)view; {
+	CGAffineTransform transform = CGAffineTransformInvert([self affineTransformToView:view]);
+	return CGPointApplyAffineTransform(point, transform);
+}
+
+- (CGPoint)convertPoint:(CGPoint)point toView:(VELView *)view; {
+	CGAffineTransform transform = [self affineTransformToView:view];
+	return CGPointApplyAffineTransform(point, transform);
+}
+
+- (CGRect)convertRect:(CGRect)rect fromView:(VELView *)view; {
+	CGAffineTransform transform = CGAffineTransformInvert([self affineTransformToView:view]);
+	return CGRectApplyAffineTransform(rect, transform);
+}
+
+- (CGRect)convertRect:(CGRect)rect toView:(VELView *)view; {
+	CGAffineTransform transform = [self affineTransformToView:view];
+	return CGRectApplyAffineTransform(rect, transform);
 }
 
 #pragma mark CALayer delegate

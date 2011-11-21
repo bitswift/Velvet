@@ -166,6 +166,33 @@
 
 #pragma mark View hierarchy
 
+- (VELView *)ancestorSharedWithView:(VELView *)view; {
+	VELView *parentView = self;
+
+	do {
+		if ([view isDescendantOfView:parentView])
+			return parentView;
+
+		parentView = parentView.superview;
+	} while (parentView);
+
+	return nil;
+}
+
+- (BOOL)isDescendantOfView:(VELView *)view; {
+	NSParameterAssert(view != nil);
+
+	VELView *testView = self;
+	do {
+		if (testView == view)
+			return YES;
+
+		testView = testView.superview;
+	} while (testView);
+
+	return NO;
+}
+
 - (void)removeFromSuperview; {
 	dispatch_async_recursive(self.context.dispatchQueue, ^{
 		[self.layer removeFromSuperlayer];

@@ -91,6 +91,18 @@
 - (id)init;
 
 /**
+ * Returns the closest ancestor that is shared by the receiver and `view`, or
+ * `nil` if there is no such view.
+ */
+- (VELView *)ancestorSharedWithView:(VELView *)view;
+
+/**
+ * Returns whether the receiver is `view` or a descendant thereof. This searches
+ * all subviews of `view` to find the receiver.
+ */
+- (BOOL)isDescendantOfView:(VELView *)view;
+
+/**
  * Can be overridden to perform custom drawing.
  *
  * The default implementation of this method does nothing.

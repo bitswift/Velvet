@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E7BBD40147B157C0010375D /* VELLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E7BBD3E147B157B0010375D /* VELLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1E7BBD41147B157C0010375D /* VELLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7BBD3F147B157B0010375D /* VELLabel.m */; };
 		D0150FDC147902AE00126F09 /* VELContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FDA147902AE00126F09 /* VELContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0150FDD147902AE00126F09 /* VELContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FDB147902AE00126F09 /* VELContext.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
+		1E7BBD3F147B157B0010375D /* VELLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabel.m; sourceTree = "<group>"; };
 		D0150FDA147902AE00126F09 /* VELContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELContext.h; sourceTree = "<group>"; };
 		D0150FDB147902AE00126F09 /* VELContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELContext.m; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
@@ -136,6 +140,8 @@
 			children = (
 				D0150FDA147902AE00126F09 /* VELContext.h */,
 				D0150FDB147902AE00126F09 /* VELContext.m */,
+				1E7BBD3E147B157B0010375D /* VELLabel.h */,
+				1E7BBD3F147B157B0010375D /* VELLabel.m */,
 				D0D8C3A4147859B800FC9015 /* VELResponder.h */,
 				D0D8C3A5147859B800FC9015 /* VELResponder.m */,
 				D0D8C3A814785A1300FC9015 /* VELView.h */,
@@ -313,6 +319,7 @@
 				D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */,
 				D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */,
 				D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */,
+				1E7BBD40147B157C0010375D /* VELLabel.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +436,7 @@
 				D0150FDD147902AE00126F09 /* VELContext.m in Sources */,
 				D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */,
 				D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */,
+				1E7BBD41147B157C0010375D /* VELLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -14,13 +14,15 @@
 @property (strong) IBOutlet NSWindow *window;
 @property (weak) IBOutlet NSVelvetView *hostView;
 
-@property (strong) VELNSView *rootView;
+@property (strong) VELView *rootView;
+@property (strong) VELNSView *scrollViewHost;
 @end
 
 @implementation AppDelegate
 @synthesize window = m_window;
 @synthesize hostView = m_hostView;
 @synthesize rootView = m_rootView;
+@synthesize scrollViewHost = m_scrollViewHost;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
 	NSRect windowRect = [self.window contentRectForFrameRect:self.window.frame];
@@ -51,7 +53,10 @@
 	[scrollView setHasVerticalScroller:YES];
 	[scrollView setDrawsBackground:NO];
 	[scrollView setUsesPredominantAxisScrolling:NO];
-	self.rootView.NSView = scrollView;
+
+	self.scrollViewHost = [[VELNSView alloc] initWithNSView:scrollView];
+	self.scrollViewHost.frame = scrollView.frame;
+	self.rootView.subviews = [NSArray arrayWithObject:self.scrollViewHost];
 }
 
 @end

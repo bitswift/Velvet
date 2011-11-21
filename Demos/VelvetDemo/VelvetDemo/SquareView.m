@@ -7,14 +7,8 @@
 //
 
 #import "SquareView.h"
-#import <QuartzCore/QuartzCore.h>
-
-@interface SquareView ()
-@property (nonatomic, strong) NSButton *button;
-@end
 
 @implementation SquareView
-@synthesize button = m_button;
 
 - (id)init {
 	self = [super init];

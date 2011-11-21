@@ -31,12 +31,6 @@
 	self.rootView = [[SquareView alloc] init];
 	self.rootView.frame = CGRectInset(CGRectMake(0, 0, windowSize.width, windowSize.height), 20, 20);
 	self.hostView.rootView = self.rootView;
-
-	NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 20)];
-	[button setButtonType:NSMomentaryPushInButton];
-	[button setBezelStyle:NSRoundedBezelStyle];
-	[button setTitle:@"Test Button"];
-	//self.rootView.NSView = button;
 	
 	NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"iceberg" withExtension:@"jpg"];
 	NSImage *image = [[NSImage alloc] initWithContentsOfURL:imageURL];
@@ -54,9 +48,29 @@
 	[scrollView setDrawsBackground:NO];
 	[scrollView setUsesPredominantAxisScrolling:NO];
 
-	self.scrollViewHost = [[VELNSView alloc] initWithNSView:scrollView];
+	self.scrollViewHost = [[VELNSView alloc] init];
 	self.scrollViewHost.frame = scrollView.frame;
+
 	self.rootView.subviews = [NSArray arrayWithObject:self.scrollViewHost];
+	self.scrollViewHost.NSView = scrollView;
+
+	SquareView *nestedSquareView = [[SquareView alloc] init];
+	nestedSquareView.frame = CGRectMake(0, 0, 80, 80);
+
+	NSVelvetView *nestedVelvetView = [[NSVelvetView alloc] initWithFrame:NSMakeRect(20, 20, 80, 80)];
+	nestedVelvetView.rootView = nestedSquareView;
+	[imageView addSubview:nestedVelvetView];
+
+	NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 20)];
+	[button setButtonType:NSMomentaryPushInButton];
+	[button setBezelStyle:NSRoundedBezelStyle];
+	[button setTitle:@"Test Button"];
+
+	VELNSView *buttonHost = [[VELNSView alloc] init];
+	buttonHost.frame = button.frame;
+
+	nestedSquareView.subviews = [NSArray arrayWithObject:buttonHost];
+	buttonHost.NSView = button;
 }
 
 @end

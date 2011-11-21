@@ -29,7 +29,7 @@
 	CGSize windowSize = windowRect.size;
 
 	self.rootView = [[SquareView alloc] init];
-	self.rootView.frame = CGRectInset(CGRectMake(0, 0, windowSize.width, windowSize.height), 20, 20);
+	self.rootView.frame = CGRectMake(0, 0, windowSize.width, windowSize.height);
 	self.hostView.rootView = self.rootView;
 	
 	NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"iceberg" withExtension:@"jpg"];
@@ -40,7 +40,7 @@
 	[imageView setBounds:imageRect];
 	[imageView setImage:image];
 
-	NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(0, 0, 300, 300)];
+	NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 20, 300, 300)];
 	[scrollView setBorderType:NSNoBorder];
 	[scrollView setDocumentView:imageView];
 	[scrollView setHasHorizontalScroller:YES];

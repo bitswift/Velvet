@@ -14,8 +14,22 @@
 #import <objc/runtime.h>
 
 @interface NSVelvetView ()
+@property (nonatomic, strong) NSView *velvetHostView;
 @property (nonatomic, readwrite, strong) VELContext *context;
 
+/**
+ * Configures all the necessary properties on the receiver. This is outside of
+ * an initializer because \c NSView has no true designated initializer.
+ */
+- (void)setUp;
+@end
+
+/**
+ * Private layer-hosted view class, containing the whole Velvet view hierarchy.
+ * This class needs to be a subview of an NSVelvetView, because the latter is
+ * layer-backed (not layer-hosted).
+ */
+@interface NSVelvetHostView : NSView
 /**
  * Configures all the necessary properties on the receiver. This is outside of
  * an initializer because \c NSView has no true designated initializer.
@@ -29,6 +43,7 @@
 
 @synthesize context = m_context;
 @synthesize rootView = m_rootView;
+@synthesize velvetHostView = m_velvetHostView;
 
 - (void)setRootView:(VELView *)view; {
 	[CATransaction begin];
@@ -67,8 +82,41 @@
 
 - (void)setUp; {
 	self.context = [[VELContext alloc] init];
+
+	// enable layer-backing for this view (as high as possible in the view
+	// hierarchy, to keep as much as possible in CA)
+	[self setWantsLayer:YES];
+
+	self.velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
+	[self addSubview:self.velvetHostView];
+}
+
+@end
+
+@implementation NSVelvetHostView
+
+#pragma mark Lifecycle
+
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+	if (!self)
+		return nil;
 	
-	// set up layer hosting
+	[self setUp];
+	return self;
+}
+
+- (id)initWithFrame:(NSRect)frame; {
+    self = [super initWithFrame:frame];
+	if (!self)
+		return nil;
+	
+	[self setUp];
+	return self;
+}
+
+- (void)setUp; {
+	// set up layer hosting for Velvet
 	CALayer *layer = [CALayer layer];
 	[self setLayer:layer];
 	[self setWantsLayer:YES];

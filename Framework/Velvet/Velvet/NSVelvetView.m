@@ -88,9 +88,19 @@
 	[self setWantsLayer:YES];
 
 	self.velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
+	self.velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
 	[self addSubview:self.velvetHostView];
 
 	self.rootView = [[VELView alloc] init];
+}
+
+#pragma mark Layout
+
+- (void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize; {
+	[CATransaction begin];
+	[CATransaction setDisableActions:YES];
+	self.rootView.layer.frame = self.velvetHostView.layer.frame = self.bounds;
+	[CATransaction commit];
 }
 
 @end

@@ -39,17 +39,6 @@
 - (void)drawRect:(CGRect)rect {
 	CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
 
-
-	CGContextSetAllowsAntialiasing(context, YES);
-	CGContextSetAllowsFontSmoothing(context, YES);
-	CGContextSetAllowsFontSubpixelPositioning(context, YES);
-	CGContextSetAllowsFontSubpixelQuantization(context, YES);
-
-	CGContextSetShouldAntialias(context, YES);
-  	CGContextSetShouldSmoothFonts(context, YES);
-	CGContextSetShouldSubpixelPositionFonts(context, YES);
-	CGContextSetShouldSubpixelQuantizeFonts(context, YES);
-
 	CGColorRef color = CGColorGetConstantColor(kCGColorWhite);
 	CGContextSetFillColorWithColor(context, color);
 	self.layer.backgroundColor = color;

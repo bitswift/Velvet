@@ -303,6 +303,8 @@
 	CGContextClearRect(context, bounds);
 	CGContextClipToRect(context, bounds);
 
+	CGContextSetShouldSmoothFonts(context, YES);
+
 	NSGraphicsContext *previousGraphicsContext = [NSGraphicsContext currentContext];
 
 	NSGraphicsContext *graphicsContext = [NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];

@@ -75,7 +75,7 @@
 }
 
 - (void)setSubviews:(NSArray *)subviews {
-	dispatch_async_recursive(self.context.dispatchQueue, ^{
+	dispatch_sync_recursive(self.context.dispatchQueue, ^{
 		for (VELView *view in m_subviews) {
 			[view removeFromSuperview];
 		}

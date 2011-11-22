@@ -25,13 +25,6 @@
 @synthesize scrollViewHost = m_scrollViewHost;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
-	NSRect windowRect = [self.window contentRectForFrameRect:self.window.frame];
-	CGSize windowSize = windowRect.size;
-
-	self.rootView = [[SquareView alloc] init];
-	self.rootView.frame = CGRectMake(0, 0, windowSize.width, windowSize.height);
-	self.hostView.rootView = self.rootView;
-	
 	NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"iceberg" withExtension:@"jpg"];
 	NSImage *image = [[NSImage alloc] initWithContentsOfURL:imageURL];
 
@@ -64,12 +57,12 @@
 	VELLabel *label = [[VELLabel alloc] init];
 	label.text = [[NSAttributedString alloc] initWithString:@"** Hello world! **" attributes:attributes];
 	label.frame = CGRectMake(0, 400, 300, 60);
-	self.rootView.subviews = [NSArray arrayWithObject:label];
+	self.hostView.rootView.subviews = [NSArray arrayWithObject:label];
 
 	self.scrollViewHost = [[VELNSView alloc] init];
 	self.scrollViewHost.frame = scrollView.frame;
 
-	self.rootView.subviews = [self.rootView.subviews arrayByAddingObject:self.scrollViewHost];
+	self.hostView.rootView.subviews = [self.hostView.rootView.subviews arrayByAddingObject:self.scrollViewHost];
 	self.scrollViewHost.NSView = scrollView;
 
 	SquareView *nestedSquareView = [[SquareView alloc] init];

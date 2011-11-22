@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1E886A0A147B695000541B62 /* TwUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E886A01147B68BC00541B62 /* TwUI.framework */; };
 		D0927BA51479C1E2008F04C4 /* iceberg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0927BA41479C1E2008F04C4 /* iceberg.jpg */; };
 		D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */; };
 		D0D8C3BC14786AFD00FC9015 /* SquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C3BB14786AFD00FC9015 /* SquareView.m */; };
@@ -26,41 +25,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		1E886A00147B68BC00541B62 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1E8869F9147B68BC00541B62 /* TwUI.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CB5B264C13BE6DA200579B1E;
-			remoteInfo = TwUI;
-		};
-		1E886A02147B68BC00541B62 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1E8869F9147B68BC00541B62 /* TwUI.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CB5E321813BE7098004B7899;
-			remoteInfo = "Dynamic Library";
-		};
-		1E886A04147B68BC00541B62 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1E8869F9147B68BC00541B62 /* TwUI.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 5EE983B713BE7809005F430D;
-			remoteInfo = "Static Library";
-		};
-		1E886A06147B68BC00541B62 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1E8869F9147B68BC00541B62 /* TwUI.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = CB5B266113BE6DA300579B1E;
-			remoteInfo = Tests;
-		};
-		1E886A08147B68C400541B62 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1E8869F9147B68BC00541B62 /* TwUI.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = CB5B264B13BE6DA200579B1E;
-			remoteInfo = TwUI;
-		};
 		D0EFFCC5147852A70095AB35 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D0EFFC97147852A70095AB35 /* Project object */;
@@ -106,7 +70,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		1E8869F9147B68BC00541B62 /* TwUI.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TwUI.xcodeproj; path = ../../Framework/twui/TwUI.xcodeproj; sourceTree = "<group>"; };
 		D0927BA41479C1E2008F04C4 /* iceberg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iceberg.jpg; sourceTree = "<group>"; };
 		D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0D8C3BA14786AFD00FC9015 /* SquareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareView.h; sourceTree = "<group>"; };
@@ -153,7 +116,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E886A0A147B695000541B62 /* TwUI.framework in Frameworks */,
 				D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */,
 				D0EFFD00147853100095AB35 /* Velvet.framework in Frameworks */,
 				D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */,
@@ -172,17 +134,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1E8869FA147B68BC00541B62 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1E886A01147B68BC00541B62 /* TwUI.framework */,
-				1E886A03147B68BC00541B62 /* libtwui.dylib */,
-				1E886A05147B68BC00541B62 /* libtwui.a */,
-				1E886A07147B68BC00541B62 /* TwUITests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		D0D8C3BD14786B0100FC9015 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,7 +177,6 @@
 		D0EFFCA3147852A70095AB35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1E8869F9147B68BC00541B62 /* TwUI.xcodeproj */,
 				D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */,
 				D0EFFCA4147852A70095AB35 /* Cocoa.framework */,
 				D0EFFCC2147852A70095AB35 /* SenTestingKit.framework */,
@@ -374,7 +324,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				1E886A09147B68C400541B62 /* PBXTargetDependency */,
 				D0EFFCFF1478530E0095AB35 /* PBXTargetDependency */,
 			);
 			name = VelvetDemo;
@@ -422,10 +371,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 1E8869FA147B68BC00541B62 /* Products */;
-					ProjectRef = 1E8869F9147B68BC00541B62 /* TwUI.xcodeproj */;
-				},
-				{
 					ProductGroup = D0EFFCF2147853070095AB35 /* Products */;
 					ProjectRef = D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */;
 				},
@@ -439,35 +384,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		1E886A01147B68BC00541B62 /* TwUI.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = TwUI.framework;
-			remoteRef = 1E886A00147B68BC00541B62 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1E886A03147B68BC00541B62 /* libtwui.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = libtwui.dylib;
-			remoteRef = 1E886A02147B68BC00541B62 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1E886A05147B68BC00541B62 /* libtwui.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libtwui.a;
-			remoteRef = 1E886A04147B68BC00541B62 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1E886A07147B68BC00541B62 /* TwUITests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			name = TwUITests.octest;
-			path = Tests.octest;
-			remoteRef = 1E886A06147B68BC00541B62 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		D0EFFCFA147853070095AB35 /* Velvet.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -544,11 +460,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		1E886A09147B68C400541B62 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = TwUI;
-			targetProxy = 1E886A08147B68C400541B62 /* PBXContainerItemProxy */;
-		};
 		D0EFFCC6147852A70095AB35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D0EFFC9F147852A70095AB35 /* VelvetDemo */;
@@ -605,10 +516,7 @@
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"../../Framework/twui/build/$(CONFIGURATION)",
-					"../../Framework/Velvet/build/$(CONFIGURATION)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "../../Framework/Velvet/build/$(CONFIGURATION)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -623,10 +531,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"../../Framework/Velvet/build/$(CONFIGURATION)/Velvet.framework",
-					"../../Framework/twui/build/$(CONFIGURATION)/TwUI.framework",
-				);
+				HEADER_SEARCH_PATHS = "../../Framework/Velvet/build/$(CONFIGURATION)/Velvet.framework";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -642,10 +547,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"../../Framework/twui/build/$(CONFIGURATION)",
-					"../../Framework/Velvet/build/$(CONFIGURATION)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "../../Framework/Velvet/build/$(CONFIGURATION)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -653,10 +555,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"../../Framework/Velvet/build/$(CONFIGURATION)/Velvet.framework",
-					"../../Framework/twui/build/$(CONFIGURATION)/TwUI.framework",
-				);
+				HEADER_SEARCH_PATHS = "../../Framework/Velvet/build/$(CONFIGURATION)/Velvet.framework";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
@@ -666,10 +565,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D0EFFCE7147852D50095AB35 /* Mac-Application.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-bhrqtgefwziuacejsuyhgnnzjdhe/Build/Products/Debug\"",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VelvetDemo/VelvetDemo-Prefix.pch";
 				INFOPLIST_FILE = "VelvetDemo/VelvetDemo-Info.plist";
@@ -682,10 +577,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D0EFFCE7147852D50095AB35 /* Mac-Application.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-bhrqtgefwziuacejsuyhgnnzjdhe/Build/Products/Debug\"",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "VelvetDemo/VelvetDemo-Prefix.pch";
 				INFOPLIST_FILE = "VelvetDemo/VelvetDemo-Info.plist";

@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "SquareView.h"
 #import <Velvet/Velvet.h>
-#import <TwUI/TUIKit.h>
 
 @interface AppDelegate ()
 @property (strong) IBOutlet NSWindow *window;
@@ -26,22 +25,6 @@
 @synthesize scrollViewHost = m_scrollViewHost;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
-	NSRect windowRect = [self.window contentRectForFrameRect:self.window.frame];
-	CGSize windowSize = windowRect.size;
-
-	self.rootView = [[SquareView alloc] init];
-	self.rootView.frame = CGRectMake(0, 0, windowSize.width, windowSize.height);
-	self.hostView.rootView = self.rootView;
-
-	TUIView *tuiView = [[TUIView alloc] initWithFrame:CGRectZero];
-	tuiView.frame = CGRectMake(0, 0, 300, 300);
-	tuiView.backgroundColor = [TUIColor blueColor];
-
-	VELTUIView *velTUIView = [[VELTUIView alloc] initWithTUIView:tuiView];
-	velTUIView.frame = tuiView.frame;
-	velTUIView.layer.backgroundColor = CGColorGetConstantColor(kCGColorBlack);
-	self.rootView.subviews = [NSArray arrayWithObject:velTUIView];
-
 	NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"iceberg" withExtension:@"jpg"];
 	NSImage *image = [[NSImage alloc] initWithContentsOfURL:imageURL];
 
@@ -64,7 +47,7 @@
 	[scrollView setHasVerticalScroller:YES];
 	[scrollView setDrawsBackground:NO];
 	[scrollView setUsesPredominantAxisScrolling:NO];
-
+	
 	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
 		(__bridge_transfer id)CGColorCreateGenericGray(0, 1), (__bridge id)kCTForegroundColorAttributeName,
 		(__bridge_transfer id)CTFontCreateUIFontForLanguage(kCTFontSystemFontType, 16, NULL), (__bridge id)kCTFontAttributeName,
@@ -74,8 +57,7 @@
 	VELLabel *label = [[VELLabel alloc] init];
 	label.text = [[NSAttributedString alloc] initWithString:@"** Hello world! **" attributes:attributes];
 	label.frame = CGRectMake(0, 400, 300, 60);
-
-	self.hostView.rootView.subviews = [self.rootView.subviews arrayByAddingObject:label];
+	self.hostView.rootView.subviews = [NSArray arrayWithObject:label];
 
 	self.scrollViewHost = [[VELNSView alloc] init];
 	self.scrollViewHost.frame = scrollView.frame;

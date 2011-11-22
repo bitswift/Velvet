@@ -140,4 +140,10 @@
 	return [self.layer needsDisplay];
 }
 
+#pragma mark Lifecycle
+
+- (void)mouseUp:(NSEvent *)theEvent {
+    
+}
+
 @end

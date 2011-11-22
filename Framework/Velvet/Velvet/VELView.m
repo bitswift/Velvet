@@ -165,6 +165,28 @@
 	return self;
 }
 
+#pragma mark Responder
+
+- (VELView *)hitTest:(NSPoint)aPoint; {
+    for (VELView *aView in self.subviews) {
+        // TODO: this is a horrible hack since we have not fully implemented convertPoint:fromView: to handle nil for the fromView paramater and return window coordinates!
+        VELView *parentView = [self superview];
+        if (!parentView) parentView = self; // bad bad bad
+        
+        VELView *hitView = [aView hitTest:[self convertPoint:aPoint fromView:parentView]];
+        if (hitView) {
+            return hitView;
+        }
+    }
+    
+    if (NSPointInRect(aPoint, self.frame)) {
+        return self;
+    }
+    else {
+        return nil;
+    }
+}
+
 #pragma mark Rendering
 
 - (void)drawRect:(CGRect)rect; {

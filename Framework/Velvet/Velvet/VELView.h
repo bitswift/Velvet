@@ -15,7 +15,7 @@
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a `NSVelvetView`.
  */
-@interface VELView : VELResponder
+@interface VELView : NSResponder
 /**
  * The frame of this view, in its superview's coordinate system.
  */
@@ -133,6 +133,11 @@
  * using `affineTransformToView:`.
  */
 - (CGRect)convertRect:(CGRect)rect toView:(VELView *)view;
+
+/**
+ * Returns the farthest descent subview of the receiver which is contained in `aPoint`
+ */
+- (VELView *)hitTest:(NSPoint)aPoint;
 
 /**
  * Can be overridden to perform custom drawing.

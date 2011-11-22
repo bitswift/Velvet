@@ -27,4 +27,10 @@
 
 	CGContextFillRect(context, self.bounds);
 }
+
+- (void)mouseUp:(NSEvent *)theEvent {
+    NSLog(@"mouseUp!");
+    NSBeep();
+}
+
 @end

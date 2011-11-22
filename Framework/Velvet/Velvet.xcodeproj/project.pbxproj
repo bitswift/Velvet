@@ -166,7 +166,6 @@
 		D0EFFBF5147851A80095AB35 = {
 			isa = PBXGroup;
 			children = (
-				1E7BBD4B147B17400010375D /* ApplicationServices.framework */,
 				D0EFFC0A147851A80095AB35 /* Velvet */,
 				D0EFFC20147851A80095AB35 /* VelvetTests */,
 				D0EFFC03147851A80095AB35 /* Frameworks */,
@@ -187,6 +186,7 @@
 		D0EFFC03147851A80095AB35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1E7BBD4B147B17400010375D /* ApplicationServices.framework */,
 				D0EFFC04147851A80095AB35 /* Cocoa.framework */,
 				D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */,
 				D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */,

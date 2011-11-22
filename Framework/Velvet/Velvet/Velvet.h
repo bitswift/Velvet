@@ -10,6 +10,5 @@
 #import <Velvet/VELContext.h>
 #import <Velvet/VELLabel.h>
 #import <Velvet/VELNSView.h>
-#import <Velvet/VELTUIView.h>
 #import <Velvet/VELResponder.h>
 #import <Velvet/VELView.h>

@@ -39,12 +39,6 @@
 - (void)drawRect:(CGRect)rect {
 	CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
 
-	CGColorRef color = CGColorGetConstantColor(kCGColorWhite);
-	CGContextSetFillColorWithColor(context, color);
-	self.layer.backgroundColor = color;
-
-	CGContextFillRect(context, rect);
-
 	CGContextSetTextMatrix(context, CGAffineTransformIdentity);
 
 	CGMutablePathRef path = CGPathCreateMutable();

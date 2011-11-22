@@ -18,6 +18,8 @@
 @interface NSVelvetView : NSView
 /**
  * The root view of a `VELView`-based hierarchy to be displayed in the receiver.
+ * The value of this property is plain `VELView` by default, but can be replaced
+ * with another instance of `VELView` or any subclass.
  */
 @property (nonatomic, strong) VELView *rootView;
 

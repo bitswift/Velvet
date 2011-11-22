@@ -89,6 +89,8 @@
 
 	self.velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
 	[self addSubview:self.velvetHostView];
+
+	self.rootView = [[VELView alloc] init];
 }
 
 @end

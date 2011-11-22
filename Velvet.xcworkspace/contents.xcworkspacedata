@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../../vendor/twui/TwUI.xcodeproj">
+      location = "group:Framework/twui/TwUI.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Demos/VelvetDemo/VelvetDemo.xcodeproj">

@@ -12,6 +12,7 @@
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
 		1E8869DE147B4B5500541B62 /* VELTUIView.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E8869DC147B4B5500541B62 /* VELTUIView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E8869DF147B4B5500541B62 /* VELTUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8869DD147B4B5500541B62 /* VELTUIView.m */; };
+		1E886A0C147B69CE00541B62 /* TwUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E886A0B147B69CE00541B62 /* TwUI.framework */; };
 		D0150FDC147902AE00126F09 /* VELContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FDA147902AE00126F09 /* VELContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0150FDD147902AE00126F09 /* VELContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FDB147902AE00126F09 /* VELContext.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -52,6 +53,7 @@
 		1E7BBD4B147B17400010375D /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
 		1E8869DC147B4B5500541B62 /* VELTUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELTUIView.h; sourceTree = "<group>"; };
 		1E8869DD147B4B5500541B62 /* VELTUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELTUIView.m; sourceTree = "<group>"; };
+		1E886A0B147B69CE00541B62 /* TwUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwUI.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Velvet-bhrqtgefwziuacejsuyhgnnzjdhe/Build/Products/Debug/TwUI.framework"; sourceTree = "<group>"; };
 		D0150FDA147902AE00126F09 /* VELContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELContext.h; sourceTree = "<group>"; };
 		D0150FDB147902AE00126F09 /* VELContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELContext.m; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E886A0C147B69CE00541B62 /* TwUI.framework in Frameworks */,
 				1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */,
 				D0D8C3AD14785CEE00FC9015 /* QuartzCore.framework in Frameworks */,
 				D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */,
@@ -172,6 +175,7 @@
 		D0EFFBF5147851A80095AB35 = {
 			isa = PBXGroup;
 			children = (
+				1E886A0B147B69CE00541B62 /* TwUI.framework */,
 				D0EFFC0A147851A80095AB35 /* Velvet */,
 				D0EFFC20147851A80095AB35 /* VelvetTests */,
 				D0EFFC03147851A80095AB35 /* Frameworks */,
@@ -545,6 +549,10 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-bhrqtgefwziuacejsuyhgnnzjdhe/Build/Products/Debug\"",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
@@ -560,6 +568,10 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-bhrqtgefwziuacejsuyhgnnzjdhe/Build/Products/Debug\"",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";

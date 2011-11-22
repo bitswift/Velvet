@@ -31,7 +31,7 @@
 - (void)setNSView:(NSView *)view {
 	[view setWantsLayer:YES];
 
-	dispatch_async_recursive(self.context.dispatchQueue, ^{
+	dispatch_sync_recursive(self.context.dispatchQueue, ^{
 		view.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
 
 		[self.hostView addSubview:view];

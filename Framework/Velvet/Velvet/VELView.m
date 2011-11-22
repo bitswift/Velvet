@@ -115,7 +115,7 @@
 	// context, which could introduce race conditions
 
 	if (!view) {
-		dispatch_async_recursive(self.context.dispatchQueue, ^{
+		dispatch_sync_recursive(self.context.dispatchQueue, ^{
 			m_hostView = nil;
 			self.context = nil;
 		});
@@ -136,7 +136,7 @@
 		// of arguments here
 		dispatch_multibarrier_async(block, viewContext.dispatchQueue, selfContext.dispatchQueue, NULL);
 	} else {
-		dispatch_async_recursive(selfContext.dispatchQueue, block);
+		dispatch_sync_recursive(selfContext.dispatchQueue, block);
 	}
 }
 
@@ -200,7 +200,7 @@
 }
 
 - (void)removeFromSuperview; {
-	dispatch_async_recursive(self.context.dispatchQueue, ^{
+	dispatch_sync_recursive(self.context.dispatchQueue, ^{
 		[self.layer removeFromSuperlayer];
 		self.superview = nil;
 	});

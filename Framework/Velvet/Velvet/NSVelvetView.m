@@ -50,7 +50,7 @@
 	[CATransaction setDisableActions:YES];
 
 	[m_rootView.layer removeFromSuperlayer];
-	[self.layer addSublayer:view.layer];
+	[self.velvetHostView.layer addSublayer:view.layer];
 
 	m_rootView.hostView = nil;
 	view.hostView = self;

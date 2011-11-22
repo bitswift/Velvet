@@ -10,13 +10,10 @@
 		1E7BBD40147B157C0010375D /* VELLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E7BBD3E147B157B0010375D /* VELLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E7BBD41147B157C0010375D /* VELLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7BBD3F147B157B0010375D /* VELLabel.m */; };
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
-		1E8869DE147B4B5500541B62 /* VELTUIView.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E8869DC147B4B5500541B62 /* VELTUIView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1E8869DF147B4B5500541B62 /* VELTUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E8869DD147B4B5500541B62 /* VELTUIView.m */; };
-		1E886A0C147B69CE00541B62 /* TwUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E886A0B147B69CE00541B62 /* TwUI.framework */; };
 		D0150FDC147902AE00126F09 /* VELContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FDA147902AE00126F09 /* VELContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0150FDD147902AE00126F09 /* VELContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FDB147902AE00126F09 /* VELContext.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */; };
+		D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
@@ -51,9 +48,6 @@
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
 		1E7BBD3F147B157B0010375D /* VELLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabel.m; sourceTree = "<group>"; };
 		1E7BBD4B147B17400010375D /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
-		1E8869DC147B4B5500541B62 /* VELTUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELTUIView.h; sourceTree = "<group>"; };
-		1E8869DD147B4B5500541B62 /* VELTUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELTUIView.m; sourceTree = "<group>"; };
-		1E886A0B147B69CE00541B62 /* TwUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwUI.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Velvet-bhrqtgefwziuacejsuyhgnnzjdhe/Build/Products/Debug/TwUI.framework"; sourceTree = "<group>"; };
 		D0150FDA147902AE00126F09 /* VELContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELContext.h; sourceTree = "<group>"; };
 		D0150FDB147902AE00126F09 /* VELContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELContext.m; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
@@ -105,7 +99,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1E886A0C147B69CE00541B62 /* TwUI.framework in Frameworks */,
 				1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */,
 				D0D8C3AD14785CEE00FC9015 /* QuartzCore.framework in Frameworks */,
 				D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */,
@@ -141,8 +134,6 @@
 				D0D8C39E1478582C00FC9015 /* NSVelvetView.m */,
 				D01CF3D21479B18400C88D2B /* VELNSView.h */,
 				D01CF3D31479B18400C88D2B /* VELNSView.m */,
-				1E8869DC147B4B5500541B62 /* VELTUIView.h */,
-				1E8869DD147B4B5500541B62 /* VELTUIView.m */,
 			);
 			name = "AppKit Bridging";
 			sourceTree = "<group>";
@@ -175,7 +166,6 @@
 		D0EFFBF5147851A80095AB35 = {
 			isa = PBXGroup;
 			children = (
-				1E886A0B147B69CE00541B62 /* TwUI.framework */,
 				D0EFFC0A147851A80095AB35 /* Velvet */,
 				D0EFFC20147851A80095AB35 /* VelvetTests */,
 				D0EFFC03147851A80095AB35 /* Frameworks */,
@@ -330,11 +320,10 @@
 				D0D8C3A6147859B800FC9015 /* VELResponder.h in Headers */,
 				D0D8C3AA14785A1300FC9015 /* VELView.h in Headers */,
 				D0150FDC147902AE00126F09 /* VELContext.h in Headers */,
-				D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */,
 				D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */,
+				D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */,
 				D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */,
 				1E7BBD40147B157C0010375D /* VELLabel.h in Headers */,
-				1E8869DE147B4B5500541B62 /* VELTUIView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,7 +441,6 @@
 				D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */,
 				D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */,
 				1E7BBD41147B157C0010375D /* VELLabel.m in Sources */,
-				1E8869DF147B4B5500541B62 /* VELTUIView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

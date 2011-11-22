@@ -8,6 +8,9 @@
 
 #import <Velvet/VELView.h>
 
+/**
+ * A simple text label.
+ */
 @interface VELLabel : VELView
-
+@property (copy) NSAttributedString *text;
 @end

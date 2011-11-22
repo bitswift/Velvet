@@ -40,6 +40,13 @@
 	[imageView setBounds:imageRect];
 	[imageView setImage:image];
 
+    NSTextField *textField = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 150, 91, 22)];
+    [textField.cell setUsesSingleLineMode:YES];
+    [textField.cell setScrollable:YES];
+	[textField setBackgroundColor:[NSColor whiteColor]];
+	[textField setDrawsBackground:YES];
+    [imageView addSubview:textField];
+
 	NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 20, 300, 300)];
 	[scrollView setBorderType:NSNoBorder];
 	[scrollView setDocumentView:imageView];
@@ -47,11 +54,22 @@
 	[scrollView setHasVerticalScroller:YES];
 	[scrollView setDrawsBackground:NO];
 	[scrollView setUsesPredominantAxisScrolling:NO];
+	
+	NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
+		(__bridge_transfer id)CGColorCreateGenericGray(0, 1), (__bridge id)kCTForegroundColorAttributeName,
+		(__bridge_transfer id)CTFontCreateUIFontForLanguage(kCTFontSystemFontType, 16, NULL), (__bridge id)kCTFontAttributeName,
+		nil
+	];
+
+	VELLabel *label = [[VELLabel alloc] init];
+	label.text = [[NSAttributedString alloc] initWithString:@"** Hello world! **" attributes:attributes];
+	label.frame = CGRectMake(0, 400, 300, 60);
+	self.rootView.subviews = [NSArray arrayWithObject:label];
 
 	self.scrollViewHost = [[VELNSView alloc] init];
 	self.scrollViewHost.frame = scrollView.frame;
 
-	self.rootView.subviews = [NSArray arrayWithObject:self.scrollViewHost];
+	self.rootView.subviews = [self.rootView.subviews arrayByAddingObject:self.scrollViewHost];
 	self.scrollViewHost.NSView = scrollView;
 
 	SquareView *nestedSquareView = [[SquareView alloc] init];

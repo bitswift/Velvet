@@ -284,7 +284,7 @@
 		8,
 		width * 4,
 		colorSpace,
-		kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Host
+		kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host
 	);
 
 	CGColorSpaceRelease(colorSpace);

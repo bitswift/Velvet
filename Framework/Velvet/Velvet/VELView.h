@@ -103,14 +103,6 @@
 - (BOOL)isDescendantOfView:(VELView *)view;
 
 /**
- * Returns the affine transformation that would have to be applied to convert
- * from the receiver's coordinate system to that of `view`, which may be any
- * `NSView` or `VELView` in the same window as the receiver. If `view` is `nil`,
- * an affine transform to the window's coordinate system is returned.
- */
-- (CGAffineTransform)affineTransformToView:(id)view;
-
-/**
  * Transforms `point` from the coordinate system of `view` to that of the
  * receiver using `affineTransformToView:`.
  */

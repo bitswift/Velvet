@@ -22,6 +22,13 @@
  * receiver from its superview.
  */
 @property (readonly) CGAffineTransform affineTransformFromSuperview;
+
+/**
+ * Returns the affine transform necessary to convert from the coordinate space
+ * of the receiver to that of `parentView`. `parentView` must be an ancestor of
+ * the receiver.
+ */
+- (CGAffineTransform)affineTransformToAncestorView:(VELView *)parentView;
 @end
 
 @implementation VELView
@@ -217,40 +224,24 @@
 	return CGAffineTransformMakeTranslation(frame.origin.x, frame.origin.y);
 }
 
-- (CGAffineTransform)affineTransformToView:(id)view; {
-	VELView *parentView = [self ancestorSharedWithView:view];
-	NSAssert(parentView != nil, @"views must share an ancestor in order for an affine transform between them to be valid");
+- (CGAffineTransform)affineTransformToAncestorView:(VELView *)parentView; {
+	NSParameterAssert([self isDescendantOfView:parentView]);
 
-	// FIXME: this is a really naive implementation
+	CGAffineTransform affineTransform = CGAffineTransformIdentity;
 
-	// returns the transformation needed to get from 'fromView' to
-	// 'parentView'
-	CGAffineTransform (^transformFromView)(VELView *) = ^(VELView *fromView){
-		CGAffineTransform affineTransform = CGAffineTransformIdentity;
+	VELView *fromView = self;
+	while (fromView != parentView) {
+		// work backwards, getting the transformation from the superview to
+		// the subview
+		CGAffineTransform invertedTransform = fromView.affineTransformFromSuperview;
 
-		while (fromView != parentView) {
-			// work backwards, getting the transformation from the superview to
-			// the subview
-			CGAffineTransform invertedTransform = fromView.affineTransformFromSuperview;
+		// then invert that, to get the other direction
+		affineTransform = CGAffineTransformConcat(affineTransform, CGAffineTransformInvert(invertedTransform));
 
-			// then invert that, to get the other direction
-			affineTransform = CGAffineTransformConcat(affineTransform, CGAffineTransformInvert(invertedTransform));
+		fromView = fromView.superview;
+	}
 
-			fromView = fromView.superview;
-		}
-
-		return affineTransform;
-	};
-
-	// get the transformation from self to 'parentView'
-	CGAffineTransform transformFromSelf = transformFromView(self);
-
-	// get the transformation from 'parentView' to 'view'
-	CGAffineTransform transformFromOther = transformFromView(view);
-	CGAffineTransform transformToOther = CGAffineTransformInvert(transformFromOther);
-
-	// combine the two
-	return CGAffineTransformConcat(transformFromSelf, transformToOther);
+	return affineTransform;
 }
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id)view; {

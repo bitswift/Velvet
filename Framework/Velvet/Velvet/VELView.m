@@ -44,7 +44,6 @@
 
 - (void)setFrame:(CGRect)frame {
 	self.layer.frame = frame;
-	[self.layer setNeedsDisplay];
 }
 
 - (CGRect)bounds {
@@ -53,7 +52,6 @@
 
 - (void)setBounds:(CGRect)bounds {
 	self.layer.bounds = bounds;
-	[self.layer setNeedsDisplay];
 }
 
 - (CGPoint)center {
@@ -161,6 +159,7 @@
 	// change after initialization
 	m_layer = [[[self class] layerClass] layer];
 	m_layer.delegate = self;
+	m_layer.needsDisplayOnBoundsChange = YES;
 
 	return self;
 }

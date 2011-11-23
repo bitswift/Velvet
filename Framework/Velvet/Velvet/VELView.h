@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/VELResponder.h>
+#import <Velvet/VELGeometry.h>
 
 @class VELContext;
 @class NSVelvetView;
@@ -15,7 +16,8 @@
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a `NSVelvetView`.
  */
-@interface VELView : NSResponder
+@interface VELView : NSResponder <VELGeometry>
+
 /**
  * The frame of this view, in its superview's coordinate system.
  */
@@ -103,36 +105,26 @@
 - (BOOL)isDescendantOfView:(VELView *)view;
 
 /**
- * Returns the affine transformation that would have to be applied to convert
- * from the receiver's coordinate system to that of `view`.
- *
- * The receiver and `view` must be rooted at the same `NSVelvetView`.
- */
-- (CGAffineTransform)affineTransformToView:(VELView *)view;
-
-/**
  * Transforms `point` from the coordinate system of `view` to that of the
- * receiver using `affineTransformToView:`.
+ * receiver.
  */
-- (CGPoint)convertPoint:(CGPoint)point fromView:(VELView *)view;
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view;
 
 /**
- * Transforms `point` from the receiver's coordinate system to that of `view`
- * using `affineTransformToView:`.
+ * Transforms `point` from the receiver's coordinate system to that of `view`.
  */
-- (CGPoint)convertPoint:(CGPoint)point toView:(VELView *)view;
+- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view;
 
 /**
  * Transforms `rect` from the coordinate system of `view` to that of the
- * receiver using `affineTransformToView:`.
+ * receiver.
  */
-- (CGRect)convertRect:(CGRect)rect fromView:(VELView *)view;
+- (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view;
 
 /**
- * Transforms `rect` from the receiver's coordinate system to that of `view`
- * using `affineTransformToView:`.
+ * Transforms `rect` from the receiver's coordinate system to that of `view`.
  */
-- (CGRect)convertRect:(CGRect)rect toView:(VELView *)view;
+- (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view;
 
 /**
  * Returns the farthest descendant of the receiver in the view hierarchy (including itself)

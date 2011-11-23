@@ -9,45 +9,91 @@
 #import "VELWindow.h"
 #import "NSVelvetView.h"
 #import "VELView.h"
+#import "NSView+VELGeometryAdditions.h"
 #import "VELNSView.h"
+
+@interface VELWindow ()
+- (void)sendMouseEvent:(NSEvent *)theEvent;
+@end
 
 @implementation VELWindow
 
 - (void)sendEvent:(NSEvent *)theEvent {
-    NSLog(@"theEvent: %@",theEvent);
-    
     NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"ERROR! Window: %@ does not have a NSVelvetView as it's content view!",self.contentView);
-        
-    if (NSLeftMouseDown <= [theEvent type] && [theEvent type] <= NSRightMouseUp) {
-        VELView *vView = ((NSVelvetView *)self.contentView).rootView;
-        // this assumes that contentView's frame is equal to the rootView's frame
-//        CGPoint viewPt = [theEvent locationInWindow];//[self.contentView convertPoint:[theEvent locationInWindow] fromView:nil];
-        id testView = nil;
-        do {
-            if ([vView isKindOfClass:[VELNSView class]]) {
-                NSView *nView = ((VELNSView *)vView).NSView;
-                testView = [nView hitTest:[nView convertPoint:[theEvent locationInWindow] fromView:nil]];
-                if ([[testView superview] isKindOfClass:[NSVelvetView class]]) {
-                    vView = ((NSVelvetView *)[testView superview]).rootView;
-                } else {
-                    [super sendEvent:theEvent];
-                    return;
-                }
-            } else {
-                testView = [vView hitTest:[vView convertPoint:[theEvent locationInWindow] fromView:nil]];
-                if ([testView isKindOfClass:[VELNSView class]]) {
-                    vView = testView;
-                } else {
-                    if ([theEvent type] == NSLeftMouseDown) {
-                        [testView mouseDown:theEvent];
-                    } else if ([theEvent type] == NSLeftMouseUp) {
-                        [testView mouseUp:theEvent];
-                    }
-                    return;
-                }
-            }
-        } while (YES);
+    
+    switch ([theEvent type]) {
+        case NSLeftMouseDown:
+        case NSLeftMouseUp:
+        case NSRightMouseDown:
+        case NSRightMouseUp:
+        case NSMouseMoved:
+        case NSLeftMouseDragged:
+        case NSRightMouseDragged:
+        case NSMouseEntered:
+        case NSMouseExited:
+        case NSOtherMouseDown:
+        case NSOtherMouseUp:
+        case NSOtherMouseDragged:   
+            [self sendMouseEvent:theEvent];
+            break;
+        default:
+            break;
     }
+}
+
+- (void)sendMouseEvent:(NSEvent *)theEvent {
+    VELView *vView = ((NSVelvetView *)self.contentView).rootView;
+    id testView = nil;
+    CGPoint windowPt = NSPointToCGPoint([theEvent locationInWindow]);
+    do {
+        if ([vView isKindOfClass:[VELNSView class]]) {
+            NSView *nView = ((VELNSView *)vView).NSView;
+            testView = [nView hitTest:[[nView superview] convertFromWindowPoint:windowPt]];
+            // we need to determine this class better
+            if ([[testView className] isEqualToString:@"NSVelvetHostView"]) {
+                vView = ((NSVelvetView *)[testView superview]).rootView;
+            } else {
+                [super sendEvent:theEvent];
+                return;
+            }
+        } else {
+            if ([vView superview]) {
+                testView = [vView hitTest:[[vView superview] convertFromWindowPoint:windowPt]];
+            } else {
+                testView = [vView hitTest:[[vView hostView] convertFromWindowPoint:windowPt]];
+            }
+            if ([testView isKindOfClass:[VELNSView class]]) {
+                vView = testView;
+            } else {
+                if ([theEvent type] == NSLeftMouseDown) {
+                    [vView mouseDown:theEvent];
+                } else if ([theEvent type] == NSLeftMouseUp) {
+                    [vView mouseUp:theEvent];
+                } else if ([theEvent type] == NSRightMouseDown) {
+                    [vView rightMouseDown:theEvent];
+                } else if ([theEvent type] == NSRightMouseUp) {
+                    [vView rightMouseUp:theEvent];
+                } else if ([theEvent type] == NSMouseMoved) {
+                    [vView mouseMoved:theEvent];
+                } else if ([theEvent type] == NSLeftMouseDragged) {
+                    [vView mouseDragged:theEvent];
+                } else if ([theEvent type] == NSRightMouseDragged) {
+                    [vView rightMouseDragged:theEvent];
+                } else if ([theEvent type] == NSMouseEntered) {
+                    [vView mouseEntered:theEvent];
+                } else if ([theEvent type] == NSMouseExited) {
+                    [vView mouseExited:theEvent];
+                } else if ([theEvent type] == NSOtherMouseDown) {
+                    [vView otherMouseDown:theEvent];
+                } else if ([theEvent type] == NSOtherMouseUp) {
+                    [vView otherMouseUp:theEvent];
+                } else if ([theEvent type] == NSOtherMouseDragged) {
+                    [vView otherMouseDragged:theEvent];
+                }
+                return;
+            }
+        }
+    } while (YES);
 }
 
 @end

@@ -19,38 +19,38 @@
 @synthesize NSView = m_NSView;
 
 - (NSView *)NSView {
-	__block NSView *view;
+    __block NSView *view;
 
-	dispatch_sync_recursive(self.context.dispatchQueue, ^{
-		view = m_NSView;
-	});
+    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        view = m_NSView;
+    });
 
-	return view;
+    return view;
 }
 
 - (void)setNSView:(NSView *)view {
-	// set up layer-backing on the view, so it will render into its layer as
-	// soon as possible (without tying up the dispatch queue, if possible)
-	[view setWantsLayer:YES];
-	[view setNeedsDisplay:YES];
+    // set up layer-backing on the view, so it will render into its layer as
+    // soon as possible (without tying up the dispatch queue, if possible)
+    [view setWantsLayer:YES];
+    [view setNeedsDisplay:YES];
 
-	dispatch_sync_recursive(self.context.dispatchQueue, ^{
-		view.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
+    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        view.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
 
-		[self.hostView addSubview:view];
-		m_NSView = view;
-	});
+        [self.hostView addSubview:view];
+        m_NSView = view;
+    });
 }
 
 #pragma mark Lifecycle
 
 - (id)initWithNSView:(NSView *)view; {
-	self = [self init];
-	if (!self)
-		return nil;
-	
-	self.NSView = view;
-	return self;
+    self = [self init];
+    if (!self)
+        return nil;
+
+    self.NSView = view;
+    return self;
 }
 
 @end

@@ -104,35 +104,35 @@
 
 /**
  * Returns the affine transformation that would have to be applied to convert
- * from the receiver's coordinate system to that of `view`.
- *
- * The receiver and `view` must be rooted at the same `NSVelvetView`.
+ * from the receiver's coordinate system to that of `view`, which may be any
+ * `NSView` or `VELView` in the same window as the receiver. If `view` is `nil`,
+ * an affine transform to the window's coordinate system is returned.
  */
-- (CGAffineTransform)affineTransformToView:(VELView *)view;
+- (CGAffineTransform)affineTransformToView:(id)view;
 
 /**
  * Transforms `point` from the coordinate system of `view` to that of the
  * receiver using `affineTransformToView:`.
  */
-- (CGPoint)convertPoint:(CGPoint)point fromView:(VELView *)view;
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view;
 
 /**
  * Transforms `point` from the receiver's coordinate system to that of `view`
  * using `affineTransformToView:`.
  */
-- (CGPoint)convertPoint:(CGPoint)point toView:(VELView *)view;
+- (CGPoint)convertPoint:(CGPoint)point toView:(id)view;
 
 /**
  * Transforms `rect` from the coordinate system of `view` to that of the
  * receiver using `affineTransformToView:`.
  */
-- (CGRect)convertRect:(CGRect)rect fromView:(VELView *)view;
+- (CGRect)convertRect:(CGRect)rect fromView:(id)view;
 
 /**
  * Transforms `rect` from the receiver's coordinate system to that of `view`
  * using `affineTransformToView:`.
  */
-- (CGRect)convertRect:(CGRect)rect toView:(VELView *)view;
+- (CGRect)convertRect:(CGRect)rect toView:(id)view;
 
 /**
  * If the view's appearance is not provided by its layer, this method should

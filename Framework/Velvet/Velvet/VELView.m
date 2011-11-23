@@ -217,7 +217,7 @@
 	return CGAffineTransformMakeTranslation(frame.origin.x, frame.origin.y);
 }
 
-- (CGAffineTransform)affineTransformToView:(VELView *)view; {
+- (CGAffineTransform)affineTransformToView:(id)view; {
 	VELView *parentView = [self ancestorSharedWithView:view];
 	NSAssert(parentView != nil, @"views must share an ancestor in order for an affine transform between them to be valid");
 
@@ -253,22 +253,22 @@
 	return CGAffineTransformConcat(transformFromSelf, transformToOther);
 }
 
-- (CGPoint)convertPoint:(CGPoint)point fromView:(VELView *)view; {
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view; {
 	CGAffineTransform transform = CGAffineTransformInvert([self affineTransformToView:view]);
 	return CGPointApplyAffineTransform(point, transform);
 }
 
-- (CGPoint)convertPoint:(CGPoint)point toView:(VELView *)view; {
+- (CGPoint)convertPoint:(CGPoint)point toView:(id)view; {
 	CGAffineTransform transform = [self affineTransformToView:view];
 	return CGPointApplyAffineTransform(point, transform);
 }
 
-- (CGRect)convertRect:(CGRect)rect fromView:(VELView *)view; {
+- (CGRect)convertRect:(CGRect)rect fromView:(id)view; {
 	CGAffineTransform transform = CGAffineTransformInvert([self affineTransformToView:view]);
 	return CGRectApplyAffineTransform(rect, transform);
 }
 
-- (CGRect)convertRect:(CGRect)rect toView:(VELView *)view; {
+- (CGRect)convertRect:(CGRect)rect toView:(id)view; {
 	CGAffineTransform transform = [self affineTransformToView:view];
 	return CGRectApplyAffineTransform(rect, transform);
 }

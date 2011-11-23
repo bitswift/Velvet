@@ -7,10 +7,19 @@
 //
 
 #import <Velvet/VELNSView.h>
+#import <Velvet/VELNSView+Private.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELViewPrivate.h>
+#import <QuartzCore/QuartzCore.h>
+
+
+@interface VELNSView () {
+@private
+    BOOL m_rendersContainedView;
+}
+@end
 
 
 @implementation VELNSView
@@ -68,7 +77,7 @@
 
 #pragma mark CALayer delegate
 
-- (void)displayLayer:(CALayer *)layer {
+- (void)renderContainedViewInLayer:(CALayer *)layer {
     CGSize size = self.bounds.size;
     size_t width = (size_t)ceil(size.width);
 
@@ -91,6 +100,35 @@
     layer.contents = (__bridge_transfer id)image;
 
     CGContextRelease(context);
+}
+
+- (BOOL)rendersContainedView {
+    return m_rendersContainedView;
+}
+
+- (void)withoutAnimation:(void(^)(void))block {
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    block();
+    [CATransaction commit];
+}
+
+- (void)setRendersContainedView:(BOOL)rendersContainedView {
+    if (m_rendersContainedView != rendersContainedView) {
+        m_rendersContainedView = rendersContainedView;
+        if (rendersContainedView) {
+            [self withoutAnimation:^{
+                [self renderContainedViewInLayer:self.layer];
+            }];
+            self.NSView.alphaValue = 0.0;
+        } else {
+            self.NSView = self.NSView;
+            self.NSView.alphaValue = 1.0;
+            [self withoutAnimation:^{
+                self.layer.contents = nil;
+            }];
+        }
+    }
 }
 
 @end

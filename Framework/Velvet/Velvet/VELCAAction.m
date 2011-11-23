@@ -8,7 +8,7 @@
 
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELView.h>
-#import <Velvet/VELNSView.h>
+#import <Velvet/VELNSView+Private.h>
 #import <objc/runtime.h>
 
 
@@ -58,27 +58,17 @@
 
         NSMutableArray *cachedViews = [NSMutableArray array];
         [self enumerateVELNSViewsInLayer:anObject block:^(VELNSView *view) {
+            view.rendersContainedView = YES;
             [cachedViews addObject:view];
         }];
 
-    if (![cachedViews count]) return;
+        if (![cachedViews count]) return;
 
-//      void (^oldCompletionBlock)(void) = [CATransaction completionBlock];
         void (^completionBlock)(void) = ^{
             [cachedViews enumerateObjectsUsingBlock:^(VELNSView *view, NSUInteger idx, BOOL *stop) {
-                [view NSView].alphaValue = 1;
+                view.rendersContainedView = NO;
             }];
-
-//          if (oldCompletionBlock) oldCompletionBlock();
         };
-
-//      [CATransaction setCompletionBlock:completionBlock];
-
-        for (VELNSView * view in cachedViews) {
-            NSView *innerView = [view NSView];
-            [view setNSView:innerView];
-            innerView.alphaValue = 0.0;
-        }
 
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)([CATransaction animationDuration] * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), completionBlock);

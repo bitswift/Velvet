@@ -8,8 +8,9 @@
 
 #import <Velvet/VELView.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
-#import <Velvet/VELContext.h>
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/VELContext.h>
 #import <Velvet/VELViewPrivate.h>
 
 @interface VELView ()
@@ -22,6 +23,13 @@
  * receiver from its superview.
  */
 @property (readonly) CGAffineTransform affineTransformFromSuperview;
+
+/**
+ * Returns the affine transform necessary to convert from the coordinate space
+ * of the receiver to that of `parentView`. `parentView` must be an ancestor of
+ * the receiver.
+ */
+- (CGAffineTransform)affineTransformToAncestorView:(VELView *)parentView;
 @end
 
 @implementation VELView

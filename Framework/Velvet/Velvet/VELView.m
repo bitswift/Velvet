@@ -1,7 +1,7 @@
 //
 //  VELView.m
 //  Velvet
-//  
+//
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
@@ -11,11 +11,14 @@
 #import <Velvet/VELContext.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/VELViewPrivate.h>
+#import <Velvet/VELCAAction.h>
 
 @interface VELView ()
 @property (readwrite, weak) VELView *superview;
 @property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
+
+@property (assign) BOOL recursingActionForLayer;
 
 /**
  * The affine transform needed to move into the coordinate system of the
@@ -32,6 +35,7 @@
 @synthesize subviews = m_subviews;
 @synthesize superview = m_superview;
 @synthesize hostView = m_hostView;
+@synthesize recursingActionForLayer = m_recursingActionForLayer;
 
 // TODO: we should probably flush the GCD queue of an old context before
 // accepting a new one (to make sure there are no race conditions during
@@ -68,7 +72,7 @@
 	dispatch_sync_recursive(self.context.dispatchQueue, ^{
 		subviews = [m_subviews copy];
 	});
-	
+
 	return subviews;
 }
 
@@ -274,7 +278,7 @@
 - (void)displayLayer:(CALayer *)layer {
 	CGSize size = self.bounds.size;
 	size_t width = (size_t)ceil(size.width);
-	
+
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 	CGContextRef context = CGBitmapContextCreate(
 		NULL,
@@ -310,8 +314,25 @@
 	[NSGraphicsContext setCurrentContext:graphicsContext];
 
 	[self drawRect:bounds];
-	
+
 	[NSGraphicsContext setCurrentContext:previousGraphicsContext];
+}
+
+- (id < CAAction >)actionForLayer:(CALayer *)layer forKey:(NSString *)key
+{
+    if (self.recursingActionForLayer) return nil;
+
+    self.recursingActionForLayer = YES;
+//    NSLog(@"ACTIONFORKEY. %@", key);
+    id <CAAction> innerAction = nil;
+    innerAction = [layer actionForKey:key];
+    self.recursingActionForLayer = NO;
+    return [VELCAAction actionWithAction:innerAction];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@ %p> frame = %@, subviews = %@", [self class], self, NSStringFromRect(self.frame), self.subviews];
 }
 
 @end

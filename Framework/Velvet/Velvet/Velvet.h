@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSView+VELGeometryAdditions.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELGeometry.h>
 #import <Velvet/VELLabel.h>

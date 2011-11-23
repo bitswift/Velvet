@@ -247,7 +247,7 @@
 	CGAffineTransform transformToOther = CGAffineTransformInvert(transformFromOther);
 
 	// combine the two
-	return CGAffineTransformConcat(transformFromSelf, transformToOther);
+	return CGAffineTransformInvert(CGAffineTransformConcat(transformFromSelf, transformToOther));
 }
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(VELView *)view; {

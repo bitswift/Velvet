@@ -327,7 +327,11 @@
     id <CAAction> innerAction = nil;
     innerAction = [layer actionForKey:key];
     self.recursingActionForLayer = NO;
-    return [VELCAAction actionWithAction:innerAction];
+	if ([VELCAAction interceptsActionForKey:key]) {
+		return [VELCAAction actionWithAction:innerAction];
+	} else {
+		return innerAction;
+	}
 }
 
 - (NSString *)description

@@ -18,40 +18,40 @@
 @synthesize text = m_text;
 
 - (NSAttributedString *)text {
-	__block NSAttributedString *str = nil;
+    __block NSAttributedString *str = nil;
 
-	dispatch_sync_recursive(self.context.dispatchQueue, ^{
-		str = [m_text copy];
-	});
+    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        str = [m_text copy];
+    });
 
-	return str;
+    return str;
 }
 
 - (void)setText:(NSAttributedString *)str {
-	dispatch_sync_recursive(self.context.dispatchQueue, ^{
-		m_text = [str copy];
-		[self.layer setNeedsDisplay];
-	});
+    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        m_text = [str copy];
+        [self.layer setNeedsDisplay];
+    });
 }
 
 #pragma mark Drawing
 
 - (void)drawRect:(CGRect)rect {
-	CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
+    CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
 
-	CGContextSetTextMatrix(context, CGAffineTransformIdentity);
+    CGContextSetTextMatrix(context, CGAffineTransformIdentity);
 
-	CGMutablePathRef path = CGPathCreateMutable();
+    CGMutablePathRef path = CGPathCreateMutable();
 
-	CGPathAddRect(path, NULL, self.bounds);
+    CGPathAddRect(path, NULL, self.bounds);
 
-	CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.text);
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.text);
 
-	CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
-	CTFrameDraw(frame, context);
+    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
+    CTFrameDraw(frame, context);
 
-	CGPathRelease(path);
-	CFRelease(framesetter);
+    CGPathRelease(path);
+    CFRelease(framesetter);
 }
 
 @end

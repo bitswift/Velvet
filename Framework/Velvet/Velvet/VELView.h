@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/VELResponder.h>
+#import <Velvet/VELGeometry.h>
 
 @class VELContext;
 @class NSVelvetView;
@@ -15,7 +16,7 @@
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a `NSVelvetView`.
  */
-@interface VELView : VELResponder
+@interface VELView : VELResponder <VELGeometry>
 /**
  * The frame of this view, in its superview's coordinate system.
  */
@@ -104,27 +105,25 @@
 
 /**
  * Transforms `point` from the coordinate system of `view` to that of the
- * receiver using `affineTransformToView:`.
+ * receiver.
  */
-- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view;
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view;
 
 /**
- * Transforms `point` from the receiver's coordinate system to that of `view`
- * using `affineTransformToView:`.
+ * Transforms `point` from the receiver's coordinate system to that of `view`.
  */
-- (CGPoint)convertPoint:(CGPoint)point toView:(id)view;
+- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view;
 
 /**
  * Transforms `rect` from the coordinate system of `view` to that of the
- * receiver using `affineTransformToView:`.
+ * receiver.
  */
-- (CGRect)convertRect:(CGRect)rect fromView:(id)view;
+- (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view;
 
 /**
- * Transforms `rect` from the receiver's coordinate system to that of `view`
- * using `affineTransformToView:`.
+ * Transforms `rect` from the receiver's coordinate system to that of `view`.
  */
-- (CGRect)convertRect:(CGRect)rect toView:(id)view;
+- (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view;
 
 /**
  * If the view's appearance is not provided by its layer, this method should

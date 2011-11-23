@@ -8,8 +8,9 @@
 
 #import <Velvet/VELView.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
-#import <Velvet/VELContext.h>
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/VELContext.h>
 #import <Velvet/VELViewPrivate.h>
 
 @interface VELView ()
@@ -244,24 +245,58 @@
 	return affineTransform;
 }
 
-- (CGPoint)convertPoint:(CGPoint)point fromView:(id)view; {
-	CGAffineTransform transform = CGAffineTransformInvert([self affineTransformToView:view]);
-	return CGPointApplyAffineTransform(point, transform);
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view; {
+	return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
 }
 
-- (CGPoint)convertPoint:(CGPoint)point toView:(id)view; {
-	CGAffineTransform transform = [self affineTransformToView:view];
-	return CGPointApplyAffineTransform(point, transform);
+- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view; {
+	return [view convertFromWindowPoint:[self convertToWindowPoint:point]];
 }
 
-- (CGRect)convertRect:(CGRect)rect fromView:(id)view; {
-	CGAffineTransform transform = CGAffineTransformInvert([self affineTransformToView:view]);
-	return CGRectApplyAffineTransform(rect, transform);
+- (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view; {
+	return [self convertFromWindowRect:[view convertToWindowRect:rect]];
 }
 
-- (CGRect)convertRect:(CGRect)rect toView:(id)view; {
-	CGAffineTransform transform = [self affineTransformToView:view];
-	return CGRectApplyAffineTransform(rect, transform);
+- (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view; {
+	return [view convertFromWindowRect:[self convertToWindowRect:rect]];
+}
+
+#pragma mark VELGeometry
+
+- (CGPoint)convertToWindowPoint:(CGPoint)point {
+	NSVelvetView *hostView = self.hostView;
+	VELView *rootView = hostView.rootView;
+	CGAffineTransform transformToRoot = [self affineTransformToAncestorView:rootView];
+
+    CGPoint hostPoint = CGPointApplyAffineTransform(point, transformToRoot);
+    return [hostView convertToWindowPoint:hostPoint];
+}
+
+- (CGPoint)convertFromWindowPoint:(CGPoint)point {
+    NSVelvetView *hostView = self.hostView;
+    VELView *rootView = hostView.rootView;
+    CGAffineTransform transformFromRoot = CGAffineTransformInvert([self affineTransformToAncestorView:rootView]);
+
+    CGPoint hostPoint = [hostView convertFromWindowPoint:point];
+    return CGPointApplyAffineTransform(hostPoint, transformFromRoot);
+}
+
+- (CGRect)convertToWindowRect:(CGRect)rect {
+	NSVelvetView *hostView = self.hostView;
+	VELView *rootView = hostView.rootView;
+	CGAffineTransform transformToRoot = [self affineTransformToAncestorView:rootView];
+
+    CGRect hostRect = CGRectApplyAffineTransform(rect, transformToRoot);
+    return [hostView convertToWindowRect:hostRect];
+}
+
+- (CGRect)convertFromWindowRect:(CGRect)rect {
+    NSVelvetView *hostView = self.hostView;
+    VELView *rootView = hostView.rootView;
+    CGAffineTransform transformFromRoot = CGAffineTransformInvert([self affineTransformToAncestorView:rootView]);
+
+    CGRect hostRect = [hostView convertFromWindowRect:rect];
+    return CGRectApplyAffineTransform(hostRect, transformFromRoot);
 }
 
 #pragma mark CALayer delegate

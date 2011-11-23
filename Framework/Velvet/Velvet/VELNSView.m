@@ -69,34 +69,28 @@
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
-	[self.NSView.layer displayIfNeeded];
-	id contents = self.NSView.layer.contents;
-	if (contents) {
-		layer.contents = contents;
-	} else {
-		CGSize size = self.bounds.size;
-		size_t width = (size_t)ceil(size.width);
+	CGSize size = self.bounds.size;
+	size_t width = (size_t)ceil(size.width);
 
-		CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-		CGContextRef context = CGBitmapContextCreate(
-			NULL,
-			width,
-			(size_t)ceil(size.height),
-			8,
-			width * 4,
-			colorSpace,
-			kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host
-		);
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGContextRef context = CGBitmapContextCreate(
+		NULL,
+		width,
+		(size_t)ceil(size.height),
+		8,
+		width * 4,
+		colorSpace,
+		kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host
+	);
 
-		CGColorSpaceRelease(colorSpace);
+	CGColorSpaceRelease(colorSpace);
 
-		[self.NSView.layer renderInContext:context];
+	[self.NSView.layer renderInContext:context];
 
-		CGImageRef image = CGBitmapContextCreateImage(context);
-		layer.contents = (__bridge_transfer id)image;
+	CGImageRef image = CGBitmapContextCreateImage(context);
+	layer.contents = (__bridge_transfer id)image;
 
-		CGContextRelease(context);
-	}
+	CGContextRelease(context);
 }
 
 @end

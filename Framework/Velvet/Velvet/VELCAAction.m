@@ -23,72 +23,72 @@
 
 - (id)initWithAction:(id <CAAction>)innerAction
 {
-	self = [super init];
-	if (self) {
-		self.innerAction = innerAction;
-	}
-	return self;
+    self = [super init];
+    if (self) {
+        self.innerAction = innerAction;
+    }
+    return self;
 }
 
 + (id)actionWithAction:(id <CAAction>)innerAction
 {
-	return [[self alloc] initWithAction:innerAction];
+    return [[self alloc] initWithAction:innerAction];
 }
 
 - (void)enumerateVELNSViewsInLayer:(CALayer *)layer block:(void(^)(VELNSView *))block
 {
-	if ([layer.delegate isKindOfClass:[VELNSView class]]) {
-		block(layer.delegate);
-	} else {
-		for (CALayer *sublayer in [layer sublayers]) {
-			[self enumerateVELNSViewsInLayer:sublayer block:block];
-		}
-	}
+    if ([layer.delegate isKindOfClass:[VELNSView class]]) {
+        block(layer.delegate);
+    } else {
+        for (CALayer *sublayer in [layer sublayers]) {
+            [self enumerateVELNSViewsInLayer:sublayer block:block];
+        }
+    }
 }
 
 - (void)runActionForKey:(NSString *)key object:(id)anObject arguments:(NSDictionary *)dict
 {
-	[self.innerAction runActionForKey:key object:anObject arguments:dict];
+    [self.innerAction runActionForKey:key object:anObject arguments:dict];
 
-	CAAnimation *animation = [anObject animationForKey:key];
-	if (!animation)
-		return;
+    CAAnimation *animation = [anObject animationForKey:key];
+    if (!animation)
+        return;
 
-	if ([[self class] interceptsActionForKey:key]) {
+    if ([[self class] interceptsActionForKey:key]) {
 
-		NSMutableArray *cachedViews = [NSMutableArray array];
-		[self enumerateVELNSViewsInLayer:anObject block:^(VELNSView *view) {
-			[cachedViews addObject:view];
-		}];
+        NSMutableArray *cachedViews = [NSMutableArray array];
+        [self enumerateVELNSViewsInLayer:anObject block:^(VELNSView *view) {
+            [cachedViews addObject:view];
+        }];
 
-	if (![cachedViews count]) return;
+    if (![cachedViews count]) return;
 
-//		void (^oldCompletionBlock)(void) = [CATransaction completionBlock];
-		void (^completionBlock)(void) = ^{
-			[cachedViews enumerateObjectsUsingBlock:^(VELNSView *view, NSUInteger idx, BOOL *stop) {
-				[view NSView].alphaValue = 1;
-			}];
+//      void (^oldCompletionBlock)(void) = [CATransaction completionBlock];
+        void (^completionBlock)(void) = ^{
+            [cachedViews enumerateObjectsUsingBlock:^(VELNSView *view, NSUInteger idx, BOOL *stop) {
+                [view NSView].alphaValue = 1;
+            }];
 
-//			if (oldCompletionBlock) oldCompletionBlock();
-		};
+//          if (oldCompletionBlock) oldCompletionBlock();
+        };
 
-//		[CATransaction setCompletionBlock:completionBlock];
+//      [CATransaction setCompletionBlock:completionBlock];
 
-		for (VELNSView * view in cachedViews) {
-			NSView *innerView = [view NSView];
-			[view setNSView:innerView];
-			innerView.alphaValue = 0.0;
-		}
+        for (VELNSView * view in cachedViews) {
+            NSView *innerView = [view NSView];
+            [view setNSView:innerView];
+            innerView.alphaValue = 0.0;
+        }
 
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)([CATransaction animationDuration] * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), completionBlock);
-	}
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)([CATransaction animationDuration] * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), completionBlock);
+    }
 }
 
 + (BOOL)interceptsActionForKey:(NSString *)key
 {
-	return [key isEqualToString:@"position"]
-		|| [key isEqualToString:@"bounds"];
+    return [key isEqualToString:@"position"]
+        || [key isEqualToString:@"bounds"];
 }
 
 @end

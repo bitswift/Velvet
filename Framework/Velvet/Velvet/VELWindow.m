@@ -21,13 +21,14 @@
     if (NSLeftMouseDown <= [theEvent type] && [theEvent type] <= NSRightMouseUp) {
         VELView *vView = ((NSVelvetView *)self.contentView).rootView;
         // this assumes that contentView's frame is equal to the rootView's frame
-        CGPoint viewPt = [self.contentView convertPoint:[theEvent locationInWindow] fromView:nil];
+        CGPoint viewPt = [theEvent locationInWindow];//[self.contentView convertPoint:[theEvent locationInWindow] fromView:nil];
         id testView = nil;
         do {
             if ([vView isKindOfClass:[VELNSView class]]) {
                 NSView *nView = ((VELNSView *)vView).NSView;
                 testView = [nView hitTest:viewPt];
                 if ([[testView superview] isKindOfClass:[NSVelvetView class]]) {
+                    // I feel like I need superview coords here, not sure about rootview...
                     viewPt = [vView convertPoint:viewPt toView:((NSVelvetView *)[testView superview]).rootView];
                     vView = ((NSVelvetView *)[testView superview]).rootView;
                 } else {
@@ -37,7 +38,7 @@
             } else {
                 testView = [vView hitTest:viewPt];
                 if ([testView isKindOfClass:[VELNSView class]]) {
-                    viewPt = [vView convertPoint:viewPt toView:testView];
+                    viewPt = [vView convertPoint:viewPt toView:[(VELNSView *)testView superview]];
                     vView = testView;
                 } else {
                     if ([theEvent type] == NSLeftMouseDown) {

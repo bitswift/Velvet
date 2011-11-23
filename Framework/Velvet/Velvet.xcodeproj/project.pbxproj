@@ -15,7 +15,7 @@
 		D0150FDC147902AE00126F09 /* VELContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FDA147902AE00126F09 /* VELContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0150FDD147902AE00126F09 /* VELContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FDB147902AE00126F09 /* VELContext.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */; };
 		D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
@@ -326,8 +326,8 @@
 				D0D8C3A6147859B800FC9015 /* VELResponder.h in Headers */,
 				D0D8C3AA14785A1300FC9015 /* VELView.h in Headers */,
 				D0150FDC147902AE00126F09 /* VELContext.h in Headers */,
-				D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */,
 				D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */,
+				D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */,
 				D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */,
 				1E7BBD40147B157C0010375D /* VELLabel.h in Headers */,
 				0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */,
@@ -545,10 +545,6 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-bhrqtgefwziuacejsuyhgnnzjdhe/Build/Products/Debug\"",
-				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
@@ -564,10 +560,6 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-bhrqtgefwziuacejsuyhgnnzjdhe/Build/Products/Debug\"",
-				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";

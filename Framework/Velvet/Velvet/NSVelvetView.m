@@ -27,7 +27,8 @@
 /**
  * Private layer-hosted view class, containing the whole Velvet view hierarchy.
  * This class needs to be a subview of an NSVelvetView, because the latter is
- * layer-backed (not layer-hosted).
+ * layer-backed (not layer-hosted), in order to support a separate NSView
+ * hierarchy.
  */
 @interface NSVelvetHostView : NSView
 /**
@@ -46,6 +47,7 @@
 @synthesize velvetHostView = m_velvetHostView;
 
 - (void)setRootView:(VELView *)view; {
+	// disable implicit animations, or the layers will fade in and out
 	[CATransaction begin];
 	[CATransaction setDisableActions:YES];
 
@@ -92,11 +94,13 @@
 	[self addSubview:self.velvetHostView];
 
 	self.rootView = [[VELView alloc] init];
+	self.rootView.frame = self.bounds;
 }
 
 #pragma mark Layout
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize; {
+	// always resize the root view to fill this view
 	[CATransaction begin];
 	[CATransaction setDisableActions:YES];
 	self.rootView.layer.frame = self.velvetHostView.layer.frame = self.bounds;
@@ -137,7 +141,8 @@
 #pragma mark Rendering
 
 - (BOOL)needsDisplay {
-	return [self.layer needsDisplay];
+	// mark this view as needing display anytime the layer is
+	return [super needsDisplay] || [self.layer needsDisplay];
 }
 
 #pragma mark Lifecycle

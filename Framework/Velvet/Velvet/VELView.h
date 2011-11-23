@@ -135,12 +135,16 @@
 - (CGRect)convertRect:(CGRect)rect toView:(VELView *)view;
 
 /**
- * Returns the farthest descent subview of the receiver which is contained in `aPoint`
+ * Returns the farthest descendant of the receiver in the view hierarchy (including itself)
+ * that contains a specified point, or nil if that point lies completely outside the receiver.
  */
 - (VELView *)hitTest:(CGPoint)aPoint;
 
 /**
- * Can be overridden to perform custom drawing.
+ * If the view's appearance is not provided by its layer, this method should
+ * draw the view into the current graphics context. `rect` is the rectangle of
+ * the receiver which needs redrawing, specified in the receiver's coordinate
+ * system.
  *
  * The default implementation of this method does nothing.
  */

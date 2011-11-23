@@ -132,7 +132,7 @@
 	if (selfContext != viewContext) {
 		// if 'selfContext' is NULL, it will (intentionally) short-circuit the list
 		// of arguments here
-		dispatch_multibarrier_async(block, viewContext.dispatchQueue, selfContext.dispatchQueue, NULL);
+		dispatch_multibarrier_sync(block, viewContext.dispatchQueue, selfContext.dispatchQueue, NULL);
 	} else {
 		dispatch_sync_recursive(selfContext.dispatchQueue, block);
 	}

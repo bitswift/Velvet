@@ -135,7 +135,10 @@
 - (CGRect)convertRect:(CGRect)rect toView:(VELView *)view;
 
 /**
- * Can be overridden to perform custom drawing.
+ * If the view's appearance is not provided by its layer, this method should
+ * draw the view into the current graphics context. `rect` is the rectangle of
+ * the receiver which needs redrawing, specified in the receiver's coordinate
+ * system.
  *
  * The default implementation of this method does nothing.
  */

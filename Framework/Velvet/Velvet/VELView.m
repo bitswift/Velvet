@@ -38,6 +38,9 @@
 // a transition)
 @synthesize context = m_context;
 
+// For geometry properties, it makes sense to reuse the layer's geometry,
+// keeping them coupled as much as possible to allow easy modification of either
+// (while affecting both).
 - (CGRect)frame {
 	return self.layer.frame;
 }
@@ -80,6 +83,7 @@
 
 		m_subviews = [subviews copy];
 		for (VELView *view in m_subviews) {
+			// match the context of this view with 'view'
 			if (!view.context) {
 				view.context = self.context;
 			} else if (!self.context) {
@@ -280,9 +284,12 @@
 		NULL,
 		width,
 		(size_t)ceil(size.height),
-		8,
-		width * 4,
+		8, // bits per component
+		width * 4, // bytes per row
 		colorSpace,
+
+		// ARGB in host byte order (which is, incidentally, the only
+		// CGBitmapInfo that correctly supports sub-pixel antialiasing text)
 		kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host
 	);
 
@@ -302,10 +309,13 @@
 	CGContextClearRect(context, bounds);
 	CGContextClipToRect(context, bounds);
 
+	// enable sub-pixel antialiasing (if drawing onto anything opaque)
 	CGContextSetShouldSmoothFonts(context, YES);
 
 	NSGraphicsContext *previousGraphicsContext = [NSGraphicsContext currentContext];
 
+	// push a new NSGraphicsContext representing this CGContext, which drawRect:
+	// will render into
 	NSGraphicsContext *graphicsContext = [NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
 	[NSGraphicsContext setCurrentContext:graphicsContext];
 

@@ -171,17 +171,14 @@
 #pragma mark Responder
 
 - (VELView *)hitTest:(CGPoint)aPoint; {
-    for (VELView *aView in self.subviews) {
-        // TODO: this is a horrible hack since we have not fully implemented convertPoint:fromView: to handle nil for the fromView paramater and return window coordinates!
-        VELView *parentView = [self superview];
-        if (!parentView) parentView = self; // bad bad bad
-        
-        VELView *hitView = [aView hitTest:[self convertPoint:aPoint fromView:parentView]];
-        if (hitView) {
-            return hitView;
-        }
-    }
     if (CGRectContainsPoint(self.frame, aPoint)) {
+        for (VELView *aView in self.subviews) {
+            VELView *parentView = [self superview];            
+            VELView *hitView = [aView hitTest:[self convertPoint:aPoint fromView:parentView]];
+            if (hitView) {
+                return hitView;
+            }
+        }
         return self;
     }
     else {

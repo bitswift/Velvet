@@ -29,7 +29,10 @@
 }
 
 - (void)setNSView:(NSView *)view {
+	// set up layer-backing on the view, so it will render into its layer as
+	// soon as possible (without tying up the dispatch queue, if possible)
 	[view setWantsLayer:YES];
+	[view setNeedsDisplay:YES];
 
 	dispatch_sync_recursive(self.context.dispatchQueue, ^{
 		view.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];

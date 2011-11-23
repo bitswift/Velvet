@@ -110,14 +110,20 @@
 - (void)animateMe
 {
 	[CATransaction begin];
-	[CATransaction setAnimationDuration:3.0];
+	[CATransaction setAnimationDuration:2.0];
 	[CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 
-	CGRect frm = self.buttonHost.frame;
+	CGRect frm = self.scrollViewHost.frame;
 	frm.origin.x += 150;
 	frm.origin.y += 20;
 //	frm.size.height /= 2.0;
-	self.buttonHost.frame = frm;
+	self.scrollViewHost.frame = frm;
+
+	CGRect frm2 = self.buttonHost.frame;
+	frm2.origin.x += 150;
+	frm2.origin.y += 20;
+//	frm.size.height /= 2.0;
+	self.buttonHost.frame = frm2;
 
 	[CATransaction commit];
 }

@@ -76,12 +76,18 @@
 	[button setButtonType:NSMomentaryPushInButton];
 	[button setBezelStyle:NSRoundedBezelStyle];
 	[button setTitle:@"Test Button"];
+    [button setTarget:self];
+    [button setAction:@selector(testButtonPushed:)];
 
 	VELNSView *buttonHost = [[VELNSView alloc] init];
 	buttonHost.frame = button.frame;
 
 	nestedSquareView.subviews = [NSArray arrayWithObject:buttonHost];
 	buttonHost.NSView = button;
+}
+
+- (void)testButtonPushed:(id)sender {
+    NSLog(@"testButtonPushed");
 }
 
 @end

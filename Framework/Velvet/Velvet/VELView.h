@@ -137,7 +137,7 @@
 /**
  * Returns the farthest descent subview of the receiver which is contained in `aPoint`
  */
-- (VELView *)hitTest:(NSPoint)aPoint;
+- (VELView *)hitTest:(CGPoint)aPoint;
 
 /**
  * Can be overridden to perform custom drawing.

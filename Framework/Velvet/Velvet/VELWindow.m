@@ -17,50 +17,38 @@
     NSLog(@"theEvent: %@",theEvent);
     
     NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"ERROR! Window: %@ does not have a NSVelvetView as it's content view!",self.contentView);
-    
-    NSVelvetView *velvetView = (NSVelvetView *)self.contentView;
-    
-    if ([theEvent type] <= NSLeftMouseDown && [theEvent type] <= NSRightMouseUp) {
-        VELView *vView = velvetView.rootView;
+        
+    if (NSLeftMouseDown <= [theEvent type] && [theEvent type] <= NSRightMouseUp) {
+        VELView *vView = ((NSVelvetView *)self.contentView).rootView;
+        // this assumes that contentView's frame is equal to the rootView's frame
+        CGPoint viewPt = [self.contentView convertPoint:[theEvent locationInWindow] fromView:nil];
         id testView = nil;
-        BOOL done = NO;
         do {
             if ([vView isKindOfClass:[VELNSView class]]) {
                 NSView *nView = ((VELNSView *)vView).NSView;
-                testView = [nView hitTest:[self.contentView convertPoint:[theEvent locationInWindow] fromView:nil]];
+                testView = [nView hitTest:viewPt];
                 if ([[testView superview] isKindOfClass:[NSVelvetView class]]) {
+                    viewPt = [vView convertPoint:viewPt toView:((NSVelvetView *)[testView superview]).rootView];
                     vView = ((NSVelvetView *)[testView superview]).rootView;
+                } else {
+                    [super sendEvent:theEvent];
+                    return;
                 }
-                else {
-                    done = YES;
-                }
-            }
-            else {
-                // this assumes that contentView's frame is equal to the rootView's frame
-                NSPoint p = [self.contentView convertPoint:[theEvent locationInWindow] fromView:nil];
-                p = [vView convertPoint:p fromView:velvetView.rootView];
-                testView = [vView hitTest:p];
+            } else {
+                testView = [vView hitTest:viewPt];
                 if ([testView isKindOfClass:[VELNSView class]]) {
+                    viewPt = [vView convertPoint:viewPt toView:testView];
                     vView = testView;
+                } else {
+                    if ([theEvent type] == NSLeftMouseDown) {
+                        [testView mouseDown:theEvent];
+                    } else if ([theEvent type] == NSLeftMouseUp) {
+                        [testView mouseUp:theEvent];
+                    }
+                    return;
                 }
-                else {
-                    done = YES;
-                }
             }
-        } while (!done);
-        
-        if ([testView isKindOfClass:[NSView class]]) {
-            [super sendEvent:theEvent];
-        }
-        else {        
-            if ([theEvent type] == NSLeftMouseDown) {
-                [testView mouseDown:theEvent];
-            }
-            else
-                if ([theEvent type] == NSLeftMouseUp) {
-                [testView mouseUp:theEvent];
-            }
-        }
+        } while (YES);
     }
 }
 

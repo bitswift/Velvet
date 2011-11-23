@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DCD37C6147DB86200A9D6E4 /* NSVelvetHostView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DCD37C4147DB86200A9D6E4 /* NSVelvetHostView.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		0DCD37C7147DB86200A9D6E4 /* NSVelvetHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */; };
 		0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DEDDD3D147B5D5C0087037C /* VELWindow.h */; };
 		0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DEDDD3E147B5D5C0087037C /* VELWindow.m */; };
 		1E7BBD40147B157C0010375D /* VELLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E7BBD3E147B157B0010375D /* VELLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -48,6 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0DCD37C4147DB86200A9D6E4 /* NSVelvetHostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetHostView.h; sourceTree = "<group>"; };
+		0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetHostView.m; sourceTree = "<group>"; };
 		0DEDDD3D147B5D5C0087037C /* VELWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELWindow.h; sourceTree = "<group>"; };
 		0DEDDD3E147B5D5C0087037C /* VELWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELWindow.m; sourceTree = "<group>"; };
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
@@ -142,6 +146,8 @@
 				D0D8C39E1478582C00FC9015 /* NSVelvetView.m */,
 				D01CF3D21479B18400C88D2B /* VELNSView.h */,
 				D01CF3D31479B18400C88D2B /* VELNSView.m */,
+				0DCD37C4147DB86200A9D6E4 /* NSVelvetHostView.h */,
+				0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */,
 			);
 			name = "AppKit Bridging";
 			sourceTree = "<group>";
@@ -343,6 +349,7 @@
 				0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */,
 				D0CACD35147C86C0008C42B2 /* VELGeometry.h in Headers */,
 				D0911B1D147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h in Headers */,
+				0DCD37C6147DB86200A9D6E4 /* NSVelvetHostView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +468,7 @@
 				1E7BBD41147B157C0010375D /* VELLabel.m in Sources */,
 				0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */,
 				D0911B1E147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m in Sources */,
+				0DCD37C7147DB86200A9D6E4 /* NSVelvetHostView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

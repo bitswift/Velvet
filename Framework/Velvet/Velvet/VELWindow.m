@@ -6,11 +6,14 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
-#import "VELWindow.h"
-#import "NSVelvetView.h"
-#import "VELView.h"
-#import "NSView+VELGeometryAdditions.h"
-#import "VELNSView.h"
+#import <Velvet/VELWindow.h>
+#import <Velvet/NSVelvetView.h>
+#import <Velvet/NSVelvetHostView.h>
+#import <Velvet/VELView.h>
+#import <Velvet/VELNSView.h>
+#import <Velvet/NSView+VELGeometryAdditions.h>
+
+@class NSVelvetHostView;
 
 @interface VELWindow ()
 - (void)sendMouseEvent:(NSEvent *)theEvent;
@@ -49,8 +52,7 @@
         if ([vView isKindOfClass:[VELNSView class]]) {
             NSView *nView = ((VELNSView *)vView).NSView;
             testView = [nView hitTest:[[nView superview] convertFromWindowPoint:windowPt]];
-            // we need to determine this class better
-            if ([[testView className] isEqualToString:@"NSVelvetHostView"]) {
+            if ([testView isKindOfClass:[NSVelvetHostView class]]) {
                 vView = ((NSVelvetView *)[testView superview]).rootView;
             } else {
                 [super sendEvent:theEvent];

@@ -10,6 +10,7 @@
 #import <Velvet/VELContext.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELViewPrivate.h>
+#import <Velvet/NSVelvetHostView.h>
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 
@@ -17,20 +18,6 @@
 @property (nonatomic, strong) NSView *velvetHostView;
 @property (nonatomic, readwrite, strong) VELContext *context;
 
-/**
- * Configures all the necessary properties on the receiver. This is outside of
- * an initializer because \c NSView has no true designated initializer.
- */
-- (void)setUp;
-@end
-
-/**
- * Private layer-hosted view class, containing the whole Velvet view hierarchy.
- * This class needs to be a subview of an NSVelvetView, because the latter is
- * layer-backed (not layer-hosted), in order to support a separate NSView
- * hierarchy.
- */
-@interface NSVelvetHostView : NSView
 /**
  * Configures all the necessary properties on the receiver. This is outside of
  * an initializer because \c NSView has no true designated initializer.
@@ -105,50 +92,6 @@
 	[CATransaction setDisableActions:YES];
 	self.rootView.layer.frame = self.velvetHostView.layer.frame = self.bounds;
 	[CATransaction commit];
-}
-
-@end
-
-@implementation NSVelvetHostView
-
-#pragma mark Lifecycle
-
-- (id)initWithCoder:(NSCoder *)coder {
-    self = [super initWithCoder:coder];
-	if (!self)
-		return nil;
-	
-	[self setUp];
-	return self;
-}
-
-- (id)initWithFrame:(NSRect)frame; {
-    self = [super initWithFrame:frame];
-	if (!self)
-		return nil;
-	
-	[self setUp];
-	return self;
-}
-
-- (void)setUp; {
-	// set up layer hosting for Velvet
-	CALayer *layer = [CALayer layer];
-	[self setLayer:layer];
-	[self setWantsLayer:YES];
-}
-
-#pragma mark Rendering
-
-- (BOOL)needsDisplay {
-	// mark this view as needing display anytime the layer is
-	return [super needsDisplay] || [self.layer needsDisplay];
-}
-
-#pragma mark Lifecycle
-
-- (void)mouseUp:(NSEvent *)theEvent {
-    
 }
 
 @end

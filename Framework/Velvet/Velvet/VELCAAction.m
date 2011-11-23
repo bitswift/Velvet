@@ -54,7 +54,7 @@
 	if (!animation)
 		return;
 
-	if ([key isEqualToString:@"position"] || [key isEqualToString:@"bounds"]) {
+	if ([[self class] interceptsActionForKey:key]) {
 
 		NSMutableArray *cachedViews = [NSMutableArray array];
 		[self enumerateVELNSViewsInLayer:anObject block:^(VELNSView *view) {
@@ -83,6 +83,12 @@
 		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)([CATransaction animationDuration] * NSEC_PER_SEC));
 		dispatch_after(popTime, dispatch_get_main_queue(), completionBlock);
 	}
+}
+
++ (BOOL)interceptsActionForKey:(NSString *)key
+{
+	return [key isEqualToString:@"position"]
+		|| [key isEqualToString:@"bounds"];
 }
 
 @end

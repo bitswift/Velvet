@@ -19,4 +19,6 @@
 
 @property (strong) id delegate;
 
++ (BOOL)interceptsActionForKey:(NSString *)key;
+
 @end

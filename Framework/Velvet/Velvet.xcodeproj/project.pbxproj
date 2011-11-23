@@ -19,6 +19,9 @@
 		D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
+		D0911B1D147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0911B1E147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */; };
+		D0CACD35147C86C0008C42B2 /* VELGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C39B1478569600FC9015 /* Velvet.h in Headers */ = {isa = PBXBuildFile; fileRef = D0EFFC11147851A80095AB35 /* Velvet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C39F1478582C00FC9015 /* NSVelvetView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D8C39D1478582C00FC9015 /* NSVelvetView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C3A01478582C00FC9015 /* NSVelvetView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C39E1478582C00FC9015 /* NSVelvetView.m */; };
@@ -59,6 +62,9 @@
 		D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "dispatch+SynchronizationAdditions.m"; sourceTree = "<group>"; };
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
+		D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+VELGeometryAdditions.h"; sourceTree = "<group>"; };
+		D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELGeometryAdditions.m"; sourceTree = "<group>"; };
+		D0CACD34147C86C0008C42B2 /* VELGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELGeometry.h; sourceTree = "<group>"; };
 		D0D8C39D1478582C00FC9015 /* NSVelvetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetView.h; sourceTree = "<group>"; };
 		D0D8C39E1478582C00FC9015 /* NSVelvetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetView.m; sourceTree = "<group>"; };
 		D0D8C3A4147859B800FC9015 /* VELResponder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELResponder.h; sourceTree = "<group>"; };
@@ -127,6 +133,8 @@
 			children = (
 				D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */,
 				D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */,
+				D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */,
+				D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -158,6 +166,14 @@
 				D0D8C3A914785A1300FC9015 /* VELView.m */,
 			);
 			name = Native;
+			sourceTree = "<group>";
+		};
+		D0D7305A147C860900090122 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				D0CACD34147C86C0008C42B2 /* VELGeometry.h */,
+			);
+			name = Protocols;
 			sourceTree = "<group>";
 		};
 		D0D8C39C147856A400FC9015 /* Classes */ = {
@@ -217,6 +233,7 @@
 				D0EFFC11147851A80095AB35 /* Velvet.h */,
 				D0D8C39C147856A400FC9015 /* Classes */,
 				D0150FF414790BF500126F09 /* Extensions */,
+				D0D7305A147C860900090122 /* Protocols */,
 				D0EFFC0B147851A80095AB35 /* Supporting Files */,
 			);
 			path = Velvet;
@@ -331,6 +348,8 @@
 				D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */,
 				1E7BBD40147B157C0010375D /* VELLabel.h in Headers */,
 				1A5AB44E147B152600A9C32B /* VELCAAction.h in Headers */,
+				D0CACD35147C86C0008C42B2 /* VELGeometry.h in Headers */,
+				D0911B1D147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,6 +468,7 @@
 				D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */,
 				1E7BBD41147B157C0010375D /* VELLabel.m in Sources */,
 				1A5AB44F147B152600A9C32B /* VELCAAction.m in Sources */,
+				D0911B1E147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,15 +1,16 @@
 //
 //  VELView.m
 //  Velvet
-//
+//  
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
 #import <Velvet/VELView.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
-#import <Velvet/VELContext.h>
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/VELContext.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELCAAction.h>
 
@@ -25,6 +26,13 @@
  * receiver from its superview.
  */
 @property (readonly) CGAffineTransform affineTransformFromSuperview;
+
+/**
+ * Returns the affine transform necessary to convert from the coordinate space
+ * of the receiver to that of `parentView`. `parentView` must be an ancestor of
+ * the receiver.
+ */
+- (CGAffineTransform)affineTransformToAncestorView:(VELView *)parentView;
 @end
 
 @implementation VELView
@@ -221,60 +229,78 @@
 	return CGAffineTransformMakeTranslation(frame.origin.x, frame.origin.y);
 }
 
-- (CGAffineTransform)affineTransformToView:(VELView *)view; {
-	VELView *parentView = [self ancestorSharedWithView:view];
-	NSAssert(parentView != nil, @"views must share an ancestor in order for an affine transform between them to be valid");
+- (CGAffineTransform)affineTransformToAncestorView:(VELView *)parentView; {
+	NSParameterAssert([self isDescendantOfView:parentView]);
 
-	// FIXME: this is a really naive implementation
+	CGAffineTransform affineTransform = CGAffineTransformIdentity;
 
-	// returns the transformation needed to get from 'fromView' to
-	// 'parentView'
-	CGAffineTransform (^transformFromView)(VELView *) = ^(VELView *fromView){
-		CGAffineTransform affineTransform = CGAffineTransformIdentity;
+	VELView *fromView = self;
+	while (fromView != parentView) {
+		// work backwards, getting the transformation from the superview to
+		// the subview
+		CGAffineTransform invertedTransform = fromView.affineTransformFromSuperview;
 
-		while (fromView != parentView) {
-			// work backwards, getting the transformation from the superview to
-			// the subview
-			CGAffineTransform invertedTransform = fromView.affineTransformFromSuperview;
+		// then invert that, to get the other direction
+		affineTransform = CGAffineTransformConcat(affineTransform, CGAffineTransformInvert(invertedTransform));
 
-			// then invert that, to get the other direction
-			affineTransform = CGAffineTransformConcat(affineTransform, CGAffineTransformInvert(invertedTransform));
+		fromView = fromView.superview;
+	}
 
-			fromView = fromView.superview;
-		}
-
-		return affineTransform;
-	};
-
-	// get the transformation from self to 'parentView'
-	CGAffineTransform transformFromSelf = transformFromView(self);
-
-	// get the transformation from 'parentView' to 'view'
-	CGAffineTransform transformFromOther = transformFromView(view);
-	CGAffineTransform transformToOther = CGAffineTransformInvert(transformFromOther);
-
-	// combine the two
-	return CGAffineTransformInvert(CGAffineTransformConcat(transformFromSelf, transformToOther));
+	return affineTransform;
 }
 
-- (CGPoint)convertPoint:(CGPoint)point fromView:(VELView *)view; {
-	CGAffineTransform transform = CGAffineTransformInvert([self affineTransformToView:view]);
-	return CGPointApplyAffineTransform(point, transform);
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view; {
+	return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
 }
 
-- (CGPoint)convertPoint:(CGPoint)point toView:(VELView *)view; {
-	CGAffineTransform transform = [self affineTransformToView:view];
-	return CGPointApplyAffineTransform(point, transform);
+- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view; {
+	return [view convertFromWindowPoint:[self convertToWindowPoint:point]];
 }
 
-- (CGRect)convertRect:(CGRect)rect fromView:(VELView *)view; {
-	CGAffineTransform transform = CGAffineTransformInvert([self affineTransformToView:view]);
-	return CGRectApplyAffineTransform(rect, transform);
+- (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view; {
+	return [self convertFromWindowRect:[view convertToWindowRect:rect]];
 }
 
-- (CGRect)convertRect:(CGRect)rect toView:(VELView *)view; {
-	CGAffineTransform transform = [self affineTransformToView:view];
-	return CGRectApplyAffineTransform(rect, transform);
+- (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view; {
+	return [view convertFromWindowRect:[self convertToWindowRect:rect]];
+}
+
+#pragma mark VELGeometry
+
+- (CGPoint)convertToWindowPoint:(CGPoint)point {
+	NSVelvetView *hostView = self.hostView;
+	VELView *rootView = hostView.rootView;
+	CGAffineTransform transformToRoot = [self affineTransformToAncestorView:rootView];
+
+    CGPoint hostPoint = CGPointApplyAffineTransform(point, transformToRoot);
+    return [hostView convertToWindowPoint:hostPoint];
+}
+
+- (CGPoint)convertFromWindowPoint:(CGPoint)point {
+    NSVelvetView *hostView = self.hostView;
+    VELView *rootView = hostView.rootView;
+    CGAffineTransform transformFromRoot = CGAffineTransformInvert([self affineTransformToAncestorView:rootView]);
+
+    CGPoint hostPoint = [hostView convertFromWindowPoint:point];
+    return CGPointApplyAffineTransform(hostPoint, transformFromRoot);
+}
+
+- (CGRect)convertToWindowRect:(CGRect)rect {
+	NSVelvetView *hostView = self.hostView;
+	VELView *rootView = hostView.rootView;
+	CGAffineTransform transformToRoot = [self affineTransformToAncestorView:rootView];
+
+    CGRect hostRect = CGRectApplyAffineTransform(rect, transformToRoot);
+    return [hostView convertToWindowRect:hostRect];
+}
+
+- (CGRect)convertFromWindowRect:(CGRect)rect {
+    NSVelvetView *hostView = self.hostView;
+    VELView *rootView = hostView.rootView;
+    CGAffineTransform transformFromRoot = CGAffineTransformInvert([self affineTransformToAncestorView:rootView]);
+
+    CGRect hostRect = [hostView convertFromWindowRect:rect];
+    return CGRectApplyAffineTransform(hostRect, transformFromRoot);
 }
 
 #pragma mark CALayer delegate

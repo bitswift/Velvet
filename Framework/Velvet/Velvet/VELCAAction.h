@@ -15,10 +15,22 @@
  */
 @interface VELCAAction : NSObject <CAAction>
 
+/**
+ * Initializes an action which proxies for the given action, and handles animation
+ * of descendent VELNSViews to the VELView whose layer it acts on.
+ *
+ * This is the designated initializer.
+ */
+- (id)initWithAction:(id <CAAction>)innerAction;
+
+/**
+ * Returns a caller-owned action, initialized with `initWithAction:`.
+ */
 + (id)actionWithAction:(id <CAAction>)innerAction;
 
-@property (strong) id delegate;
-
+/**
+ * Returns YES if objects of this class add features to actions for the given key.
+ */
 + (BOOL)interceptsActionForKey:(NSString *)key;
 
 @end

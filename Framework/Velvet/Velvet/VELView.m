@@ -19,7 +19,12 @@
 @property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
 
-@property (assign) BOOL recursingActionForLayer;
+/**
+ * True if we're inside the `actionForLayer:forKey:` method. This is used so we
+ * can get the original action for the key, and wrap it with extra functionality,
+ * without entering an infinite loop.
+ */
+@property (assign, getter = isRecursingActionForLayer) BOOL recursingActionForLayer;
 
 /**
  * The affine transform needed to move into the coordinate system of the
@@ -356,13 +361,16 @@
 
 - (id < CAAction >)actionForLayer:(CALayer *)layer forKey:(NSString *)key
 {
+    // If we're being called inside the [layer actionForKey:key] call below,
+    // retun nil, so that method will return the default action.
     if (self.recursingActionForLayer) return nil;
 
-    self.recursingActionForLayer = YES;
 //    NSLog(@"ACTIONFORKEY. %@", key);
-    id <CAAction> innerAction = nil;
-    innerAction = [layer actionForKey:key];
+
+    self.recursingActionForLayer = YES;
+    id <CAAction> innerAction = [layer actionForKey:key];
     self.recursingActionForLayer = NO;
+
     if ([VELCAAction interceptsActionForKey:key]) {
         return [VELCAAction actionWithAction:innerAction];
     } else {

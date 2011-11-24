@@ -1,5 +1,5 @@
 //
-//  VELNSView+Private.h
+//  VELNSViewPrivate.h
 //  Velvet
 //
 //  Created by James Lawton on 23.11.11.

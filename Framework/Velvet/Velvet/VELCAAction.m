@@ -8,7 +8,7 @@
 
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELView.h>
-#import <Velvet/VELNSView+Private.h>
+#import <Velvet/VELNSViewPrivate.h>
 #import <objc/runtime.h>
 
 
@@ -19,7 +19,6 @@
 
 @implementation VELCAAction
 @synthesize innerAction = m_innerAction;
-@synthesize delegate = m_delegate;
 
 - (id)initWithAction:(id <CAAction>)innerAction
 {

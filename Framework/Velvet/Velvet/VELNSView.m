@@ -7,7 +7,7 @@
 //
 
 #import <Velvet/VELNSView.h>
-#import <Velvet/VELNSView+Private.h>
+#import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/VELContext.h>
@@ -15,10 +15,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-@interface VELNSView () {
-@private
-    BOOL m_rendersContainedView;
-}
+@interface VELNSView ()
+@property (nonatomic, assign) BOOL rendersContainedView;
 @end
 
 
@@ -27,6 +25,7 @@
 #pragma mark Properties
 
 @synthesize NSView = m_NSView;
+@synthesize rendersContainedView = m_rendersContainedView;
 
 - (NSView *)NSView {
     __block NSView *view;
@@ -100,10 +99,6 @@
     layer.contents = (__bridge_transfer id)image;
 
     CGContextRelease(context);
-}
-
-- (BOOL)rendersContainedView {
-    return m_rendersContainedView;
 }
 
 - (void)withoutAnimation:(void(^)(void))block {

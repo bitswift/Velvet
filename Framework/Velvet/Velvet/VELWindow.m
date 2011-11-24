@@ -95,7 +95,7 @@
             break;
 
         default:
-            break;
+            [super sendEvent:theEvent];
     }
 }
 

@@ -115,10 +115,7 @@
             [self withoutAnimation:^{
                 [self renderContainedViewInLayer:self.layer];
             }];
-            self.NSView.alphaValue = 0.0;
         } else {
-            self.NSView = self.NSView;
-            self.NSView.alphaValue = 1.0;
             [self withoutAnimation:^{
                 self.layer.contents = nil;
             }];

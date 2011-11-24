@@ -13,6 +13,7 @@
 #import <Velvet/VELContext.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELCAAction.h>
+#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 
 @interface VELView ()
 @property (readwrite, weak) VELView *superview;
@@ -311,24 +312,7 @@
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
-    CGSize size = self.bounds.size;
-    size_t width = (size_t)ceil(size.width);
-
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef context = CGBitmapContextCreate(
-        NULL,
-        width,
-        (size_t)ceil(size.height),
-        8, // bits per component
-        width * 4, // bytes per row
-        colorSpace,
-
-        // ARGB in host byte order (which is, incidentally, the only
-        // CGBitmapInfo that correctly supports sub-pixel antialiasing text)
-        kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host
-    );
-
-    CGColorSpaceRelease(colorSpace);
+    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size);
 
     [self drawLayer:layer inContext:context];
 

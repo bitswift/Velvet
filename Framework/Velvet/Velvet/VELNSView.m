@@ -13,6 +13,8 @@
 #import <Velvet/VELContext.h>
 #import <Velvet/VELViewPrivate.h>
 #import <QuartzCore/QuartzCore.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
+#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 
 
 @interface VELNSView ()
@@ -77,21 +79,7 @@
 #pragma mark CALayer delegate
 
 - (void)renderContainedViewInLayer:(CALayer *)layer {
-    CGSize size = self.bounds.size;
-    size_t width = (size_t)ceil(size.width);
-
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef context = CGBitmapContextCreate(
-        NULL,
-        width,
-        (size_t)ceil(size.height),
-        8,
-        width * 4,
-        colorSpace,
-        kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host
-    );
-
-    CGColorSpaceRelease(colorSpace);
+    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size);
 
     [self.NSView.layer renderInContext:context];
 
@@ -101,22 +89,15 @@
     CGContextRelease(context);
 }
 
-- (void)withoutAnimation:(void(^)(void))block {
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    block();
-    [CATransaction commit];
-}
-
 - (void)setRendersContainedView:(BOOL)rendersContainedView {
     if (m_rendersContainedView != rendersContainedView) {
         m_rendersContainedView = rendersContainedView;
         if (rendersContainedView) {
-            [self withoutAnimation:^{
+            [CATransaction performWithDisabledActions:^{
                 [self renderContainedViewInLayer:self.layer];
             }];
         } else {
-            [self withoutAnimation:^{
+            [CATransaction performWithDisabledActions:^{
                 self.layer.contents = nil;
             }];
         }

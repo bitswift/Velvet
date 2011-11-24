@@ -142,12 +142,12 @@
 		D01CF3AD1479A6A100C88D2B /* AppKit Bridging */ = {
 			isa = PBXGroup;
 			children = (
+				0DCD37C4147DB86200A9D6E4 /* NSVelvetHostView.h */,
+				0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */,
 				D0D8C39D1478582C00FC9015 /* NSVelvetView.h */,
 				D0D8C39E1478582C00FC9015 /* NSVelvetView.m */,
 				D01CF3D21479B18400C88D2B /* VELNSView.h */,
 				D01CF3D31479B18400C88D2B /* VELNSView.m */,
-				0DCD37C4147DB86200A9D6E4 /* NSVelvetHostView.h */,
-				0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */,
 			);
 			name = "AppKit Bridging";
 			sourceTree = "<group>";

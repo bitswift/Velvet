@@ -7,10 +7,10 @@
 //
 
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSVelvetHostView.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELViewPrivate.h>
-#import <Velvet/NSVelvetHostView.h>
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 

@@ -6,7 +6,15 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
-#import "NSVelvetHostView.h"
+#import <Velvet/NSVelvetHostView.h>
+
+@interface NSVelvetHostView ()
+/**
+ * Configures all the necessary properties on the receiver. This is outside of
+ * an initializer because `NSView` has no true designated initializer.
+ */
+- (void)setUp;
+@end
 
 @implementation NSVelvetHostView
 
@@ -42,12 +50,6 @@
 - (BOOL)needsDisplay {
 	// mark this view as needing display anytime the layer is
 	return [super needsDisplay] || [self.layer needsDisplay];
-}
-
-#pragma mark Lifecycle
-
-- (void)mouseUp:(NSEvent *)theEvent {
-    
 }
 
 @end

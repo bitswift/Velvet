@@ -47,7 +47,7 @@
     [scrollView setHasVerticalScroller:YES];
     [scrollView setDrawsBackground:NO];
     [scrollView setUsesPredominantAxisScrolling:NO];
-
+    
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
         (__bridge_transfer id)CGColorCreateGenericGray(0, 1), (__bridge id)kCTForegroundColorAttributeName,
         (__bridge_transfer id)CTFontCreateUIFontForLanguage(kCTFontSystemFontType, 16, NULL), (__bridge id)kCTFontAttributeName,
@@ -76,12 +76,18 @@
     [button setButtonType:NSMomentaryPushInButton];
     [button setBezelStyle:NSRoundedBezelStyle];
     [button setTitle:@"Test Button"];
+    [button setTarget:self];
+    [button setAction:@selector(testButtonPushed:)];
 
     VELNSView *buttonHost = [[VELNSView alloc] init];
     buttonHost.frame = button.frame;
 
     nestedSquareView.subviews = [NSArray arrayWithObject:buttonHost];
     buttonHost.NSView = button;
+}
+
+- (void)testButtonPushed:(id)sender {
+    NSLog(@"testButtonPushed");
 }
 
 @end

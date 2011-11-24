@@ -78,8 +78,6 @@
 }
 
 - (void)sendEvent:(NSEvent *)theEvent {
-    NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"ERROR! Window: %@ does not have a NSVelvetView as it's content view!",self.contentView);
-    
     switch ([theEvent type]) {
         case NSLeftMouseDown:
         case NSLeftMouseUp:
@@ -101,7 +99,9 @@
 }
 
 - (void)sendMouseEvent:(NSEvent *)event {
-    id velvetView = ((NSVelvetView *)self.contentView).rootView;
+    NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
+    
+    id velvetView = [(id)self.contentView rootView];
     CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
 
     while (YES) {

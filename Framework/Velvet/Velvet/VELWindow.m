@@ -16,7 +16,16 @@
 @class NSVelvetHostView;
 
 @interface VELWindow ()
+/**
+ * Turns an event into an `NSResponder` message, and sends it to
+ * the `VELView`.
+ */
 - (void)dispatchEvent:(NSEvent *)event toView:(VELView *)view;
+/**
+ * Find a `VELView` to which to dispatch a mose down event, and make
+ * it the first responder. If the event isn't inside a `VELView`, use
+ * the normal AppKit event dispatch.
+ */
 - (void)sendMouseDownEvent:(NSEvent *)event;
 @end
 
@@ -103,6 +112,7 @@
             }
         }
 
+        // Fall through to here when the first responder isn't a VELView
         default:
             [super sendEvent:theEvent];
     }

@@ -1,7 +1,7 @@
 //
 //  VELView.m
 //  Velvet
-//
+//  
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
@@ -12,11 +12,20 @@
 #import <Velvet/NSView+VELGeometryAdditions.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELViewPrivate.h>
+#import <Velvet/VELCAAction.h>
+#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 
 @interface VELView ()
 @property (readwrite, weak) VELView *superview;
 @property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
+
+/**
+ * True if we're inside the `actionForLayer:forKey:` method. This is used so we
+ * can get the original action for the key, and wrap it with extra functionality,
+ * without entering an infinite loop.
+ */
+@property (assign, getter = isRecursingActionForLayer) BOOL recursingActionForLayer;
 
 /**
  * The affine transform needed to move into the coordinate system of the
@@ -40,6 +49,7 @@
 @synthesize subviews = m_subviews;
 @synthesize superview = m_superview;
 @synthesize hostView = m_hostView;
+@synthesize recursingActionForLayer = m_recursingActionForLayer;
 
 // TODO: we should probably flush the GCD queue of an old context before
 // accepting a new one (to make sure there are no race conditions during
@@ -302,24 +312,7 @@
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
-    CGSize size = self.bounds.size;
-    size_t width = (size_t)ceil(size.width);
-
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef context = CGBitmapContextCreate(
-        NULL,
-        width,
-        (size_t)ceil(size.height),
-        8, // bits per component
-        width * 4, // bytes per row
-        colorSpace,
-
-        // ARGB in host byte order (which is, incidentally, the only
-        // CGBitmapInfo that correctly supports sub-pixel antialiasing text)
-        kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host
-    );
-
-    CGColorSpaceRelease(colorSpace);
+    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size);
 
     [self drawLayer:layer inContext:context];
 
@@ -348,6 +341,30 @@
     [self drawRect:bounds];
 
     [NSGraphicsContext setCurrentContext:previousGraphicsContext];
+}
+
+- (id < CAAction >)actionForLayer:(CALayer *)layer forKey:(NSString *)key
+{
+    // If we're being called inside the [layer actionForKey:key] call below,
+    // retun nil, so that method will return the default action.
+    if (self.recursingActionForLayer) return nil;
+
+//    NSLog(@"ACTIONFORKEY. %@", key);
+
+    self.recursingActionForLayer = YES;
+    id <CAAction> innerAction = [layer actionForKey:key];
+    self.recursingActionForLayer = NO;
+
+    if ([VELCAAction interceptsActionForKey:key]) {
+        return [VELCAAction actionWithAction:innerAction];
+    } else {
+        return innerAction;
+    }
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@ %p> frame = %@, subviews = %@", [self class], self, NSStringFromRect(self.frame), self.subviews];
 }
 
 @end

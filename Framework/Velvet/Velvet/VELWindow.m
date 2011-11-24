@@ -17,7 +17,7 @@
 
 @interface VELWindow ()
 - (void)dispatchEvent:(NSEvent *)event toView:(VELView *)view;
-- (void)sendMouseEvent:(NSEvent *)event;
+- (void)sendMouseDownEvent:(NSEvent *)event;
 @end
 
 @implementation VELWindow
@@ -75,31 +75,40 @@
         default:
             NSLog(@"Unrecognized event %@", event);
     }
+
+    [self makeFirstResponder:view];
 }
 
 - (void)sendEvent:(NSEvent *)theEvent {
     switch ([theEvent type]) {
         case NSLeftMouseDown:
-        case NSLeftMouseUp:
         case NSRightMouseDown:
+        case NSOtherMouseDown:
+            [self sendMouseDownEvent:theEvent];
+            break;
+
+        case NSLeftMouseUp:
         case NSRightMouseUp:
         case NSMouseMoved:
         case NSLeftMouseDragged:
         case NSRightMouseDragged:
         case NSMouseEntered:
         case NSMouseExited:
-        case NSOtherMouseDown:
         case NSOtherMouseUp:
-        case NSOtherMouseDragged:   
-            [self sendMouseEvent:theEvent];
-            break;
+        case NSOtherMouseDragged: {
+            id responder = [self firstResponder];
+            if ([responder isKindOfClass:[VELView class]]) {
+                [self dispatchEvent:theEvent toView:responder];
+                return;
+            }
+        }
 
         default:
             [super sendEvent:theEvent];
     }
 }
 
-- (void)sendMouseEvent:(NSEvent *)event {
+- (void)sendMouseDownEvent:(NSEvent *)event {
     NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
     
     id velvetView = [(id)self.contentView rootView];

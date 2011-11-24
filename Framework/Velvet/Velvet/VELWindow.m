@@ -24,56 +24,56 @@
 
 - (void)dispatchEvent:(NSEvent *)event toView:(VELView *)view; {
     switch ([event type]) {
-    case NSLeftMouseDown:
-        [view mouseDown:event];
-        break;
+        case NSLeftMouseDown:
+            [view mouseDown:event];
+            break;
 
-    case NSLeftMouseUp:
-        [view mouseUp:event];
-        break;
+        case NSLeftMouseUp:
+            [view mouseUp:event];
+            break;
 
-    case NSRightMouseDown:
-        [view rightMouseDown:event];
-        break;
+        case NSRightMouseDown:
+            [view rightMouseDown:event];
+            break;
 
-    case NSRightMouseUp:
-        [view rightMouseUp:event];
-        break;
+        case NSRightMouseUp:
+            [view rightMouseUp:event];
+            break;
 
-    case NSMouseMoved:
-        [view mouseMoved:event];
-        break;
+        case NSMouseMoved:
+            [view mouseMoved:event];
+            break;
 
-    case NSLeftMouseDragged:
-        [view mouseDragged:event];
-        break;
+        case NSLeftMouseDragged:
+            [view mouseDragged:event];
+            break;
 
-    case NSRightMouseDragged:
-        [view rightMouseDragged:event];
-        break;
+        case NSRightMouseDragged:
+            [view rightMouseDragged:event];
+            break;
 
-    case NSMouseEntered:
-        [view mouseEntered:event];
-        break;
+        case NSMouseEntered:
+            [view mouseEntered:event];
+            break;
 
-    case NSMouseExited:
-        [view mouseExited:event];
-        break;
+        case NSMouseExited:
+            [view mouseExited:event];
+            break;
 
-    case NSOtherMouseDown:
-        [view otherMouseDown:event];
-        break;
+        case NSOtherMouseDown:
+            [view otherMouseDown:event];
+            break;
 
-    case NSOtherMouseUp:
-        [view otherMouseUp:event];
-        break;
+        case NSOtherMouseUp:
+            [view otherMouseUp:event];
+            break;
 
-    case NSOtherMouseDragged:
-        [view otherMouseDragged:event];
-        break;
+        case NSOtherMouseDragged:
+            [view otherMouseDragged:event];
+            break;
 
-    default:
-        NSLog(@"Unrecognized event %@", event);
+        default:
+            NSLog(@"Unrecognized event %@", event);
     }
 }
 
@@ -93,6 +93,7 @@
         case NSOtherMouseDragged:   
             [self sendMouseEvent:theEvent];
             break;
+
         default:
             break;
     }

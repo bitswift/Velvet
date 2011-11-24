@@ -25,50 +25,50 @@
 #pragma mark Context stack
 
 + (NSMutableArray *)currentThreadContextStack; {
-	static NSString * const contextStackKey = @"VELContextStack";
+    static NSString * const contextStackKey = @"VELContextStack";
 
-	NSMutableDictionary *threadDict = [[NSThread currentThread] threadDictionary];
+    NSMutableDictionary *threadDict = [[NSThread currentThread] threadDictionary];
 
-	NSMutableArray *contextStack = [threadDict objectForKey:contextStackKey];
-	if (!contextStack) {
-		contextStack = [[NSMutableArray alloc] init];
-		[threadDict setObject:contextStack forKey:contextStackKey];
-	}
+    NSMutableArray *contextStack = [threadDict objectForKey:contextStackKey];
+    if (!contextStack) {
+        contextStack = [[NSMutableArray alloc] init];
+        [threadDict setObject:contextStack forKey:contextStackKey];
+    }
 
-	return contextStack;
+    return contextStack;
 }
 
 + (VELContext *)currentContext; {
-	NSArray *contextStack = [self currentThreadContextStack];
-	if (![contextStack count])
-		return nil;
-	
-	return [contextStack lastObject];
+    NSArray *contextStack = [self currentThreadContextStack];
+    if (![contextStack count])
+        return nil;
+
+    return [contextStack lastObject];
 }
 
 + (void)pushCurrentContext:(VELContext *)context; {
-	[[self currentThreadContextStack] addObject:context];
+    [[self currentThreadContextStack] addObject:context];
 }
 
 + (void)popCurrentContext; {
-	[[self currentThreadContextStack] removeLastObject];
+    [[self currentThreadContextStack] removeLastObject];
 }
 
 #pragma mark Lifecycle
 
 - (id)init {
-	self = [super init];
-	if (!self)
-		return nil;
+    self = [super init];
+    if (!self)
+        return nil;
 
-	m_dispatchQueue = dispatch_queue_create("com.emeraldlark.Velvet.VELContext.dispatchQueue", DISPATCH_QUEUE_SERIAL);
-	return self;
+    m_dispatchQueue = dispatch_queue_create("com.emeraldlark.Velvet.VELContext.dispatchQueue", DISPATCH_QUEUE_SERIAL);
+    return self;
 }
 
 - (void)dealloc {
-	dispatch_barrier_sync(m_dispatchQueue, ^{});
-	dispatch_release(m_dispatchQueue);
-	m_dispatchQueue = NULL;
+    dispatch_barrier_sync(m_dispatchQueue, ^{});
+    dispatch_release(m_dispatchQueue);
+    m_dispatchQueue = NULL;
 }
 
 @end

@@ -22,34 +22,34 @@
 
 - (id)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
-	if (!self)
-		return nil;
-	
-	[self setUp];
-	return self;
+    if (!self)
+        return nil;
+    
+    [self setUp];
+    return self;
 }
 
 - (id)initWithFrame:(NSRect)frame; {
     self = [super initWithFrame:frame];
-	if (!self)
-		return nil;
-	
-	[self setUp];
-	return self;
+    if (!self)
+        return nil;
+    
+    [self setUp];
+    return self;
 }
 
 - (void)setUp; {
-	// set up layer hosting for Velvet
-	CALayer *layer = [CALayer layer];
-	[self setLayer:layer];
-	[self setWantsLayer:YES];
+    // set up layer hosting for Velvet
+    CALayer *layer = [CALayer layer];
+    [self setLayer:layer];
+    [self setWantsLayer:YES];
 }
 
 #pragma mark Rendering
 
 - (BOOL)needsDisplay {
-	// mark this view as needing display anytime the layer is
-	return [super needsDisplay] || [self.layer needsDisplay];
+    // mark this view as needing display anytime the layer is
+    return [super needsDisplay] || [self.layer needsDisplay];
 }
 
 @end

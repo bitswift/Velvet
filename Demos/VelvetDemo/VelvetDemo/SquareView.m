@@ -11,21 +11,21 @@
 @implementation SquareView
 
 - (id)init {
-	self = [super init];
-	if (!self)
-		return nil;
+    self = [super init];
+    if (!self)
+        return nil;
 
-	return self;
+    return self;
 }
 
 - (void)drawRect:(CGRect)rect {
-	CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
+    CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
 
-	CGColorRef color = CGColorCreateGenericRGB(1, 0, 0, 1);
-	CGContextSetFillColorWithColor(context, color);
-	CGColorRelease(color);
+    CGColorRef color = CGColorCreateGenericRGB(1, 0, 0, 1);
+    CGContextSetFillColorWithColor(context, color);
+    CGColorRelease(color);
 
-	CGContextFillRect(context, self.bounds);
+    CGContextFillRect(context, self.bounds);
 }
 
 - (void)mouseDown:(NSEvent *)theEvent {

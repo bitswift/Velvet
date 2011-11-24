@@ -13,8 +13,21 @@
 
 
 @interface VELCAAction ()
+/**
+ * The action that this action is proxying, as specified at the time of
+ * initialization.
+ */
 @property (nonatomic, strong) id <CAAction> innerAction;
-- (void)handleGeometryChangeForKey:(NSString *)key layer:(CALayer *)layer;
+
+/**
+ * Invoked whenever the geometry property `key` of `layer` has changed.
+ */
+- (void)geometryChangedForKey:(NSString *)key layer:(CALayer *)layer;
+
+/**
+ * Returns `YES` if objects of this class add features to actions for the given
+ * geometry property.
+ */
 + (BOOL)interceptsGeometryActionForKey:(NSString *)key;
 @end
 
@@ -27,6 +40,7 @@
     if (self) {
         self.innerAction = innerAction;
     }
+
     return self;
 }
 
@@ -51,11 +65,11 @@
         return;
 
     if ([[self class] interceptsGeometryActionForKey:key]) {
-        [self handleGeometryChangeForKey:key layer:anObject];
+        [self geometryChangedForKey:key layer:anObject];
     }
 }
 
-- (void)handleGeometryChangeForKey:(NSString *)key layer:(CALayer *)layer {
+- (void)geometryChangedForKey:(NSString *)key layer:(CALayer *)layer {
     // For all contained VELNSViews, render their NSView into their layer
     // and hide the NSView. Now the visual element is part of the layer
     // hierarchy we're animating.
@@ -84,8 +98,7 @@
 }
 
 + (BOOL)interceptsGeometryActionForKey:(NSString *)key {
-    return [key isEqualToString:@"position"]
-    || [key isEqualToString:@"bounds"];
+    return [key isEqualToString:@"position"] || [key isEqualToString:@"bounds"];
 }
 
 + (BOOL)interceptsActionForKey:(NSString *)key {

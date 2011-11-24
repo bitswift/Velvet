@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
-#import "CATransaction+BlockAdditions.h"
+#import <Velvet/CATransaction+BlockAdditions.h>
 
 @implementation CATransaction (BlockAdditions)
 

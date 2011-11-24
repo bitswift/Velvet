@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
-#import "CGBitmapContext+PixelFormatAdditions.h"
+#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 
 CGContextRef CGBitmapContextCreateGeneric(CGSize size) {
     size_t width = (size_t)ceil(size.width);
@@ -23,7 +23,7 @@ CGContextRef CGBitmapContextCreateGeneric(CGSize size) {
         // CGBitmapInfo that correctly supports sub-pixel antialiasing text)
         kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host
     );
-    CGColorSpaceRelease(colorSpace);
 
+    CGColorSpaceRelease(colorSpace);
     return context;
 }

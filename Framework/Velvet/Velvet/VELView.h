@@ -128,9 +128,10 @@
 
 /**
  * Returns the farthest descendant of the receiver in the view hierarchy (including itself)
- * that contains a specified point, or nil if that point lies completely outside the receiver.
+ * that contains `point`, specified in the coordinate system of the receiver, or
+ * `nil` if that point lies completely outside the receiver.
  */
-- (VELView *)hitTest:(CGPoint)aPoint;
+- (VELView *)hitTest:(CGPoint)point;
 
 /**
  * If the view's appearance is not provided by its layer, this method should

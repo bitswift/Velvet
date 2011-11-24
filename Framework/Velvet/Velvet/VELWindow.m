@@ -119,13 +119,8 @@
             NSVelvetView *hostView = (id)[testView superview];
             velvetView = hostView.rootView;
         } else {
-            id testView = nil;
-
-            if ([velvetView superview]) {
-                testView = [velvetView hitTest:[[velvetView superview] convertFromWindowPoint:windowPoint]];
-            } else {
-                testView = [velvetView hitTest:[[velvetView hostView] convertFromWindowPoint:windowPoint]];
-            }
+            CGPoint viewPoint = [velvetView convertFromWindowPoint:windowPoint];
+            id testView = [velvetView hitTest:viewPoint];
 
             if (![testView isKindOfClass:[VELNSView class]]) {
                 [self dispatchEvent:event toView:testView];

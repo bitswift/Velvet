@@ -178,19 +178,19 @@
 
 #pragma mark Responder
 
-- (VELView *)hitTest:(CGPoint)aPoint; {
-    if (CGRectContainsPoint(self.frame, aPoint)) {
-        for (VELView *aView in self.subviews) {
-            VELView *hitView = [aView hitTest:aPoint];
-            if (hitView) {
-                return hitView;
-            }
-        }
-        return self;
-    }
-    else {
+- (VELView *)hitTest:(CGPoint)point; {
+    if (!CGRectContainsPoint(self.bounds, point))
         return nil;
+
+    for (VELView *view in self.subviews) {
+        CGPoint subviewPoint = [view convertPoint:point fromView:self];
+        VELView *hitView = [view hitTest:subviewPoint];
+        if (hitView) {
+            return hitView;
+        }
     }
+
+    return self;
 }
 
 #pragma mark Rendering

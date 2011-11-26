@@ -9,5 +9,7 @@
 
 /**
  * Returns a context suitable for rendering views.
+ *
+ * @param size The size, in pixels, to use for the created bitmap context.
  */
 CGContextRef CGBitmapContextCreateGeneric(CGSize size);

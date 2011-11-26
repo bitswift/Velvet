@@ -8,13 +8,16 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface CATransaction (BlockAdditions)
-
 /**
- * Perform the given block in a transaction with disabled
- * actions.
+ * Extends `CATransaction` with useful block-based features.
+ */
+@interface CATransaction (BlockAdditions)
+/**
+ * Executes a block with actions disabled.
  *
  * This will have the effect of suppressing animation.
+ *
+ * @param block The block to execute while actions are disabled.
  */
 + (void)performWithDisabledActions:(void(^)(void))block;
 

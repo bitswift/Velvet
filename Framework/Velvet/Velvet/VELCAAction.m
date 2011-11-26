@@ -13,18 +13,18 @@
 
 
 @interface VELCAAction ()
-/**
+/*
  * The action that this action is proxying, as specified at the time of
  * initialization.
  */
 @property (nonatomic, strong) id <CAAction> innerAction;
 
-/**
+/*
  * Invoked whenever the geometry property `key` of `layer` has changed.
  */
 - (void)geometryChangedForKey:(NSString *)key layer:(CALayer *)layer;
 
-/**
+/*
  * Returns `YES` if objects of this class add features to actions for the given
  * geometry property.
  */

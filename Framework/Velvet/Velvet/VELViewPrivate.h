@@ -12,8 +12,8 @@
 @class VELContext;
 @class NSVelvetView;
 
-/**
- * Private functionality of `VELView` that needs to be exposed to other parts of
+/*
+ * Private functionality of <VELView> that needs to be exposed to other parts of
  * the framework.
  */
 @interface VELView (VELViewPrivate)

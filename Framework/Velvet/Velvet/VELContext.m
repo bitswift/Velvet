@@ -9,7 +9,7 @@
 #import <Velvet/VELContext.h>
 
 @interface VELContext ()
-/**
+/*
  * Returns a mutable array representing the context stack for the current
  * thread, creating one if it does not already exist.
  */

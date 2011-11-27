@@ -50,6 +50,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @interface NSVelvetView ()
 @property (nonatomic, strong) NSView *velvetHostView;
 @property (nonatomic, readwrite, strong) VELContext *context;
+@property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
 
 /*
  * Configures all the necessary properties on the receiver. This is outside of
@@ -65,6 +66,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize context = m_context;
 @synthesize rootView = m_rootView;
 @synthesize velvetHostView = m_velvetHostView;
+@synthesize userInteractionEnabled = m_userInteractionEnabled;
 
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
@@ -104,6 +106,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)setUp; {
     self.context = [[VELContext alloc] init];
+    self.userInteractionEnabled = YES;
 
     // enable layer-backing for this view (as high as possible in the view
     // hierarchy, to keep as much as possible in CA)
@@ -130,6 +133,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 #pragma mark Event handling
 
 - (NSView *)hitTest:(NSPoint)point {
+    if (!self.userInteractionEnabled)
+        return nil;
+
     // convert point into our coordinate system, so it's ready to go for all
     // subviews (which expect it in their superview's coordinate system)
     point = [self convertPoint:point fromView:self.superview];

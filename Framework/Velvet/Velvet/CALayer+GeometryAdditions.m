@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/CALayer+GeometryAdditions.h>
+#import "EXTSafeCategory.h"
 
 static CGRect convertAndClipRectFromSuperlayers (CGRect rect, CALayer *layer);
 
@@ -27,8 +28,7 @@ static CGRect convertAndClipRectFromSuperlayers (CGRect rect, CALayer *layer) {
     return rect;
 }
 
-@implementation CALayer (GeometryAdditions)
-
+@safecategory(CALayer, GeometryAdditions)
 - (CGRect)convertAndClipRect:(CGRect)rect toLayer:(CALayer *)layer {
     CALayer *clippingLayer = self.superlayer;
     CALayer *lastLayer = self;

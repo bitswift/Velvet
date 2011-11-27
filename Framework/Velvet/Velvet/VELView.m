@@ -12,6 +12,7 @@
 #import <Velvet/NSView+VELGeometryAdditions.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELViewPrivate.h>
+#import <Velvet/VELViewProtected.h>
 #import <Velvet/VELCAAction.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 
@@ -111,7 +112,7 @@
             }
 
             view.superview = self;
-            [self.layer addSublayer:view.layer];
+            [self addSubviewToLayer:view];
         }
     });
 }
@@ -209,6 +210,10 @@
 }
 
 #pragma mark View hierarchy
+
+- (void)addSubviewToLayer:(VELView *)view; {
+    [self.layer addSublayer:view.layer];
+}
 
 - (VELView *)ancestorSharedWithView:(VELView *)view; {
     VELView *parentView = self;

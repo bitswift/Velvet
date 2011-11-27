@@ -16,7 +16,7 @@
  * The duration, in seconds, for which scrollers stay visible after a scrolling
  * event.
  */
-static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.5;
+static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.65;
 
 @interface VELScrollView ()
 /*

@@ -77,13 +77,11 @@
     });
 }
 
-- (void)willMoveToHostView:(NSVelvetView *)hostView {
-    [self.NSView removeFromSuperview];
-    [hostView addSubview:self.NSView];
-}
-
-- (void)didMoveToHostView {
-    [self synchronizeNSViewGeometry];
+- (CGRect)NSViewFrame; {
+    // we use 'self' and 'bounds' here instead of the superview and frame
+    // because the superview may be a VELScrollView, and accessing it directly
+    // will skip over the CAScrollLayer that's in the hierarchy
+    return [self convertRect:self.bounds toView:self.hostView.rootView];
 }
 
 #pragma mark Lifecycle
@@ -118,15 +116,23 @@
         return;
     }
 
-    // we use 'self' and 'bounds' here instead of the superview and frame
-    // because the superview may be a VELScrollView, and accessing it directly
-    // will skip over the CAScrollLayer that's in the hierarchy
-    self.NSView.frame = [self convertRect:self.bounds toView:self.hostView.rootView];
+    self.NSView.frame = self.NSViewFrame;
 
-    // if the size of the frame has changed, we'll need to go through our
-    // clipRenderer's -drawLayer:inContext: logic again with the new size, so
-    // mark the layer as needing display
+    // if the frame has changed, we'll need to go through our clipRenderer's
+    // -drawLayer:inContext: logic again with the new location and size, so mark
+    // the layer as needing display
     [self.NSView.layer setNeedsDisplay];
+}
+
+#pragma mark View hierarchy
+
+- (void)willMoveToHostView:(NSVelvetView *)hostView {
+    [self.NSView removeFromSuperview];
+    [hostView addSubview:self.NSView];
+}
+
+- (void)didMoveToHostView {
+    [self synchronizeNSViewGeometry];
 }
 
 #pragma mark Layout

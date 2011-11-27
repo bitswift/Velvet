@@ -56,13 +56,18 @@
         view.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
 
         if (view != m_NSView) {
-            [self.hostView addSubview:view];
             m_NSView = view;
 
-            self.clipRenderer = [[NSViewClipRenderer alloc] init];
-            self.clipRenderer.clippedView = self;
-            self.clipRenderer.originalLayerDelegate = view.layer.delegate;
-            view.layer.delegate = self.clipRenderer;
+            if (view) {
+                [self.hostView addSubview:view];
+
+                self.clipRenderer = [[NSViewClipRenderer alloc] init];
+                self.clipRenderer.clippedView = self;
+                self.clipRenderer.originalLayerDelegate = view.layer.delegate;
+                view.layer.delegate = self.clipRenderer;
+            } else {
+                self.clipRenderer = nil;
+            }
         }
     });
 }

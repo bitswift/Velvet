@@ -375,7 +375,16 @@
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
-    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size);
+    CGRect bounds = self.bounds;
+    if (CGRectIsEmpty(bounds) || CGRectIsNull(bounds)) {
+        // can't do anything
+        return;
+    }
+
+    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size);
+    if (!context) {
+        return;
+    }
 
     [self drawLayer:layer inContext:context];
 
@@ -386,6 +395,9 @@
 }
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
+    if (!context)
+        return;
+
     CGRect bounds = self.bounds;
 
     CGContextClearRect(context, bounds);

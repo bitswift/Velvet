@@ -158,7 +158,7 @@
 }
 
 - (void)scrollWheel:(NSEvent *)event; {
-    NSLog(@"contentsRect: %@", NSStringFromRect(self.scrollLayer.contentsRect));
+    NSLog(@"bounds: %@", NSStringFromRect(self.scrollLayer.bounds));
 }
 
 #pragma mark CALayer delegate

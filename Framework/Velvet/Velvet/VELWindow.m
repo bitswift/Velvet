@@ -175,7 +175,10 @@
             id testView = [nsView hitTest:viewPoint];
 
             if (![testView isKindOfClass:[NSVelvetView class]]) {
-                return testView;
+                if (testView)
+                    return testView;
+                else
+                    return nsView;
             }
 
             NSVelvetView *hostView = testView;
@@ -185,7 +188,10 @@
             id testView = [velvetView hitTest:viewPoint];
 
             if (![testView isKindOfClass:[VELNSView class]]) {
-                return testView;
+                if (testView)
+                    return testView;
+                else
+                    return velvetView;
             }
 
             velvetView = testView;

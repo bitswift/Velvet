@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
+#import <AppKit/AppKit.h>
 
 /**
  * Returns a context suitable for rendering views.

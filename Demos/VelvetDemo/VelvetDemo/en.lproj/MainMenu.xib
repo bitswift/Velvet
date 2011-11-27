@@ -1295,13 +1295,16 @@
                 <string key="NSWindowRect">{{335, 390}, {480, 360}}</string>
                 <int key="NSWTFlags">1954021376</int>
                 <string key="NSWindowTitle">VelvetDemo</string>
-                <string key="NSWindowClass">NSWindow</string>
+                <string key="NSWindowClass">VELWindow</string>
                 <nil key="NSViewClass"/>
                 <nil key="NSUserInterfaceItemIdentifier"/>
                 <object class="NSView" key="NSWindowView" id="439893737">
-                    <nil key="NSNextResponder"/>
+                    <reference key="NSNextResponder"/>
                     <int key="NSvFlags">256</int>
                     <string key="NSFrameSize">{480, 360}</string>
+                    <reference key="NSSuperview"/>
+                    <reference key="NSWindow"/>
+                    <reference key="NSNextKeyView"/>
                 </object>
                 <string key="NSScreenRect">{{0, 0}, {1280, 1002}}</string>
                 <string key="NSMaxSize">{10000000000000, 10000000000000}</string>
@@ -3174,13 +3177,13 @@
                     <string key="className">AppDelegate</string>
                     <string key="superclassName">NSObject</string>
                     <dictionary class="NSMutableDictionary" key="outlets">
-                        <string key="hostView">VELNSView</string>
+                        <string key="hostView">NSVelvetView</string>
                         <string key="window">NSWindow</string>
                     </dictionary>
                     <dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
                         <object class="IBToOneOutletInfo" key="hostView">
                             <string key="name">hostView</string>
-                            <string key="candidateClassName">VELNSView</string>
+                            <string key="candidateClassName">NSVelvetView</string>
                         </object>
                         <object class="IBToOneOutletInfo" key="window">
                             <string key="name">window</string>
@@ -3234,11 +3237,19 @@
                     </object>
                 </object>
                 <object class="IBPartialClassDescription">
-                    <string key="className">VELNSView</string>
+                    <string key="className">NSVelvetView</string>
                     <string key="superclassName">NSView</string>
                     <object class="IBClassDescriptionSource" key="sourceIdentifier">
                         <string key="majorKey">IBProjectSource</string>
-                        <string key="minorKey">./Classes/VELNSView.h</string>
+                        <string key="minorKey">./Classes/NSVelvetView.h</string>
+                    </object>
+                </object>
+                <object class="IBPartialClassDescription">
+                    <string key="className">VELWindow</string>
+                    <string key="superclassName">NSWindow</string>
+                    <object class="IBClassDescriptionSource" key="sourceIdentifier">
+                        <string key="majorKey">IBProjectSource</string>
+                        <string key="minorKey">./Classes/VELWindow.h</string>
                     </object>
                 </object>
             </array>

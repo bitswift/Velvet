@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
-#import <Velvet/VELResponder.h>
+#import <AppKit/AppKit.h>
 #import <Velvet/VELGeometry.h>
 
 @class VELContext;
@@ -16,7 +16,7 @@
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a <NSVelvetView>.
  */
-@interface VELView : VELResponder <VELGeometry>
+@interface VELView : NSResponder <VELGeometry>
 
 /**
  * @name Initialization
@@ -167,6 +167,20 @@
  * the receiver's coordinate system.
  */
 - (void)drawRect:(CGRect)rect;
+
+/**
+ * @name Event Handling
+ */
+
+/**
+ * Returns the farthest descendant of the receiver in the view hierarchy (including itself)
+ * that contains a given point.
+ *
+ * Returns `nil` if `point` lies completely outside the receiver.
+ *
+ * @param point A point specified in the coordinate system of the receiver.
+ */
+- (VELView *)hitTest:(CGPoint)point;
 
 /**
  * @name Core Animation Layer

@@ -118,7 +118,10 @@
         return;
     }
 
-    self.NSView.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
+    // we use 'self' and 'bounds' here instead of the superview and frame
+    // because the superview may be a VELScrollView, and accessing it directly
+    // will skip over the CAScrollLayer that's in the hierarchy
+    self.NSView.frame = [self convertRect:self.bounds toView:self.hostView.rootView];
 
     // if the size of the frame has changed, we'll need to go through our
     // clipRenderer's -drawLayer:inContext: logic again with the new size, so

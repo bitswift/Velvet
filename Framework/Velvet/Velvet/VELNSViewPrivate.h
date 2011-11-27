@@ -21,6 +21,16 @@
 @property (nonatomic, assign) BOOL rendersContainedView;
 
 /*
+ * The frame that the receiver's `NSView` should have at the time of call.
+ *
+ * This is used by <synchronizeNSViewGeometry> to keep the `NSView` attached to
+ * its Velvet view.
+ *
+ * If the receiver has no host view, the value is undefined.
+ */
+@property (readonly) CGRect NSViewFrame;
+
+/*
  * This will synchronize the geometry of the receiver's `NSView` with that of
  * the receiver, ensuring that the `NSView` is laid out correctly on screen.
  */

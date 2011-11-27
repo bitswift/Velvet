@@ -28,15 +28,26 @@
 - (void)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
 
 /*
- * Sends a mouse-down event to the <VELView> in the clicked region. The
- * <VELView> is made the first responder.
+ * Returns the <VELView> or `NSView` which is occupying the given point, or
+ * `nil` if there is no such view.
+ *
+ * @param windowPoint A point, specified in the coordinate system of the window,
+ * at which to look for a view.
+ */
+- (id)bridgedHitTest:(CGPoint)windowPoint;
+
+/*
+ * Hit tests for a <VELView> in the region identified by the given event,
+ * sending the event to any <VELView> that is found.
+ *
+ * The <VELView> is made the first responder.
  *
  * If the event didn't occur inside a <VELView>, the event is handed off to
  * AppKit and tested against any `NSView` hierarchies.
  *
- * @param event The mouse-down event which occurred.
+ * @param event The mouse-related event which occurred.
  */
-- (void)sendMouseDownEvent:(NSEvent *)event;
+- (void)sendHitTestedEvent:(NSEvent *)event;
 @end
 
 @implementation VELWindow
@@ -101,7 +112,7 @@
         case NSLeftMouseDown:
         case NSRightMouseDown:
         case NSOtherMouseDown:
-            [self sendMouseDownEvent:theEvent];
+            [self sendHitTestedEvent:theEvent];
             break;
 
         case NSLeftMouseUp:
@@ -135,12 +146,10 @@
     }
 }
 
-- (void)sendMouseDownEvent:(NSEvent *)event {
+- (id)bridgedHitTest:(CGPoint)windowPoint; {
     NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
 
     id velvetView = [(id)self.contentView rootView];
-    CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
-
     while (YES) {
         if ([velvetView isKindOfClass:[VELNSView class]]) {
             NSView *nsView = [velvetView NSView];
@@ -149,8 +158,7 @@
             id testView = [nsView hitTest:viewPoint];
 
             if (![testView isKindOfClass:[NSVelvetView class]]) {
-                [super sendEvent:event];
-                break;
+                return testView;
             }
 
             NSVelvetView *hostView = testView;
@@ -160,22 +168,33 @@
             id testView = [velvetView hitTest:viewPoint];
 
             if (![testView isKindOfClass:[VELNSView class]]) {
-                [self dispatchEvent:event toResponder:testView];
-                [self makeFirstResponder:testView];
-
-                // now, we still want to pass on events to the window, since it
-                // does some magic, but we should omit any Velvet-hosted NSViews
-                // from consideration
-                [(id)self.contentView setUserInteractionEnabled:NO];
-                [super sendEvent:event];
-                [(id)self.contentView setUserInteractionEnabled:YES];
-
-                break;
+                return testView;
             }
 
             velvetView = testView;
         }
     }
+}
+
+- (void)sendHitTestedEvent:(NSEvent *)event {
+    NSVelvetView *contentView = (id)self.contentView;
+    CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
+    id hitView = [self bridgedHitTest:windowPoint];
+
+    if ([hitView isKindOfClass:[VELView class]]) {
+        [self dispatchEvent:event toResponder:hitView];
+        [self makeFirstResponder:hitView];
+
+        // now, we still want to pass on events to the window, since it
+        // does some magic, but we should omit any Velvet-hosted NSViews
+        // from consideration
+        contentView.userInteractionEnabled = NO;
+    }
+
+    // also pass the event upward if we hit an NSView
+    [super sendEvent:event];
+
+    contentView.userInteractionEnabled = YES;
 }
 
 @end

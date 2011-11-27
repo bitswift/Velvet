@@ -103,6 +103,11 @@
 #pragma mark Geometry
 
 - (void)synchronizeNSViewGeometry; {
+    if (!self.hostView) {
+        // can't do this without a host view
+        return;
+    }
+
     self.NSView.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
 
     // if the size of the frame has changed, we'll need to go through our

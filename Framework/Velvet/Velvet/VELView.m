@@ -230,6 +230,12 @@
     [self.layer addSublayer:view.layer];
 }
 
+- (void)ancestorDidScroll; {
+    for (VELView *subview in self.subviews) {
+        [subview ancestorDidScroll];
+    }
+}
+
 - (VELView *)ancestorSharedWithView:(VELView *)view; {
     VELView *parentView = self;
 

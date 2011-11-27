@@ -15,7 +15,7 @@
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELNSViewPrivate.h>
-#import <Velvet/VELViewPrivate.h>
+#import <Velvet/VELViewProtected.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface VELNSView ()
@@ -125,6 +125,11 @@
 }
 
 #pragma mark View hierarchy
+
+- (void)ancestorDidScroll; {
+    [self synchronizeNSViewGeometry];
+    [super ancestorDidScroll];
+}
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView {
     [self.NSView removeFromSuperview];

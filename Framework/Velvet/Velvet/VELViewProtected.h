@@ -29,6 +29,14 @@
 - (void)addSubviewToLayer:(VELView *)view;
 
 /*
+ * Invoked any time an ancestor of the receiver has scrolled, potentially moving
+ * or clipping the receiver.
+ *
+ * The default implementation forwards the message to all subviews.
+ */
+- (void)ancestorDidScroll;
+
+/*
  * Invoked when the receiver's view hierarchy is being moved to a new host.
  *
  * This method is invoked on every view in the hierarchy. The default

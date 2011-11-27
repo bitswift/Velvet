@@ -138,6 +138,10 @@
     [CATransaction performWithDisabledActions:^{
         [self.scrollLayer scrollToPoint:scrollPoint];
     }];
+
+    for (VELView *view in self.subviews) {
+        [view ancestorDidScroll];
+    }
 }
 
 #pragma mark CALayer delegate

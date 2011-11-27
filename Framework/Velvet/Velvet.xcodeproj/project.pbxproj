@@ -50,6 +50,11 @@
 		D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC01147851A80095AB35 /* Velvet.framework */; };
 		D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC23147851A80095AB35 /* InfoPlist.strings */; };
 		D0EFFC28147851A80095AB35 /* VelvetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFC27147851A80095AB35 /* VelvetTests.m */; };
+		D0FBA3221482086100F9F5F6 /* metamacros.h in Headers */ = {isa = PBXBuildFile; fileRef = D0FBA3211482086100F9F5F6 /* metamacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D0FBA3271482086B00F9F5F6 /* EXTRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0FBA3231482086B00F9F5F6 /* EXTRuntimeExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D0FBA3281482086B00F9F5F6 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FBA3241482086B00F9F5F6 /* EXTRuntimeExtensions.m */; };
+		D0FBA3291482086B00F9F5F6 /* EXTSafeCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = D0FBA3251482086B00F9F5F6 /* EXTSafeCategory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D0FBA32A1482086B00F9F5F6 /* EXTSafeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FBA3261482086B00F9F5F6 /* EXTSafeCategory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +133,11 @@
 		D0EFFC43147851E70095AB35 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
 		D0EFFC44147851E70095AB35 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D0EFFC45147851E70095AB35 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		D0FBA3211482086100F9F5F6 /* metamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = metamacros.h; path = ../libextobjc/extobjc/metamacros.h; sourceTree = "<group>"; };
+		D0FBA3231482086B00F9F5F6 /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTRuntimeExtensions.h; path = ../libextobjc/extobjc/Modules/EXTRuntimeExtensions.h; sourceTree = "<group>"; };
+		D0FBA3241482086B00F9F5F6 /* EXTRuntimeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTRuntimeExtensions.m; path = ../libextobjc/extobjc/Modules/EXTRuntimeExtensions.m; sourceTree = "<group>"; };
+		D0FBA3251482086B00F9F5F6 /* EXTSafeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTSafeCategory.h; path = ../libextobjc/extobjc/Modules/EXTSafeCategory.h; sourceTree = "<group>"; };
+		D0FBA3261482086B00F9F5F6 /* EXTSafeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTSafeCategory.m; path = ../libextobjc/extobjc/Modules/EXTSafeCategory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,23 +257,16 @@
 		D0EFFC03147851A80095AB35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0FBA3201482085500F9F5F6 /* libextobjc */,
+				D0EFFC07147851A80095AB35 /* AppKit.framework */,
 				1E7BBD4B147B17400010375D /* ApplicationServices.framework */,
 				D0EFFC04147851A80095AB35 /* Cocoa.framework */,
-				D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */,
-				D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */,
-				D0EFFC06147851A80095AB35 /* Other Frameworks */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D0EFFC06147851A80095AB35 /* Other Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D0EFFC07147851A80095AB35 /* AppKit.framework */,
 				D0EFFC08147851A80095AB35 /* CoreData.framework */,
 				D0EFFC09147851A80095AB35 /* Foundation.framework */,
+				D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */,
+				D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */,
 			);
-			name = "Other Frameworks";
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D0EFFC0A147851A80095AB35 /* Velvet */ = {
@@ -370,6 +373,18 @@
 			path = "Mac OS X";
 			sourceTree = "<group>";
 		};
+		D0FBA3201482085500F9F5F6 /* libextobjc */ = {
+			isa = PBXGroup;
+			children = (
+				D0FBA3231482086B00F9F5F6 /* EXTRuntimeExtensions.h */,
+				D0FBA3241482086B00F9F5F6 /* EXTRuntimeExtensions.m */,
+				D0FBA3251482086B00F9F5F6 /* EXTSafeCategory.h */,
+				D0FBA3261482086B00F9F5F6 /* EXTSafeCategory.m */,
+				D0FBA3211482086100F9F5F6 /* metamacros.h */,
+			);
+			name = libextobjc;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -396,6 +411,9 @@
 				1E2819541481EB14006A747C /* CATransaction+BlockAdditions.h in Headers */,
 				1E2819561481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h in Headers */,
 				1E2819721481EE7B006A747C /* NSView+VELNSViewAdditions.h in Headers */,
+				D0FBA3221482086100F9F5F6 /* metamacros.h in Headers */,
+				D0FBA3271482086B00F9F5F6 /* EXTRuntimeExtensions.h in Headers */,
+				D0FBA3291482086B00F9F5F6 /* EXTSafeCategory.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -521,6 +539,8 @@
 				1E2819551481EB14006A747C /* CATransaction+BlockAdditions.m in Sources */,
 				1E2819571481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m in Sources */,
 				1E2819731481EE7B006A747C /* NSView+VELNSViewAdditions.m in Sources */,
+				D0FBA3281482086B00F9F5F6 /* EXTRuntimeExtensions.m in Sources */,
+				D0FBA32A1482086B00F9F5F6 /* EXTSafeCategory.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -584,6 +604,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../libextobjc/extobjc/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -606,6 +627,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../libextobjc/extobjc/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};

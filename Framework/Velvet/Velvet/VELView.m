@@ -252,7 +252,7 @@
         fromView = fromView.superview;
     }
 
-    return affineTransform;
+    return CGAffineTransformInvert(affineTransform);
 }
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view; {

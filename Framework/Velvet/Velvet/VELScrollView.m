@@ -33,6 +33,12 @@
  * Invoked when one of the scrollers moves.
  */
 - (void)scrolled:(NSScroller *)sender;
+
+/*
+ * Scrolls the underlying layer to the specified point and notifies all
+ * subviews.
+ */
+- (void)scrollToPoint:(CGPoint)point;
 @end
 
 @implementation VELScrollView
@@ -129,7 +135,17 @@
     self.verticalScroller.knobProportion = CGRectGetHeight(bounds) / CGRectGetHeight(contentRect);
 }
 
-#pragma mark Actions
+- (void)scrollToPoint:(CGPoint)point; {
+    [CATransaction performWithDisabledActions:^{
+        [self.scrollLayer scrollToPoint:point];
+    }];
+
+    for (VELView *view in self.subviews) {
+        [view ancestorDidScroll];
+    }
+}
+
+#pragma mark Events
 
 - (void)scrolled:(NSScroller *)sender; {
     CGSize contentSize = self.scrollLayer.contentsRect.size;
@@ -138,14 +154,11 @@
     double verticalValue = self.verticalScroller.doubleValue;
 
     CGPoint scrollPoint = CGPointMake(round(horizontalValue * contentSize.width), round(verticalValue * contentSize.height));
+    [self scrollToPoint:scrollPoint];
+}
 
-    [CATransaction performWithDisabledActions:^{
-        [self.scrollLayer scrollToPoint:scrollPoint];
-    }];
-
-    for (VELView *view in self.subviews) {
-        [view ancestorDidScroll];
-    }
+- (void)scrollWheel:(NSEvent *)event; {
+    NSLog(@"contentsRect: %@", NSStringFromRect(self.scrollLayer.contentsRect));
 }
 
 #pragma mark CALayer delegate

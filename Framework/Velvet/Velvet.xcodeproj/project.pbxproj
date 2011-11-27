@@ -11,13 +11,24 @@
 		0DCD37C7147DB86200A9D6E4 /* NSVelvetHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */; };
 		0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DEDDD3D147B5D5C0087037C /* VELWindow.h */; };
 		0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DEDDD3E147B5D5C0087037C /* VELWindow.m */; };
+		1E1790EC1481CC6C00177DC0 /* NSViewClipRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E1790EA1481CC6C00177DC0 /* NSViewClipRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		1E1790ED1481CC6C00177DC0 /* NSViewClipRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E1790EB1481CC6C00177DC0 /* NSViewClipRenderer.m */; };
+		1E2819481481EAEF006A747C /* VELCAAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819451481EAEF006A747C /* VELCAAction.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		1E2819491481EAEF006A747C /* VELCAAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2819461481EAEF006A747C /* VELCAAction.m */; };
+		1E28194A1481EAEF006A747C /* VELNSViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819471481EAEF006A747C /* VELNSViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		1E2819521481EB14006A747C /* CALayer+GeometryAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E28194C1481EB14006A747C /* CALayer+GeometryAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1E2819531481EB14006A747C /* CALayer+GeometryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E28194D1481EB14006A747C /* CALayer+GeometryAdditions.m */; };
+		1E2819541481EB14006A747C /* CATransaction+BlockAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E28194E1481EB14006A747C /* CATransaction+BlockAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1E2819551481EB14006A747C /* CATransaction+BlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */; };
+		1E2819561481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1E2819571481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */; };
 		1E7BBD40147B157C0010375D /* VELLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E7BBD3E147B157B0010375D /* VELLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E7BBD41147B157C0010375D /* VELLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7BBD3F147B157B0010375D /* VELLabel.m */; };
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
 		D0150FDC147902AE00126F09 /* VELContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FDA147902AE00126F09 /* VELContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0150FDD147902AE00126F09 /* VELContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FDB147902AE00126F09 /* VELContext.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */; };
+		D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
@@ -54,6 +65,17 @@
 		0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetHostView.m; sourceTree = "<group>"; };
 		0DEDDD3D147B5D5C0087037C /* VELWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELWindow.h; sourceTree = "<group>"; };
 		0DEDDD3E147B5D5C0087037C /* VELWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELWindow.m; sourceTree = "<group>"; };
+		1E1790EA1481CC6C00177DC0 /* NSViewClipRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewClipRenderer.h; sourceTree = "<group>"; };
+		1E1790EB1481CC6C00177DC0 /* NSViewClipRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewClipRenderer.m; sourceTree = "<group>"; };
+		1E2819451481EAEF006A747C /* VELCAAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELCAAction.h; sourceTree = "<group>"; };
+		1E2819461481EAEF006A747C /* VELCAAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELCAAction.m; sourceTree = "<group>"; };
+		1E2819471481EAEF006A747C /* VELNSViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSViewPrivate.h; sourceTree = "<group>"; };
+		1E28194C1481EB14006A747C /* CALayer+GeometryAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+GeometryAdditions.h"; sourceTree = "<group>"; };
+		1E28194D1481EB14006A747C /* CALayer+GeometryAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+GeometryAdditions.m"; sourceTree = "<group>"; };
+		1E28194E1481EB14006A747C /* CATransaction+BlockAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CATransaction+BlockAdditions.h"; sourceTree = "<group>"; };
+		1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CATransaction+BlockAdditions.m"; sourceTree = "<group>"; };
+		1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGBitmapContext+PixelFormatAdditions.h"; sourceTree = "<group>"; };
+		1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGBitmapContext+PixelFormatAdditions.m"; sourceTree = "<group>"; };
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
 		1E7BBD3F147B157B0010375D /* VELLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabel.m; sourceTree = "<group>"; };
 		1E7BBD4B147B17400010375D /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
@@ -131,6 +153,12 @@
 		D0150FF414790BF500126F09 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1E28194C1481EB14006A747C /* CALayer+GeometryAdditions.h */,
+				1E28194D1481EB14006A747C /* CALayer+GeometryAdditions.m */,
+				1E28194E1481EB14006A747C /* CATransaction+BlockAdditions.h */,
+				1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */,
+				1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */,
+				1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */,
 				D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */,
 				D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */,
 				D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */,
@@ -146,8 +174,13 @@
 				0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */,
 				D0D8C39D1478582C00FC9015 /* NSVelvetView.h */,
 				D0D8C39E1478582C00FC9015 /* NSVelvetView.m */,
+				1E1790EA1481CC6C00177DC0 /* NSViewClipRenderer.h */,
+				1E1790EB1481CC6C00177DC0 /* NSViewClipRenderer.m */,
+				1E2819451481EAEF006A747C /* VELCAAction.h */,
+				1E2819461481EAEF006A747C /* VELCAAction.m */,
 				D01CF3D21479B18400C88D2B /* VELNSView.h */,
 				D01CF3D31479B18400C88D2B /* VELNSView.m */,
+				1E2819471481EAEF006A747C /* VELNSViewPrivate.h */,
 			);
 			name = "AppKit Bridging";
 			sourceTree = "<group>";
@@ -350,6 +383,12 @@
 				D0CACD35147C86C0008C42B2 /* VELGeometry.h in Headers */,
 				D0911B1D147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h in Headers */,
 				0DCD37C6147DB86200A9D6E4 /* NSVelvetHostView.h in Headers */,
+				1E1790EC1481CC6C00177DC0 /* NSViewClipRenderer.h in Headers */,
+				1E2819481481EAEF006A747C /* VELCAAction.h in Headers */,
+				1E28194A1481EAEF006A747C /* VELNSViewPrivate.h in Headers */,
+				1E2819521481EB14006A747C /* CALayer+GeometryAdditions.h in Headers */,
+				1E2819541481EB14006A747C /* CATransaction+BlockAdditions.h in Headers */,
+				1E2819561481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,6 +508,11 @@
 				0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */,
 				D0911B1E147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m in Sources */,
 				0DCD37C7147DB86200A9D6E4 /* NSVelvetHostView.m in Sources */,
+				1E1790ED1481CC6C00177DC0 /* NSViewClipRenderer.m in Sources */,
+				1E2819491481EAEF006A747C /* VELCAAction.m in Sources */,
+				1E2819531481EB14006A747C /* CALayer+GeometryAdditions.m in Sources */,
+				1E2819551481EB14006A747C /* CATransaction+BlockAdditions.m in Sources */,
+				1E2819571481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

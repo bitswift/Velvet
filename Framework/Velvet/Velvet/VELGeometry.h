@@ -13,29 +13,37 @@
  * coordinates.
  *
  * This must be implemented by any view class that wishes to be compatible with
- * the geometry methods of `VELView`.
+ * the geometry methods of <VELView>.
  */
 @protocol VELGeometry <NSObject>
 @required
 /**
- * Converts `point` from the coordinate system of the receiver's window to that
- * of the receiver.
+ * Converts a point from the coordinate system of the window to that of the
+ * receiver.
+ *
+ * @param point A point in the coordinate system of the receiver's window.
  */
 - (CGPoint)convertFromWindowPoint:(CGPoint)point;
 
 /**
- * Converts `point` from the receiver's coordinate system to that of its window.
+ * Converts a point from the receiver's coordinate system to that of its window.
+ *
+ * @param point A point in the coordinate system of the receiver.
  */
 - (CGPoint)convertToWindowPoint:(CGPoint)point; 
 
 /**
- * Converts `rect` from the coordinate system of the receiver's window to that
- * of the receiver.
+ * Converts a rectangle from the coordinate system of the window to that of the
+ * receiver.
+ *
+ * @param rect A rectangle in the coordinate system of the receiver's window.
  */
 - (CGRect)convertFromWindowRect:(CGRect)rect;
 
 /**
- * Converts `rect` from the receiver's coordinate system to that of its window.
+ * Converts a rectangle from the receiver's coordinate system to that of its window.
+ *
+ * @param rect A rectangle in the coordinate system of the receiver.
  */
 - (CGRect)convertToWindowRect:(CGRect)rect;
 @end

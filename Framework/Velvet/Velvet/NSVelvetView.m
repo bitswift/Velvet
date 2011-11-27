@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSView *velvetHostView;
 @property (nonatomic, readwrite, strong) VELContext *context;
 
-/**
+/*
  * Configures all the necessary properties on the receiver. This is outside of
  * an initializer because \c NSView has no true designated initializer.
  */

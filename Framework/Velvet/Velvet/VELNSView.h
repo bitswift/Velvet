@@ -13,15 +13,26 @@
  * normal Velvet view hierarchy.
  */
 @interface VELNSView : VELView
+
 /**
- * The view displayed by the receiver.
+ * @name Initialization
  */
-@property (strong) NSView *NSView;
 
 /**
  * Initializes the receiver, setting its `NSView` property to `view`.
  *
- * @note The designated initializer for this class is `init`.
+ * The designated initializer for this class is <[VELView init]>.
+ *
+ * @param view The view to display in the receiver.
  */
 - (id)initWithNSView:(NSView *)view;
+
+/**
+ * @name NSView Hierarchy
+ */
+
+/**
+ * The view displayed by the receiver.
+ */
+@property (strong) NSView *NSView;
 @end

@@ -77,6 +77,29 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.5;
     self.scrollLayer.contentsRect = CGRectMake(0, 0, contentSize.width, contentSize.height);
 }
 
+- (void)setSubviews:(NSArray *)subviews {
+    // keep our scroller host views at the end
+    BOOL (^isScroller)(VELView *) = ^ BOOL (VELView *view){
+        return view == self.horizontalScrollerHost || view == self.verticalScrollerHost;
+    };
+
+    subviews = [subviews sortedArrayWithOptions:NSSortStable usingComparator:^ NSComparisonResult (VELView *viewA, VELView *viewB){
+        if (isScroller(viewA)) {
+            if (isScroller(viewB)) {
+                return NSOrderedSame;
+            } else {
+                return NSOrderedDescending;
+            }
+        } else if (isScroller(viewB)) {
+            return NSOrderedAscending;
+        }
+
+        return NSOrderedSame;
+    }];
+    
+    [super setSubviews:subviews];
+}
+
 #pragma mark Lifecycle
 
 - (id)init {

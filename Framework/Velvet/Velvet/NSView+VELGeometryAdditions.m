@@ -7,8 +7,9 @@
 //
 
 #import <Velvet/NSView+VELGeometryAdditions.h>
+#import "EXTSafeCategory.h"
 
-@implementation NSView (VELGeometryAdditions)
+@safecategory (NSView, VELGeometryAdditions)
 - (CGPoint)convertFromWindowPoint:(CGPoint)point; {
     NSPoint windowPoint = NSPointFromCGPoint(point);
     NSPoint selfPoint = [self convertPoint:windowPoint fromView:nil];

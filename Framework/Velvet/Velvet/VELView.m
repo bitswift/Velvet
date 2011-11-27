@@ -181,6 +181,18 @@
     return self.hostView.window;
 }
 
+- (NSUInteger)viewDepth {
+    // naive implementation
+    NSUInteger depth = 0;
+    VELView *superview = self.superview;
+    while (superview) {
+        ++depth;
+        superview = superview.superview;
+    }
+
+    return depth;
+}
+
 #pragma mark Layer handling
 
 + (Class)layerClass; {

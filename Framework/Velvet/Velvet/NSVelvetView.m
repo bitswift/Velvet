@@ -17,6 +17,36 @@
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 
+static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, void *context) {
+    // scrollers should be on top of everything
+    if ([viewA isKindOfClass:[NSScroller class]]) {
+        if ([viewB isKindOfClass:[NSScroller class]])
+            return NSOrderedSame;
+        else
+            return NSOrderedDescending;
+    } else if ([viewB isKindOfClass:[NSScroller class]])
+        return NSOrderedAscending;
+
+    VELView *velvetA = viewA.hostView;
+    VELView *velvetB = viewB.hostView;
+
+    // if they're both part of Velvet, use hierarchy depth to figure out the
+    // ordering
+    //
+    // if either (or both) are not in Velvet, this will be zero, and the larger
+    // depth will win anyways
+    NSUInteger depthA = velvetA.viewDepth;
+    NSUInteger depthB = velvetB.viewDepth;
+
+    // deeper views should visually appear to be on top
+    if (depthA > depthB)
+        return NSOrderedDescending;
+    else if (depthA < depthB)
+        return NSOrderedAscending;
+    else
+        return NSOrderedSame;
+}
+
 @interface NSVelvetView ()
 @property (nonatomic, strong) NSView *velvetHostView;
 @property (nonatomic, readwrite, strong) VELContext *context;
@@ -123,6 +153,12 @@
     }
 
     return self;
+}
+
+#pragma mark NSView hierarchy
+
+- (void)didAddSubview:(NSView *)subview {
+    [self sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
 }
 
 @end

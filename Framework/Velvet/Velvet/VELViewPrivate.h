@@ -19,4 +19,11 @@
 @interface VELView (VELViewPrivate)
 @property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
+
+/*
+ * How many levels deep in the hierarchy this view is.
+ *
+ * The root view will have a depth of one.
+ */
+@property (readonly) NSUInteger viewDepth;
 @end

@@ -7,13 +7,18 @@
 //
 
 #import <Velvet/VELView.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
+#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/VELContext.h>
-#import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELCAAction.h>
-#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
+#import <Velvet/VELScrollView.h>
+#import <Velvet/VELViewPrivate.h>
+#import <Velvet/VELViewProtected.h>
+#import "EXTScope.h"
 
 @interface VELView ()
 @property (readwrite, weak) VELView *superview;
@@ -26,19 +31,6 @@
  * without entering an infinite loop.
  */
 @property (assign, getter = isRecursingActionForLayer) BOOL recursingActionForLayer;
-
-/*
- * The affine transform needed to move into the coordinate system of the
- * receiver from its superview.
- */
-@property (readonly) CGAffineTransform affineTransformFromSuperview;
-
-/*
- * Returns the affine transform necessary to convert from the coordinate space
- * of the receiver to that of `parentView`. `parentView` must be an ancestor of
- * the receiver.
- */
-- (CGAffineTransform)affineTransformToAncestorView:(VELView *)parentView;
 @end
 
 @implementation VELView
@@ -99,8 +91,16 @@
             [view removeFromSuperview];
         }
 
+        for (VELView *view in subviews) {
+            [view removeFromSuperview];
+        }
+
         m_subviews = [subviews copy];
+
+        NSVelvetView *hostView = self.hostView;
         for (VELView *view in m_subviews) {
+            [view willMoveToHostView:hostView];
+
             // match the context of this view with 'view'
             if (!view.context) {
                 view.context = self.context;
@@ -111,7 +111,8 @@
             }
 
             view.superview = self;
-            [self.layer addSublayer:view.layer];
+            [self addSubviewToLayer:view];
+            [view didMoveToHostView];
         }
     });
 }
@@ -130,6 +131,11 @@
 }
 
 - (void)setHostView:(NSVelvetView *)view {
+    [self willMoveToHostView:view];
+    @onExit {
+        [self didMoveToHostView];
+    };
+
     // TODO: the threading here isn't really safe, since it depends on having
     // a valid context with which to synchronize -- sometimes there may be no
     // context, which could introduce race conditions
@@ -164,6 +170,18 @@
     return self.hostView.window;
 }
 
+- (NSUInteger)viewDepth {
+    // naive implementation
+    NSUInteger depth = 1;
+    VELView *superview = self.superview;
+    while (superview) {
+        ++depth;
+        superview = superview.superview;
+    }
+
+    return depth;
+}
+
 #pragma mark Layer handling
 
 + (Class)layerClass; {
@@ -192,15 +210,20 @@
     if (!CGRectContainsPoint(self.bounds, point))
         return nil;
 
-    for (VELView *view in self.subviews) {
+    __block VELView *result = self;
+
+    // subviews are ordered back-to-front, but we should test for hits in the
+    // opposite order
+    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView *view, NSUInteger index, BOOL *stop){
         CGPoint subviewPoint = [view convertPoint:point fromView:self];
         VELView *hitView = [view hitTest:subviewPoint];
         if (hitView) {
-            return hitView;
+            result = hitView;
+            *stop = YES;
         }
-    }
+    }];
 
-    return self;
+    return result;
 }
 
 #pragma mark Rendering
@@ -209,6 +232,16 @@
 }
 
 #pragma mark View hierarchy
+
+- (void)addSubviewToLayer:(VELView *)view; {
+    [self.layer addSublayer:view.layer];
+}
+
+- (void)ancestorDidScroll; {
+    for (VELView *subview in self.subviews) {
+        [subview ancestorDidScroll];
+    }
+}
 
 - (VELView *)ancestorSharedWithView:(VELView *)view; {
     VELView *parentView = self;
@@ -221,6 +254,19 @@
     } while (parentView);
 
     return nil;
+}
+
+- (void)didMoveToHostView; {
+    for (VELView *subview in self.subviews) {
+        [subview didMoveToHostView];
+    }
+}
+
+- (id)ancestorScrollView; {
+    if (self.superview)
+        return self.superview.ancestorScrollView;
+
+    return [self.hostView ancestorScrollView];
 }
 
 - (BOOL)isDescendantOfView:(VELView *)view; {
@@ -239,38 +285,22 @@
 
 - (void)removeFromSuperview; {
     dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        [self willMoveToHostView:nil];
+
         [self.layer removeFromSuperlayer];
         self.superview = nil;
+
+        [self didMoveToHostView];
     });
 }
 
-#pragma mark Geometry
-
-- (CGAffineTransform)affineTransformFromSuperview {
-    // this will expand in the future to include a 'transform' property
-    CGRect frame = self.frame;
-    return CGAffineTransformMakeTranslation(frame.origin.x, frame.origin.y);
-}
-
-- (CGAffineTransform)affineTransformToAncestorView:(VELView *)parentView; {
-    NSParameterAssert([self isDescendantOfView:parentView]);
-
-    CGAffineTransform affineTransform = CGAffineTransformIdentity;
-
-    VELView *fromView = self;
-    while (fromView != parentView) {
-        // work backwards, getting the transformation from the superview to
-        // the subview
-        CGAffineTransform invertedTransform = fromView.affineTransformFromSuperview;
-
-        // then invert that, to get the other direction
-        affineTransform = CGAffineTransformConcat(affineTransform, CGAffineTransformInvert(invertedTransform));
-
-        fromView = fromView.superview;
+- (void)willMoveToHostView:(NSVelvetView *)hostView; {
+    for (VELView *subview in self.subviews) {
+        [subview willMoveToHostView:hostView];
     }
-
-    return CGAffineTransformInvert(affineTransform);
 }
+
+#pragma mark Geometry
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view; {
     return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
@@ -292,44 +322,66 @@
 
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
     NSVelvetView *hostView = self.hostView;
-    VELView *rootView = hostView.rootView;
-    CGAffineTransform transformToRoot = [self affineTransformToAncestorView:rootView];
 
-    CGPoint hostPoint = CGPointApplyAffineTransform(point, transformToRoot);
+    VELView *rootView = hostView.rootView;
+    CGPoint hostPoint = [self.layer convertPoint:point toLayer:rootView.layer];
+
     return [hostView convertToWindowPoint:hostPoint];
 }
 
 - (CGPoint)convertFromWindowPoint:(CGPoint)point {
     NSVelvetView *hostView = self.hostView;
-    VELView *rootView = hostView.rootView;
-    CGAffineTransform transformFromRoot = CGAffineTransformInvert([self affineTransformToAncestorView:rootView]);
-
     CGPoint hostPoint = [hostView convertFromWindowPoint:point];
-    return CGPointApplyAffineTransform(hostPoint, transformFromRoot);
+
+    VELView *rootView = hostView.rootView;
+    return [self.layer convertPoint:hostPoint fromLayer:rootView.layer];
 }
 
 - (CGRect)convertToWindowRect:(CGRect)rect {
     NSVelvetView *hostView = self.hostView;
-    VELView *rootView = hostView.rootView;
-    CGAffineTransform transformToRoot = [self affineTransformToAncestorView:rootView];
 
-    CGRect hostRect = CGRectApplyAffineTransform(rect, transformToRoot);
+    VELView *rootView = hostView.rootView;
+    CGRect hostRect = [self.layer convertRect:rect toLayer:rootView.layer];
+
     return [hostView convertToWindowRect:hostRect];
 }
 
 - (CGRect)convertFromWindowRect:(CGRect)rect {
     NSVelvetView *hostView = self.hostView;
-    VELView *rootView = hostView.rootView;
-    CGAffineTransform transformFromRoot = CGAffineTransformInvert([self affineTransformToAncestorView:rootView]);
-
     CGRect hostRect = [hostView convertFromWindowRect:rect];
-    return CGRectApplyAffineTransform(hostRect, transformFromRoot);
+
+    VELView *rootView = hostView.rootView;
+    return [self.layer convertRect:hostRect fromLayer:rootView.layer];
+}
+
+#pragma mark Layout
+
+- (void)layoutSubviews; {
+}
+
+- (CGSize)sizeThatFits:(CGSize)constraint; {
+    return self.bounds.size;
+}
+
+#pragma mark NSObject overrides
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> frame = %@, subviews = %@", [self class], self, NSStringFromRect(self.frame), self.subviews];
 }
 
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
-    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size);
+    CGRect bounds = self.bounds;
+    if (CGRectIsEmpty(bounds) || CGRectIsNull(bounds)) {
+        // can't do anything
+        return;
+    }
+
+    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size);
+    if (!context) {
+        return;
+    }
 
     [self drawLayer:layer inContext:context];
 
@@ -340,6 +392,9 @@
 }
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
+    if (!context)
+        return;
+
     CGRect bounds = self.bounds;
 
     CGContextClearRect(context, bounds);
@@ -379,9 +434,16 @@
     }
 }
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"<%@ %p> frame = %@, subviews = %@", [self class], self, NSStringFromRect(self.frame), self.subviews];
+#pragma mark CALayoutManager
+
+- (void)layoutSublayersOfLayer:(CALayer *)layer {
+    [CATransaction performWithDisabledActions:^{
+        [self layoutSubviews];
+    }];
+}
+
+- (CGSize)preferredSizeOfLayer:(CALayer *)layer {
+    return [self sizeThatFits:CGSizeZero];
 }
 
 @end

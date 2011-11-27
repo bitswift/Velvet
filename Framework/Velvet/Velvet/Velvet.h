@@ -11,9 +11,11 @@
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/NSView+VELGeometryAdditions.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELGeometry.h>
 #import <Velvet/VELLabel.h>
 #import <Velvet/VELNSView.h>
+#import <Velvet/VELScrollView.h>
 #import <Velvet/VELView.h>

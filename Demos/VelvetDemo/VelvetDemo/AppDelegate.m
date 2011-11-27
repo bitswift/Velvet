@@ -16,7 +16,7 @@
 @property (weak) IBOutlet NSVelvetView *hostView;
 
 @property (strong) VELView *rootView;
-@property (strong) VELNSView *scrollViewHost;
+@property (strong) VELScrollView *scrollView;
 @property (strong) SquareView *nestedSquareView;
 @property (strong) VELNSView *buttonHost;
 
@@ -27,7 +27,7 @@
 @synthesize window = m_window;
 @synthesize hostView = m_hostView;
 @synthesize rootView = m_rootView;
-@synthesize scrollViewHost = m_scrollViewHost;
+@synthesize scrollView = m_scrollView;
 @synthesize nestedSquareView = m_nestedSquareView;
 @synthesize buttonHost = m_buttonHost;
 
@@ -47,13 +47,18 @@
     [textField setDrawsBackground:YES];
     [imageView addSubview:textField];
 
-    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:NSMakeRect(20, 20, 300, 300)];
-    [scrollView setBorderType:NSNoBorder];
-    [scrollView setDocumentView:imageView];
-    [scrollView setHasHorizontalScroller:YES];
-    [scrollView setHasVerticalScroller:YES];
-    [scrollView setDrawsBackground:NO];
-    [scrollView setUsesPredominantAxisScrolling:NO];
+    VELNSView *imageViewHost = [[VELNSView alloc] initWithNSView:imageView];
+
+    self.scrollView = [[VELScrollView alloc] init];
+    self.scrollView.layer.backgroundColor = CGColorGetConstantColor(kCGColorBlack);
+    self.scrollView.contentSize = imageRect.size;
+    self.scrollView.frame = CGRectMake(20, 20, 300, 300);
+
+    VELView *scrollableSquareView = [[SquareView alloc] init];
+    scrollableSquareView.frame = CGRectMake(20, 200, 800, 800);
+
+    self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:scrollableSquareView];
+    self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:imageViewHost];
 
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
         (__bridge_transfer id)CGColorCreateGenericGray(0, 1), (__bridge id)kCTForegroundColorAttributeName,
@@ -64,15 +69,10 @@
     VELLabel *label = [[VELLabel alloc] init];
     label.text = [[NSAttributedString alloc] initWithString:@"** Hello world! **" attributes:attributes];
     label.frame = CGRectMake(0, 400, 300, 60);
-    self.hostView.rootView.subviews = [NSArray arrayWithObject:label];
 
-    self.scrollViewHost = [[VELNSView alloc] init];
-    self.scrollViewHost.frame = scrollView.frame;
+    self.hostView.rootView.subviews = [NSArray arrayWithObjects:label, self.scrollView, nil];
 
-    self.hostView.rootView.subviews = [self.hostView.rootView.subviews arrayByAddingObject:self.scrollViewHost];
-    self.scrollViewHost.NSView = scrollView;
-
-    VELView *rootSquareView = [[VELView alloc] init];
+    VELView *rootSquareView = [[SquareView alloc] init];
     rootSquareView.frame = CGRectMake(0, 0, 200, 200);
 
     self.nestedSquareView = [[SquareView alloc] init];
@@ -82,7 +82,7 @@
     NSVelvetView *nestedVelvetView = [[NSVelvetView alloc] initWithFrame:NSMakeRect(20, 20, 300, 300)];
     nestedVelvetView.layer.masksToBounds = YES;
     nestedVelvetView.rootView = rootSquareView;
-    [imageView addSubview:nestedVelvetView];
+    [imageView addSubview:nestedVelvetView positioned:NSWindowBelow relativeTo:nil];
 
     NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 28)];
     [button setButtonType:NSMomentaryPushInButton];
@@ -103,17 +103,21 @@
 //    [self performSelector:@selector(animateMe) withObject:nil afterDelay:1.0];
 }
 
+- (void)updateScrollers {
+    self.scrollView.horizontalScroller.doubleValue = 0.2;
+}
+
 - (void)animateMe
 {
     [CATransaction begin];
     [CATransaction setAnimationDuration:2.0];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
 
-    CGRect frm = self.scrollViewHost.frame;
+    CGRect frm = self.scrollView.frame;
     frm.origin.x += 150;
     frm.origin.y += 20;
 //  frm.size.height /= 2.0;
-    self.scrollViewHost.frame = frm;
+    self.scrollView.frame = frm;
 
     CGRect frm2 = self.buttonHost.frame;
     frm2.origin.x += 150;

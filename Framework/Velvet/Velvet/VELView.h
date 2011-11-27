@@ -140,6 +140,15 @@
 - (VELView *)ancestorSharedWithView:(VELView *)view;
 
 /**
+ * Returns the closest ancestor scroll view containing the receiver (including
+ * the receiver itself), or `nil` if there is no such view.
+ *
+ * This may return an `NSScrollView`, a <VELScrollView>, or a custom class. This
+ * method will search both Velvet and AppKit hierarchies.
+ */
+- (id)ancestorScrollView;
+
+/**
  * Returns whether the receiver is `view` or a descendant thereof.
  *
  * @param view The root of the view hierarchy in which to search for the
@@ -152,6 +161,34 @@
  * nothing happens.
  */
 - (void)removeFromSuperview;
+
+/**
+ * @name Layout
+ */
+
+/**
+ * Lays out subviews.
+ *
+ * The default implementation of this method does nothing.
+ */
+- (void)layoutSubviews;
+
+/**
+ * Calculates and returns the preferred size of the receiver that fits within
+ * a constraining size (if possible).
+ *
+ * This method should return the size that best fits its subviews in the
+ * constraint available. If the receiver cannot fit in the constrained size, it
+ * should return the smallest size that it will fit in.
+ *
+ * The default implementation of this method returns the size of the receiver's
+ * <bounds>.
+ *
+ * @param constraint The size to which the receiver should be constrained. If
+ * this is `CGSizeZero`, the receiver should return its generally preferred
+ * size.
+ */
+- (CGSize)sizeThatFits:(CGSize)constraint;
 
 /**
  * @name Drawing

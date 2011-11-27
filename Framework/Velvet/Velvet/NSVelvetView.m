@@ -17,9 +17,52 @@
 #import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 
+static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, void *context) {
+    VELView *velvetA = viewA.hostView;
+    VELView *velvetB = viewB.hostView;
+
+    // Velvet-hosted NSViews should be on top of everything else
+    if (!velvetA) {
+        if (!velvetB) {
+            return NSOrderedSame;
+        } else {
+            return NSOrderedAscending;
+        }
+    } else if (!velvetB) {
+        return NSOrderedDescending;
+    }
+
+    VELView *ancestor = [velvetA ancestorSharedWithView:velvetB];
+    NSCAssert2(ancestor, @"Velvet-hosted NSViews in the same NSVelvetView should share a Velvet ancestor: %@, %@", viewA, viewB);
+
+    __block NSInteger orderA = -1;
+    __block NSInteger orderB = -1;
+
+    [ancestor.subviews enumerateObjectsUsingBlock:^(VELView *subview, NSUInteger index, BOOL *stop){
+        if ([velvetA isDescendantOfView:subview]) {
+            orderA = (NSInteger)index;
+        } else if ([velvetB isDescendantOfView:subview]) {
+            orderB = (NSInteger)index;
+        }
+
+        if (orderA >= 0 && orderB >= 0) {
+            *stop = YES;
+        }
+    }];
+
+    if (orderA < orderB) {
+        return NSOrderedAscending;
+    } else if (orderA > orderB) {
+        return NSOrderedDescending;
+    } else {
+        return NSOrderedSame;
+    }
+}
+
 @interface NSVelvetView ()
 @property (nonatomic, strong) NSView *velvetHostView;
 @property (nonatomic, readwrite, strong) VELContext *context;
+@property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
 
 /*
  * Configures all the necessary properties on the receiver. This is outside of
@@ -35,6 +78,7 @@
 @synthesize context = m_context;
 @synthesize rootView = m_rootView;
 @synthesize velvetHostView = m_velvetHostView;
+@synthesize userInteractionEnabled = m_userInteractionEnabled;
 
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
@@ -74,6 +118,7 @@
 
 - (void)setUp; {
     self.context = [[VELContext alloc] init];
+    self.userInteractionEnabled = YES;
 
     // enable layer-backing for this view (as high as possible in the view
     // hierarchy, to keep as much as possible in CA)
@@ -100,29 +145,44 @@
 #pragma mark Event handling
 
 - (NSView *)hitTest:(NSPoint)point {
+    if (!self.userInteractionEnabled)
+        return nil;
+
     // convert point into our coordinate system, so it's ready to go for all
     // subviews (which expect it in their superview's coordinate system)
     point = [self convertPoint:point fromView:self.superview];
 
+    __block NSView *result = self;
+
     // we need to avoid hitting any NSViews that are clipped by their
     // corresponding Velvet views
-    for (NSView *view in self.subviews) {
+    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView *view, NSUInteger index, BOOL *stop){
         VELNSView *hostView = view.hostView;
         if (hostView) {
             CGRect bounds = hostView.layer.bounds;
             CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
 
             CGPoint subviewPoint = [view convertPoint:point fromView:self];
-            if (!CGRectContainsPoint(clippedBounds, subviewPoint))
-                continue;
+            if (!CGRectContainsPoint(clippedBounds, subviewPoint)) {
+                // skip this view
+                return;
+            }
         }
 
         NSView *hitTestedView = [view hitTest:point];
-        if (hitTestedView)
-            return hitTestedView;
-    }
+        if (hitTestedView) {
+            result = hitTestedView;
+            *stop = YES;
+        }
+    }];
 
-    return self;
+    return result;
+}
+
+#pragma mark NSView hierarchy
+
+- (void)didAddSubview:(NSView *)subview {
+    [self sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
 }
 
 @end

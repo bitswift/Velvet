@@ -59,6 +59,9 @@
  *
  * @param point The point to transform into the receiver's coordinate system.
  * @param view The view whose coordinate system `point` is represented in.
+ *
+ * @warning *Important:* The receiver and `view` must be rooted at the same
+ * window.
  */
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view;
 
@@ -68,6 +71,9 @@
  *
  * @param point The point in the receiver's coordinate system.
  * @param view The view whose coordinate system `point` should be represented in.
+ *
+ * @warning *Important:* The receiver and `view` must be rooted at the same
+ * window.
  */
 - (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view;
 
@@ -77,6 +83,9 @@
  *
  * @param rect The rectangle to transform into the receiver's coordinate system.
  * @param view The view whose coordinate system `rect` is represented in.
+ *
+ * @warning *Important:* The receiver and `view` must be rooted at the same
+ * window.
  */
 - (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view;
 
@@ -86,6 +95,9 @@
  *
  * @param rect The rectangle in the receiver's coordinate system.
  * @param view The view whose coordinate system `rect` should be represented in.
+ *
+ * @warning *Important:* The receiver and `view` must be rooted at the same
+ * window.
  */
 - (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view;
 

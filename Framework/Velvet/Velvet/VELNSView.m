@@ -93,6 +93,7 @@
         return nil;
 
     self.NSView = view;
+    self.frame = view.frame;
     return self;
 }
 

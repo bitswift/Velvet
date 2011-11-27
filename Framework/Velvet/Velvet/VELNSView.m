@@ -111,6 +111,34 @@
     [self.NSView.layer setNeedsDisplay];
 }
 
+#pragma mark Layout
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    [self synchronizeNSViewGeometry];
+}
+
+- (CGSize)sizeThatFits:(CGSize)constraint {
+    id view = self.NSView;
+    NSCell *cell = nil;
+    NSSize cellSize = NSMakeSize(10000, 10000);
+
+    if ([view respondsToSelector:@selector(cell)]) {
+        cell = [view cell];
+    }
+
+    if ([cell respondsToSelector:@selector(cellSize)]) {
+        cellSize = [cell cellSize];
+    }
+
+    // if we don't have a cell, or it didn't give us a true size
+    if (CGSizeEqualToSize(cellSize, CGSizeMake(10000, 10000))) {
+        return [super sizeThatFits:constraint];
+    }
+
+    return cellSize;
+}
+
 #pragma mark CALayer delegate
 
 - (void)renderContainedViewInLayer:(CALayer *)layer {

@@ -18,14 +18,15 @@
 #import <objc/runtime.h>
 
 static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, void *context) {
-    // scrollers should be on top of everything
+    // scrollers should be on top of everything (meaning they should be sorted
+    // low)
     if ([viewA isKindOfClass:[NSScroller class]]) {
         if ([viewB isKindOfClass:[NSScroller class]])
             return NSOrderedSame;
         else
-            return NSOrderedDescending;
+            return NSOrderedAscending;
     } else if ([viewB isKindOfClass:[NSScroller class]])
-        return NSOrderedAscending;
+        return NSOrderedDescending;
 
     VELView *velvetA = viewA.hostView;
     VELView *velvetB = viewB.hostView;
@@ -40,9 +41,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
     // deeper views should visually appear to be on top
     if (depthA > depthB)
-        return NSOrderedDescending;
-    else if (depthA < depthB)
         return NSOrderedAscending;
+    else if (depthA < depthB)
+        return NSOrderedDescending;
     else
         return NSOrderedSame;
 }
@@ -165,6 +166,11 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)didAddSubview:(NSView *)subview {
     [self sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
+
+    CGFloat zPosition = [self.subviews count];
+    for (NSView *view in self.subviews) {
+        view.layer.zPosition = zPosition--;
+    }
 }
 
 @end

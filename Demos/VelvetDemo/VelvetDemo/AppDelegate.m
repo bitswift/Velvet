@@ -35,7 +35,7 @@
     NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"iceberg" withExtension:@"jpg"];
     NSImage *image = [[NSImage alloc] initWithContentsOfURL:imageURL];
 
-    NSRect imageRect = NSMakeRect(0, 20, image.size.width, image.size.height);
+    NSRect imageRect = NSMakeRect(0, 0, image.size.width, image.size.height);
     NSImageView *imageView = [[NSImageView alloc] initWithFrame:imageRect];
     [imageView setBounds:imageRect];
     [imageView setImage:image];

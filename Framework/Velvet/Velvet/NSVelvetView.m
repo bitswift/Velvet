@@ -18,34 +18,45 @@
 #import <objc/runtime.h>
 
 static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, void *context) {
-    // scrollers should be on top of everything (meaning they should be sorted
-    // low)
-    if ([viewA isKindOfClass:[NSScroller class]]) {
-        if ([viewB isKindOfClass:[NSScroller class]])
-            return NSOrderedSame;
-        else
-            return NSOrderedAscending;
-    } else if ([viewB isKindOfClass:[NSScroller class]])
-        return NSOrderedDescending;
-
     VELView *velvetA = viewA.hostView;
     VELView *velvetB = viewB.hostView;
 
-    // if they're both part of Velvet, use hierarchy depth to figure out the
-    // ordering
-    //
-    // if either (or both) are not in Velvet, this will be zero, and the larger
-    // depth will win anyways
-    NSUInteger depthA = velvetA.viewDepth;
-    NSUInteger depthB = velvetB.viewDepth;
-
-    // deeper views should visually appear to be on top
-    if (depthA > depthB)
-        return NSOrderedAscending;
-    else if (depthA < depthB)
+    // Velvet-hosted NSViews should be on top of everything else
+    if (!velvetA) {
+        if (!velvetB) {
+            return NSOrderedSame;
+        } else {
+            return NSOrderedAscending;
+        }
+    } else if (!velvetB) {
         return NSOrderedDescending;
-    else
+    }
+
+    VELView *ancestor = [velvetA ancestorSharedWithView:velvetB];
+    NSCAssert2(ancestor, @"Velvet-hosted NSViews in the same NSVelvetView should share a Velvet ancestor: %@, %@", viewA, viewB);
+
+    __block NSInteger orderA = -1;
+    __block NSInteger orderB = -1;
+
+    [ancestor.subviews enumerateObjectsUsingBlock:^(VELView *subview, NSUInteger index, BOOL *stop){
+        if ([velvetA isDescendantOfView:subview]) {
+            orderA = (NSInteger)index;
+        } else if ([velvetB isDescendantOfView:subview]) {
+            orderB = (NSInteger)index;
+        }
+
+        if (orderA >= 0 && orderB >= 0) {
+            *stop = YES;
+        }
+    }];
+
+    if (orderA < orderB) {
+        return NSOrderedAscending;
+    } else if (orderA > orderB) {
+        return NSOrderedDescending;
+    } else {
         return NSOrderedSame;
+    }
 }
 
 @interface NSVelvetView ()
@@ -166,11 +177,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)didAddSubview:(NSView *)subview {
     [self sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
-
-    CGFloat zPosition = [self.subviews count];
-    for (NSView *view in self.subviews) {
-        view.layer.zPosition = zPosition--;
-    }
 }
 
 @end

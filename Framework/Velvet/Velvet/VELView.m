@@ -172,7 +172,7 @@
 
 - (NSUInteger)viewDepth {
     // naive implementation
-    NSUInteger depth = 0;
+    NSUInteger depth = 1;
     VELView *superview = self.superview;
     while (superview) {
         ++depth;

@@ -22,6 +22,8 @@
 
 /*
  * How many levels deep in the hierarchy this view is.
+ *
+ * The root view will have a depth of one.
  */
 @property (readonly) NSUInteger viewDepth;
 @end

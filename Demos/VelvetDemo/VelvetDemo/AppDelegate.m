@@ -52,7 +52,6 @@
     self.scrollView = [[VELScrollView alloc] init];
     self.scrollView.layer.backgroundColor = CGColorGetConstantColor(kCGColorBlack);
     self.scrollView.contentSize = imageRect.size;
-
     self.scrollView.frame = CGRectMake(20, 20, 300, 300);
     self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:imageViewHost];
 

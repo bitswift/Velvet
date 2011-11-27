@@ -210,15 +210,20 @@
     if (!CGRectContainsPoint(self.bounds, point))
         return nil;
 
-    for (VELView *view in self.subviews) {
+    __block VELView *result = self;
+
+    // subviews are ordered back-to-front, but we should test for hits in the
+    // opposite order
+    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView *view, NSUInteger index, BOOL *stop){
         CGPoint subviewPoint = [view convertPoint:point fromView:self];
         VELView *hitView = [view hitTest:subviewPoint];
         if (hitView) {
-            return hitView;
+            result = hitView;
+            *stop = YES;
         }
-    }
+    }];
 
-    return self;
+    return result;
 }
 
 #pragma mark Rendering

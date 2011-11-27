@@ -72,7 +72,7 @@
 
     self.hostView.rootView.subviews = [NSArray arrayWithObjects:label, self.scrollView, nil];
 
-    VELView *rootSquareView = [[VELView alloc] init];
+    VELView *rootSquareView = [[SquareView alloc] init];
     rootSquareView.frame = CGRectMake(0, 0, 200, 200);
 
     self.nestedSquareView = [[SquareView alloc] init];
@@ -82,7 +82,7 @@
     NSVelvetView *nestedVelvetView = [[NSVelvetView alloc] initWithFrame:NSMakeRect(20, 20, 300, 300)];
     nestedVelvetView.layer.masksToBounds = YES;
     nestedVelvetView.rootView = rootSquareView;
-    [imageView addSubview:nestedVelvetView];
+    [imageView addSubview:nestedVelvetView positioned:NSWindowBelow relativeTo:nil];
 
     NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 28)];
     [button setButtonType:NSMomentaryPushInButton];

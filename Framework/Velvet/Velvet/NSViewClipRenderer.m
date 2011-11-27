@@ -39,7 +39,7 @@
         return;
 
     CGRect selfBounds = self.clippedView.layer.bounds;
-    CGRect viewBounds = [self.clippedView.layer convertAndClipRect:selfBounds toLayer:self.clippedView.NSView.layer];
+    CGRect viewBounds = [self.clippedView.layer convertAndClipRect:selfBounds toLayer:layer];
 
     CGContextSaveGState(context);
     CGContextClipToRect(context, viewBounds);

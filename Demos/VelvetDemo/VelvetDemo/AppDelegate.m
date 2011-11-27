@@ -89,7 +89,7 @@
     [button setBezelStyle:NSRoundedBezelStyle];
     [button setTitle:@"Test Button"];
     [button setTarget:self];
-    [button setAction:@selector(buttonClicked)];
+    [button setAction:@selector(testButtonPushed:)];
 
     self.buttonHost = [[VELNSView alloc] init];
     self.buttonHost.layer.masksToBounds = YES;
@@ -100,12 +100,7 @@
     self.nestedSquareView.subviews = [NSArray arrayWithObject:self.buttonHost];
     self.buttonHost.NSView = button;
 
-    [self performSelector:@selector(animateMe) withObject:nil afterDelay:1.0];
-}
-
-- (void)buttonClicked
-{
-    NSLog(@"CLICKED");
+//    [self performSelector:@selector(animateMe) withObject:nil afterDelay:1.0];
 }
 
 - (void)animateMe
@@ -127,6 +122,10 @@
     self.buttonHost.frame = frm2;
 
     [CATransaction commit];
+}
+
+- (void)testButtonPushed:(id)sender {
+    NSLog(@"testButtonPushed");
 }
 
 @end

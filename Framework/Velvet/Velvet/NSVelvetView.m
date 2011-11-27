@@ -7,7 +7,11 @@
 //
 
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/CALayer+GeometryAdditions.h>
+#import <Velvet/NSVelvetHostView.h>
+#import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/VELContext.h>
+#import <Velvet/VELNSView.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELViewPrivate.h>
 #import <QuartzCore/QuartzCore.h>
@@ -17,20 +21,6 @@
 @property (nonatomic, strong) NSView *velvetHostView;
 @property (nonatomic, readwrite, strong) VELContext *context;
 
-/*
- * Configures all the necessary properties on the receiver. This is outside of
- * an initializer because \c NSView has no true designated initializer.
- */
-- (void)setUp;
-@end
-
-/*
- * Private layer-hosted view class, containing the whole Velvet view hierarchy.
- * This class needs to be a subview of an NSVelvetView, because the latter is
- * layer-backed (not layer-hosted), in order to support a separate NSView
- * hierarchy.
- */
-@interface NSVelvetHostView : NSView
 /*
  * Configures all the necessary properties on the receiver. This is outside of
  * an initializer because \c NSView has no true designated initializer.
@@ -107,42 +97,32 @@
     [CATransaction commit];
 }
 
-@end
+#pragma mark Event handling
 
-@implementation NSVelvetHostView
+- (NSView *)hitTest:(NSPoint)point {
+    // convert point into our coordinate system, so it's ready to go for all
+    // subviews (which expect it in their superview's coordinate system)
+    point = [self convertPoint:point fromView:self.superview];
 
-#pragma mark Lifecycle
+    // we need to avoid hitting any NSViews that are clipped by their
+    // corresponding Velvet views
+    for (NSView *view in self.subviews) {
+        VELNSView *hostView = view.hostView;
+        if (hostView) {
+            CGRect bounds = hostView.layer.bounds;
+            CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
 
-- (id)initWithCoder:(NSCoder *)coder {
-    self = [super initWithCoder:coder];
-    if (!self)
-        return nil;
+            CGPoint subviewPoint = [view convertPoint:point fromView:self];
+            if (!CGRectContainsPoint(clippedBounds, subviewPoint))
+                continue;
+        }
 
-    [self setUp];
+        NSView *hitTestedView = [view hitTest:point];
+        if (hitTestedView)
+            return hitTestedView;
+    }
+
     return self;
-}
-
-- (id)initWithFrame:(NSRect)frame; {
-    self = [super initWithFrame:frame];
-    if (!self)
-        return nil;
-
-    [self setUp];
-    return self;
-}
-
-- (void)setUp; {
-    // set up layer hosting for Velvet
-    CALayer *layer = [CALayer layer];
-    [self setLayer:layer];
-    [self setWantsLayer:YES];
-}
-
-#pragma mark Rendering
-
-- (BOOL)needsDisplay {
-    // mark this view as needing display anytime the layer is
-    return [super needsDisplay] || [self.layer needsDisplay];
 }
 
 @end

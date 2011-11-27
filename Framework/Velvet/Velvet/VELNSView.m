@@ -11,6 +11,7 @@
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELNSViewPrivate.h>
@@ -56,10 +57,13 @@
     dispatch_sync_recursive(self.context.dispatchQueue, ^{
         [m_NSView removeFromSuperview];
         m_NSView.layer.delegate = self.clipRenderer.originalLayerDelegate;
+        m_NSView.hostView = nil;
 
         m_NSView = view;
 
         if (view) {
+            view.hostView = self;
+
             [self.hostView addSubview:view];
             [self synchronizeNSViewGeometry];
 
@@ -90,6 +94,10 @@
 
     self.NSView = view;
     return self;
+}
+
+- (void)dealloc {
+    self.NSView.hostView = nil;
 }
 
 #pragma mark Geometry

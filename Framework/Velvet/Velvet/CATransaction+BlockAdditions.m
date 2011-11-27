@@ -7,9 +7,9 @@
 //
 
 #import <Velvet/CATransaction+BlockAdditions.h>
+#import "EXTSafeCategory.h"
 
-@implementation CATransaction (BlockAdditions)
-
+@safecategory (CATransaction, BlockAdditions)
 + (void)performWithDisabledActions:(void(^)(void))block {
     [self begin];
     [self setDisableActions:YES];

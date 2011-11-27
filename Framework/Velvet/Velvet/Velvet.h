@@ -16,4 +16,5 @@
 #import <Velvet/VELGeometry.h>
 #import <Velvet/VELLabel.h>
 #import <Velvet/VELNSView.h>
+#import <Velvet/VELScrollView.h>
 #import <Velvet/VELView.h>

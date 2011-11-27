@@ -8,6 +8,7 @@
 
 #import <Velvet/VELWindow.h>
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSVelvetViewPrivate.h>
 #import <Velvet/NSVelvetHostView.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELNSView.h>
@@ -115,7 +116,16 @@
             id responder = [self firstResponder];
             if ([responder isKindOfClass:[VELView class]]) {
                 [self dispatchEvent:theEvent toResponder:responder];
-                return;
+
+                // now, we still want to pass on events to the window, since it
+                // does some magic, but we should omit any Velvet-hosted NSViews
+                // from consideration
+                [(id)self.contentView setUserInteractionEnabled:NO];
+                [super sendEvent:theEvent];
+                [(id)self.contentView setUserInteractionEnabled:YES];
+
+                // don't fall through
+                break;
             }
         }
 
@@ -152,6 +162,14 @@
             if (![testView isKindOfClass:[VELNSView class]]) {
                 [self dispatchEvent:event toResponder:testView];
                 [self makeFirstResponder:testView];
+
+                // now, we still want to pass on events to the window, since it
+                // does some magic, but we should omit any Velvet-hosted NSViews
+                // from consideration
+                [(id)self.contentView setUserInteractionEnabled:NO];
+                [super sendEvent:event];
+                [(id)self.contentView setUserInteractionEnabled:YES];
+
                 break;
             }
 

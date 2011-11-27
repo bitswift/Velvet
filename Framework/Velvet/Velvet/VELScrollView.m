@@ -12,6 +12,12 @@
 #import <Velvet/VELViewProtected.h>
 #import <QuartzCore/QuartzCore.h>
 
+/*
+ * The duration, in seconds, for which scrollers stay visible after a scrolling
+ * event.
+ */
+static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.5;
+
 @interface VELScrollView ()
 /*
  * The layer which will contain any subviews, responsible for scrolling and
@@ -28,6 +34,11 @@
  * Contains a vertical `NSScroller`.
  */
 @property (nonatomic, strong, readonly) VELNSView *verticalScrollerHost;
+
+/*
+ * Whether the scrollers are currently being shown.
+ */
+@property (nonatomic, assign) BOOL scrollersVisible;
 
 /*
  * Invoked when one of the scrollers moves.
@@ -48,6 +59,7 @@
 @synthesize scrollLayer = m_scrollLayer;
 @synthesize horizontalScrollerHost = m_horizontalScrollerHost;
 @synthesize verticalScrollerHost = m_verticalScrollerHost;
+@synthesize scrollersVisible = m_scrollersVisible;
 
 - (NSScroller *)horizontalScroller {
     return (id)self.horizontalScrollerHost.NSView;
@@ -88,10 +100,10 @@
 
         scroller.scrollerStyle = style;
         scroller.enabled = YES;
+        scroller.alphaValue = 0;
 
         scroller.knobProportion = 1;
         scroller.doubleValue = 0;
-
         return scroller;
     };
 
@@ -102,6 +114,10 @@
     self.verticalScroller.doubleValue = 1;
 
     return self;
+}
+
+- (void)dealloc {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
 }
 
 #pragma mark View hierarchy
@@ -137,6 +153,20 @@
 }
 
 - (void)scrollToPoint:(CGPoint)point; {
+    if (self.scrollersVisible) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fadeOutScrollers) object:nil];
+    } else {
+        NSView *horizontalScrollerAnimator = self.horizontalScroller.animator;
+        NSView *verticalScrollerAnimator = self.verticalScroller.animator;
+
+        [NSAnimationContext beginGrouping];
+        horizontalScrollerAnimator.alphaValue = 1;
+        verticalScrollerAnimator.alphaValue = 1;
+        [NSAnimationContext endGrouping];
+
+        self.scrollersVisible = YES;
+    }
+
     [CATransaction performWithDisabledActions:^{
         [self.scrollLayer scrollToPoint:point];
     }];
@@ -148,6 +178,8 @@
     for (VELView *view in self.subviews) {
         [view ancestorDidScroll];
     }
+
+    [self performSelector:@selector(fadeOutScrollers) withObject:nil afterDelay:VELScrollViewScrollersVisibleDuration];
 }
 
 #pragma mark Events
@@ -167,6 +199,20 @@
     CGFloat scrollX = fmax(0, fmin(contentSize.width , round(currentScrollPoint.x - event.scrollingDeltaX)));
     CGFloat scrollY = fmax(0, fmin(contentSize.height, round(currentScrollPoint.y + event.scrollingDeltaY)));
     [self scrollToPoint:CGPointMake(scrollX, scrollY)];
+}
+
+#pragma mark Animations
+
+- (void)fadeOutScrollers {
+    NSView *horizontalScrollerAnimator = self.horizontalScroller.animator;
+    NSView *verticalScrollerAnimator = self.verticalScroller.animator;
+
+    [NSAnimationContext beginGrouping];
+    horizontalScrollerAnimator.alphaValue = 0;
+    verticalScrollerAnimator.alphaValue = 0;
+    [NSAnimationContext endGrouping];
+
+    self.scrollersVisible = NO;
 }
 
 #pragma mark CALayer delegate

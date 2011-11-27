@@ -12,6 +12,7 @@
 #import <Velvet/NSVelvetHostView.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELNSView.h>
+#import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/NSView+VELGeometryAdditions.h>
 
 @class NSVelvetHostView;
@@ -48,6 +49,14 @@
  * @param event The mouse-related event which occurred.
  */
 - (void)sendHitTestedEvent:(NSEvent *)event;
+
+/*
+ * Sends a scroll wheel event to the most descendant scroll view (either Velvet
+ * or AppKit) in the region identified by the given event.
+ *
+ * @param event The scroll wheel event which occurred.
+ */
+- (void)sendScrollEvent:(NSEvent *)event;
 @end
 
 @implementation VELWindow
@@ -101,6 +110,10 @@
         case NSOtherMouseDragged:
             [responder otherMouseDragged:event];
             break;
+        
+        case NSScrollWheel:
+            [responder scrollWheel:event];
+            break;
 
         default:
             NSLog(@"Unrecognized event %@", event);
@@ -113,6 +126,10 @@
         case NSRightMouseDown:
         case NSOtherMouseDown:
             [self sendHitTestedEvent:theEvent];
+            break;
+
+        case NSScrollWheel:
+            [self sendScrollEvent:theEvent];
             break;
 
         case NSLeftMouseUp:
@@ -195,6 +212,18 @@
     [super sendEvent:event];
 
     contentView.userInteractionEnabled = YES;
+}
+
+- (void)sendScrollEvent:(NSEvent *)event; {
+    CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
+    id hitView = [self bridgedHitTest:windowPoint];
+
+    id scrollView = [hitView ancestorScrollView];
+    if ([scrollView isKindOfClass:[VELView class]]) {
+        [self dispatchEvent:event toResponder:scrollView];
+    } else {
+        [super sendEvent:event];
+    }
 }
 
 @end

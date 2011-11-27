@@ -52,4 +52,10 @@
     return [super needsDisplay] || [self.layer needsDisplay];
 }
 
+#pragma mark Event Handling
+
+- (NSView *)hitTest:(NSPoint)point {
+    return nil;
+}
+
 @end

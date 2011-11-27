@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/VELView.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELGeometryAdditions.h>
@@ -362,6 +363,15 @@
     return CGRectApplyAffineTransform(hostRect, transformFromRoot);
 }
 
+#pragma mark Layout
+
+- (void)layoutSubviews; {
+}
+
+- (CGSize)sizeThatFits:(CGSize)constraint; {
+    return self.bounds.size;
+}
+
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
@@ -418,6 +428,18 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@ %p> frame = %@, subviews = %@", [self class], self, NSStringFromRect(self.frame), self.subviews];
+}
+
+#pragma mark CALayoutManager
+
+- (void)layoutSublayersOfLayer:(CALayer *)layer {
+    [CATransaction performWithDisabledActions:^{
+        [self layoutSubviews];
+    }];
+}
+
+- (CGSize)preferredSizeOfLayer:(CALayer *)layer {
+    return [self sizeThatFits:CGSizeZero];
 }
 
 @end

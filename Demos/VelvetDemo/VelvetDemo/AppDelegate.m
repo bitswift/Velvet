@@ -76,11 +76,11 @@
     rootSquareView.frame = CGRectMake(0, 0, 200, 200);
 
     self.nestedSquareView = [[SquareView alloc] init];
-    self.nestedSquareView.layer.masksToBounds = NO;
+    self.nestedSquareView.layer.masksToBounds = YES;
     self.nestedSquareView.frame = CGRectMake(0, 0, 80, 80);
 
     NSVelvetView *nestedVelvetView = [[NSVelvetView alloc] initWithFrame:NSMakeRect(20, 20, 300, 300)];
-    nestedVelvetView.layer.masksToBounds = NO;
+    nestedVelvetView.layer.masksToBounds = YES;
     nestedVelvetView.rootView = rootSquareView;
     [imageView addSubview:nestedVelvetView];
 
@@ -92,14 +92,15 @@
     [button setAction:@selector(buttonClicked)];
 
     self.buttonHost = [[VELNSView alloc] init];
-    self.buttonHost.layer.masksToBounds = NO;
-    self.buttonHost.frame = CGRectMake(10, 10, button.frame.size.width, button.frame.size.height);
+    self.buttonHost.layer.masksToBounds = YES;
+    self.buttonHost.layer.backgroundColor = CGColorGetConstantColor(kCGColorWhite);
+    self.buttonHost.frame = CGRectMake(30, 30, button.frame.size.width, button.frame.size.height);
 
     rootSquareView.subviews = [NSArray arrayWithObject:self.nestedSquareView];
     self.nestedSquareView.subviews = [NSArray arrayWithObject:self.buttonHost];
     self.buttonHost.NSView = button;
 
-    [self performSelector:@selector(animateMe) withObject:nil afterDelay:1.0];
+    // [self performSelector:@selector(animateMe) withObject:nil afterDelay:1.0];
 }
 
 - (void)buttonClicked

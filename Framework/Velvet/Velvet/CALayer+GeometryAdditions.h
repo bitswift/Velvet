@@ -8,6 +8,9 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+/**
+ * Additional geometry conversions and geometrical functions for `CALayer`.
+ */
 @interface CALayer (GeometryAdditions)
 /**
  * Converts a rectangle from the receiver's coordinate system to that of a given
@@ -27,4 +30,18 @@
  * @warning *Important:* The receiver and `layer` must have a common ancestor.
  */
 - (CGRect)convertAndClipRect:(CGRect)rect toLayer:(CALayer *)layer;
+
+/**
+ * Converts a rectangle from the coordinate system of `layer` to the
+ * receiver's, taking into account any layer clipping between the two.
+ *
+ * This will call <[CALayer convertAndClipRect:toLayer:]> on `layer` with the
+ * receiver as the argument.
+ *
+ * @param rect A rectangle to be converted to the receiver's coordinate system.
+ * @param layer The layer whose coordinate system `rect` is in.
+ *
+ * @warning *Important:* The receiver and `layer` must have a common ancestor.
+ */
+- (CGRect)convertAndClipRect:(CGRect)rect fromLayer:(CALayer *)layer;
 @end

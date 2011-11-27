@@ -29,7 +29,6 @@ static CGRect convertAndClipRectFromSuperlayers (CGRect rect, CALayer *layer) {
 
 @implementation CALayer (GeometryAdditions)
 
-
 - (CGRect)convertAndClipRect:(CGRect)rect toLayer:(CALayer *)layer {
     CALayer *clippingLayer = self.superlayer;
     CALayer *lastLayer = self;
@@ -52,5 +51,8 @@ static CGRect convertAndClipRectFromSuperlayers (CGRect rect, CALayer *layer) {
     return convertAndClipRectFromSuperlayers(rect, layer);
 }
 
+- (CGRect)convertAndClipRect:(CGRect)rect fromLayer:(CALayer *)layer {
+    return [layer convertAndClipRect:rect toLayer:self];
+}
 
 @end

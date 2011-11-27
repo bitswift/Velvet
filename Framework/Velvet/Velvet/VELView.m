@@ -384,6 +384,12 @@
     return self.bounds.size;
 }
 
+#pragma mark NSObject overrides
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> frame = %@, subviews = %@", [self class], self, NSStringFromRect(self.frame), self.subviews];
+}
+
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
@@ -447,11 +453,6 @@
     } else {
         return innerAction;
     }
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"<%@ %p> frame = %@, subviews = %@", [self class], self, NSStringFromRect(self.frame), self.subviews];
 }
 
 #pragma mark CALayoutManager

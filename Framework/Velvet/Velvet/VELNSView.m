@@ -154,6 +154,12 @@
     return cellSize;
 }
 
+#pragma mark NSObject overrides
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> frame = %@, NSView = %@ %@", [self class], self, NSStringFromRect(self.frame), self.NSView, NSStringFromRect(self.NSView.frame)];
+}
+
 #pragma mark CALayer delegate
 
 - (void)renderContainedViewInLayer:(CALayer *)layer {

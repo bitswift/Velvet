@@ -84,6 +84,14 @@
     return [self convertRect:self.bounds toView:self.hostView.rootView];
 }
 
+- (void)setSubviews:(NSArray *)subviews {
+    NSAssert2(![subviews count], @"%@ must be a leaf in the Velvet hierarchy, cannot add subviews: %@", self, subviews);
+
+    // if assertions are disabled, proceed anyways (better to glitch out than
+    // crash)
+    [super setSubviews:subviews];
+}
+
 #pragma mark Lifecycle
 
 - (id)init {
@@ -137,6 +145,20 @@
 }
 
 - (void)didMoveToHostView {
+    // verify that VELNSViews are on top of other subviews
+    #if DEBUG
+    NSArray *siblings = self.superview.subviews;
+    __block BOOL foundVelvetView = NO;
+
+    [siblings enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView *view, NSUInteger index, BOOL *stop){
+        if ([view isKindOfClass:[VELNSView class]]) {
+            NSAssert2(!foundVelvetView, @"%@ must be on top of its sibling VELViews: %@", view, siblings);
+        } else {
+            foundVelvetView = YES;
+        }
+    }];
+    #endif
+
     [self synchronizeNSViewGeometry];
 }
 

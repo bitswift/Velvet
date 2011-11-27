@@ -19,6 +19,11 @@
 
 @interface VELNSView ()
 @property (nonatomic, assign) BOOL rendersContainedView;
+
+/*
+ * The delegate for the layer of the contained <NSView>. This object is
+ * responsible for rendering it while taking into account any clipping paths.
+ */
 @property (nonatomic, strong) NSViewClipRenderer *clipRenderer;
 @end
 

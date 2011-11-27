@@ -25,8 +25,9 @@
  * responsible for rendering it while taking into account any clipping paths.
  */
 @property (nonatomic, strong) NSViewClipRenderer *clipRenderer;
-@end
 
+- (void)synchronizeNSViewGeometry;
+@end
 
 @implementation VELNSView
 
@@ -53,26 +54,21 @@
     [view setNeedsDisplay:YES];
 
     dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        if (view != m_NSView) {
-            [m_NSView removeFromSuperview];
-            m_NSView.layer.delegate = self.clipRenderer.originalLayerDelegate;
-        }
+        [m_NSView removeFromSuperview];
+        m_NSView.layer.delegate = self.clipRenderer.originalLayerDelegate;
 
-        view.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
+        m_NSView = view;
 
-        if (view != m_NSView) {
-            m_NSView = view;
+        if (view) {
+            [self.hostView addSubview:view];
+            [self synchronizeNSViewGeometry];
 
-            if (view) {
-                [self.hostView addSubview:view];
-
-                self.clipRenderer = [[NSViewClipRenderer alloc] init];
-                self.clipRenderer.clippedView = self;
-                self.clipRenderer.originalLayerDelegate = view.layer.delegate;
-                view.layer.delegate = self.clipRenderer;
-            } else {
-                self.clipRenderer = nil;
-            }
+            self.clipRenderer = [[NSViewClipRenderer alloc] init];
+            self.clipRenderer.clippedView = self;
+            self.clipRenderer.originalLayerDelegate = view.layer.delegate;
+            view.layer.delegate = self.clipRenderer;
+        } else {
+            self.clipRenderer = nil;
         }
     });
 }
@@ -94,6 +90,17 @@
 
     self.NSView = view;
     return self;
+}
+
+#pragma mark Geometry
+
+- (void)synchronizeNSViewGeometry; {
+    self.NSView.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
+
+    // if the size of the frame has changed, we'll need to go through our
+    // clipRenderer's -drawLayer:inContext: logic again with the new size, so
+    // mark the layer as needing display
+    [self.NSView.layer setNeedsDisplay];
 }
 
 #pragma mark CALayer delegate

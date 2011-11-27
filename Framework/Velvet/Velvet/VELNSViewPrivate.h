@@ -19,4 +19,10 @@
  * If set to `NO`, the `NSView` is rendered once and cached into the receiver's layer. This is typically used for animations.
  */
 @property (nonatomic, assign) BOOL rendersContainedView;
+
+/*
+ * This will synchronize the geometry of the receiver's `NSView` with that of
+ * the receiver, ensuring that the `NSView` is laid out correctly on screen.
+ */
+- (void)synchronizeNSViewGeometry;
 @end

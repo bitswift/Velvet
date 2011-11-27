@@ -100,7 +100,7 @@
     self.nestedSquareView.subviews = [NSArray arrayWithObject:self.buttonHost];
     self.buttonHost.NSView = button;
 
-    // [self performSelector:@selector(animateMe) withObject:nil afterDelay:1.0];
+    [self performSelector:@selector(animateMe) withObject:nil afterDelay:1.0];
 }
 
 - (void)buttonClicked

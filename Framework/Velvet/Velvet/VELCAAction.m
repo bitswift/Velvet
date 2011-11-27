@@ -87,7 +87,8 @@
     void (^completionBlock)(void) = ^{
         [cachedViews enumerateObjectsUsingBlock:^(VELNSView *view, NSUInteger idx, BOOL *stop) {
             view.rendersContainedView = NO;
-            view.NSView = view.NSView;
+            [view synchronizeNSViewGeometry];
+
             view.NSView.alphaValue = 1.0;
         }];
     };

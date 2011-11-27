@@ -7,18 +7,19 @@
 //
 
 #import <Velvet/VELNSView.h>
-#import <Velvet/VELNSViewPrivate.h>
-#import <Velvet/dispatch+SynchronizationAdditions.h>
-#import <Velvet/NSVelvetView.h>
-#import <Velvet/VELContext.h>
-#import <Velvet/VELViewPrivate.h>
-#import <QuartzCore/QuartzCore.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
-
+#import <Velvet/dispatch+SynchronizationAdditions.h>
+#import <Velvet/NSVelvetView.h>
+#import <Velvet/NSViewClipRenderer.h>
+#import <Velvet/VELContext.h>
+#import <Velvet/VELNSViewPrivate.h>
+#import <Velvet/VELViewPrivate.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface VELNSView ()
 @property (nonatomic, assign) BOOL rendersContainedView;
+@property (nonatomic, strong) NSViewClipRenderer *clipRenderer;
 @end
 
 
@@ -27,6 +28,7 @@
 #pragma mark Properties
 
 @synthesize NSView = m_NSView;
+@synthesize clipRenderer = m_clipRenderer;
 @synthesize rendersContainedView = m_rendersContainedView;
 
 - (NSView *)NSView {
@@ -46,13 +48,21 @@
     [view setNeedsDisplay:YES];
 
     dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        if (view != m_NSView) [m_NSView removeFromSuperview];
+        if (view != m_NSView) {
+            [m_NSView removeFromSuperview];
+            m_NSView.layer.delegate = self.clipRenderer.originalLayerDelegate;
+        }
 
         view.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
 
         if (view != m_NSView) {
             [self.hostView addSubview:view];
             m_NSView = view;
+
+            self.clipRenderer = [[NSViewClipRenderer alloc] init];
+            self.clipRenderer.clippedView = self;
+            self.clipRenderer.originalLayerDelegate = view.layer.delegate;
+            view.layer.delegate = self.clipRenderer;
         }
     });
 }

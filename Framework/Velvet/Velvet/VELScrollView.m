@@ -109,6 +109,10 @@
     [self.scrollLayer addSublayer:view.layer];
 }
 
+- (id)ancestorScrollView; {
+    return self;
+}
+
 #pragma mark Layout
 
 - (void)layoutSubviews {

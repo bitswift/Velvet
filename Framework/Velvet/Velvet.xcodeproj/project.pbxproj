@@ -40,8 +40,8 @@
 		D03E643414825B3A00E99AA2 /* EXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E643214825B3A00E99AA2 /* EXTScope.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D03E643514825B3A00E99AA2 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E643314825B3A00E99AA2 /* EXTScope.m */; };
 		D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E642114823DC200E99AA2 /* VELScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D03E642414823DC200E99AA2 /* VELScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E642214823DC200E99AA2 /* VELScrollView.m */; };
+		D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */; };
 		D0911B1D147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0911B1E147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */; };
 		D0CACD35147C86C0008C42B2 /* VELGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -109,8 +109,8 @@
 		D03E643214825B3A00E99AA2 /* EXTScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTScope.h; path = ../libextobjc/extobjc/Modules/EXTScope.h; sourceTree = "<group>"; };
 		D03E643314825B3A00E99AA2 /* EXTScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTScope.m; path = ../libextobjc/extobjc/Modules/EXTScope.m; sourceTree = "<group>"; };
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
-		D03E642114823DC200E99AA2 /* VELScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELScrollView.h; sourceTree = "<group>"; };
-		D03E642214823DC200E99AA2 /* VELScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELScrollView.m; sourceTree = "<group>"; };
+		D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+ScrollViewAdditions.h"; sourceTree = "<group>"; };
+		D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+ScrollViewAdditions.m"; sourceTree = "<group>"; };
 		D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+VELGeometryAdditions.h"; sourceTree = "<group>"; };
 		D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELGeometryAdditions.m"; sourceTree = "<group>"; };
 		D0CACD34147C86C0008C42B2 /* VELGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELGeometry.h; sourceTree = "<group>"; };
@@ -191,6 +191,8 @@
 				1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */,
 				D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */,
 				D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */,
+				D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */,
+				D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */,
 				D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */,
 				D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */,
 				1E2819701481EE7B006A747C /* NSView+VELNSViewAdditions.h */,
@@ -440,6 +442,7 @@
 				D03E643414825B3A00E99AA2 /* EXTScope.h in Headers */,
 				D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */,
 				D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */,
+				D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +572,7 @@
 				D0FBA32A1482086B00F9F5F6 /* EXTSafeCategory.m in Sources */,
 				D03E643514825B3A00E99AA2 /* EXTScope.m in Sources */,
 				D03E642414823DC200E99AA2 /* VELScrollView.m in Sources */,
+				D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

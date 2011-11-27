@@ -8,14 +8,16 @@
 
 #import <Velvet/VELView.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
+#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/VELContext.h>
+#import <Velvet/VELCAAction.h>
+#import <Velvet/VELScrollView.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
-#import <Velvet/VELCAAction.h>
-#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import "EXTScope.h"
 
 @interface VELView ()
@@ -253,6 +255,13 @@
     for (VELView *subview in self.subviews) {
         [subview didMoveToHostView];
     }
+}
+
+- (id)ancestorScrollView; {
+    if (self.superview)
+        return self.superview.ancestorScrollView;
+
+    return [self.hostView ancestorScrollView];
 }
 
 - (BOOL)isDescendantOfView:(VELView *)view; {

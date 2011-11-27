@@ -140,6 +140,15 @@
 - (VELView *)ancestorSharedWithView:(VELView *)view;
 
 /**
+ * Returns the closest ancestor scroll view containing the receiver (including
+ * the receiver itself), or `nil` if there is no such view.
+ *
+ * This may return an `NSScrollView`, a <VELScrollView>, or a custom class. This
+ * method will search both Velvet and AppKit hierarchies.
+ */
+- (id)ancestorScrollView;
+
+/**
  * Returns whether the receiver is `view` or a descendant thereof.
  *
  * @param view The root of the view hierarchy in which to search for the

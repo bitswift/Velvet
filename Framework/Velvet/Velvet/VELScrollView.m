@@ -144,11 +144,13 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.5;
     CGRect bounds = self.bounds;
     CGRect contentRect = self.scrollLayer.contentsRect;
 
-    self.horizontalScrollerHost.frame = CGRectMake(0, 0, bounds.size.width, self.horizontalScrollerHost.bounds.size.height);
+    CGFloat horizontalScrollerHeight = self.horizontalScroller.bounds.size.height;
+    CGFloat verticalScrollerWidth = self.verticalScroller.bounds.size.width;
+
+    self.horizontalScrollerHost.frame = CGRectMake(0, 0, bounds.size.width - verticalScrollerWidth, self.horizontalScrollerHost.bounds.size.height);
     self.horizontalScroller.knobProportion = CGRectGetWidth(bounds) / CGRectGetWidth(contentRect);
 
-    CGFloat verticalScrollerHostWidth = self.verticalScrollerHost.bounds.size.width;
-    self.verticalScrollerHost.frame = CGRectMake(bounds.size.width - verticalScrollerHostWidth, 0, verticalScrollerHostWidth, bounds.size.height);
+    self.verticalScrollerHost.frame = CGRectMake(bounds.size.width - verticalScrollerWidth, horizontalScrollerHeight, verticalScrollerWidth, bounds.size.height - horizontalScrollerHeight);
     self.verticalScroller.knobProportion = CGRectGetHeight(bounds) / CGRectGetHeight(contentRect);
 }
 

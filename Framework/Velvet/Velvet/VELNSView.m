@@ -77,6 +77,15 @@
     });
 }
 
+- (void)willMoveToHostView:(NSVelvetView *)hostView {
+    [self.NSView removeFromSuperview];
+    [hostView addSubview:self.NSView];
+}
+
+- (void)didMoveToHostView {
+    [self synchronizeNSViewGeometry];
+}
+
 #pragma mark Lifecycle
 
 - (id)init {

@@ -8,7 +8,7 @@
 
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 
-/**
+/*
  * A generic comparison function for sorting dispatch queues into a known order.
  */
 static int compareDispatchQueues (const void *a, const void *b) {
@@ -20,7 +20,7 @@ static int compareDispatchQueues (const void *a, const void *b) {
         return 0;
 }
 
-/**
+/*
  * Synchronizes all of the provided queues and executes `block`. If
  * `asynchronous` is `YES`, the function returns immediately, and `block` is
  * asynchronously executed once all the queues have been joined.

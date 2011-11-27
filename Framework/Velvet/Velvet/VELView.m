@@ -20,20 +20,20 @@
 @property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
 
-/**
+/*
  * True if we're inside the `actionForLayer:forKey:` method. This is used so we
  * can get the original action for the key, and wrap it with extra functionality,
  * without entering an infinite loop.
  */
 @property (assign, getter = isRecursingActionForLayer) BOOL recursingActionForLayer;
 
-/**
+/*
  * The affine transform needed to move into the coordinate system of the
  * receiver from its superview.
  */
 @property (readonly) CGAffineTransform affineTransformFromSuperview;
 
-/**
+/*
  * Returns the affine transform necessary to convert from the coordinate space
  * of the receiver to that of `parentView`. `parentView` must be an ancestor of
  * the receiver.

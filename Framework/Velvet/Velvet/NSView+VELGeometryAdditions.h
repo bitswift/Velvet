@@ -10,7 +10,7 @@
 #import <Velvet/VELGeometry.h>
 
 /**
- * An implementation of `VELGeometry` for `NSView`.
+ * Implements <VELGeometry> for `NSView`.
  */
 @interface NSView (VELGeometryAdditions) <VELGeometry>
 @end

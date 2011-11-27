@@ -35,8 +35,8 @@
  * Converts a rectangle from the coordinate system of `layer` to the
  * receiver's, taking into account any layer clipping between the two.
  *
- * This will call <[CALayer convertAndClipRect:toLayer:]> on `layer` with the
- * receiver as the argument.
+ * This will call <[CALayer(GeometryAdditions) convertAndClipRect:toLayer:]> on
+ * `layer` with the receiver as the argument.
  *
  * @param rect A rectangle to be converted to the receiver's coordinate system.
  * @param layer The layer whose coordinate system `rect` is in.

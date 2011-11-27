@@ -16,15 +16,24 @@
 @class NSVelvetHostView;
 
 @interface VELWindow ()
-/**
+/*
  * Turns an event into an `NSResponder` message, and sends it to
- * the `VELView`.
+ * a <VELView>.
+ *
+ * @param event The event to dispatch to the view.
+ * @param view The view which should receive the `NSResponder` message
+ * corresponding to `event`.
  */
 - (void)dispatchEvent:(NSEvent *)event toView:(VELView *)view;
-/**
- * Find a `VELView` to which to dispatch a mose down event, and make
- * it the first responder. If the event isn't inside a `VELView`, use
- * the normal AppKit event dispatch.
+
+/*
+ * Sends a mouse-down event to the <VELView> in the clicked region. The
+ * <VELView> is made the first responder.
+ *
+ * If the event didn't occur inside a <VELView>, the event is handed off to
+ * AppKit and tested against any `NSView` hierarchies.
+ *
+ * @param event The mouse-down event which occurred.
  */
 - (void)sendMouseDownEvent:(NSEvent *)event;
 @end
@@ -120,7 +129,7 @@
 
 - (void)sendMouseDownEvent:(NSEvent *)event {
     NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
-    
+
     id velvetView = [(id)self.contentView rootView];
     CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
 

@@ -7,16 +7,36 @@
 //
 
 #import <Velvet/VELNSView.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
+#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSView+VELNSViewAdditions.h>
+#import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/VELContext.h>
+#import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewPrivate.h>
+#import <QuartzCore/QuartzCore.h>
+
+@interface VELNSView ()
+@property (nonatomic, assign) BOOL rendersContainedView;
+
+/*
+ * The delegate for the layer of the contained <NSView>. This object is
+ * responsible for rendering it while taking into account any clipping paths.
+ */
+@property (nonatomic, strong) NSViewClipRenderer *clipRenderer;
+
+- (void)synchronizeNSViewGeometry;
+@end
 
 @implementation VELNSView
 
 #pragma mark Properties
 
 @synthesize NSView = m_NSView;
+@synthesize clipRenderer = m_clipRenderer;
+@synthesize rendersContainedView = m_rendersContainedView;
 
 - (NSView *)NSView {
     __block NSView *view;
@@ -35,14 +55,37 @@
     [view setNeedsDisplay:YES];
 
     dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        view.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
+        [m_NSView removeFromSuperview];
+        m_NSView.layer.delegate = self.clipRenderer.originalLayerDelegate;
+        m_NSView.hostView = nil;
 
-        [self.hostView addSubview:view];
         m_NSView = view;
+
+        if (view) {
+            view.hostView = self;
+
+            [self.hostView addSubview:view];
+            [self synchronizeNSViewGeometry];
+
+            self.clipRenderer = [[NSViewClipRenderer alloc] init];
+            self.clipRenderer.clippedView = self;
+            self.clipRenderer.originalLayerDelegate = view.layer.delegate;
+            view.layer.delegate = self.clipRenderer;
+        } else {
+            self.clipRenderer = nil;
+        }
     });
 }
 
 #pragma mark Lifecycle
+
+- (id)init {
+    self = [super init];
+    if (!self)
+        return nil;
+
+    return self;
+}
 
 - (id)initWithNSView:(NSView *)view; {
     self = [self init];
@@ -51,6 +94,49 @@
 
     self.NSView = view;
     return self;
+}
+
+- (void)dealloc {
+    self.NSView.hostView = nil;
+}
+
+#pragma mark Geometry
+
+- (void)synchronizeNSViewGeometry; {
+    self.NSView.frame = [self.superview convertRect:self.frame toView:self.hostView.rootView];
+
+    // if the size of the frame has changed, we'll need to go through our
+    // clipRenderer's -drawLayer:inContext: logic again with the new size, so
+    // mark the layer as needing display
+    [self.NSView.layer setNeedsDisplay];
+}
+
+#pragma mark CALayer delegate
+
+- (void)renderContainedViewInLayer:(CALayer *)layer {
+    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size);
+
+    [self.NSView.layer renderInContext:context];
+
+    CGImageRef image = CGBitmapContextCreateImage(context);
+    layer.contents = (__bridge_transfer id)image;
+
+    CGContextRelease(context);
+}
+
+- (void)setRendersContainedView:(BOOL)rendersContainedView {
+    if (m_rendersContainedView != rendersContainedView) {
+        m_rendersContainedView = rendersContainedView;
+        if (rendersContainedView) {
+            [CATransaction performWithDisabledActions:^{
+                [self renderContainedViewInLayer:self.layer];
+            }];
+        } else {
+            [CATransaction performWithDisabledActions:^{
+                self.layer.contents = nil;
+            }];
+        }
+    }
 }
 
 @end

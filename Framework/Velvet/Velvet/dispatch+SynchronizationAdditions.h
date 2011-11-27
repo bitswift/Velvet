@@ -9,19 +9,34 @@
 #import <Foundation/Foundation.h>
 
 /**
- * Asynchronously starts trying to synchronize all of the provided queues,
- * executing `block` as soon as all of the queues have a barrier in place.
+ * Asynchronously synchronizes multiple queues and executes a block.
+ *
+ * @param block The block to execute when all of the queues are synchronized.
+ * @param firstQueue The first dispatch queue to synchronize. This argument must
+ * not be `NULL`.
+ * @param ... The rest of the dispatch queues to synchronize, terminated with
+ * `NULL`.
  */
 void dispatch_multibarrier_async (dispatch_block_t block, dispatch_queue_t firstQueue, ...) NS_REQUIRES_NIL_TERMINATION;
 
 /**
- * Synchronizes all of the provided queues and executes `block`.
+ * Synchronizes multiple queues and executes a block.
+ *
+ * @param block The block to execute when all of the queues are synchronized.
+ * @param firstQueue The first dispatch queue to synchronize. This argument must
+ * not be `NULL`.
+ * @param ... The rest of the dispatch queues to synchronize, terminated with
+ * `NULL`.
  */
 void dispatch_multibarrier_sync (dispatch_block_t block, dispatch_queue_t firstQueue, ...) NS_REQUIRES_NIL_TERMINATION;
 
 /**
- * Dispatches `block` to `queue` synchronously, unless `queue` is the current
- * dispatch queue or `NULL`, in which case `block` is executed immediately on
- * the current thread.
+ * Dispatches a block to a queue (which may be the current queue or `NULL`)
+ * synchronously.
+ *
+ * @param queue The queue upon which to execute `block`. If this is the current
+ * dispatch queue or `NULL`, the block is executed immediately on the current
+ * thread.
+ * @param block The block to execute synchronously.
  */
 void dispatch_sync_recursive (dispatch_queue_t queue, dispatch_block_t block);

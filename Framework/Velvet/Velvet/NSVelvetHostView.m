@@ -9,7 +9,7 @@
 #import <Velvet/NSVelvetHostView.h>
 
 @interface NSVelvetHostView ()
-/**
+/*
  * Configures all the necessary properties on the receiver. This is outside of
  * an initializer because `NSView` has no true designated initializer.
  */
@@ -24,7 +24,7 @@
     self = [super initWithCoder:coder];
     if (!self)
         return nil;
-    
+
     [self setUp];
     return self;
 }
@@ -33,7 +33,7 @@
     self = [super initWithFrame:frame];
     if (!self)
         return nil;
-    
+
     [self setUp];
     return self;
 }
@@ -50,6 +50,12 @@
 - (BOOL)needsDisplay {
     // mark this view as needing display anytime the layer is
     return [super needsDisplay] || [self.layer needsDisplay];
+}
+
+#pragma mark Event Handling
+
+- (NSView *)hitTest:(NSPoint)point {
+    return nil;
 }
 
 @end

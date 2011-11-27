@@ -12,5 +12,14 @@
  * A simple text label.
  */
 @interface VELLabel : VELView
+
+/**
+ * @name Displaying Text
+ */
+
+/**
+ * The text to display in the receiver, formatted with any desired CoreText
+ * attributes.
+ */
 @property (copy) NSAttributedString *text;
 @end

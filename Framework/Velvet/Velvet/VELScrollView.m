@@ -99,6 +99,7 @@
     m_verticalScrollerHost = [[VELNSView alloc] initWithNSView:preparedScrollerWithSize(CGSizeMake(scrollerWidth, 100))];
 
     self.subviews = [NSArray arrayWithObjects:m_horizontalScrollerHost, m_verticalScrollerHost, nil];
+    self.verticalScroller.doubleValue = 1;
 
     return self;
 }
@@ -140,6 +141,10 @@
         [self.scrollLayer scrollToPoint:point];
     }];
 
+    CGSize contentSize = self.scrollLayer.contentsRect.size;
+    self.horizontalScroller.doubleValue = point.x / contentSize.width;
+    self.verticalScroller.doubleValue = 1.0 - point.y / contentSize.height;
+
     for (VELView *view in self.subviews) {
         [view ancestorDidScroll];
     }
@@ -150,15 +155,18 @@
 - (void)scrolled:(NSScroller *)sender; {
     CGSize contentSize = self.scrollLayer.contentsRect.size;
 
-    double horizontalValue = self.horizontalScroller.doubleValue;
-    double verticalValue = self.verticalScroller.doubleValue;
-
-    CGPoint scrollPoint = CGPointMake(round(horizontalValue * contentSize.width), round(verticalValue * contentSize.height));
-    [self scrollToPoint:scrollPoint];
+    CGFloat scrollX = round(self.horizontalScroller.doubleValue * contentSize.width);
+    CGFloat scrollY = round(contentSize.height - self.verticalScroller.doubleValue * contentSize.height);
+    [self scrollToPoint:CGPointMake(scrollX, scrollY)];
 }
 
 - (void)scrollWheel:(NSEvent *)event; {
-    NSLog(@"bounds: %@", NSStringFromRect(self.scrollLayer.bounds));
+    CGPoint currentScrollPoint = self.scrollLayer.bounds.origin;
+    CGSize contentSize = self.scrollLayer.contentsRect.size;
+
+    CGFloat scrollX = fmax(0, fmin(contentSize.width , round(currentScrollPoint.x - event.scrollingDeltaX)));
+    CGFloat scrollY = fmax(0, fmin(contentSize.height, round(currentScrollPoint.y + event.scrollingDeltaY)));
+    [self scrollToPoint:CGPointMake(scrollX, scrollY)];
 }
 
 #pragma mark CALayer delegate

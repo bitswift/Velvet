@@ -18,13 +18,13 @@
 @interface VELWindow ()
 /*
  * Turns an event into an `NSResponder` message, and sends it to
- * a <VELView>.
+ * a responder.
  *
- * @param event The event to dispatch to the view.
- * @param view The view which should receive the `NSResponder` message
+ * @param event The event to dispatch.
+ * @param responder The `NSResponder` which should receive the message
  * corresponding to `event`.
  */
-- (void)dispatchEvent:(NSEvent *)event toView:(VELView *)view;
+- (void)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
 
 /*
  * Sends a mouse-down event to the <VELView> in the clicked region. The
@@ -40,61 +40,59 @@
 
 @implementation VELWindow
 
-- (void)dispatchEvent:(NSEvent *)event toView:(VELView *)view; {
+- (void)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder; {
     switch ([event type]) {
         case NSLeftMouseDown:
-            [view mouseDown:event];
+            [responder mouseDown:event];
             break;
 
         case NSLeftMouseUp:
-            [view mouseUp:event];
+            [responder mouseUp:event];
             break;
 
         case NSRightMouseDown:
-            [view rightMouseDown:event];
+            [responder rightMouseDown:event];
             break;
 
         case NSRightMouseUp:
-            [view rightMouseUp:event];
+            [responder rightMouseUp:event];
             break;
 
         case NSMouseMoved:
-            [view mouseMoved:event];
+            [responder mouseMoved:event];
             break;
 
         case NSLeftMouseDragged:
-            [view mouseDragged:event];
+            [responder mouseDragged:event];
             break;
 
         case NSRightMouseDragged:
-            [view rightMouseDragged:event];
+            [responder rightMouseDragged:event];
             break;
 
         case NSMouseEntered:
-            [view mouseEntered:event];
+            [responder mouseEntered:event];
             break;
 
         case NSMouseExited:
-            [view mouseExited:event];
+            [responder mouseExited:event];
             break;
 
         case NSOtherMouseDown:
-            [view otherMouseDown:event];
+            [responder otherMouseDown:event];
             break;
 
         case NSOtherMouseUp:
-            [view otherMouseUp:event];
+            [responder otherMouseUp:event];
             break;
 
         case NSOtherMouseDragged:
-            [view otherMouseDragged:event];
+            [responder otherMouseDragged:event];
             break;
 
         default:
             NSLog(@"Unrecognized event %@", event);
     }
-
-    [self makeFirstResponder:view];
 }
 
 - (void)sendEvent:(NSEvent *)theEvent {
@@ -116,7 +114,7 @@
         case NSOtherMouseDragged: {
             id responder = [self firstResponder];
             if ([responder isKindOfClass:[VELView class]]) {
-                [self dispatchEvent:theEvent toView:responder];
+                [self dispatchEvent:theEvent toResponder:responder];
                 return;
             }
         }
@@ -140,19 +138,20 @@
             NSPoint viewPoint = NSPointFromCGPoint([[nsView superview] convertFromWindowPoint:windowPoint]);
             id testView = [nsView hitTest:viewPoint];
 
-            if (![testView isKindOfClass:[NSVelvetHostView class]]) {
+            if (![testView isKindOfClass:[NSVelvetView class]]) {
                 [super sendEvent:event];
                 break;
             }
 
-            NSVelvetView *hostView = (id)[testView superview];
+            NSVelvetView *hostView = testView;
             velvetView = hostView.rootView;
         } else {
             CGPoint viewPoint = [velvetView convertFromWindowPoint:windowPoint];
             id testView = [velvetView hitTest:viewPoint];
 
             if (![testView isKindOfClass:[VELNSView class]]) {
-                [self dispatchEvent:event toView:testView];
+                [self dispatchEvent:event toResponder:testView];
+                [self makeFirstResponder:testView];
                 break;
             }
 

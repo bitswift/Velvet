@@ -8,6 +8,8 @@
 
 #import <Velvet/VELView.h>
 
+@class NSVelvetView;
+
 /*
  * Protected functionality of <VELView> exposed for subclasses.
  *
@@ -25,4 +27,22 @@
  * @param view The view being added as a subview.
  */
 - (void)addSubviewToLayer:(VELView *)view;
+
+/*
+ * Invoked when the receiver's view hierarchy is being moved to a new host.
+ *
+ * This method is invoked on every view in the hierarchy. The default
+ * implementation forwards the message to the receiver's subviews.
+ *
+ * @param hostView The view which will now host the receiver's hierarchy.
+ */
+- (void)willMoveToHostView:(NSVelvetView *)hostView;
+
+/*
+ * Invoked when the receiver's view hierarchy has moved to a new host.
+ *
+ * This method is invoked on every view in the hierarchy. The default
+ * implementation forwards the message to the receiver's subviews.
+ */
+- (void)didMoveToHostView;
 @end

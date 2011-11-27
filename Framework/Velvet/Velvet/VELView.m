@@ -15,6 +15,7 @@
 #import <Velvet/VELViewProtected.h>
 #import <Velvet/VELCAAction.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
+#import "EXTScope.h"
 
 @interface VELView ()
 @property (readwrite, weak) VELView *superview;
@@ -105,7 +106,11 @@
         }
 
         m_subviews = [subviews copy];
+
+        NSVelvetView *hostView = self.hostView;
         for (VELView *view in m_subviews) {
+            [view willMoveToHostView:hostView];
+
             // match the context of this view with 'view'
             if (!view.context) {
                 view.context = self.context;
@@ -117,6 +122,7 @@
 
             view.superview = self;
             [self addSubviewToLayer:view];
+            [view didMoveToHostView];
         }
     });
 }
@@ -135,6 +141,11 @@
 }
 
 - (void)setHostView:(NSVelvetView *)view {
+    [self willMoveToHostView:view];
+    @onExit {
+        [self didMoveToHostView];
+    };
+
     // TODO: the threading here isn't really safe, since it depends on having
     // a valid context with which to synchronize -- sometimes there may be no
     // context, which could introduce race conditions
@@ -232,6 +243,12 @@
     return nil;
 }
 
+- (void)didMoveToHostView; {
+    for (VELView *subview in self.subviews) {
+        [subview didMoveToHostView];
+    }
+}
+
 - (BOOL)isDescendantOfView:(VELView *)view; {
     NSParameterAssert(view != nil);
 
@@ -248,9 +265,19 @@
 
 - (void)removeFromSuperview; {
     dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        [self willMoveToHostView:nil];
+
         [self.layer removeFromSuperlayer];
         self.superview = nil;
+
+        [self didMoveToHostView];
     });
+}
+
+- (void)willMoveToHostView:(NSVelvetView *)hostView; {
+    for (VELView *subview in self.subviews) {
+        [subview willMoveToHostView:hostView];
+    }
 }
 
 #pragma mark Geometry

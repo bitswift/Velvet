@@ -63,7 +63,8 @@
     
     m_scrollLayer = [[CAScrollLayer alloc] init];
     m_scrollLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-    //m_scrollLayer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
+    m_scrollLayer.delegate = self;
+    m_scrollLayer.layoutManager = self;
     [self.layer addSublayer:m_scrollLayer];
 
     self.scrollLayer.contentsRect = CGRectMake(0, 0, 1000, 1000);
@@ -137,6 +138,11 @@
     [CATransaction setAnimationDuration:0.05];
     [self.scrollLayer scrollToPoint:scrollPoint];
     [CATransaction commit];
+}
+
+#pragma mark CALayer delegate
+
+- (void)displayLayer:(CALayer *)layer {
 }
 
 @end

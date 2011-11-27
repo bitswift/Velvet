@@ -27,7 +27,7 @@
         if ([view isKindOfClass:[NSScrollView class]])
             return view;
 
-        view = self.superview;
+        view = view.superview;
     } while (view);
 
     return nil;

@@ -63,11 +63,12 @@
     
     m_scrollLayer = [[CAScrollLayer alloc] init];
     m_scrollLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    m_scrollLayer.contentsRect = CGRectMake(0, 0, 1000, 1000);
     m_scrollLayer.delegate = self;
     m_scrollLayer.layoutManager = self;
     [self.layer addSublayer:m_scrollLayer];
 
-    self.scrollLayer.contentsRect = CGRectMake(0, 0, 1000, 1000);
+    self.layer.masksToBounds = YES;
 
     // TODO: subscribe to notifications about preferred scroller style changing?
     NSScrollerStyle style = [NSScroller preferredScrollerStyle];
@@ -134,10 +135,9 @@
 
     CGPoint scrollPoint = CGPointMake(round(horizontalValue * contentSize.width), round(verticalValue * contentSize.height));
 
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:0.05];
-    [self.scrollLayer scrollToPoint:scrollPoint];
-    [CATransaction commit];
+    [CATransaction performWithDisabledActions:^{
+        [self.scrollLayer scrollToPoint:scrollPoint];
+    }];
 }
 
 #pragma mark CALayer delegate

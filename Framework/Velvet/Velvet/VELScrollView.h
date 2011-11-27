@@ -14,6 +14,22 @@
  * To add views to the scrollable area, add them as subviews of the scroll view.
  */
 @interface VELScrollView : VELView
+
+/**
+ * @name Content
+ */
+
+/**
+ * The size, in points, of the scrollable content.
+ *
+ * This defaults to `CGSizeZero`.
+ */
+@property (assign) CGSize contentSize;
+
+/**
+ * @name Scrollers
+ */
+
 /**
  * The horizontal scroller displayed in the scroll view.
  */

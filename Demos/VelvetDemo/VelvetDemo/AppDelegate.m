@@ -51,7 +51,7 @@
 
     self.scrollView = [[VELScrollView alloc] init];
     self.scrollView.layer.backgroundColor = CGColorGetConstantColor(kCGColorBlack);
-    [(CALayer *)[self.scrollView performSelector:@selector(scrollLayer)] setBackgroundColor:CGColorGetConstantColor(kCGColorWhite)];
+    self.scrollView.contentSize = imageRect.size;
 
     self.scrollView.frame = CGRectMake(20, 20, 300, 300);
     self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:imageViewHost];
@@ -59,8 +59,6 @@
     VELView *scrollableSquareView = [[SquareView alloc] init];
     scrollableSquareView.frame = CGRectMake(20, 200, 800, 800);
     self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:scrollableSquareView];
-
-    [self.scrollView.layer setNeedsDisplay];
 
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
         (__bridge_transfer id)CGColorCreateGenericGray(0, 1), (__bridge id)kCTForegroundColorAttributeName,

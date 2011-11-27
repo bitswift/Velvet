@@ -69,6 +69,14 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.5;
     return (id)self.verticalScrollerHost.NSView;
 }
 
+- (CGSize)contentSize {
+    return self.scrollLayer.contentsRect.size;
+}
+
+- (void)setContentSize:(CGSize)contentSize {
+    self.scrollLayer.contentsRect = CGRectMake(0, 0, contentSize.width, contentSize.height);
+}
+
 #pragma mark Lifecycle
 
 - (id)init {
@@ -81,7 +89,6 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.5;
     
     m_scrollLayer = [[CAScrollLayer alloc] init];
     m_scrollLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-    m_scrollLayer.contentsRect = CGRectMake(0, 0, 1000, 1000);
     m_scrollLayer.delegate = self;
     m_scrollLayer.layoutManager = self;
     [self.layer addSublayer:m_scrollLayer];

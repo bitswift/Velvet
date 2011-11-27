@@ -100,6 +100,10 @@
             [view removeFromSuperview];
         }
 
+        for (VELView *view in subviews) {
+            [view removeFromSuperview];
+        }
+
         m_subviews = [subviews copy];
         for (VELView *view in m_subviews) {
             // match the context of this view with 'view'

@@ -14,6 +14,8 @@
 		1AD6FAA4147DCF570037D6A8 /* CATransaction+BlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD6FAA2147DCF570037D6A8 /* CATransaction+BlockAdditions.m */; };
 		1AD6FAA7147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1AD6FAA5147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1AD6FAA8147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD6FAA6147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.m */; };
+		1E1790F11481D21000177DC0 /* CALayer+GeometryAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E1790EF1481D21000177DC0 /* CALayer+GeometryAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1E1790F21481D21000177DC0 /* CALayer+GeometryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E1790F01481D21000177DC0 /* CALayer+GeometryAdditions.m */; };
 		1E7BBD40147B157C0010375D /* VELLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E7BBD3E147B157B0010375D /* VELLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E7BBD41147B157C0010375D /* VELLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7BBD3F147B157B0010375D /* VELLabel.m */; };
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
@@ -62,6 +64,8 @@
 		1AD6FAA2147DCF570037D6A8 /* CATransaction+BlockAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CATransaction+BlockAdditions.m"; sourceTree = "<group>"; };
 		1AD6FAA5147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGBitmapContext+PixelFormatAdditions.h"; sourceTree = "<group>"; };
 		1AD6FAA6147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGBitmapContext+PixelFormatAdditions.m"; sourceTree = "<group>"; };
+		1E1790EF1481D21000177DC0 /* CALayer+GeometryAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+GeometryAdditions.h"; sourceTree = "<group>"; };
+		1E1790F01481D21000177DC0 /* CALayer+GeometryAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+GeometryAdditions.m"; sourceTree = "<group>"; };
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
 		1E7BBD3F147B157B0010375D /* VELLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabel.m; sourceTree = "<group>"; };
 		1E7BBD4B147B17400010375D /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
@@ -143,12 +147,14 @@
 			children = (
 				D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */,
 				D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */,
-				D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */,
-				D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */,
+				1E1790EF1481D21000177DC0 /* CALayer+GeometryAdditions.h */,
+				1E1790F01481D21000177DC0 /* CALayer+GeometryAdditions.m */,
 				1AD6FAA1147DCF570037D6A8 /* CATransaction+BlockAdditions.h */,
 				1AD6FAA2147DCF570037D6A8 /* CATransaction+BlockAdditions.m */,
 				1AD6FAA5147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.h */,
 				1AD6FAA6147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.m */,
+				D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */,
+				D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -368,6 +374,7 @@
 				1AD6FA9F147D74070037D6A8 /* VELNSViewPrivate.h in Headers */,
 				1AD6FAA3147DCF570037D6A8 /* CATransaction+BlockAdditions.h in Headers */,
 				1AD6FAA7147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.h in Headers */,
+				1E1790F11481D21000177DC0 /* CALayer+GeometryAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -489,6 +496,7 @@
 				D0911B1E147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m in Sources */,
 				1AD6FAA4147DCF570037D6A8 /* CATransaction+BlockAdditions.m in Sources */,
 				1AD6FAA8147DD5FE0037D6A8 /* CGBitmapContext+PixelFormatAdditions.m in Sources */,
+				1E1790F21481D21000177DC0 /* CALayer+GeometryAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

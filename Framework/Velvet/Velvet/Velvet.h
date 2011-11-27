@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/dispatch+SynchronizationAdditions.h>
+#import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSVelvetView.h>

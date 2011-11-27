@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/VELScrollView.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELViewProtected.h>
 #import <QuartzCore/QuartzCore.h>
@@ -27,6 +28,11 @@
  * Contains a vertical `NSScroller`.
  */
 @property (nonatomic, strong, readonly) VELNSView *verticalScrollerHost;
+
+/*
+ * Invoked when one of the scrollers moves.
+ */
+- (void)scrolled:(NSScroller *)sender;
 @end
 
 @implementation VELScrollView
@@ -57,7 +63,9 @@
     
     m_scrollLayer = [[CAScrollLayer alloc] init];
     m_scrollLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    //m_scrollLayer.backgroundColor = CGColorGetConstantColor(kCGColorClear);
     [self.layer addSublayer:m_scrollLayer];
+
     self.scrollLayer.contentsRect = CGRectMake(0, 0, 1000, 1000);
 
     // TODO: subscribe to notifications about preferred scroller style changing?
@@ -66,11 +74,16 @@
 
     NSScroller *(^preparedScrollerWithSize)(CGSize) = ^(CGSize size){
         NSScroller *scroller = [[NSScroller alloc] initWithFrame:NSMakeRect(0, 0, size.width, size.height)];
+
+        scroller.target = self;
+        scroller.action = @selector(scrolled:);
+
         scroller.scrollerStyle = style;
         scroller.enabled = YES;
 
-        scroller.knobProportion = 0.5;
+        scroller.knobProportion = 1;
         scroller.doubleValue = 0;
+
         return scroller;
     };
 
@@ -108,6 +121,22 @@
     CGFloat verticalScrollerHostWidth = self.verticalScrollerHost.bounds.size.width;
     self.verticalScrollerHost.frame = CGRectMake(bounds.size.width - verticalScrollerHostWidth, 0, verticalScrollerHostWidth, bounds.size.height);
     self.verticalScroller.knobProportion = CGRectGetHeight(bounds) / CGRectGetHeight(contentRect);
+}
+
+#pragma mark Actions
+
+- (void)scrolled:(NSScroller *)sender; {
+    CGSize contentSize = self.scrollLayer.contentsRect.size;
+
+    double horizontalValue = self.horizontalScroller.doubleValue;
+    double verticalValue = self.verticalScroller.doubleValue;
+
+    CGPoint scrollPoint = CGPointMake(round(horizontalValue * contentSize.width), round(verticalValue * contentSize.height));
+
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:0.05];
+    [self.scrollLayer scrollToPoint:scrollPoint];
+    [CATransaction commit];
 }
 
 @end

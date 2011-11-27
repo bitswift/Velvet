@@ -152,25 +152,31 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     // subviews (which expect it in their superview's coordinate system)
     point = [self convertPoint:point fromView:self.superview];
 
+    __block NSView *result = self;
+
     // we need to avoid hitting any NSViews that are clipped by their
     // corresponding Velvet views
-    for (NSView *view in self.subviews) {
+    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView *view, NSUInteger index, BOOL *stop){
         VELNSView *hostView = view.hostView;
         if (hostView) {
             CGRect bounds = hostView.layer.bounds;
             CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
 
             CGPoint subviewPoint = [view convertPoint:point fromView:self];
-            if (!CGRectContainsPoint(clippedBounds, subviewPoint))
-                continue;
+            if (!CGRectContainsPoint(clippedBounds, subviewPoint)) {
+                // skip this view
+                return;
+            }
         }
 
         NSView *hitTestedView = [view hitTest:point];
-        if (hitTestedView)
-            return hitTestedView;
-    }
+        if (hitTestedView) {
+            result = hitTestedView;
+            *stop = YES;
+        }
+    }];
 
-    return self;
+    return result;
 }
 
 #pragma mark NSView hierarchy

@@ -35,6 +35,8 @@
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
 		D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E6426148243E800E99AA2 /* VELViewProtected.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D03E643414825B3A00E99AA2 /* EXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E643214825B3A00E99AA2 /* EXTScope.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D03E643514825B3A00E99AA2 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E643314825B3A00E99AA2 /* EXTScope.m */; };
 		D0911B1D147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0911B1E147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */; };
 		D0CACD35147C86C0008C42B2 /* VELGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -97,6 +99,8 @@
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
 		D03E6426148243E800E99AA2 /* VELViewProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewProtected.h; sourceTree = "<group>"; };
+		D03E643214825B3A00E99AA2 /* EXTScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTScope.h; path = ../libextobjc/extobjc/Modules/EXTScope.h; sourceTree = "<group>"; };
+		D03E643314825B3A00E99AA2 /* EXTScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTScope.m; path = ../libextobjc/extobjc/Modules/EXTScope.m; sourceTree = "<group>"; };
 		D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+VELGeometryAdditions.h"; sourceTree = "<group>"; };
 		D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELGeometryAdditions.m"; sourceTree = "<group>"; };
 		D0CACD34147C86C0008C42B2 /* VELGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELGeometry.h; sourceTree = "<group>"; };
@@ -383,6 +387,8 @@
 				D0FBA3241482086B00F9F5F6 /* EXTRuntimeExtensions.m */,
 				D0FBA3251482086B00F9F5F6 /* EXTSafeCategory.h */,
 				D0FBA3261482086B00F9F5F6 /* EXTSafeCategory.m */,
+				D03E643214825B3A00E99AA2 /* EXTScope.h */,
+				D03E643314825B3A00E99AA2 /* EXTScope.m */,
 				D0FBA3211482086100F9F5F6 /* metamacros.h */,
 			);
 			name = libextobjc;
@@ -418,6 +424,7 @@
 				D0FBA3271482086B00F9F5F6 /* EXTRuntimeExtensions.h in Headers */,
 				D0FBA3291482086B00F9F5F6 /* EXTSafeCategory.h in Headers */,
 				D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */,
+				D03E643414825B3A00E99AA2 /* EXTScope.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,6 +552,7 @@
 				1E2819731481EE7B006A747C /* NSView+VELNSViewAdditions.m in Sources */,
 				D0FBA3281482086B00F9F5F6 /* EXTRuntimeExtensions.m in Sources */,
 				D0FBA32A1482086B00F9F5F6 /* EXTSafeCategory.m in Sources */,
+				D03E643514825B3A00E99AA2 /* EXTScope.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

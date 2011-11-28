@@ -56,8 +56,8 @@
 
     dispatch_sync_recursive(self.context.dispatchQueue, ^{
         [m_NSView removeFromSuperview];
-        m_NSView.layer.delegate = self.clipRenderer.originalLayerDelegate;
         m_NSView.hostView = nil;
+        self.clipRenderer = nil;
 
         m_NSView = view;
 
@@ -67,12 +67,7 @@
             [self.hostView addSubview:view];
             [self synchronizeNSViewGeometry];
 
-            self.clipRenderer = [[NSViewClipRenderer alloc] init];
-            self.clipRenderer.clippedView = self;
-            self.clipRenderer.originalLayerDelegate = view.layer.delegate;
-            view.layer.delegate = self.clipRenderer;
-        } else {
-            self.clipRenderer = nil;
+            self.clipRenderer = [[NSViewClipRenderer alloc] initWithClippedView:self layer:view.layer];
         }
     });
 }

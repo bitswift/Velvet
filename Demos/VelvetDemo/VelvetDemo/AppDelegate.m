@@ -34,20 +34,7 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
     NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"iceberg" withExtension:@"jpg"];
     NSImage *image = [[NSImage alloc] initWithContentsOfURL:imageURL];
-
     NSRect imageRect = NSMakeRect(0, 0, image.size.width, image.size.height);
-    NSImageView *imageView = [[NSImageView alloc] initWithFrame:imageRect];
-    [imageView setBounds:imageRect];
-    [imageView setImage:image];
-
-    NSTextField *textField = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 150, 91, 22)];
-    [textField.cell setUsesSingleLineMode:YES];
-    [textField.cell setScrollable:YES];
-    [textField setBackgroundColor:[NSColor whiteColor]];
-    [textField setDrawsBackground:YES];
-    [imageView addSubview:textField];
-
-    VELNSView *imageViewHost = [[VELNSView alloc] initWithNSView:imageView];
 
     self.scrollView = [[VELScrollView alloc] init];
     self.scrollView.layer.backgroundColor = CGColorGetConstantColor(kCGColorBlack);
@@ -57,8 +44,25 @@
     VELView *scrollableSquareView = [[SquareView alloc] init];
     scrollableSquareView.frame = CGRectMake(20, 200, 800, 800);
 
+    VELImageView *imageView = [[VELImageView alloc] init];
+    imageView.frame = imageRect;
+    imageView.image = [image CGImageForProposedRect:NULL context:nil hints:nil];
+
     self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:scrollableSquareView];
-    self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:imageViewHost];
+    self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:imageView];
+
+    NSTextField *textField = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 150, 91, 22)];
+    [textField.cell setUsesSingleLineMode:YES];
+    [textField.cell setScrollable:YES];
+    [textField setBackgroundColor:[NSColor whiteColor]];
+    [textField setDrawsBackground:YES];
+
+    VELView *rootSquareView = [[SquareView alloc] init];
+    rootSquareView.frame = CGRectMake(20, 20, 300, 300);
+    imageView.subviews = [NSArray arrayWithObject:rootSquareView];
+
+    VELNSView *textFieldHost = [[VELNSView alloc] initWithNSView:textField];
+    imageView.subviews = [imageView.subviews arrayByAddingObject:textFieldHost];
 
     NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
         (__bridge_transfer id)CGColorCreateGenericGray(0, 1), (__bridge id)kCTForegroundColorAttributeName,
@@ -72,17 +76,9 @@
 
     self.hostView.rootView.subviews = [NSArray arrayWithObjects:label, self.scrollView, nil];
 
-    VELView *rootSquareView = [[SquareView alloc] init];
-    rootSquareView.frame = CGRectMake(0, 0, 200, 200);
-
     self.nestedSquareView = [[SquareView alloc] init];
     self.nestedSquareView.layer.masksToBounds = YES;
     self.nestedSquareView.frame = CGRectMake(0, 0, 80, 80);
-
-    NSVelvetView *nestedVelvetView = [[NSVelvetView alloc] initWithFrame:NSMakeRect(20, 20, 300, 300)];
-    nestedVelvetView.layer.masksToBounds = YES;
-    nestedVelvetView.rootView = rootSquareView;
-    [imageView addSubview:nestedVelvetView positioned:NSWindowBelow relativeTo:nil];
 
     NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 28)];
     [button setButtonType:NSMomentaryPushInButton];

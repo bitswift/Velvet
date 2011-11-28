@@ -92,6 +92,13 @@
     self.layer.layoutManager = self.originalLayerLayoutManager;
 }
 
+#pragma mark Rendering
+
+- (void)clip; {
+    [self.layer setNeedsDisplay];
+    [self.sublayerRenderers makeObjectsPerformSelector:@selector(clip)];
+}
+
 #pragma mark Sublayers
 
 - (void)setUpSublayerRenderers; {

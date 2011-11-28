@@ -122,9 +122,8 @@
     self.NSView.frame = self.NSViewFrame;
 
     // if the frame has changed, we'll need to go through our clipRenderer's
-    // -drawLayer:inContext: logic again with the new location and size, so mark
-    // the layer as needing display
-    [self.NSView.layer setNeedsDisplay];
+    // -drawLayer:inContext: logic again with the new location and size
+    [self.clipRenderer clip];
 }
 
 #pragma mark View hierarchy

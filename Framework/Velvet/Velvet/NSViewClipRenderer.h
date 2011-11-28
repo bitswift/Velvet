@@ -47,4 +47,10 @@
  */
 @property (nonatomic, strong, readonly) CALayer *layer;
 
+/*
+ * Tells the renderer to recalculate clipping regions for the <layer> and all
+ * sublayers.
+ */
+- (void)clip;
+
 @end

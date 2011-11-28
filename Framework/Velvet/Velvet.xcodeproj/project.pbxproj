@@ -51,6 +51,8 @@
 		D0D8C3AA14785A1300FC9015 /* VELView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D8C3A814785A1300FC9015 /* VELView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C3AB14785A1300FC9015 /* VELView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C3A914785A1300FC9015 /* VELView.m */; };
 		D0D8C3AD14785CEE00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
+		D0E8B35414831419003980B4 /* VELImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E8B35214831419003980B4 /* VELImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0E8B35514831419003980B4 /* VELImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E8B35314831419003980B4 /* VELImageView.m */; };
 		D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
 		D0EFFC0F147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC0D147851A80095AB35 /* InfoPlist.strings */; };
 		D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */; };
@@ -119,6 +121,8 @@
 		D0D8C3A814785A1300FC9015 /* VELView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELView.h; sourceTree = "<group>"; };
 		D0D8C3A914785A1300FC9015 /* VELView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELView.m; sourceTree = "<group>"; };
 		D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D0E8B35214831419003980B4 /* VELImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELImageView.h; sourceTree = "<group>"; };
+		D0E8B35314831419003980B4 /* VELImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELImageView.m; sourceTree = "<group>"; };
 		D0EFFC01147851A80095AB35 /* Velvet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Velvet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EFFC04147851A80095AB35 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D0EFFC07147851A80095AB35 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -225,6 +229,8 @@
 			children = (
 				D0150FDA147902AE00126F09 /* VELContext.h */,
 				D0150FDB147902AE00126F09 /* VELContext.m */,
+				D0E8B35214831419003980B4 /* VELImageView.h */,
+				D0E8B35314831419003980B4 /* VELImageView.m */,
 				1E7BBD3E147B157B0010375D /* VELLabel.h */,
 				1E7BBD3F147B157B0010375D /* VELLabel.m */,
 				D03E642114823DC200E99AA2 /* VELScrollView.h */,
@@ -443,6 +449,7 @@
 				D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */,
 				D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */,
 				D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */,
+				D0E8B35414831419003980B4 /* VELImageView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,6 +580,7 @@
 				D03E643514825B3A00E99AA2 /* EXTScope.m in Sources */,
 				D03E642414823DC200E99AA2 /* VELScrollView.m in Sources */,
 				D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */,
+				D0E8B35514831419003980B4 /* VELImageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

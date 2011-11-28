@@ -141,7 +141,6 @@
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView {
     [self.NSView removeFromSuperview];
-    [hostView addSubview:self.NSView];
 }
 
 - (void)didMoveToHostView {
@@ -159,6 +158,9 @@
     }];
     #endif
 
+    // this must only be added after we've completely moved to the host view,
+    // because it'll do some ancestor checks for NSView ordering
+    [self.hostView addSubview:self.NSView];
     [self synchronizeNSViewGeometry];
 }
 

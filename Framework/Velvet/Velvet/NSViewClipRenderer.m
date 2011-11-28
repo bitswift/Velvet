@@ -15,11 +15,7 @@
 @interface NSViewClipRenderer ()
 @property (nonatomic, weak, readwrite) VELNSView *clippedView;
 @property (nonatomic, strong, readwrite) CALayer *layer;
-
-/*
- * The clip renderers used on the immediate sublayers of the receiver's layer.
- */
-@property (strong) NSArray *sublayerRenderers;
+@property (nonatomic, strong, readwrite) NSMutableArray *sublayerRenderers;
 
 /*
  * The original delegate for the layer of the `NSView` that should be clipped.
@@ -76,6 +72,7 @@
 
     self.clippedView = clippedView;
     self.layer = layer;
+    self.sublayerRenderers = [[NSMutableArray alloc] init];
 
     self.originalLayerDelegate = layer.delegate;
     layer.delegate = self;
@@ -84,6 +81,7 @@
     layer.layoutManager = self;
 
     [self setUpSublayerRenderers];
+    [self clip];
     return self;
 }
 
@@ -102,17 +100,27 @@
 #pragma mark Sublayers
 
 - (void)setUpSublayerRenderers; {
+    #if 0
+    NSIndexSet *abandonedRenderers = [self.sublayerRenderers indexesOfObjectsPassingTest:^ BOOL (NSViewClipRenderer *renderer, NSUInteger index, BOOL *stop){
+        return (renderer.layer.superlayer == nil);
+    }];
+
+    [self.sublayerRenderers removeObjectsAtIndexes:abandonedRenderers];
+    #endif
+
     NSArray *sublayers = self.layer.sublayers;
-    NSMutableArray *renderers = [[NSMutableArray alloc] initWithCapacity:[sublayers count]];
 
     [sublayers enumerateObjectsUsingBlock:^(CALayer *sublayer, NSUInteger index, BOOL *stop){
+        for (NSViewClipRenderer *renderer in self.sublayerRenderers) {
+            if (renderer.layer == sublayer)
+                return;
+        }
+
         [sublayer layoutIfNeeded];
 
         NSViewClipRenderer *renderer = [[[self class] alloc] initWithClippedView:self.clippedView layer:sublayer];
-        [renderers addObject:renderer];
+        [self.sublayerRenderers addObject:renderer];
     }];
-
-    self.sublayerRenderers = renderers;
 }
 
 #pragma mark Forwarding
@@ -153,12 +161,45 @@
     if (!context)
         return;
 
-    CGRect selfBounds = self.clippedView.layer.bounds;
-    CGRect viewBounds = [self.clippedView.layer convertAndClipRect:selfBounds toLayer:layer];
+    NSLog(@"%s: %@", __func__, layer);
+
+    CGRect contextBounds = self.clippedView.layer.bounds;
+    NSLog(@"contextBounds: %@", NSStringFromRect(contextBounds));
+
+    CGRect layerBounds = layer.bounds;
+
+    if (!self.clippedView.layer.masksToBounds && CGRectContainsRect(layerBounds, contextBounds)) {
+        contextBounds = CGRectIntegral(CGRectMake(
+            contextBounds.size.width / 2 - layerBounds.size.width / 2,
+            contextBounds.size.height / 2 - layerBounds.size.height / 2,
+            layerBounds.size.width,
+            layerBounds.size.height
+        ));
+    }
+
+    NSLog(@"contextBounds: %@", NSStringFromRect(contextBounds));
+    NSLog(@"contents size: %zu %zu", CGImageGetWidth((__bridge CGImageRef)layer.contents), CGImageGetHeight((__bridge CGImageRef)layer.contents));
+
+    CGRect viewBounds = [self.clippedView.layer convertAndClipRect:contextBounds toLayer:layer];
+
+    NSLog(@"viewBounds: %@", NSStringFromRect(viewBounds));
 
     CGContextSaveGState(context);
     CGContextClipToRect(context, viewBounds);
-    [self.originalLayerDelegate drawLayer:layer inContext:context];
+
+    if (self.originalLayerDelegate) {
+        [self.originalLayerDelegate drawLayer:layer inContext:context];
+    } else {
+        CGSize size = contextBounds.size;
+
+        layer.contentsRect = CGRectMake(
+            viewBounds.origin.x / size.width,
+            viewBounds.origin.y / size.height,
+            viewBounds.size.width / size.width,
+            viewBounds.size.height / size.height
+        );
+    }
+
     CGContextRestoreGState(context);
 }
 

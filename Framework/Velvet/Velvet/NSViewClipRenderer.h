@@ -33,7 +33,7 @@
 - (id)initWithClippedView:(VELNSView *)clippedView layer:(CALayer *)layer;
 
 /*
- * @name Rendering
+ * @name Rendering Hierarchies
  */
 
 /*
@@ -46,6 +46,15 @@
  * The `CALayer` that this renderer is responsible for.
  */
 @property (nonatomic, strong, readonly) CALayer *layer;
+
+/*
+ * The clip renderers used on the immediate sublayers of the receiver's layer.
+ */
+@property (nonatomic, strong, readonly) NSMutableArray *sublayerRenderers;
+
+/*
+ * @name Rendering
+ */
 
 /*
  * Tells the renderer to recalculate clipping regions for the <layer> and all

@@ -8,6 +8,8 @@
 
 #import <Velvet/VELNSView.h>
 
+@class NSViewClipRenderer;
+
 /*
  * Private functionality of <VELNSView> that needs to be exposed to other parts
  * of the framework.
@@ -29,6 +31,12 @@
  * If the receiver has no host view, the value is undefined.
  */
 @property (readonly) CGRect NSViewFrame;
+
+/*
+ * The delegate for the layer of the contained <NSView>. This object is
+ * responsible for rendering it while taking into account any clipping paths.
+ */
+@property (nonatomic, strong, readonly) NSViewClipRenderer *clipRenderer;
 
 /*
  * This will synchronize the geometry of the receiver's `NSView` with that of

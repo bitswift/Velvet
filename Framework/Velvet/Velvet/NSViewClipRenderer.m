@@ -15,7 +15,11 @@
 @interface NSViewClipRenderer ()
 @property (nonatomic, weak, readwrite) VELView *clippedView;
 @property (nonatomic, strong, readwrite) CALayer *layer;
-@property (nonatomic, strong, readwrite) NSMutableArray *sublayerRenderers;
+
+/*
+ * The clip renderers used on the immediate sublayers of the receiver's layer.
+ */
+@property (nonatomic, strong) NSMutableArray *sublayerRenderers;
 
 /*
  * The original delegate for the layer of the `NSView` that should be clipped.

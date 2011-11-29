@@ -69,6 +69,25 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
 
 /*
+ * Replaces a focus ring layer provided by AppKit with one of our own to
+ * properly handle clipping.
+ *
+ * @param layer The focus ring layer installed by AppKit.
+ */
+- (void)replaceFocusRingLayer:(CALayer *)layer;
+
+/*
+ * Attaches a focus ring to a given <VELNSView>, synchronizing their geometry.
+ *
+ * The focus ring will clip to the superview of `hostView`.
+ *
+ * @param hostView The view which has focus.
+ * @param layer The AppKit-installed layer which is currently rendering a focus
+ * ring.
+ */
+- (void)attachFocusRingLayerToView:(VELNSView *)hostView replacingLayer:(CALayer *)layer;
+
+/*
  * Configures all the necessary properties on the receiver. This is outside of
  * an initializer because \c NSView has no true designated initializer.
  */
@@ -200,30 +219,41 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
     [CATransaction performWithDisabledActions:^{
         for (CALayer *sublayer in existingSublayers) {
-            if (!sublayer.delegate && sublayer != self.velvetHostView.layer) {
-                // this is probably a focus ring -- try to find the view that it
-                // belongs to so we can clip it
-                for (NSView *view in self.subviews) {
-                    if (!CGRectContainsRect(sublayer.frame, view.frame))
-                        continue;
-
-                    VELNSView *hostView = view.hostView;
-                    if (!hostView || !hostView.superview) {
-                        // don't need to clip if there's no superview of this VELNSView
-                        continue;
-                    }
-
-                    VELFocusRingLayer *focusRingLayer = [[VELFocusRingLayer alloc] initWithOriginalLayer:sublayer hostView:hostView];
-                    [self.layer addSublayer:focusRingLayer];
-
-                    focusRingLayer.frame = sublayer.frame; 
-                    hostView.focusRingLayer = focusRingLayer;
-
-                    break;
-                }
+            if (sublayer.delegate || sublayer == self.velvetHostView.layer) {
+                // this is ours
+                continue;
             }
+
+            // this is probably a focus ring -- try to find the view that it
+            // belongs to so we can clip it
+            [self replaceFocusRingLayer:sublayer];
         } 
     }];
+}
+
+- (void)replaceFocusRingLayer:(CALayer *)layer; {
+    for (NSView *view in self.subviews) {
+        // if the focus ring layer wraps around this view, it's probably the
+        // ring for this view
+        // TODO: match the tightest rectangle around views?
+        if (CGRectContainsRect(layer.frame, view.frame)) {
+            VELNSView *hostView = view.hostView;
+            if (hostView) {
+                [self attachFocusRingLayerToView:hostView replacingLayer:layer];
+                break;
+            }
+        }
+    }
+}
+
+- (void)attachFocusRingLayerToView:(VELNSView *)hostView replacingLayer:(CALayer *)layer; {
+    NSAssert1(hostView.superview, @"%@ should have a superview if its NSView is in the NSVelvetView", hostView);
+
+    VELFocusRingLayer *focusRingLayer = [[VELFocusRingLayer alloc] initWithOriginalLayer:layer hostView:hostView];
+    [self.layer addSublayer:focusRingLayer];
+
+    focusRingLayer.frame = layer.frame; 
+    hostView.focusRingLayer = focusRingLayer;
 }
 
 @end

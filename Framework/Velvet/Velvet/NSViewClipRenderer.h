@@ -48,11 +48,6 @@
 @property (nonatomic, strong, readonly) CALayer *layer;
 
 /*
- * The clip renderers used on the immediate sublayers of the receiver's layer.
- */
-@property (nonatomic, strong, readonly) NSMutableArray *sublayerRenderers;
-
-/*
  * @name Rendering
  */
 

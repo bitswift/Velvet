@@ -201,15 +201,15 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.65;
 
     [CATransaction performWithDisabledActions:^{
         [self.scrollLayer scrollToPoint:point];
+
+        for (VELView *view in self.subviews) {
+            [view ancestorDidScroll];
+        }
     }];
 
     CGSize contentSize = self.scrollLayer.contentsRect.size;
     self.horizontalScroller.doubleValue = point.x / contentSize.width;
     self.verticalScroller.doubleValue = 1.0 - point.y / contentSize.height;
-
-    for (VELView *view in self.subviews) {
-        [view ancestorDidScroll];
-    }
 
     [self performSelector:@selector(fadeOutScrollers) withObject:nil afterDelay:VELScrollViewScrollersVisibleDuration];
 }

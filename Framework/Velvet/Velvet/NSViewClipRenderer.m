@@ -9,11 +9,11 @@
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/NSView+VELGeometryAdditions.h>
-#import <Velvet/VELNSView.h>
+#import <Velvet/VELView.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface NSViewClipRenderer ()
-@property (nonatomic, weak, readwrite) VELNSView *clippedView;
+@property (nonatomic, weak, readwrite) VELView *clippedView;
 @property (nonatomic, strong, readwrite) CALayer *layer;
 @property (nonatomic, strong, readwrite) NSMutableArray *sublayerRenderers;
 
@@ -65,7 +65,7 @@
     return [self initWithClippedView:nil layer:nil];
 }
 
-- (id)initWithClippedView:(VELNSView *)clippedView layer:(CALayer *)layer; {
+- (id)initWithClippedView:(VELView *)clippedView layer:(CALayer *)layer; {
     self = [super init];
     if (!self)
         return nil;
@@ -161,45 +161,12 @@
     if (!context)
         return;
 
-    NSLog(@"%s: %@", __func__, layer);
-
     CGRect contextBounds = self.clippedView.layer.bounds;
-    NSLog(@"contextBounds: %@", NSStringFromRect(contextBounds));
-
-    CGRect layerBounds = layer.bounds;
-
-    if (!self.clippedView.layer.masksToBounds && CGRectContainsRect(layerBounds, contextBounds)) {
-        contextBounds = CGRectIntegral(CGRectMake(
-            contextBounds.size.width / 2 - layerBounds.size.width / 2,
-            contextBounds.size.height / 2 - layerBounds.size.height / 2,
-            layerBounds.size.width,
-            layerBounds.size.height
-        ));
-    }
-
-    NSLog(@"contextBounds: %@", NSStringFromRect(contextBounds));
-    NSLog(@"contents size: %zu %zu", CGImageGetWidth((__bridge CGImageRef)layer.contents), CGImageGetHeight((__bridge CGImageRef)layer.contents));
-
     CGRect viewBounds = [self.clippedView.layer convertAndClipRect:contextBounds toLayer:layer];
-
-    NSLog(@"viewBounds: %@", NSStringFromRect(viewBounds));
 
     CGContextSaveGState(context);
     CGContextClipToRect(context, viewBounds);
-
-    if (self.originalLayerDelegate) {
-        [self.originalLayerDelegate drawLayer:layer inContext:context];
-    } else {
-        CGSize size = contextBounds.size;
-
-        layer.contentsRect = CGRectMake(
-            viewBounds.origin.x / size.width,
-            viewBounds.origin.y / size.height,
-            viewBounds.size.width / size.width,
-            viewBounds.size.height / size.height
-        );
-    }
-
+    [self.originalLayerDelegate drawLayer:layer inContext:context];
     CGContextRestoreGState(context);
 }
 

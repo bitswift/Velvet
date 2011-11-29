@@ -125,7 +125,6 @@
         case NSLeftMouseDown:
         case NSRightMouseDown:
         case NSOtherMouseDown:
-            printf("\n************ MOUSE EVENT! ****************\n\n");
             [self sendHitTestedEvent:theEvent];
             break;
 

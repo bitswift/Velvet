@@ -9,6 +9,7 @@
 #import <Velvet/VELNSView.h>
 
 @class NSViewClipRenderer;
+@class VELFocusRingLayer;
 
 /*
  * Private functionality of <VELNSView> that needs to be exposed to other parts
@@ -33,10 +34,11 @@
 @property (readonly) CGRect NSViewFrame;
 
 /*
- * The delegate for the layer of the contained <NSView>. This object is
- * responsible for rendering it while taking into account any clipping paths.
+ * A layer holding a focus ring for this view, if one exists.
+ *
+ * This layer may not be a descendant of the receiver's layer.
  */
-@property (nonatomic, strong, readonly) NSViewClipRenderer *clipRenderer;
+@property (strong) VELFocusRingLayer *focusRingLayer;
 
 /*
  * This will synchronize the geometry of the receiver's `NSView` with that of

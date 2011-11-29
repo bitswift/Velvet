@@ -14,13 +14,20 @@
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/VELContext.h>
+#import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface VELNSView ()
 @property (nonatomic, assign) BOOL rendersContainedView;
-@property (nonatomic, strong, readwrite) NSViewClipRenderer *clipRenderer;
+@property (strong) VELFocusRingLayer *focusRingLayer;
+
+/*
+ * The delegate for the layer of the contained <NSView>. This object is
+ * responsible for rendering it while taking into account any clipping paths.
+ */
+@property (nonatomic, strong) NSViewClipRenderer *clipRenderer;
 
 - (void)synchronizeNSViewGeometry;
 @end
@@ -32,6 +39,7 @@
 @synthesize NSView = m_NSView;
 @synthesize clipRenderer = m_clipRenderer;
 @synthesize rendersContainedView = m_rendersContainedView;
+@synthesize focusRingLayer = m_focusRingLayer;
 
 - (NSView *)NSView {
     __block NSView *view;
@@ -115,7 +123,14 @@
         return;
     }
 
-    self.NSView.frame = self.NSViewFrame;
+    CGRect frame = self.NSViewFrame;
+    self.NSView.frame = frame;
+
+    [CATransaction performWithDisabledActions:^{
+        self.focusRingLayer.position = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+        [self.focusRingLayer setNeedsDisplay];
+        [self.focusRingLayer displayIfNeeded];
+    }];
 
     // if the frame has changed, we'll need to go through our clipRenderer's
     // -drawLayer:inContext: logic again with the new location and size

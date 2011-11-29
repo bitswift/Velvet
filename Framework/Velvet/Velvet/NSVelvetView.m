@@ -8,10 +8,12 @@
 
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/NSVelvetHostView.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/VELContext.h>
+#import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELView.h>
@@ -194,30 +196,34 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         [super performSelector:@selector(layoutSublayersOfLayer:) withObject:layer];
     }
 
-    for (CALayer *sublayer in layer.sublayers) {
-        if (!sublayer.delegate && sublayer != self.velvetHostView.layer) {
-            NSLog(@"Found focus ring %@", sublayer);
+    NSArray *existingSublayers = [layer.sublayers copy];
 
-            // this is probably a focus ring -- try to find the view that it
-            // belongs to so we can clip it
-            for (NSView *view in self.subviews) {
-                if (!CGRectContainsRect(sublayer.frame, view.frame))
-                    continue;
+    [CATransaction performWithDisabledActions:^{
+        for (CALayer *sublayer in existingSublayers) {
+            if (!sublayer.delegate && sublayer != self.velvetHostView.layer) {
+                // this is probably a focus ring -- try to find the view that it
+                // belongs to so we can clip it
+                for (NSView *view in self.subviews) {
+                    if (!CGRectContainsRect(sublayer.frame, view.frame))
+                        continue;
 
-                NSLog(@"Matches frame of view %@", view);
+                    VELNSView *hostView = view.hostView;
+                    if (!hostView || !hostView.superview) {
+                        // don't need to clip if there's no superview of this VELNSView
+                        continue;
+                    }
 
-                VELNSView *hostView = view.hostView;
-                if (!hostView)
-                    continue;
+                    VELFocusRingLayer *focusRingLayer = [[VELFocusRingLayer alloc] initWithOriginalLayer:sublayer hostView:hostView];
+                    [self.layer addSublayer:focusRingLayer];
 
-                NSLog(@"hostView %@", hostView);
+                    focusRingLayer.frame = sublayer.frame; 
+                    hostView.focusRingLayer = focusRingLayer;
 
-                NSViewClipRenderer *clipRenderer = [[NSViewClipRenderer alloc] initWithClippedView:hostView layer:sublayer];
-                [hostView.clipRenderer.sublayerRenderers addObject:clipRenderer];
-                break;
+                    break;
+                }
             }
-        }
-    } 
+        } 
+    }];
 }
 
 @end

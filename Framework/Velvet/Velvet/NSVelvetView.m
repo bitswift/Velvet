@@ -12,7 +12,7 @@
 #import <Velvet/NSVelvetHostView.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
-#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSView.h>
@@ -170,42 +170,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [CATransaction commit];
 }
 
-#pragma mark Event handling
-
-- (NSView *)hitTest:(NSPoint)point {
-    if (!self.userInteractionEnabled)
-        return nil;
-
-    // convert point into our coordinate system, so it's ready to go for all
-    // subviews (which expect it in their superview's coordinate system)
-    point = [self convertPoint:point fromView:self.superview];
-
-    __block NSView *result = self;
-
-    // we need to avoid hitting any NSViews that are clipped by their
-    // corresponding Velvet views
-    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView *view, NSUInteger index, BOOL *stop){
-        VELNSView *hostView = view.hostView;
-        if (hostView) {
-            CGRect bounds = hostView.layer.bounds;
-            CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
-
-            CGPoint subviewPoint = [view convertPoint:point fromView:self];
-            if (!CGRectContainsPoint(clippedBounds, subviewPoint)) {
-                // skip this view
-                return;
-            }
-        }
-
-        NSView *hitTestedView = [view hitTest:point];
-        if (hitTestedView) {
-            result = hitTestedView;
-            *stop = YES;
-        }
-    }];
-
-    return result;
-}
 
 #pragma mark NSView hierarchy
 
@@ -265,9 +229,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
     CGPoint draggedPoint = [self convertFromWindowPoint:[sender draggingLocation]];
-    [self hitTest:draggedPoint];
+    id <VELBridgedView> view = [self descendantViewAtPoint:draggedPoint];
 
-    return NSDragOperationEvery;
+    if ([view respondsToSelector:@selector(draggingEntered:)])
+        return [view draggingEntered:sender];
+    else
+        return NSDragOperationNone;
 }
 
 - (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {

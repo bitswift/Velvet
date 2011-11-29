@@ -7,7 +7,7 @@
 //
 
 #import <AppKit/AppKit.h>
-#import <Velvet/VELGeometry.h>
+#import <Velvet/VELBridgedView.h>
 
 @class VELContext;
 @class NSVelvetView;

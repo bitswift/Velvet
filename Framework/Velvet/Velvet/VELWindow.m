@@ -13,7 +13,7 @@
 #import <Velvet/VELView.h>
 #import <Velvet/VELNSView.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
-#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 
 @class NSVelvetHostView;
 

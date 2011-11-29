@@ -1,7 +1,7 @@
 //
 //  VELView.m
 //  Velvet
-//  
+//
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
@@ -11,7 +11,8 @@
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
-#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
+#import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELCAAction.h>
@@ -24,6 +25,7 @@
 @property (readwrite, weak) VELView *superview;
 @property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
+
 
 /*
  * True if we're inside the `actionForLayer:forKey:` method. This is used so we
@@ -318,7 +320,7 @@
     return [view convertFromWindowRect:[self convertToWindowRect:rect]];
 }
 
-#pragma mark VELGeometry
+#pragma mark VELBridgedView
 
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
     NSVelvetView *hostView = self.hostView;
@@ -432,6 +434,39 @@
     } else {
         return innerAction;
     }
+}
+
+- (id <VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
+
+    // convert point into our coordinate system, so it's ready to go for all
+    // subviews (which expect it in their superview's coordinate system)
+    point = [self convertPoint:point fromView:self.superview];
+
+    __block id <VELBridgedView> result = self;
+
+    // we need to avoid hitting any NSViews that are clipped by their
+    // corresponding Velvet views
+    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView <VELBridgedView> *view, NSUInteger index, BOOL *stop){
+        NSVelvetView *hostView = view.hostView;
+        if (hostView) {
+            CGRect bounds = hostView.layer.bounds;
+            CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
+
+            CGPoint subviewPoint = [view convertPoint:point fromView:self];
+            if (!CGRectContainsPoint(clippedBounds, subviewPoint)) {
+                // skip this view
+                return;
+            }
+        }
+
+        id <VELBridgedView> hitTestedView = [view descendantViewAtPoint:point];
+        if (hitTestedView) {
+            result = hitTestedView;
+            *stop = YES;
+        }
+    }];
+
+    return result;
 }
 
 #pragma mark CALayoutManager

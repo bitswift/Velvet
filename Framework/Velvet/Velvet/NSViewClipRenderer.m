@@ -9,8 +9,9 @@
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
-#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELView.h>
+#import <Velvet/VELNSView.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface NSViewClipRenderer ()

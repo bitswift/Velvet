@@ -8,18 +8,19 @@
 
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/NSView+VELGeometryAdditions.h>
-#import <Velvet/VELNSView.h>
+#import <Velvet/VELView.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface NSViewClipRenderer ()
-@property (nonatomic, weak, readwrite) VELNSView *clippedView;
+@property (nonatomic, weak, readwrite) VELView *clippedView;
 @property (nonatomic, strong, readwrite) CALayer *layer;
 
 /*
  * The clip renderers used on the immediate sublayers of the receiver's layer.
  */
-@property (strong) NSArray *sublayerRenderers;
+@property (nonatomic, strong) NSMutableArray *sublayerRenderers;
 
 /*
  * The original delegate for the layer of the `NSView` that should be clipped.
@@ -69,13 +70,14 @@
     return [self initWithClippedView:nil layer:nil];
 }
 
-- (id)initWithClippedView:(VELNSView *)clippedView layer:(CALayer *)layer; {
+- (id)initWithClippedView:(VELView *)clippedView layer:(CALayer *)layer; {
     self = [super init];
     if (!self)
         return nil;
 
     self.clippedView = clippedView;
     self.layer = layer;
+    self.sublayerRenderers = [[NSMutableArray alloc] init];
 
     self.originalLayerDelegate = layer.delegate;
     layer.delegate = self;
@@ -84,6 +86,7 @@
     layer.layoutManager = self;
 
     [self setUpSublayerRenderers];
+    [self clip];
     return self;
 }
 
@@ -95,24 +98,38 @@
 #pragma mark Rendering
 
 - (void)clip; {
-    [self.layer setNeedsDisplay];
-    [self.sublayerRenderers makeObjectsPerformSelector:@selector(clip)];
+    [CATransaction performWithDisabledActions:^{
+        [self.layer setNeedsDisplay];
+        [self.layer displayIfNeeded];
+
+        [self.sublayerRenderers makeObjectsPerformSelector:@selector(clip)];
+    }];
 }
 
 #pragma mark Sublayers
 
 - (void)setUpSublayerRenderers; {
+    #if 0
+    NSIndexSet *abandonedRenderers = [self.sublayerRenderers indexesOfObjectsPassingTest:^ BOOL (NSViewClipRenderer *renderer, NSUInteger index, BOOL *stop){
+        return (renderer.layer.superlayer == nil);
+    }];
+
+    [self.sublayerRenderers removeObjectsAtIndexes:abandonedRenderers];
+    #endif
+
     NSArray *sublayers = self.layer.sublayers;
-    NSMutableArray *renderers = [[NSMutableArray alloc] initWithCapacity:[sublayers count]];
 
     [sublayers enumerateObjectsUsingBlock:^(CALayer *sublayer, NSUInteger index, BOOL *stop){
+        for (NSViewClipRenderer *renderer in self.sublayerRenderers) {
+            if (renderer.layer == sublayer)
+                return;
+        }
+
         [sublayer layoutIfNeeded];
 
         NSViewClipRenderer *renderer = [[[self class] alloc] initWithClippedView:self.clippedView layer:sublayer];
-        [renderers addObject:renderer];
+        [self.sublayerRenderers addObject:renderer];
     }];
-
-    self.sublayerRenderers = renderers;
 }
 
 #pragma mark Forwarding
@@ -153,12 +170,14 @@
     if (!context)
         return;
 
-    CGRect selfBounds = self.clippedView.layer.bounds;
-    CGRect viewBounds = [self.clippedView.layer convertAndClipRect:selfBounds toLayer:layer];
+    CGRect contextBounds = self.clippedView.layer.bounds;
+    CGRect viewBounds = [self.clippedView.layer convertAndClipRect:contextBounds toLayer:layer];
 
     CGContextSaveGState(context);
     CGContextClipToRect(context, viewBounds);
+
     [self.originalLayerDelegate drawLayer:layer inContext:context];
+
     CGContextRestoreGState(context);
 }
 
@@ -178,11 +197,13 @@
 }
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
-    if ([self.originalLayerDelegate respondsToSelector:_cmd]) {
-        [self.originalLayerDelegate layoutSublayersOfLayer:layer];
-    }
+    [CATransaction performWithDisabledActions:^{
+        if ([self.originalLayerDelegate respondsToSelector:_cmd]) {
+            [self.originalLayerDelegate layoutSublayersOfLayer:layer];
+        }
 
-    [self setUpSublayerRenderers];
+        [self setUpSublayerRenderers];
+    }];
 }
 
 @end

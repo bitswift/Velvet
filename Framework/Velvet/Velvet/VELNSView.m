@@ -14,12 +14,14 @@
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/VELContext.h>
+#import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface VELNSView ()
 @property (nonatomic, assign) BOOL rendersContainedView;
+@property (strong) VELFocusRingLayer *focusRingLayer;
 
 /*
  * The delegate for the layer of the contained <NSView>. This object is
@@ -37,6 +39,7 @@
 @synthesize NSView = m_NSView;
 @synthesize clipRenderer = m_clipRenderer;
 @synthesize rendersContainedView = m_rendersContainedView;
+@synthesize focusRingLayer = m_focusRingLayer;
 
 - (NSView *)NSView {
     __block NSView *view;
@@ -102,6 +105,7 @@
     if (!self)
         return nil;
 
+    self.layer.masksToBounds = NO;
     self.NSView = view;
     self.frame = view.frame;
     return self;
@@ -119,7 +123,14 @@
         return;
     }
 
-    self.NSView.frame = self.NSViewFrame;
+    CGRect frame = self.NSViewFrame;
+    self.NSView.frame = frame;
+
+    [CATransaction performWithDisabledActions:^{
+        self.focusRingLayer.position = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
+        [self.focusRingLayer setNeedsDisplay];
+        [self.focusRingLayer displayIfNeeded];
+    }];
 
     // if the frame has changed, we'll need to go through our clipRenderer's
     // -drawLayer:inContext: logic again with the new location and size

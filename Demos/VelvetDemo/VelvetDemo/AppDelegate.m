@@ -39,8 +39,12 @@
 @synthesize views = m_views;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
+#if 0
     [self createViews];
     [self performSelector:@selector(animateViews) withObject:nil afterDelay:2.0];
+#else
+    [self hierarchyTests];
+#endif
 }
 
 - (void)hierarchyTests {

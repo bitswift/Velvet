@@ -8,10 +8,14 @@
 
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/NSVelvetHostView.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
+#import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/VELContext.h>
+#import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSView.h>
+#import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELViewPrivate.h>
 #import <QuartzCore/QuartzCore.h>
@@ -63,6 +67,25 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, strong) NSView *velvetHostView;
 @property (nonatomic, readwrite, strong) VELContext *context;
 @property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
+
+/*
+ * Replaces a focus ring layer provided by AppKit with one of our own to
+ * properly handle clipping.
+ *
+ * @param layer The focus ring layer installed by AppKit.
+ */
+- (void)replaceFocusRingLayer:(CALayer *)layer;
+
+/*
+ * Attaches a focus ring to a given <VELNSView>, synchronizing their geometry.
+ *
+ * The focus ring will clip to the superview of `hostView`.
+ *
+ * @param hostView The view which has focus.
+ * @param layer The AppKit-installed layer which is currently rendering a focus
+ * ring.
+ */
+- (void)attachFocusRingLayerToView:(VELNSView *)hostView replacingLayer:(CALayer *)layer;
 
 /*
  * Configures all the necessary properties on the receiver. This is outside of
@@ -120,9 +143,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     self.context = [[VELContext alloc] init];
     self.userInteractionEnabled = YES;
 
-    // enable layer-backing for this view (as high as possible in the view
-    // hierarchy, to keep as much as possible in CA)
+    // enable layer-backing for this view
     [self setWantsLayer:YES];
+    self.layer.layoutManager = self;
 
     self.velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
     self.velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -183,6 +206,54 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)didAddSubview:(NSView *)subview {
     [self sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
+}
+
+#pragma mark CALayer delegate
+
+- (void)layoutSublayersOfLayer:(CALayer *)layer {
+    if ([[NSVelvetView superclass] instancesRespondToSelector:_cmd]) {
+        [super performSelector:@selector(layoutSublayersOfLayer:) withObject:layer];
+    }
+
+    NSArray *existingSublayers = [layer.sublayers copy];
+
+    [CATransaction performWithDisabledActions:^{
+        for (CALayer *sublayer in existingSublayers) {
+            if (sublayer.delegate || sublayer == self.velvetHostView.layer) {
+                // this is ours
+                continue;
+            }
+
+            // this is probably a focus ring -- try to find the view that it
+            // belongs to so we can clip it
+            [self replaceFocusRingLayer:sublayer];
+        } 
+    }];
+}
+
+- (void)replaceFocusRingLayer:(CALayer *)layer; {
+    for (NSView *view in self.subviews) {
+        // if the focus ring layer wraps around this view, it's probably the
+        // ring for this view
+        // TODO: match the tightest rectangle around views?
+        if (CGRectContainsRect(layer.frame, view.frame)) {
+            VELNSView *hostView = view.hostView;
+            if (hostView) {
+                [self attachFocusRingLayerToView:hostView replacingLayer:layer];
+                break;
+            }
+        }
+    }
+}
+
+- (void)attachFocusRingLayerToView:(VELNSView *)hostView replacingLayer:(CALayer *)layer; {
+    NSAssert1(hostView.superview, @"%@ should have a superview if its NSView is in the NSVelvetView", hostView);
+
+    VELFocusRingLayer *focusRingLayer = [[VELFocusRingLayer alloc] initWithOriginalLayer:layer hostView:hostView];
+    [self.layer addSublayer:focusRingLayer];
+
+    focusRingLayer.frame = layer.frame; 
+    hostView.focusRingLayer = focusRingLayer;
 }
 
 @end

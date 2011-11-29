@@ -8,11 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-@class VELNSView;
+@class VELView;
 
 /*
  * A replacement delegate for the layer of an `NSView`. This will enable
- * clipping to the bounds of a <VELNSView> and forward on all delegate logic to
+ * clipping to the bounds of a <VELView> and forward on all delegate logic to
  * the original delegate of the `NSView`.
  */
 @interface NSViewClipRenderer : NSObject
@@ -30,22 +30,26 @@
  * @param clippedView The view that would be clipped by a superview.
  * @param layer The layer to clip in order to match the view.
  */
-- (id)initWithClippedView:(VELNSView *)clippedView layer:(CALayer *)layer;
+- (id)initWithClippedView:(VELView *)clippedView layer:(CALayer *)layer;
 
 /*
- * @name Rendering
+ * @name Rendering Hierarchies
  */
 
 /*
- * The <VELNSView> whose bounds should be used to determine clipping on the
+ * The <VELView> whose bounds should be used to determine clipping on the
  * `NSView`.
  */
-@property (nonatomic, weak, readonly) VELNSView *clippedView;
+@property (nonatomic, weak, readonly) VELView *clippedView;
 
 /*
  * The `CALayer` that this renderer is responsible for.
  */
 @property (nonatomic, strong, readonly) CALayer *layer;
+
+/*
+ * @name Rendering
+ */
 
 /*
  * Tells the renderer to recalculate clipping regions for the <layer> and all

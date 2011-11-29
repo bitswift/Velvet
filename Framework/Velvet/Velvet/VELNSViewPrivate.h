@@ -8,6 +8,9 @@
 
 #import <Velvet/VELNSView.h>
 
+@class NSViewClipRenderer;
+@class VELFocusRingLayer;
+
 /*
  * Private functionality of <VELNSView> that needs to be exposed to other parts
  * of the framework.
@@ -29,6 +32,13 @@
  * If the receiver has no host view, the value is undefined.
  */
 @property (readonly) CGRect NSViewFrame;
+
+/*
+ * A layer holding a focus ring for this view, if one exists.
+ *
+ * This layer may not be a descendant of the receiver's layer.
+ */
+@property (strong) VELFocusRingLayer *focusRingLayer;
 
 /*
  * This will synchronize the geometry of the receiver's `NSView` with that of

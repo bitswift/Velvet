@@ -12,6 +12,7 @@
 #import <Velvet/NSVelvetHostView.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
+#import <Velvet/NSView+VELGeometryAdditions.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSView.h>
@@ -153,6 +154,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
     self.rootView = [[VELView alloc] init];
     self.rootView.frame = self.bounds;
+
+    [self
+        registerForDraggedTypes:[NSArray
+            arrayWithObjects: NSColorPboardType, NSFilenamesPboardType, NSPasteboardTypePDF, nil]];
 }
 
 #pragma mark Layout
@@ -227,7 +232,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
             // this is probably a focus ring -- try to find the view that it
             // belongs to so we can clip it
             [self replaceFocusRingLayer:sublayer];
-        } 
+        }
     }];
 }
 
@@ -252,8 +257,30 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     VELFocusRingLayer *focusRingLayer = [[VELFocusRingLayer alloc] initWithOriginalLayer:layer hostView:hostView];
     [self.layer addSublayer:focusRingLayer];
 
-    focusRingLayer.frame = layer.frame; 
+    focusRingLayer.frame = layer.frame;
     hostView.focusRingLayer = focusRingLayer;
 }
 
+#pragma mark Dragging
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
+    CGPoint draggedPoint = [self convertFromWindowPoint:[sender draggingLocation]];
+    [self hitTest:draggedPoint];
+
+    return NSDragOperationEvery;
+}
+
+- (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {
+    return YES;
+}
+
+- (BOOL)performDragOperation:(id < NSDraggingInfo >)sender {
+    return YES;
+}
+
+- (void)concludeDragOperation:(id < NSDraggingInfo >)sender {
+    NSLog(@"Dragged sender %@", sender);
+    NSPasteboard *draggingPasteboard = [sender draggingPasteboard];
+    NSLog(@"Data is %@", [draggingPasteboard pasteboardItems]);
+}
 @end

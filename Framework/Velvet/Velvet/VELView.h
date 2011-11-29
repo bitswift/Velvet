@@ -16,7 +16,7 @@
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a <NSVelvetView>.
  */
-@interface VELView : NSResponder <VELGeometry>
+@interface VELView : NSResponder <VELBridgedView>
 
 /**
  * @name Initialization
@@ -63,7 +63,7 @@
  * @warning *Important:* The receiver and `view` must be rooted at the same
  * window.
  */
-- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view;
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view;
 
 /**
  * Transforms a point from the coordinate system of the receiver to that of
@@ -75,7 +75,7 @@
  * @warning *Important:* The receiver and `view` must be rooted at the same
  * window.
  */
-- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view;
+- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view;
 
 /**
  * Transforms a rectangle from the coordinate system of another view to that of
@@ -87,7 +87,7 @@
  * @warning *Important:* The receiver and `view` must be rooted at the same
  * window.
  */
-- (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view;
+- (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view;
 
 /**
  * Transforms a rectangle from the coordinate system of the receiver to that of
@@ -99,7 +99,7 @@
  * @warning *Important:* The receiver and `view` must be rooted at the same
  * window.
  */
-- (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view;
+- (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view;
 
 /**
  * @name View Hierarchy

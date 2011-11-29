@@ -302,19 +302,19 @@
 
 #pragma mark Geometry
 
-- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view; {
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {
     return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
 }
 
-- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view; {
+- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view; {
     return [view convertFromWindowPoint:[self convertToWindowPoint:point]];
 }
 
-- (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view; {
+- (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view; {
     return [self convertFromWindowRect:[view convertToWindowRect:rect]];
 }
 
-- (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view; {
+- (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view; {
     return [view convertFromWindowRect:[self convertToWindowRect:rect]];
 }
 

@@ -12,5 +12,5 @@
 /**
  * Implements <VELGeometry> for `NSView`.
  */
-@interface NSView (VELGeometryAdditions) <VELGeometry>
+@interface NSView (VELGeometryAdditions) <VELBridgedView>
 @end

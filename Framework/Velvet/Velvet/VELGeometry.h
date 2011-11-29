@@ -15,7 +15,7 @@
  * This must be implemented by any view class that wishes to be compatible with
  * the geometry methods of <VELView>.
  */
-@protocol VELGeometry <NSObject>
+@protocol VELBridgedView <NSObject>
 @required
 /**
  * Converts a point from the coordinate system of the window to that of the

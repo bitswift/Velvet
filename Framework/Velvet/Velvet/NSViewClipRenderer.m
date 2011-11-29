@@ -8,6 +8,7 @@
 
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/NSView+VELGeometryAdditions.h>
 #import <Velvet/VELNSView.h>
 #import <QuartzCore/QuartzCore.h>
@@ -95,8 +96,12 @@
 #pragma mark Rendering
 
 - (void)clip; {
-    [self.layer setNeedsDisplay];
-    [self.sublayerRenderers makeObjectsPerformSelector:@selector(clip)];
+    [CATransaction performWithDisabledActions:^{
+        [self.layer setNeedsDisplay];
+        [self.layer displayIfNeeded];
+
+        [self.sublayerRenderers makeObjectsPerformSelector:@selector(clip)];
+    }];
 }
 
 #pragma mark Sublayers
@@ -158,7 +163,9 @@
 
     CGContextSaveGState(context);
     CGContextClipToRect(context, viewBounds);
+
     [self.originalLayerDelegate drawLayer:layer inContext:context];
+
     CGContextRestoreGState(context);
 }
 
@@ -178,11 +185,13 @@
 }
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
-    if ([self.originalLayerDelegate respondsToSelector:_cmd]) {
-        [self.originalLayerDelegate layoutSublayersOfLayer:layer];
-    }
+    [CATransaction performWithDisabledActions:^{
+        if ([self.originalLayerDelegate respondsToSelector:_cmd]) {
+            [self.originalLayerDelegate layoutSublayersOfLayer:layer];
+        }
 
-    [self setUpSublayerRenderers];
+        [self setUpSublayerRenderers];
+    }];
 }
 
 @end

@@ -13,6 +13,47 @@
 @class NSVelvetView;
 
 /**
+ * Defines how a <VELView> automatically resizes. These flags can be bitwise
+ * ORed together to combine behaviors.
+ */
+typedef enum {
+    /**
+     * The view does not automatically resize.
+     */
+    VELAutoresizingNone = kCALayerNotSizable,
+
+    /**
+     * The left margin between the view and its superview is flexible.
+     */
+    VELAutoresizingFlexibleLeftMargin = kCALayerMinXMargin,
+
+    /**
+     * The view's width is flexible.
+     */
+    VELAutoresizingFlexibleWidth = kCALayerWidthSizable,
+
+    /**
+     * The right margin between the view and its superview is flexible.
+     */
+    VELAutoresizingFlexibleRightMargin = kCALayerMaxXMargin,
+
+    /**
+     * The top margin between the view and its superview is flexible.
+     */
+    VELAutoresizingFlexibleTopMargin = kCALayerMaxYMargin,
+
+    /**
+     * The view's height is flexible.
+     */
+    VELAutoresizingFlexibleHeight = kCALayerHeightSizable,
+
+    /**
+     * The bottom margin between the view and its superview is flexible.
+     */
+    VELAutoresizingFlexibleBottomMargin = kCALayerMinYMargin
+} VELAutoresizingMask;
+
+/**
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a <NSVelvetView>.
  */
@@ -172,6 +213,12 @@
 /**
  * @name Layout
  */
+
+/**
+ * Defines how the view should be resized when the bounds of its <superview>
+ * changes.
+ */
+@property (assign) VELAutoresizingMask autoresizingMask;
 
 /**
  * Lays out subviews.

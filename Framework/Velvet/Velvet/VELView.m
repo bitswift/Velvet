@@ -75,6 +75,14 @@
     self.layer.position = center;
 }
 
+- (VELAutoresizingMask)autoresizingMask {
+    return self.layer.autoresizingMask;
+}
+
+- (void)setAutoresizingMask:(VELAutoresizingMask)autoresizingMask {
+    self.layer.autoresizingMask = autoresizingMask;
+}
+
 - (NSArray *)subviews {
     __block NSArray *subviews = nil;
 

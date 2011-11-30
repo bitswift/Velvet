@@ -84,7 +84,6 @@
     layer.layoutManager = self;
 
     [self setUpSublayerRenderers];
-    [self clip];
     return self;
 }
 

@@ -177,6 +177,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [self sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
 }
 
+- (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
+    return [self.rootView descendantViewAtPoint:point] ? : self;
+}
 #pragma mark CALayer delegate
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {

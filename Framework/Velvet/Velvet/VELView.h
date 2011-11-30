@@ -206,6 +206,16 @@
 - (void)drawRect:(CGRect)rect;
 
 /**
+ * Whether this view can be rendered on a background thread.
+ *
+ * If `YES`, <drawRect:> must be thread-safe. If `NO`, <drawRect:> will always
+ * be invoked on the main thread.
+ *
+ * This property defaults to `NO`.
+ */
+@property (assign) BOOL canDrawConcurrently;
+
+/**
  * @name Event Handling
  */
 
@@ -241,8 +251,8 @@
 /**
  * The rendering context for the receiver.
  *
- * This is set when the receiver is added to a <VELView> or <NSVelvetView>. This
- * will be the same object for all views rooted at the same <NSVelvetView>.
+ * This is updated when the receiver is added to a <VELView> or <NSVelvetView>.
+ * This will be the same object for all views rooted at the same <NSVelvetView>.
  *
  * @warning *Important:* The receiver should not be used from a different <VELContext>.
  */

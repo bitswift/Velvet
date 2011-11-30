@@ -7,10 +7,19 @@
 //
 
 #import "VELDraggingDestinationView.h"
+#import <Velvet/VELImageView.h>
 
 @implementation VELDraggingDestinationView
 
 @synthesize name = m_name;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.layer.masksToBounds = YES;
+    }
+    return self;
+}
 
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
@@ -46,11 +55,30 @@
 
 - (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {
     NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+    sender.animatesToDestination = YES;
     return YES;
 }
 
 - (BOOL)performDragOperation:(id < NSDraggingInfo >)sender {
     NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+
+    NSPasteboard *pb = [sender draggingPasteboard];
+    NSArray *filePaths = [pb propertyListForType:NSFilenamesPboardType];
+    for (NSString *path in filePaths) {
+        NSURL *fileURL = [NSURL fileURLWithPath:path];
+        NSImage *image = [[NSImage alloc] initWithContentsOfURL:fileURL];
+        if (image) {
+            VELImageView *imageView = [[VELImageView alloc] init];
+            CGImageRef imageRef = [image CGImageForProposedRect:NULL context:NULL hints:NULL];
+            imageView.image = imageRef;
+            CGPoint dragPoint = [self convertFromWindowPoint:[sender draggingLocation]];
+            imageView.frame = CGRectMake(dragPoint.x, dragPoint.y, image.size.width, image.size.height);
+            [self addSubview:imageView];
+        }
+    }
+
+    NSLog(@"NSDraggingInfo = %@", sender);
+
     return YES;
 }
 

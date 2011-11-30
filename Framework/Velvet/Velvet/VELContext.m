@@ -62,6 +62,10 @@
         return nil;
 
     m_dispatchQueue = dispatch_queue_create("com.emeraldlark.Velvet.VELContext.dispatchQueue", DISPATCH_QUEUE_SERIAL);
+    
+    // set high priority for rendering contexts
+    dispatch_set_target_queue(m_dispatchQueue, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
+
     return self;
 }
 

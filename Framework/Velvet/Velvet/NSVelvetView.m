@@ -77,6 +77,14 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, weak) id <VELBridgedView> lastDraggingDestination;
 
 /*
+ * Collects all of the views messaged during the current dragging session. For consistency
+ * with normal `NSDraggingDestination` behavior, all views which have recieved events this
+ * session (or would have done if they implemented the respective methods) are messaged
+ * with <draggingEnded:> when the session ends.
+ */
+@property (nonatomic, strong) NSMutableSet *allDraggingDestinations;
+
+/*
  * Replaces a focus ring layer provided by AppKit with one of our own to
  * properly handle clipping.
  *
@@ -111,6 +119,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize velvetHostView = m_velvetHostView;
 @synthesize userInteractionEnabled = m_userInteractionEnabled;
 @synthesize lastDraggingDestination = m_lastDraggingDestination;
+@synthesize allDraggingDestinations = m_allDraggingDestinations;
 
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
@@ -248,6 +257,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         return [view draggingEntered:sender];
     }
 
+    if (!self.allDraggingDestinations) self.allDraggingDestinations = [NSMutableSet set];
+    [self.allDraggingDestinations addObject:view];
+
     return NSDragOperationNone;
 
 }
@@ -272,12 +284,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {
-    id <VELBridgedView> view = self.lastDraggingDestination;
-
-    if ([view respondsToSelector:@selector(draggingEnded:)]) {
-        [view draggingEnded:sender];
+    for (id <VELBridgedView> view in self.allDraggingDestinations) {
+        if ([view respondsToSelector:@selector(draggingEnded:)]) {
+            [view draggingEnded:sender];
+        }
     }
 
+    self.allDraggingDestinations = nil;
     self.lastDraggingDestination = nil;
 }
 

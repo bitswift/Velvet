@@ -10,36 +10,58 @@
 
 @implementation VELDraggingDestinationView
 
+@synthesize name = m_name;
+
+- (void)drawRect:(CGRect)rect {
+    CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
+
+//    CGColorRef red = CGColorCreateGenericRGB(1, 0, 0, 1);
+//    CGContextSetFillColorWithColor(context, red);
+//    CGColorRelease(red);
+//    CGContextFillRect(context, self.bounds);
+
+    CGColorRef black = CGColorCreateGenericRGB(0, 0, 0, 1);
+    CGContextSetStrokeColorWithColor(context, black);
+    CGColorRelease(black);
+    CGContextStrokeRect(context, self.bounds);
+}
+
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
-    NSLog(@"draggingEntered:");
+    NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     return NSDragOperationEvery;
 }
 
 - (NSDragOperation)draggingUpdated:(id<NSDraggingInfo>)sender {
-    NSLog(@"draggingUpdated:");
+    NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     return NSDragOperationEvery;
 }
 
 - (void)draggingExited:(id<NSDraggingInfo>)sender {
-    NSLog(@"draggingExited:");
+    NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
 }
 
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {
-    NSLog(@"draggingEnded:");
+    NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
 }
 
 - (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {
-    NSLog(@"prepareForDragOperation:");
+    NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     return YES;
 }
 
 - (BOOL)performDragOperation:(id < NSDraggingInfo >)sender {
-    NSLog(@"performDragOperation:");
+    NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     return YES;
 }
 
 - (void)concludeDragOperation:(id < NSDraggingInfo >)sender {
-    NSLog(@"concludeDragOperation:");
+    NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: 0x%p, name = %@>",
+        NSStringFromClass([self class]), self, self.name];
 }
 
 @end

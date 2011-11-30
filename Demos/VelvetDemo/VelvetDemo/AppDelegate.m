@@ -50,13 +50,30 @@
 }
 
 - (void)draggingTests {
-    VELDraggingDestinationView *view = [[VELDraggingDestinationView alloc] init];
-    CGColorRef redColor = CGColorCreateGenericRGB(1.0, 0.0, 0.0, 1.0);
-    view.layer.backgroundColor = redColor;
-    CGColorRelease(redColor);
+    NSButton *backgroundButton = [[NSButton alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    [backgroundButton setButtonType:NSMomentaryPushInButton];
+    [backgroundButton setBezelStyle:NSRoundedBezelStyle];
+    [backgroundButton setTitle:@"Test Button"];
+    [backgroundButton setTarget:self];
+    [backgroundButton setAction:@selector(testButtonPushed:)];
     
-    view.frame = self.hostView.bounds;
-    self.hostView.rootView.subviews = [NSArray arrayWithObject:view];
+    
+    VELNSView *backgroundVELView = [[VELNSView alloc] initWithNSView:backgroundButton];
+    backgroundVELView.layer.masksToBounds = YES;
+    backgroundVELView.frame = CGRectMake(80, 80, 200, 200);
+       
+    VELDraggingDestinationView *view1 = [[VELDraggingDestinationView alloc] init];
+    view1.frame = CGRectMake(10, 10, 200, 200);
+    view1.name = @"outer";
+
+    VELDraggingDestinationView *view2 = [[VELDraggingDestinationView alloc] init];
+    view2.frame = CGRectMake(50, 50, 50, 50);
+    view2.name = @"inner";
+
+    [view1 addSubview:view2];
+    
+    [self.hostView.rootView addSubview:view1];
+    [view1 addSubview:backgroundVELView];
 }
 
 - (void)hierarchyTests {

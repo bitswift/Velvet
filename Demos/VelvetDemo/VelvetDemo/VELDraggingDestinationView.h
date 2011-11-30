@@ -11,4 +11,6 @@
 
 @interface VELDraggingDestinationView : VELView <NSDraggingDestination>
 
+@property (nonatomic, strong) NSString *name;
+
 @end

@@ -81,7 +81,8 @@
     }];
 
     // If we did nothing, there's no cleanup needed.
-    if (![cachedViews count]) return;
+    if (![cachedViews count])
+        return;
 
     // Set up a block to return the NSViews to rendering themselves.
     void (^completionBlock)(void) = ^{

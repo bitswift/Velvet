@@ -295,8 +295,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         return [view draggingEntered:sender];
     }
 
-    if (!self.allDraggingDestinations) self.allDraggingDestinations = [NSMutableSet set];
-    if (view) [self.allDraggingDestinations addObject:view];
+    if (!self.allDraggingDestinations)
+        self.allDraggingDestinations = [NSMutableSet set];
+    if (view)
+        [self.allDraggingDestinations addObject:view];
 
     return NSDragOperationNone;
 

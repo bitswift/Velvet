@@ -235,6 +235,19 @@
 
 #pragma mark View hierarchy
 
+- (void)insertSubview:(VELView *)view atIndex:(NSUInteger)index
+{
+    NSMutableArray *subviews = [self.subviews mutableCopy];
+    if (!subviews)
+        subviews = [NSMutableArray array];
+    [subviews insertObject:view atIndex:index];
+    self.subviews = subviews;
+}
+
+- (void)addSubview:(VELView *)view {
+    [self insertSubview:view atIndex:[self.subviews count]];
+}
+
 - (void)addSubviewToLayer:(VELView *)view; {
     [self.layer addSublayer:view.layer];
 }
@@ -421,7 +434,8 @@
 {
     // If we're being called inside the [layer actionForKey:key] call below,
     // retun nil, so that method will return the default action.
-    if (self.recursingActionForLayer) return nil;
+    if (self.recursingActionForLayer)
+        return nil;
 
 //    NSLog(@"ACTIONFORKEY. %@", key);
 

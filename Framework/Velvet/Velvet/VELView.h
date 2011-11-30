@@ -174,6 +174,25 @@
 - (void)layoutSubviews;
 
 /**
+ * Inserts a subview at the specified index.
+ *
+ * @param view The view to insert. This value cannot be nil.
+ *
+ * @param index The index in the array of the subviews property at which to insert
+ * the subview. Subview indices start at zero and cannot be greater than the number
+ * of subviews.
+ */
+- (void)insertSubview:(VELView *)view atIndex:(NSUInteger)index;
+
+/**
+ * Adds a view to the end of the receiver's subviews list.
+ *
+ * @param view The view to be added. The view is retained be the receiver. After
+ * being added, this view appears on top of any other subviews.
+ */
+- (void)addSubview:(VELView *)view;
+
+/**
  * Calculates and returns the preferred size of the receiver that fits within
  * a constraining size (if possible).
  *

@@ -20,6 +20,10 @@
     return NSDragOperationEvery;
 }
 
+- (void)draggingExited:(id<NSDraggingInfo>)sender {
+    NSLog(@"draggingExited:");
+}
+
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {
     NSLog(@"draggingEnded:");
 }

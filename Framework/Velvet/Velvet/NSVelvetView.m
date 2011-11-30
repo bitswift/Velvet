@@ -251,6 +251,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     CGPoint draggedPoint = [self convertFromWindowPoint:[sender draggingLocation]];
     id <VELBridgedView> view = [self descendantViewAtPoint:draggedPoint];
 
+    if (view == self)
+        return NSDragOperationNone;
+
     self.lastDraggingDestination = view;
 
     if ([view respondsToSelector:@selector(draggingEntered:)]) {
@@ -258,7 +261,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     }
 
     if (!self.allDraggingDestinations) self.allDraggingDestinations = [NSMutableSet set];
-    [self.allDraggingDestinations addObject:view];
+    if (view) [self.allDraggingDestinations addObject:view];
 
     return NSDragOperationNone;
 
@@ -272,11 +275,16 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         if ([self.lastDraggingDestination respondsToSelector:@selector(draggingExited:)]) {
             [self.lastDraggingDestination draggingExited:sender];
         }
-        self.lastDraggingDestination = view;
-        if ([view respondsToSelector:@selector(draggingEntered:)]) {
-            return [view draggingEntered:sender];
+        if (view && view != self) {
+            self.lastDraggingDestination = view;
+            if ([view respondsToSelector:@selector(draggingEntered:)]) {
+                return [view draggingEntered:sender];
+            }
+            [self.allDraggingDestinations addObject:view];
+        } else {
+            self.lastDraggingDestination = nil;
         }
-    } else if ([view respondsToSelector:@selector(draggingUpdated:)]) {
+    } else if (view != self && [view respondsToSelector:@selector(draggingUpdated:)]) {
         return [view draggingUpdated:sender];
     }
 
@@ -297,7 +305,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)draggingExited:(id<NSDraggingInfo>)sender {
     id <VELBridgedView> view = self.lastDraggingDestination;
 
-    if ([view respondsToSelector:@selector(draggingExited:)])
+    if (view != self && [view respondsToSelector:@selector(draggingExited:)])
         [view draggingExited:sender];
 
     self.lastDraggingDestination = nil;
@@ -306,7 +314,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {
     id <VELBridgedView> view = self.lastDraggingDestination;
 
-     if ([view respondsToSelector:@selector(prepareForDragOperation:)]) {
+    if (view != self && [view respondsToSelector:@selector(prepareForDragOperation:)]) {
         return [view prepareForDragOperation:sender];
     }
 
@@ -316,7 +324,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (BOOL)performDragOperation:(id < NSDraggingInfo >)sender {
     id <VELBridgedView> view = self.lastDraggingDestination;
 
-    if ([view respondsToSelector:@selector(performDragOperation:)]) {
+    if (view != self && [view respondsToSelector:@selector(performDragOperation:)]) {
         return [view performDragOperation:sender];
     }
 
@@ -326,7 +334,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)concludeDragOperation:(id < NSDraggingInfo >)sender {
     id <VELBridgedView> view = self.lastDraggingDestination;
 
-    if ([view respondsToSelector:@selector(concludeDragOperation:)]) {
+    if (view != self && [view respondsToSelector:@selector(concludeDragOperation:)]) {
         [view concludeDragOperation:sender];
     }
 }
@@ -334,7 +342,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)updateDraggingItemsForDrag:(id <NSDraggingInfo>)sender {
     id <VELBridgedView> view = self.lastDraggingDestination;
 
-    if ([view respondsToSelector:@selector(updateDraggingItemsForDrag:)]) {
+    if (view != self && [view respondsToSelector:@selector(updateDraggingItemsForDrag:)]) {
         [view updateDraggingItemsForDrag:sender];
     }
 }

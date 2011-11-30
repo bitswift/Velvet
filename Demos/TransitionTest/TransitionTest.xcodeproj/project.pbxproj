@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D0305D731486F7670081D6EA /* Screen.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D721486F7670081D6EA /* Screen.m */; };
 		D07A67CB1486F3F10051C961 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D07A67CA1486F3F10051C961 /* Cocoa.framework */; };
 		D07A67D51486F3F10051C961 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D07A67D31486F3F10051C961 /* InfoPlist.strings */; };
 		D07A67D71486F3F10051C961 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D07A67D61486F3F10051C961 /* main.m */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D0305D711486F7670081D6EA /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
+		D0305D721486F7670081D6EA /* Screen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Screen.m; sourceTree = "<group>"; };
 		D07A67C61486F3F10051C961 /* TransitionTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TransitionTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D07A67CA1486F3F10051C961 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D07A67CD1486F3F10051C961 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -66,6 +69,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D0305D701486F7530081D6EA /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D07A67DC1486F3F10051C961 /* Document.h */,
+				D07A67DD1486F3F10051C961 /* Document.m */,
+				D07A67DF1486F3F10051C961 /* Document.xib */,
+				D0305D711486F7670081D6EA /* Screen.h */,
+				D0305D721486F7670081D6EA /* Screen.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
 		D07A67BB1486F3F10051C961 = {
 			isa = PBXGroup;
 			children = (
@@ -108,10 +123,8 @@
 		D07A67D01486F3F10051C961 /* TransitionTest */ = {
 			isa = PBXGroup;
 			children = (
-				D07A67DC1486F3F10051C961 /* Document.h */,
-				D07A67DD1486F3F10051C961 /* Document.m */,
-				D07A67DF1486F3F10051C961 /* Document.xib */,
 				D07A67E21486F3F10051C961 /* MainMenu.xib */,
+				D0305D701486F7530081D6EA /* Classes */,
 				D07A67D11486F3F10051C961 /* Supporting Files */,
 			);
 			path = TransitionTest;
@@ -259,6 +272,7 @@
 			files = (
 				D07A67D71486F3F10051C961 /* main.m in Sources */,
 				D07A67DE1486F3F10051C961 /* Document.m in Sources */,
+				D0305D731486F7670081D6EA /* Screen.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

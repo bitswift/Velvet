@@ -96,23 +96,13 @@
 #pragma mark Rendering
 
 - (void)clip; {
-    dispatch_group_t group = dispatch_group_create();
-    @onExit {
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        dispatch_release(group);
-    };
-
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    
-    for (NSViewClipRenderer *renderer in self.sublayerRenderers) {
-        dispatch_group_async(group, queue, ^{
-            [renderer clip];
-        });
-    }
-
     [CATransaction performWithDisabledActions:^{
         [self.layer setNeedsDisplay];
         [self.layer displayIfNeeded];
+
+        for (NSViewClipRenderer *renderer in self.sublayerRenderers) {
+            [renderer clip];
+        }
     }];
 }
 

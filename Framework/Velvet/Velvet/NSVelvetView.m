@@ -1,6 +1,4 @@
 //
-//  NSVelvetView.m
-//  Velvet
 //
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
@@ -230,7 +228,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
-    return [self.rootView descendantViewAtPoint:point] ? : self;
+    if (!CGRectContainsPoint(self.bounds, point))
+        return nil;
+    return [self.rootView descendantViewAtPoint:point] ?: self;
 }
 #pragma mark CALayer delegate
 

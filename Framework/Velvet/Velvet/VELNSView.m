@@ -171,7 +171,11 @@
 }
 
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
-    return [self.NSView descendantViewAtPoint:point] ?: self;
+    if (!CGRectContainsPoint(self.bounds, point))
+        return nil;
+
+    // This assumes that we have the same geometry as our contained NSView
+    return [self.NSView descendantViewAtPoint:point] ?: [super descendantViewAtPoint:point];
 }
 
 #pragma mark Layout

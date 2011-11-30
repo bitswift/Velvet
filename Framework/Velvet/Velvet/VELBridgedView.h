@@ -51,7 +51,7 @@
  * Returns the <VELBridgedView> which is occupying the given point, or
  * `nil` if there is no such view.
  *
- * @param point A point, specified in the coordinate system of the hostView,
+ * @param point A point, specified in the coordinate system of the receiver,
  * at which to look for a view.
  */
 - (id <VELBridgedView>)descendantViewAtPoint:(CGPoint)point;

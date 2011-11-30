@@ -38,28 +38,17 @@
 }
 
 - (id <VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
-    // convert point into our coordinate system, so it's ready to go for all
-    // subviews (which expect it in their superview's coordinate system)
-    point = [self convertPoint:point fromView:self.superview];
+    // Clip to self
+    if (!CGRectContainsPoint(self.bounds, point))
+        return nil;
 
     __block id <VELBridgedView> result = (id <VELBridgedView>)self;
 
-    // we need to avoid hitting any NSViews that are clipped by their
-    // corresponding Velvet views
     [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView <VELBridgedView> *view, NSUInteger index, BOOL *stop){
-        VELNSView *hostView = view.hostView;
-        if (hostView) {
-            CGRect bounds = hostView.layer.bounds;
-            CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
 
-            CGPoint subviewPoint = [view convertPoint:point fromView:self];
-            if (!CGRectContainsPoint(clippedBounds, subviewPoint)) {
-                // skip this view
-                return;
-            }
-        }
+        CGPoint subviewPoint = [view convertPoint:point fromView:self];
 
-        id <VELBridgedView>hitTestedView = [view descendantViewAtPoint:point];
+        id <VELBridgedView>hitTestedView = [view descendantViewAtPoint:subviewPoint];
         if (hitTestedView) {
             result = hitTestedView;
             *stop = YES;

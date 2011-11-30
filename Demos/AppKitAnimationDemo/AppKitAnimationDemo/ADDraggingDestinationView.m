@@ -1,14 +1,33 @@
 //
-//  VELDraggingDestinationView.m
-//  VelvetDemo
+//  ADDraggingDestinationView.m
+//  AppKitAnimationDemo
 //
 //  Created by Josh Vera on 11/29/11.
-//  Copyright (c) 2011 Emerald Lark. All rights reserved.
+//  Copyright (c) 2011 Übermind, Inc. All rights reserved.
 //
 
-#import "VELDraggingDestinationView.h"
+#import "ADDraggingDestinationView.h"
 
-@implementation VELDraggingDestinationView
+@implementation ADDraggingDestinationView
+
+- (id)initWithFrame:(NSRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        // Initialization code here.
+    }
+    
+    return self;
+}
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+    CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
+
+    const CGFloat redColor[] = {1.0, 0.0, 0.0, 1.0};
+    CGContextSetFillColor(context, redColor);
+    CGContextFillRect(context, dirtyRect);
+}
 
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
     NSLog(@"draggingEntered:");
@@ -37,5 +56,6 @@
 - (void)concludeDragOperation:(id < NSDraggingInfo >)sender {
     NSLog(@"concludeDragOperation:");
 }
+
 
 @end

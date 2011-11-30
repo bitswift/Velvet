@@ -242,10 +242,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     CGPoint draggedPoint = [self convertFromWindowPoint:[sender draggingLocation]];
     id <VELBridgedView> view = [self descendantViewAtPoint:draggedPoint];
 
-    if ([view respondsToSelector:@selector(draggingEntered:)])
+    if ([view respondsToSelector:@selector(draggingEntered:)]) {
         return [view draggingEntered:sender];
-    else
-        return NSDragOperationNone;
+    }
+
+    return NSDragOperationNone;
+
 }
 
 - (NSDragOperation)draggingUpdated:(id<NSDraggingInfo>)sender {
@@ -261,32 +263,49 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {
     id <VELBridgedView> view = self.lastDraggingDestination;
 
-    if ([view respondsToSelector:@selector(draggingEnded:)])
+    if ([view respondsToSelector:@selector(draggingEnded:)]) {
         [view draggingEnded:sender];
+    }
+}
+
+- (void)draggingExited:(id<NSDraggingInfo>)sender {
+    id <VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(draggingExited:)])
+        [view draggingExited:sender];
+
+    self.lastDraggingDestination = nil;
 }
 
 - (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {
     id <VELBridgedView> view = self.lastDraggingDestination;
 
-     if ([view respondsToSelector:@selector(prepareForDragOperation:)])
+     if ([view respondsToSelector:@selector(prepareForDragOperation:)]) {
         return [view prepareForDragOperation:sender];
-    else
-        return NO;
+    }
+
+    self.lastDraggingDestination = nil;
+    return NO;
 }
 
 - (BOOL)performDragOperation:(id < NSDraggingInfo >)sender {
     id <VELBridgedView> view = self.lastDraggingDestination;
 
-    if ([view respondsToSelector:@selector(performDragOperation:)])
+    if ([view respondsToSelector:@selector(performDragOperation:)]) {
         return [view performDragOperation:sender];
-    else
-        return NO;
+    }
+
+    self.lastDraggingDestination = nil;
+    return NO;
 }
 
 - (void)concludeDragOperation:(id < NSDraggingInfo >)sender {
     id <VELBridgedView> view = self.lastDraggingDestination;
 
-    if ([view respondsToSelector:@selector(concludeDragOperation:)])
+    if ([view respondsToSelector:@selector(concludeDragOperation:)]) {
         [view concludeDragOperation:sender];
+    }
+
+    self.lastDraggingDestination = nil;
 }
 @end

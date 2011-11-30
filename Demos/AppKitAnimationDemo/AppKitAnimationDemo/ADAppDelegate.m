@@ -7,12 +7,15 @@
 //
 
 #import "ADAppDelegate.h"
+#import "ADDraggingDestinationView.h"
+
 
 @interface ADAppDelegate ()
 @property (nonatomic, strong) NSArray *views;
 - (void)createViews;
 - (void)animateViews;
 @end
+
 
 NSUInteger RandomInRange(NSUInteger min, NSUInteger max);
 
@@ -22,8 +25,17 @@ NSUInteger RandomInRange(NSUInteger min, NSUInteger max);
 @synthesize views = m_views;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    [self createViews];
-    [self performSelector:@selector(animateViews) withObject:nil afterDelay:2.0];
+//    [self createViews];
+//    [self performSelector:@selector(animateViews) withObject:nil afterDelay:2.0];
+
+    ADDraggingDestinationView *view1 = [[ADDraggingDestinationView alloc] initWithFrame:CGRectZero];
+    view1.frame = NSMakeRect(0, 0, 400, 400);
+    ADDraggingDestinationView *view2 = [[ADDraggingDestinationView alloc] initWithFrame:CGRectZero];
+    view2.frame = NSMakeRect(50, 50, 50, 50);
+    
+    [view1 addSubview:view2];
+    
+    [self.window.contentView addSubview:view1];
 }
 
 - (NSImage *)loadLolz {

@@ -10,6 +10,7 @@
 #import "SquareView.h"
 #import <Velvet/Velvet.h>
 #import <QuartzCore/QuartzCore.h>
+#import "VELDraggingDestinationView.h"
 
 @interface AppDelegate ()
 @property (strong) IBOutlet NSWindow *window;
@@ -25,6 +26,7 @@
 - (void)hierarchyTests;
 - (void)animateMe;
 
+- (void)draggingTests;
 - (void)createViews;
 - (void)animateViews;
 @end
@@ -43,8 +45,18 @@
     [self createViews];
     [self performSelector:@selector(animateViews) withObject:nil afterDelay:2.0];
 #else
-    [self hierarchyTests];
+    [self draggingTests];
 #endif
+}
+
+- (void)draggingTests {
+    VELDraggingDestinationView *view = [[VELDraggingDestinationView alloc] init];
+    CGColorRef redColor = CGColorCreateGenericRGB(1.0, 0.0, 0.0, 1.0);
+    view.layer.backgroundColor = redColor;
+    CGColorRelease(redColor);
+    
+    view.frame = self.hostView.bounds;
+    self.hostView.rootView.subviews = [NSArray arrayWithObject:view];
 }
 
 - (void)hierarchyTests {

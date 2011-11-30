@@ -10,4 +10,9 @@
 
 @implementation VELDraggingDestinationView
 
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
+    NSLog(@"Dragged!");
+    return NSDragOperationEvery;
+}
+
 @end

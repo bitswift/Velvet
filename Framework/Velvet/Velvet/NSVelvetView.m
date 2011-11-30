@@ -64,9 +64,18 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 @interface NSVelvetView ()
-@property (nonatomic, strong) NSView *velvetHostView;
-@property (nonatomic, readwrite, strong) VELContext *context;
+/*
+ * Documented in <NSVelvetViewPrivate>.
+ */
 @property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
+
+/*
+ * The layer-hosted view which actually holds the Velvet hierarchy.
+ *
+ * <NSVelvetHostView> exists to avoid having to make this view layer-hosted. It
+ * is layer-backed instead, for compatible with `NSView`.
+ */
+@property (nonatomic, readonly, strong) NSVelvetHostView *velvetHostView;
 
 /*
  * Replaces a focus ring layer provided by AppKit with one of our own to
@@ -140,16 +149,17 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)setUp; {
-    self.context = [[VELContext alloc] init];
+    m_context = [[VELContext alloc] init];
+
     self.userInteractionEnabled = YES;
 
     // enable layer-backing for this view
     [self setWantsLayer:YES];
     self.layer.layoutManager = self;
 
-    self.velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
-    self.velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    [self addSubview:self.velvetHostView];
+    m_velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
+    m_velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    [self addSubview:m_velvetHostView];
 
     self.rootView = [[VELView alloc] init];
     self.rootView.frame = self.bounds;

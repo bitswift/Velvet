@@ -14,6 +14,8 @@
 		D07A67DE1486F3F10051C961 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = D07A67DD1486F3F10051C961 /* Document.m */; };
 		D07A67E11486F3F10051C961 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07A67DF1486F3F10051C961 /* Document.xib */; };
 		D07A67E41486F3F10051C961 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07A67E21486F3F10051C961 /* MainMenu.xib */; };
+		D07A68171486F4580051C961 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D07A68151486F4580051C961 /* Velvet.framework */; };
+		D07A68181486F4580051C961 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D07A68161486F4580051C961 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		D07A67FC1486F4140051C961 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
 		D07A67FD1486F4140051C961 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D07A67FE1486F4140051C961 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		D07A68151486F4580051C961 /* Velvet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Velvet.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Velvet-aawylcmkqeadwgclifbwmulekybf/Build/Products/Debug/Velvet.framework"; sourceTree = "<group>"; };
+		D07A68161486F4580051C961 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D07A68171486F4580051C961 /* Velvet.framework in Frameworks */,
+				D07A68181486F4580051C961 /* QuartzCore.framework in Frameworks */,
 				D07A67CB1486F3F10051C961 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +87,8 @@
 		D07A67C91486F3F10051C961 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D07A68151486F4580051C961 /* Velvet.framework */,
+				D07A68161486F4580051C961 /* QuartzCore.framework */,
 				D07A67CA1486F3F10051C961 /* Cocoa.framework */,
 				D07A67CC1486F3F10051C961 /* Other Frameworks */,
 			);
@@ -344,6 +352,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D07A67F91486F4140051C961 /* Mac-Application.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-aawylcmkqeadwgclifbwmulekybf/Build/Products/Debug\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransitionTest/TransitionTest-Prefix.pch";
 				INFOPLIST_FILE = "TransitionTest/TransitionTest-Info.plist";
@@ -356,6 +368,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D07A67F91486F4140051C961 /* Mac-Application.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-aawylcmkqeadwgclifbwmulekybf/Build/Products/Debug\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransitionTest/TransitionTest-Prefix.pch";
 				INFOPLIST_FILE = "TransitionTest/TransitionTest-Info.plist";

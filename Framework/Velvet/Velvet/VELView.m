@@ -204,6 +204,15 @@
     return self;
 }
 
+- (id)initWithFrame:(CGRect)frame; {
+    self = [self init];
+    if (!self)
+        return nil;
+
+    self.frame = frame;
+    return self;
+}
+
 #pragma mark Responder
 
 - (VELView *)hitTest:(CGPoint)point; {

@@ -35,6 +35,13 @@
 - (id)init;
 
 /**
+ * Initializes the receiver, setting its initial frame.
+ *
+ * @param frame The initial frame for the receiver.
+ */
+- (id)initWithFrame:(CGRect)frame;
+
+/**
  * @name Geometry
  */
 

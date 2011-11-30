@@ -310,12 +310,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         if ([self.lastDraggingDestination respondsToSelector:@selector(draggingExited:)]) {
             [self.lastDraggingDestination draggingExited:sender];
         }
+
         if (view && view != self) {
             self.lastDraggingDestination = view;
+            [self.allDraggingDestinations addObject:view];
             if ([view respondsToSelector:@selector(draggingEntered:)]) {
                 return [view draggingEntered:sender];
             }
-            [self.allDraggingDestinations addObject:view];
         } else {
             self.lastDraggingDestination = nil;
         }

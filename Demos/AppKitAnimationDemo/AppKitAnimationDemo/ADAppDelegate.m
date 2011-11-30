@@ -29,12 +29,16 @@ NSUInteger RandomInRange(NSUInteger min, NSUInteger max);
 //    [self performSelector:@selector(animateViews) withObject:nil afterDelay:2.0];
 
     ADDraggingDestinationView *view1 = [[ADDraggingDestinationView alloc] initWithFrame:CGRectZero];
-    view1.frame = NSMakeRect(0, 0, 400, 400);
+    view1.frame = NSMakeRect(10, 10, 400, 400);
+    view1.name = @"outer";
+    view1.draggingEnabled = YES;
+    
     ADDraggingDestinationView *view2 = [[ADDraggingDestinationView alloc] initWithFrame:CGRectZero];
     view2.frame = NSMakeRect(50, 50, 50, 50);
+    view2.name = @"inner";
+    view2.draggingEnabled = YES;
     
     [view1 addSubview:view2];
-    
     [self.window.contentView addSubview:view1];
 }
 

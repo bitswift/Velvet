@@ -10,4 +10,8 @@
 
 @interface ADDraggingDestinationView : NSView <NSDraggingDestination>
 
+@property (nonatomic, strong) NSColor *fillColor;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, assign, getter = isDraggingEnabled) BOOL draggingEnabled;
+
 @end

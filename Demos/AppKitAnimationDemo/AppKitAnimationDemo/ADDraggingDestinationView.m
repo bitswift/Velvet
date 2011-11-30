@@ -10,52 +10,85 @@
 
 @implementation ADDraggingDestinationView
 
+@synthesize fillColor = m_fillColor;
+@synthesize name = m_name;
+@synthesize draggingEnabled = m_draggingEnabled;
+
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code here.
     }
     
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
+- (void)setDraggingEnabled:(BOOL)draggingEnabled
 {
-    CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
-
-    const CGFloat redColor[] = {1.0, 0.0, 0.0, 1.0};
-    CGContextSetFillColor(context, redColor);
-    CGContextFillRect(context, dirtyRect);
+    if (m_draggingEnabled != draggingEnabled) {
+        m_draggingEnabled = draggingEnabled;
+        if (draggingEnabled) {
+            [self registerForDraggedTypes:[NSArray arrayWithObject:NSFilenamesPboardType]];
+        } else {
+            [self unregisterDraggedTypes];
+        }
+    }
 }
 
+#pragma mark Drawing
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+
+    NSBezierPath* drawingPath = [NSBezierPath bezierPath];
+    [drawingPath appendBezierPathWithRect:dirtyRect];
+
+    if (self.fillColor) {
+        [self.fillColor setFill];
+        [drawingPath fill];
+    }
+    
+    [[NSColor blackColor] setStroke];
+    [drawingPath stroke];
+}
+
+#pragma mark Dragging operations
+
 - (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
-    NSLog(@"draggingEntered:");
+    NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     return NSDragOperationEvery;
 }
 
+- (void)draggingExited:(id <NSDraggingInfo>)sender {
+    NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
+}
+
 - (NSDragOperation)draggingUpdated:(id<NSDraggingInfo>)sender {
-    NSLog(@"draggingUpdated:");
+    NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     return NSDragOperationEvery;
 }
 
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {
-    NSLog(@"draggingEnded:");
+    NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
 - (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {
-    NSLog(@"prepareForDragOperation:");
+    NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     return YES;
 }
 
 - (BOOL)performDragOperation:(id < NSDraggingInfo >)sender {
-    NSLog(@"performDragOperation:");
+    NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     return YES;
 }
 
 - (void)concludeDragOperation:(id < NSDraggingInfo >)sender {
-    NSLog(@"concludeDragOperation:");
+    NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@: 0x%p name=%@>", NSStringFromClass([self class]), self, self.name];
+}
 
 @end

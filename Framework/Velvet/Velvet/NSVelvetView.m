@@ -70,6 +70,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
 
 /*
+ * Holds a reference to the descendant destination view of the current dragging operation
+ *
+ * @param lastDraggingDestination The receiver of the last propogated dragging event.
+ */
+@property (nonatomic, weak) id <VELBridgedView> lastDraggingDestination;
+
+/*
  * Replaces a focus ring layer provided by AppKit with one of our own to
  * properly handle clipping.
  *
@@ -103,6 +110,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize rootView = m_rootView;
 @synthesize velvetHostView = m_velvetHostView;
 @synthesize userInteractionEnabled = m_userInteractionEnabled;
+@synthesize lastDraggingDestination = m_lastDraggingDestination;
 
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
@@ -240,17 +248,45 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         return NSDragOperationNone;
 }
 
+- (NSDragOperation)draggingUpdated:(id<NSDraggingInfo>)sender {
+    CGPoint draggedPoint = [self convertFromWindowPoint:[sender draggingLocation]];
+    id <VELBridgedView> view = [self descendantViewAtPoint:draggedPoint];
+
+    if ([view respondsToSelector:@selector(draggingUpdated:)])
+        return [view draggingUpdated:sender];
+    else
+        return NSDragOperationNone;
+}
+
+- (void)draggingEnded:(id<NSDraggingInfo>)sender {
+    id <VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(draggingEnded:)])
+        [view draggingEnded:sender];
+}
+
 - (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {
-    return YES;
+    id <VELBridgedView> view = self.lastDraggingDestination;
+
+     if ([view respondsToSelector:@selector(prepareForDragOperation:)])
+        return [view prepareForDragOperation:sender];
+    else
+        return NO;
 }
 
 - (BOOL)performDragOperation:(id < NSDraggingInfo >)sender {
-    return YES;
+    id <VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(performDragOperation:)])
+        return [view performDragOperation:sender];
+    else
+        return NO;
 }
 
 - (void)concludeDragOperation:(id < NSDraggingInfo >)sender {
-    NSLog(@"Dragged sender %@", sender);
-    NSPasteboard *draggingPasteboard = [sender draggingPasteboard];
-    NSLog(@"Data is %@", [draggingPasteboard pasteboardItems]);
+    id <VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(concludeDragOperation:)])
+        [view concludeDragOperation:sender];
 }
 @end

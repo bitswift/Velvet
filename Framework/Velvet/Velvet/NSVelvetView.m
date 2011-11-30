@@ -114,18 +114,15 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
+    [CATransaction performWithDisabledActions:^{
+        [m_rootView.layer removeFromSuperlayer];
+        [self.velvetHostView.layer addSublayer:view.layer];
 
-    [m_rootView.layer removeFromSuperlayer];
-    [self.velvetHostView.layer addSublayer:view.layer];
+        m_rootView.hostView = nil;
+        view.hostView = self;
 
-    m_rootView.hostView = nil;
-    view.hostView = self;
-
-    m_rootView = view;
-
-    [CATransaction commit];
+        m_rootView = view;
+    }];
 }
 
 #pragma mark Lifecycle

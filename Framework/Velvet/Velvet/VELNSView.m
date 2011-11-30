@@ -20,14 +20,21 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface VELNSView ()
+/*
+ * Documented in <VELNSViewPrivate>.
+ */
 @property (nonatomic, assign) BOOL rendersContainedView;
+
+/*
+ * Documented in <VELNSViewPrivate>.
+ */
 @property (strong) VELFocusRingLayer *focusRingLayer;
 
 /*
  * The delegate for the layer of the contained <NSView>. This object is
  * responsible for rendering it while taking into account any clipping paths.
  */
-@property (nonatomic, strong) NSViewClipRenderer *clipRenderer;
+@property (strong) NSViewClipRenderer *clipRenderer;
 
 - (void)synchronizeNSViewGeometry;
 @end
@@ -52,26 +59,68 @@
 }
 
 - (void)setNSView:(NSView *)view {
-    // set up layer-backing on the view, so it will render into its layer as
-    // soon as possible (without tying up the dispatch queue, if possible)
-    [view setWantsLayer:YES];
-    [view setNeedsDisplay:YES];
-
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+    // this logic will need both the context's dispatch queue and the main thread
+    dispatch_multibarrier_sync(^{
+        // remove any existing NSView
         [m_NSView removeFromSuperview];
         m_NSView.hostView = nil;
-        self.clipRenderer = nil;
+
+        // use ivars here to avoid a deadlock by synchronizing with a queue that
+        // is potentially in our call stack (but not current)
+        m_focusRingLayer = nil;
+        m_clipRenderer = nil;
 
         m_NSView = view;
 
-        if (view) {
-            view.hostView = self;
+        // and set up our new view
+        if (m_NSView) {
+            // set up layer-backing on the view
+            [m_NSView setWantsLayer:YES];
+            [m_NSView setNeedsDisplay:YES];
 
-            [self.hostView addSubview:view];
-            [self synchronizeNSViewGeometry];
+            [self.hostView addSubview:m_NSView];
+            m_NSView.hostView = self;
 
-            self.clipRenderer = [[NSViewClipRenderer alloc] initWithClippedView:self layer:view.layer];
+            // use ivar here to avoid a deadlock by synchronizing with a queue that
+            // is potentially in our call stack (but not current)
+            m_clipRenderer = [[NSViewClipRenderer alloc] initWithClippedView:self layer:view.layer];
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self synchronizeNSViewGeometry];
+            });
         }
+    }, dispatch_get_main_queue(), self.context.dispatchQueue, NULL);
+}
+
+- (NSViewClipRenderer *)clipRenderer {
+    __block NSViewClipRenderer *renderer = nil;
+
+    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        renderer = m_clipRenderer;
+    });
+
+    return renderer;
+}
+
+- (void)setClipRenderer:(NSViewClipRenderer *)renderer {
+    dispatch_async(self.context.dispatchQueue, ^{
+        m_clipRenderer = renderer;
+    });
+}
+
+- (VELFocusRingLayer *)focusRingLayer {
+    __block VELFocusRingLayer *layer = nil;
+
+    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        layer = m_focusRingLayer;
+    });
+
+    return layer;
+}
+
+- (void)setFocusRingLayer:(VELFocusRingLayer *)layer {
+    dispatch_async(self.context.dispatchQueue, ^{
+        m_focusRingLayer = layer;
     });
 }
 
@@ -101,6 +150,8 @@
 }
 
 - (id)initWithNSView:(NSView *)view; {
+    NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
+
     self = [self init];
     if (!self)
         return nil;
@@ -124,7 +175,10 @@
     }
 
     CGRect frame = self.NSViewFrame;
-    self.NSView.frame = frame;
+
+    dispatch_sync_recursive(dispatch_get_main_queue(), ^{
+        self.NSView.frame = frame;
+    });
 
     [CATransaction performWithDisabledActions:^{
         self.focusRingLayer.position = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
@@ -145,7 +199,9 @@
 }
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView {
-    [self.NSView removeFromSuperview];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.NSView removeFromSuperview];
+    });
 }
 
 - (void)didMoveToHostView {
@@ -163,10 +219,12 @@
     }];
     #endif
 
-    // this must only be added after we've completely moved to the host view,
-    // because it'll do some ancestor checks for NSView ordering
-    [self.hostView addSubview:self.NSView];
-    [self synchronizeNSViewGeometry];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // this must only be added after we've completely moved to the host view,
+        // because it'll do some ancestor checks for NSView ordering
+        [self.hostView addSubview:self.NSView];
+        [self synchronizeNSViewGeometry];
+    });
 }
 
 #pragma mark Layout
@@ -178,16 +236,19 @@
 
 - (CGSize)sizeThatFits:(CGSize)constraint {
     id view = self.NSView;
-    NSCell *cell = nil;
-    NSSize cellSize = NSMakeSize(10000, 10000);
+    __block NSSize cellSize = NSMakeSize(10000, 10000);
 
-    if ([view respondsToSelector:@selector(cell)]) {
-        cell = [view cell];
-    }
+    dispatch_sync_recursive(dispatch_get_main_queue(), ^{
+        NSCell *cell = nil;
 
-    if ([cell respondsToSelector:@selector(cellSize)]) {
-        cellSize = [cell cellSize];
-    }
+        if ([view respondsToSelector:@selector(cell)]) {
+            cell = [view cell];
+        }
+
+        if ([cell respondsToSelector:@selector(cellSize)]) {
+            cellSize = [cell cellSize];
+        }
+    });
 
     // if we don't have a cell, or it didn't give us a true size
     if (CGSizeEqualToSize(cellSize, CGSizeMake(10000, 10000))) {
@@ -217,6 +278,8 @@
 }
 
 - (void)setRendersContainedView:(BOOL)rendersContainedView {
+    NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
+
     if (m_rendersContainedView != rendersContainedView) {
         m_rendersContainedView = rendersContainedView;
         if (rendersContainedView) {

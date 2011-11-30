@@ -20,6 +20,8 @@
  * Whether the receiver should render its `NSView`.
  *
  * If set to `NO`, the `NSView` is rendered once and cached into the receiver's layer. This is typically used for animations.
+ *
+ * This property is not thread-safe, and must be set from the main thread.
  */
 @property (nonatomic, assign) BOOL rendersContainedView;
 

@@ -17,7 +17,7 @@
  * The action that this action is proxying, as specified at the time of
  * initialization.
  */
-@property (nonatomic, strong) id <CAAction> innerAction;
+@property (nonatomic, strong) id<CAAction> innerAction;
 
 /*
  * Invoked whenever the geometry property `key` of `layer` has changed.
@@ -35,7 +35,7 @@
 @implementation VELCAAction
 @synthesize innerAction = m_innerAction;
 
-- (id)initWithAction:(id <CAAction>)innerAction {
+- (id)initWithAction:(id<CAAction>)innerAction {
     self = [super init];
     if (self) {
         self.innerAction = innerAction;
@@ -44,7 +44,7 @@
     return self;
 }
 
-+ (id)actionWithAction:(id <CAAction>)innerAction {
++ (id)actionWithAction:(id<CAAction>)innerAction {
     return [[self alloc] initWithAction:innerAction];
 }
 

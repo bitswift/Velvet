@@ -54,12 +54,12 @@
 
 #pragma mark Dragging operations
 
-- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
+- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
     NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     return NSDragOperationEvery;
 }
 
-- (void)draggingExited:(id <NSDraggingInfo>)sender {
+- (void)draggingExited:(id<NSDraggingInfo>)sender {
     NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
@@ -72,17 +72,17 @@
     NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 
-- (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {
+- (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
     NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     return YES;
 }
 
-- (BOOL)performDragOperation:(id < NSDraggingInfo >)sender {
+- (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
     NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
     return YES;
 }
 
-- (void)concludeDragOperation:(id < NSDraggingInfo >)sender {
+- (void)concludeDragOperation:(id<NSDraggingInfo>)sender {
     NSLog(@"%@ %@", self, NSStringFromSelector(_cmd));
 }
 

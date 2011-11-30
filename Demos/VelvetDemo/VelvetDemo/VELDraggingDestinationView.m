@@ -35,7 +35,7 @@
     CGContextStrokeRect(context, self.bounds);
 }
 
-- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender {
+- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
     NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     return NSDragOperationEvery;
 }
@@ -53,13 +53,13 @@
     NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
 }
 
-- (BOOL)prepareForDragOperation:(id < NSDraggingInfo >)sender {
+- (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
     NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     sender.animatesToDestination = YES;
     return YES;
 }
 
-- (BOOL)performDragOperation:(id < NSDraggingInfo >)sender {
+- (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
     NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
 
     NSPasteboard *pb = [sender draggingPasteboard];
@@ -82,7 +82,7 @@
     return YES;
 }
 
-- (void)concludeDragOperation:(id < NSDraggingInfo >)sender {
+- (void)concludeDragOperation:(id<NSDraggingInfo>)sender {
     NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
 }
 

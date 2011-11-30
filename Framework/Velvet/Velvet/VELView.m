@@ -430,7 +430,7 @@
     [NSGraphicsContext setCurrentContext:previousGraphicsContext];
 }
 
-- (id < CAAction >)actionForLayer:(CALayer *)layer forKey:(NSString *)key
+- (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key
 {
     // If we're being called inside the [layer actionForKey:key] call below,
     // retun nil, so that method will return the default action.
@@ -440,7 +440,7 @@
 //    NSLog(@"ACTIONFORKEY. %@", key);
 
     self.recursingActionForLayer = YES;
-    id <CAAction> innerAction = [layer actionForKey:key];
+    id<CAAction> innerAction = [layer actionForKey:key];
     self.recursingActionForLayer = NO;
 
     if ([VELCAAction interceptsActionForKey:key]) {
@@ -450,18 +450,18 @@
     }
 }
 
-- (id <VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
+- (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
     // Clip to self
     if (!CGRectContainsPoint(self.bounds, point))
         return nil;
 
-    __block id <VELBridgedView> result = self;
+    __block id<VELBridgedView> result = self;
 
     [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView <VELBridgedView> *view, NSUInteger index, BOOL *stop){
 
         CGPoint subviewPoint = [view convertPoint:point fromView:self];
 
-        id <VELBridgedView> hitTestedView = [view descendantViewAtPoint:subviewPoint];
+        id<VELBridgedView> hitTestedView = [view descendantViewAtPoint:subviewPoint];
         if (hitTestedView) {
             result = hitTestedView;
             *stop = YES;

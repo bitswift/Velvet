@@ -160,7 +160,7 @@
 
 #pragma mark CALayer delegate
 
-- (id <CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key {
+- (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key {
     if ([self.originalLayerDelegate respondsToSelector:_cmd])
         return [self.originalLayerDelegate actionForLayer:layer forKey:key];
 

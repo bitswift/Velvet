@@ -37,18 +37,18 @@
     return NSRectToCGRect(selfRect);
 }
 
-- (id <VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
+- (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
     // Clip to self
     if (!CGRectContainsPoint(self.bounds, point))
         return nil;
 
-    __block id <VELBridgedView> result = (id <VELBridgedView>)self;
+    __block id<VELBridgedView> result = (id<VELBridgedView>)self;
 
     [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView <VELBridgedView> *view, NSUInteger index, BOOL *stop){
 
         CGPoint subviewPoint = [view convertPoint:point fromView:self];
 
-        id <VELBridgedView>hitTestedView = [view descendantViewAtPoint:subviewPoint];
+        id<VELBridgedView>hitTestedView = [view descendantViewAtPoint:subviewPoint];
         if (hitTestedView) {
             result = hitTestedView;
             *stop = YES;

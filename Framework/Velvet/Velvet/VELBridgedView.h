@@ -54,6 +54,6 @@
  * @param point A point, specified in the coordinate system of the receiver,
  * at which to look for a view.
  */
-- (id <VELBridgedView>)descendantViewAtPoint:(CGPoint)point;
+- (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point;
 
 @end

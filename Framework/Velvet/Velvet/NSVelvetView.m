@@ -330,4 +330,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         [view concludeDragOperation:sender];
     }
 }
+
+- (void)updateDraggingItemsForDrag:(id <NSDraggingInfo>)sender {
+    id <VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(updateDraggingItemsForDrag:)]) {
+        [view updateDraggingItemsForDrag:sender];
+    }
+}
 @end

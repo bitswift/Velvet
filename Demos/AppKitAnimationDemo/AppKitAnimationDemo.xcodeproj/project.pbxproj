@@ -211,7 +211,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = "Übermind, Inc";
+				ORGANIZATIONNAME = "Emerald Lark";
 			};
 			buildConfigurationList = 1A0D06421484599B007558AE /* Build configuration list for PBXProject "AppKitAnimationDemo" */;
 			compatibilityVersion = "Xcode 3.2";

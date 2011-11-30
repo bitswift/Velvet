@@ -219,6 +219,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Emerald Lark";
 			};
 			buildConfigurationList = D07A67C01486F3F10051C961 /* Build configuration list for PBXProject "TransitionTest" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -399,6 +400,7 @@
 				D07A67E91486F3F10051C961 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

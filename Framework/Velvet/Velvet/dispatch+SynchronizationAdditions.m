@@ -120,17 +120,29 @@ static void dispatch_multibarrier_array (BOOL asynchronous, const dispatch_queue
     __block __unsafe_unretained dispatch_block_t weakJumpingBlock;
     __block size_t queueIndex = 0;
 
+    dispatch_queue_t callingQueue = NULL;
+
+    // for synchronous multibarriers, we want to know which queue we're running
+    // on right now, so we avoid deadlocking (by not explicitly jumping to it)
+    if (!asynchronous)
+        callingQueue = dispatch_get_current_queue();
+
     dispatch_block_t jumpingBlock = ^{
         if (queueIndex == queueCount - 1) {
             block();
         } else {
             ++queueIndex;
 
-            dispatch_barrier_sync(queues[queueIndex], weakJumpingBlock);
+            dispatch_queue_t nextQueue = queues[queueIndex];
+
+            if (nextQueue == callingQueue)
+                weakJumpingBlock();
+            else
+                dispatch_barrier_sync(nextQueue, weakJumpingBlock);
 
             // balance the retain we performed when setting up the 'queues'
             // array
-            dispatch_release(queues[queueIndex]);
+            dispatch_release(nextQueue);
 
             --queueIndex;
         }
@@ -147,6 +159,8 @@ static void dispatch_multibarrier_array (BOOL asynchronous, const dispatch_queue
 
     if (asynchronous)
         dispatch_barrier_async(rootQueue, rootBlock);
+    else if (rootQueue == callingQueue)
+        rootBlock();
     else
         dispatch_barrier_sync(rootQueue, rootBlock);
 }

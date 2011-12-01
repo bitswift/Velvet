@@ -185,7 +185,7 @@
             velvetView = hostView.rootView;
         } else {
             CGPoint viewPoint = [velvetView convertFromWindowPoint:windowPoint];
-            id testView = [velvetView hitTest:viewPoint];
+            id testView = [velvetView descendantViewAtPoint:viewPoint];
 
             if (![testView isKindOfClass:[VELNSView class]]) {
                 if (testView)

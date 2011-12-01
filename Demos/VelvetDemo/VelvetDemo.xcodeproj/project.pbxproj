@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A0D066C14846766007558AE /* lolcats.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1A0D066B14846766007558AE /* lolcats.jpg */; };
+		1E23712F14858240005B222B /* VELDraggingDestinationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E23712E14858240005B222B /* VELDraggingDestinationView.m */; };
 		D0927BA51479C1E2008F04C4 /* iceberg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0927BA41479C1E2008F04C4 /* iceberg.jpg */; };
 		D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */; };
 		D0D8C3BC14786AFD00FC9015 /* SquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C3BB14786AFD00FC9015 /* SquareView.m */; };
@@ -72,6 +73,8 @@
 
 /* Begin PBXFileReference section */
 		1A0D066B14846766007558AE /* lolcats.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lolcats.jpg; sourceTree = "<group>"; };
+		1E23712D14858240005B222B /* VELDraggingDestinationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDraggingDestinationView.h; sourceTree = "<group>"; };
+		1E23712E14858240005B222B /* VELDraggingDestinationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELDraggingDestinationView.m; sourceTree = "<group>"; };
 		D0927BA41479C1E2008F04C4 /* iceberg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iceberg.jpg; sourceTree = "<group>"; };
 		D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0D8C3BA14786AFD00FC9015 /* SquareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareView.h; sourceTree = "<group>"; };
@@ -149,6 +152,8 @@
 		D0D8C3BE14786B0E00FC9015 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1E23712D14858240005B222B /* VELDraggingDestinationView.h */,
+				1E23712E14858240005B222B /* VELDraggingDestinationView.m */,
 				D0EFFCB6147852A70095AB35 /* AppDelegate.h */,
 				D0EFFCB7147852A70095AB35 /* AppDelegate.m */,
 				D0D8C3BD14786B0100FC9015 /* Views */,
@@ -450,6 +455,7 @@
 				D0EFFCB1147852A70095AB35 /* main.m in Sources */,
 				D0EFFCB8147852A70095AB35 /* AppDelegate.m in Sources */,
 				D0D8C3BC14786AFD00FC9015 /* SquareView.m in Sources */,
+				1E23712F14858240005B222B /* VELDraggingDestinationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

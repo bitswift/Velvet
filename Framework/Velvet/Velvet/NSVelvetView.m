@@ -1,6 +1,4 @@
 //
-//  NSVelvetView.m
-//  Velvet
 //
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
@@ -12,6 +10,7 @@
 #import <Velvet/NSVelvetHostView.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSView.h>
@@ -69,6 +68,21 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
 
 /*
+ * Holds a reference to the descendant destination view of the current dragging operation
+ *
+ * @param lastDraggingDestination The receiver of the last propogated dragging event.
+ */
+@property (nonatomic, weak) id<VELBridgedView> lastDraggingDestination;
+
+/*
+ * Collects all of the views messaged during the current dragging session. For consistency
+ * with normal `NSDraggingDestination` behavior, all views which have recieved events this
+ * session (or would have done if they implemented the respective methods) are messaged
+ * with <draggingEnded:> when the session ends.
+ */
+@property (nonatomic, strong) NSMutableSet *allDraggingDestinations;
+
+/*
  * Replaces a focus ring layer provided by AppKit with one of our own to
  * properly handle clipping.
  *
@@ -102,6 +116,8 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize rootView = m_rootView;
 @synthesize velvetHostView = m_velvetHostView;
 @synthesize userInteractionEnabled = m_userInteractionEnabled;
+@synthesize lastDraggingDestination = m_lastDraggingDestination;
+@synthesize allDraggingDestinations = m_allDraggingDestinations;
 
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
@@ -153,6 +169,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
     self.rootView = [[VELView alloc] init];
     self.rootView.frame = self.bounds;
+
+    [self
+        registerForDraggedTypes:[NSArray
+            arrayWithObjects: NSColorPboardType, NSFilenamesPboardType, NSPasteboardTypePDF, nil]];
 }
 
 #pragma mark Layout
@@ -165,18 +185,16 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [CATransaction commit];
 }
 
-#pragma mark Event handling
-
 - (NSView *)hitTest:(NSPoint)point {
     if (!self.userInteractionEnabled)
         return nil;
-
+    
     // convert point into our coordinate system, so it's ready to go for all
     // subviews (which expect it in their superview's coordinate system)
     point = [self convertPoint:point fromView:self.superview];
-
+    
     __block NSView *result = self;
-
+    
     // we need to avoid hitting any NSViews that are clipped by their
     // corresponding Velvet views
     [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView *view, NSUInteger index, BOOL *stop){
@@ -184,23 +202,24 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         if (hostView) {
             CGRect bounds = hostView.layer.bounds;
             CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
-
+            
             CGPoint subviewPoint = [view convertPoint:point fromView:self];
             if (!CGRectContainsPoint(clippedBounds, subviewPoint)) {
                 // skip this view
                 return;
             }
         }
-
+        
         NSView *hitTestedView = [view hitTest:point];
         if (hitTestedView) {
             result = hitTestedView;
             *stop = YES;
         }
     }];
-
+    
     return result;
 }
+
 
 #pragma mark NSView hierarchy
 
@@ -208,6 +227,11 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [self sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
 }
 
+- (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
+    if (!CGRectContainsPoint(self.bounds, point))
+        return nil;
+    return [self.rootView descendantViewAtPoint:point] ?: self;
+}
 #pragma mark CALayer delegate
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
@@ -227,7 +251,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
             // this is probably a focus ring -- try to find the view that it
             // belongs to so we can clip it
             [self replaceFocusRingLayer:sublayer];
-        } 
+        }
     }];
 }
 
@@ -252,8 +276,112 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     VELFocusRingLayer *focusRingLayer = [[VELFocusRingLayer alloc] initWithOriginalLayer:layer hostView:hostView];
     [self.layer addSublayer:focusRingLayer];
 
-    focusRingLayer.frame = layer.frame; 
+    focusRingLayer.frame = layer.frame;
     hostView.focusRingLayer = focusRingLayer;
 }
 
+#pragma mark Dragging
+
+- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
+    CGPoint draggedPoint = [self convertFromWindowPoint:[sender draggingLocation]];
+    id<VELBridgedView> view = [self descendantViewAtPoint:draggedPoint];
+
+    if (view == self)
+        return NSDragOperationNone;
+
+    self.lastDraggingDestination = view;
+
+    if ([view respondsToSelector:@selector(draggingEntered:)]) {
+        return [view draggingEntered:sender];
+    }
+
+    if (!self.allDraggingDestinations)
+        self.allDraggingDestinations = [NSMutableSet set];
+    if (view)
+        [self.allDraggingDestinations addObject:view];
+
+    return NSDragOperationNone;
+
+}
+
+- (NSDragOperation)draggingUpdated:(id<NSDraggingInfo>)sender {
+    CGPoint draggedPoint = [self convertFromWindowPoint:[sender draggingLocation]];
+    id<VELBridgedView> view = [self descendantViewAtPoint:draggedPoint];
+
+    if (self.lastDraggingDestination != view) {
+        if ([self.lastDraggingDestination respondsToSelector:@selector(draggingExited:)]) {
+            [self.lastDraggingDestination draggingExited:sender];
+        }
+
+        if (view && view != self) {
+            self.lastDraggingDestination = view;
+            [self.allDraggingDestinations addObject:view];
+            if ([view respondsToSelector:@selector(draggingEntered:)]) {
+                return [view draggingEntered:sender];
+            }
+        } else {
+            self.lastDraggingDestination = nil;
+        }
+    } else if ([view respondsToSelector:@selector(draggingUpdated:)]) {
+        return [view draggingUpdated:sender];
+    }
+
+    return NSDragOperationNone;
+}
+
+- (void)draggingEnded:(id<NSDraggingInfo>)sender {
+    for (id<VELBridgedView> view in self.allDraggingDestinations) {
+        if ([view respondsToSelector:@selector(draggingEnded:)]) {
+            [view draggingEnded:sender];
+        }
+    }
+
+    self.allDraggingDestinations = nil;
+    self.lastDraggingDestination = nil;
+}
+
+- (void)draggingExited:(id<NSDraggingInfo>)sender {
+    id<VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(draggingExited:)])
+        [view draggingExited:sender];
+
+    self.lastDraggingDestination = nil;
+}
+
+- (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
+    id<VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(prepareForDragOperation:)]) {
+        return [view prepareForDragOperation:sender];
+    }
+
+    return YES;
+}
+
+- (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
+    id<VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(performDragOperation:)]) {
+        return [view performDragOperation:sender];
+    }
+
+    return NO;
+}
+
+- (void)concludeDragOperation:(id<NSDraggingInfo>)sender {
+    id<VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(concludeDragOperation:)]) {
+        [view concludeDragOperation:sender];
+    }
+}
+
+- (void)updateDraggingItemsForDrag:(id<NSDraggingInfo>)sender {
+    id<VELBridgedView> view = self.lastDraggingDestination;
+
+    if ([view respondsToSelector:@selector(updateDraggingItemsForDrag:)]) {
+        [view updateDraggingItemsForDrag:sender];
+    }
+}
 @end

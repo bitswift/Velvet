@@ -10,6 +10,7 @@
 #import "SquareView.h"
 #import <Velvet/Velvet.h>
 #import <QuartzCore/QuartzCore.h>
+#import "VELDraggingDestinationView.h"
 
 @interface AppDelegate ()
 @property (strong) IBOutlet NSWindow *window;
@@ -25,6 +26,7 @@
 - (void)hierarchyTests;
 - (void)animateMe;
 
+- (void)draggingTests;
 - (void)createViews;
 - (void)animateViews;
 @end
@@ -45,6 +47,33 @@
 #else
     [self hierarchyTests];
 #endif
+}
+
+- (void)draggingTests {
+    NSButton *backgroundButton = [[NSButton alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    [backgroundButton setButtonType:NSMomentaryPushInButton];
+    [backgroundButton setBezelStyle:NSRoundedBezelStyle];
+    [backgroundButton setTitle:@"Test Button"];
+    [backgroundButton setTarget:self];
+    [backgroundButton setAction:@selector(testButtonPushed:)];
+    
+    
+    VELNSView *backgroundVELView = [[VELNSView alloc] initWithNSView:backgroundButton];
+    backgroundVELView.layer.masksToBounds = YES;
+    backgroundVELView.frame = CGRectMake(80, 80, 200, 200);
+       
+    VELDraggingDestinationView *view1 = [[VELDraggingDestinationView alloc] init];
+    view1.frame = CGRectMake(10, 10, 200, 200);
+    view1.name = @"outer";
+
+    VELDraggingDestinationView *view2 = [[VELDraggingDestinationView alloc] init];
+    view2.frame = CGRectMake(50, 50, 50, 50);
+    view2.name = @"inner";
+
+    [view1 addSubview:view2];
+    
+    [self.hostView.rootView addSubview:view1];
+    [view1 addSubview:backgroundVELView];
 }
 
 - (void)hierarchyTests {

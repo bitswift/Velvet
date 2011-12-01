@@ -29,7 +29,7 @@
  * @param innerAction The action to proxy. The receiver will call through to
  * this action to perform the original animation.
  */
-- (id)initWithAction:(id <CAAction>)innerAction;
+- (id)initWithAction:(id<CAAction>)innerAction;
 
 /*
  * Returns an action initialized with <initWithAction:>.
@@ -37,7 +37,7 @@
  * @param innerAction The action to proxy. The receiver will call through to
  * this action to perform the original animation.
  */
-+ (id)actionWithAction:(id <CAAction>)innerAction;
++ (id)actionWithAction:(id<CAAction>)innerAction;
 
 /*
  * @name Handling Actions

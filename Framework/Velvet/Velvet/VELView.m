@@ -18,6 +18,14 @@
 #import <Velvet/VELViewProtected.h>
 #import "EXTScope.h"
 
+/*
+ * The number of animation blocks currently being run.
+ *
+ * This is not how many animations are currently running, but instead how many
+ * nested animations are being defined.
+ */
+static NSUInteger VELViewAnimationBlockDepth = 0;
+
 @interface VELView ()
 @property (nonatomic, readwrite, weak) VELView *superview;
 @property (nonatomic, readwrite, weak) NSVelvetView *hostView;
@@ -48,7 +56,7 @@
 }
 
 - (void)setFrame:(CGRect)frame {
-    [CATransaction performWithDisabledActions:^{
+    [[self class] changeLayerProperties:^{
         self.layer.frame = frame;
     }];
 }
@@ -58,7 +66,7 @@
 }
 
 - (void)setBounds:(CGRect)bounds {
-    [CATransaction performWithDisabledActions:^{
+    [[self class] changeLayerProperties:^{
         self.layer.bounds = bounds;
     }];
 }
@@ -68,7 +76,7 @@
 }
 
 - (void)setCenter:(CGPoint)center {
-    [CATransaction performWithDisabledActions:^{
+    [[self class] changeLayerProperties:^{
         self.layer.position = center;
     }];
 }
@@ -78,7 +86,7 @@
 }
 
 - (void)setAutoresizingMask:(VELAutoresizingMask)autoresizingMask {
-    [CATransaction performWithDisabledActions:^{
+    [[self class] changeLayerProperties:^{
         self.layer.autoresizingMask = autoresizingMask;
     }];
 }
@@ -92,7 +100,7 @@
 }
 
 - (void)setTransform:(CGAffineTransform)transform {
-    [CATransaction performWithDisabledActions:^{
+    [[self class] changeLayerProperties:^{
         self.layer.transform = CATransform3DMakeAffineTransform(transform);
     }];
 }
@@ -326,6 +334,36 @@
 
 - (CGSize)sizeThatFits:(CGSize)constraint; {
     return self.bounds.size;
+}
+
+#pragma mark Animations
+
++ (void)animate:(void (^)(void))animations; {
+    [self animate:animations completion:^{}];
+}
+
++ (void)animate:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
+    [CATransaction begin];
+    [CATransaction setDisableActions:NO];
+    [CATransaction setCompletionBlock:completionBlock];
+
+    ++VELViewAnimationBlockDepth;
+    animations();
+    --VELViewAnimationBlockDepth;
+
+    [CATransaction commit];
+}
+
++ (void)changeLayerProperties:(void (^)(void))changesBlock; {
+    if ([self isAnimating]) {
+        changesBlock();
+    } else {
+        [CATransaction performWithDisabledActions:changesBlock];
+    }
+}
+
++ (BOOL)isAnimating; {
+    return VELViewAnimationBlockDepth > 0;
 }
 
 #pragma mark NSObject overrides

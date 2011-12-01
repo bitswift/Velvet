@@ -294,6 +294,36 @@ typedef enum {
 - (VELView *)hitTest:(CGPoint)point;
 
 /**
+ * @name Animations
+ */
+
+/**
+ * Animates changes to one or more views using the default duration.
+ *
+ * @param animations A block containing the changes to make that should be
+ * animated.
+ */
++ (void)animate:(void (^)(void))animations;
+
+/**
+ * Animates changes to one or more views using the default duration.
+ *
+ * @param animations A block containing the changes to make that should be
+ * animated.
+ * @param completionBlock A block to execute when the effect of the animation
+ * completes.
+ */
++ (void)animate:(void (^)(void))animations completion:(void (^)(void))completionBlock;
+
+/**
+ * Whether changes are currently being added to an animation.
+ *
+ * This is not whether an animation is currently in progress, but whether the
+ * calling code is running from an animation block.
+ */
++ (BOOL)isAnimating;
+
+/**
  * @name Core Animation Layer
  */
 

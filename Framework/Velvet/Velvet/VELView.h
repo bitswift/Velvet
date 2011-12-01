@@ -310,6 +310,20 @@ typedef enum {
 - (void)setNeedsDisplay;
 
 /**
+ * @name Event Handling
+ */
+
+/**
+ * Whether user interaction is enabled for the receiver.
+ *
+ * If user interaction is not enabled, `NSResponder` messages are not sent to
+ * the receiver, and event handling behaves as if the view is not there.
+ *
+ * The default is `YES`. Subclasses may initialize this to a different value.
+ */
+@property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
+
+/**
  * @name Animations
  */
 

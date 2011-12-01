@@ -191,7 +191,7 @@
     id velvetView = self.rootView;
     while (YES) {
         if ([velvetView isKindOfClass:[VELNSView class]]) {
-            NSView *nsView = [velvetView NSView];
+            NSView *nsView = [(id)velvetView NSView];
 
             NSPoint viewPoint = NSPointFromCGPoint([[nsView superview] convertFromWindowPoint:windowPoint]);
             id testView = [nsView hitTest:viewPoint];
@@ -205,9 +205,19 @@
 
             NSVelvetView *hostView = testView;
             velvetView = hostView.rootView;
+
+            if (![velvetView isUserInteractionEnabled]) {
+                return hostView;
+            }
         } else {
             CGPoint viewPoint = [velvetView convertFromWindowPoint:windowPoint];
             id testView = [velvetView descendantViewAtPoint:viewPoint];
+
+            if ([testView isKindOfClass:[VELView class]]) {
+                while (testView && ![testView isUserInteractionEnabled]) {
+                    testView = [testView superview];
+                }
+            }
 
             if (![testView isKindOfClass:[VELNSView class]]) {
                 if (testView)

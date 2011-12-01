@@ -27,10 +27,15 @@
  */
 static NSUInteger VELViewAnimationBlockDepth = 0;
 
-@interface VELView ()
+@interface VELView () {
+    struct {
+        unsigned userInteractionEnabled:1;
+        unsigned recursingActionForLayer:1;
+    } m_flags;
+}
+
 @property (nonatomic, readwrite, weak) VELView *superview;
 @property (nonatomic, readwrite, weak) NSVelvetView *hostView;
-
 
 /*
  * True if we're inside the `actionForLayer:forKey:` method. This is used so we
@@ -48,7 +53,22 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 @synthesize subviews = m_subviews;
 @synthesize superview = m_superview;
 @synthesize hostView = m_hostView;
-@synthesize recursingActionForLayer = m_recursingActionForLayer;
+
+- (BOOL)isRecursingActionForLayer {
+    return (m_flags.recursingActionForLayer ? YES : NO);
+}
+
+- (void)setRecursingActionForLayer:(BOOL)recursing {
+    m_flags.recursingActionForLayer = (recursing ? 1 : 0);
+}
+
+- (BOOL)isUserInteractionEnabled {
+    return (m_flags.userInteractionEnabled ? YES : NO);
+}
+
+- (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
+    m_flags.userInteractionEnabled = (userInteractionEnabled ? 1 : 0);
+}
 
 // For geometry properties, it makes sense to reuse the layer's geometry,
 // keeping them coupled as much as possible to allow easy modification of either
@@ -175,6 +195,7 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     m_layer.delegate = self;
     m_layer.needsDisplayOnBoundsChange = YES;
 
+    self.userInteractionEnabled = YES;
     return self;
 }
 

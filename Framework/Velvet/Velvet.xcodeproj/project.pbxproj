@@ -51,6 +51,8 @@
 		D0CE3D471485506B005CAE53 /* VELFocusRingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */; };
 		D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */; };
+		D0D51D0A14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0D51D0B14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */; };
 		D0D8C39B1478569600FC9015 /* Velvet.h in Headers */ = {isa = PBXBuildFile; fileRef = D0EFFC11147851A80095AB35 /* Velvet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C39F1478582C00FC9015 /* NSVelvetView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D8C39D1478582C00FC9015 /* NSVelvetView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C3A01478582C00FC9015 /* NSVelvetView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C39E1478582C00FC9015 /* NSVelvetView.m */; };
@@ -128,6 +130,8 @@
 		D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELFocusRingLayer.m; sourceTree = "<group>"; };
 		D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+CoreGraphicsAdditions.h"; sourceTree = "<group>"; };
 		D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+CoreGraphicsAdditions.m"; sourceTree = "<group>"; };
+		D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+CoreGraphicsAdditions.h"; sourceTree = "<group>"; };
+		D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+CoreGraphicsAdditions.m"; sourceTree = "<group>"; };
 		D0D8C39D1478582C00FC9015 /* NSVelvetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetView.h; sourceTree = "<group>"; };
 		D0D8C39E1478582C00FC9015 /* NSVelvetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetView.m; sourceTree = "<group>"; };
 		D0D8C3A814785A1300FC9015 /* VELView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELView.h; sourceTree = "<group>"; };
@@ -218,6 +222,8 @@
 				1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */,
 				D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */,
 				D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */,
+				D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */,
+				D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */,
 				D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */,
 				D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */,
 				D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */,
@@ -479,6 +485,7 @@
 				D00816A7148732B8001CDF5B /* SDGroup.h in Headers */,
 				D00816A9148732B8001CDF5B /* SDQueue.h in Headers */,
 				D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */,
+				D0D51D0A14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -613,6 +620,7 @@
 				D00816A8148732B8001CDF5B /* SDGroup.m in Sources */,
 				D00816AA148732B8001CDF5B /* SDQueue.m in Sources */,
 				D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */,
+				D0D51D0B14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -101,6 +101,18 @@ typedef enum {
 @property (nonatomic, assign) CGPoint center;
 
 /**
+ * A transform applied to the receiver, relative to the center of its <bounds>.
+ *
+ * This will get and set the underlying `CATransform3D` of the receiver's
+ * <layer>.
+ *
+ * @warning *Important:* When reading the property, if the layer has an existing
+ * 3D transform that cannot be represented as an affine transform,
+ * `CGAffineTransformIdentity` is returned.
+ */
+@property (nonatomic, assign) CGAffineTransform transform;
+
+/**
  * Transforms a point from the coordinate system of another view to that of the
  * receiver.
  *

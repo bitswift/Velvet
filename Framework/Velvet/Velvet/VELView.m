@@ -83,6 +83,20 @@
     }];
 }
 
+- (CGAffineTransform)transform {
+    CATransform3D layerTransform = self.layer.transform;
+    if (CATransform3DIsAffine(layerTransform))
+        return CATransform3DGetAffineTransform(layerTransform);
+    else
+        return CGAffineTransformIdentity;
+}
+
+- (void)setTransform:(CGAffineTransform)transform {
+    [CATransaction performWithDisabledActions:^{
+        self.layer.transform = CATransform3DMakeAffineTransform(transform);
+    }];
+}
+
 - (void)setSubviews:(NSArray *)subviews {
     for (VELView *view in m_subviews) {
         [view removeFromSuperview];

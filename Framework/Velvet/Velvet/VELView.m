@@ -354,6 +354,23 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     [CATransaction commit];
 }
 
++ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations; {
+    [self animateWithDuration:duration animations:animations completion:^{}];
+}
+
++ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:duration];
+    [CATransaction setDisableActions:NO];
+    [CATransaction setCompletionBlock:completionBlock];
+
+    ++VELViewAnimationBlockDepth;
+    animations();
+    --VELViewAnimationBlockDepth;
+
+    [CATransaction commit];
+}
+
 + (void)changeLayerProperties:(void (^)(void))changesBlock; {
     if ([self isAnimating]) {
         changesBlock();

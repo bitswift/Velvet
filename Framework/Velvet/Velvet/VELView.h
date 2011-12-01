@@ -316,6 +316,26 @@ typedef enum {
 + (void)animate:(void (^)(void))animations completion:(void (^)(void))completionBlock;
 
 /**
+ * Animates changes to one or more views with a custom duration.
+ *
+ * @param duration The length of the animation.
+ * @param animations A block containing the changes to make that should be
+ * animated.
+ */
++ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations;
+
+/**
+ * Animates changes to one or more views with a custom duration.
+ *
+ * @param duration The length of the animation.
+ * @param animations A block containing the changes to make that should be
+ * animated.
+ * @param completionBlock A block to execute when the effect of the animation
+ * completes.
+ */
++ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(void))completionBlock;
+
+/**
  * Whether changes are currently being added to an animation.
  *
  * This is not whether an animation is currently in progress, but whether the

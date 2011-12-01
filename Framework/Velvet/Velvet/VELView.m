@@ -78,7 +78,9 @@
 }
 
 - (void)setAutoresizingMask:(VELAutoresizingMask)autoresizingMask {
-    self.layer.autoresizingMask = autoresizingMask;
+    [CATransaction performWithDisabledActions:^{
+        self.layer.autoresizingMask = autoresizingMask;
+    }];
 }
 
 - (void)setSubviews:(NSArray *)subviews {

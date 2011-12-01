@@ -9,6 +9,7 @@
 #import <Velvet/VELNSView.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
@@ -168,6 +169,14 @@
     // because it'll do some ancestor checks for NSView ordering
     [self.hostView addSubview:self.NSView];
     [self synchronizeNSViewGeometry];
+}
+
+- (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
+    if (!CGRectContainsPoint(self.bounds, point))
+        return nil;
+
+    // This assumes that we have the same geometry as our contained NSView
+    return [self.NSView descendantViewAtPoint:point] ?: [super descendantViewAtPoint:point];
 }
 
 #pragma mark Layout

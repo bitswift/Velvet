@@ -1,5 +1,5 @@
 //
-//  VELGeometry.h
+//  VELBridgedView.h
 //  Velvet
 //
 //  Created by Justin Spahr-Summers on 22.11.11.
@@ -15,7 +15,7 @@
  * This must be implemented by any view class that wishes to be compatible with
  * the geometry methods of <VELView>.
  */
-@protocol VELGeometry <NSObject>
+@protocol VELBridgedView <NSObject, NSDraggingDestination>
 @required
 /**
  * Converts a point from the coordinate system of the window to that of the
@@ -30,7 +30,7 @@
  *
  * @param point A point in the coordinate system of the receiver.
  */
-- (CGPoint)convertToWindowPoint:(CGPoint)point; 
+- (CGPoint)convertToWindowPoint:(CGPoint)point;
 
 /**
  * Converts a rectangle from the coordinate system of the window to that of the
@@ -46,4 +46,14 @@
  * @param rect A rectangle in the coordinate system of the receiver.
  */
 - (CGRect)convertToWindowRect:(CGRect)rect;
+
+/*
+ * Returns the <VELBridgedView> which is occupying the given point, or
+ * `nil` if there is no such view.
+ *
+ * @param point A point, specified in the coordinate system of the receiver,
+ * at which to look for a view.
+ */
+- (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point;
+
 @end

@@ -35,7 +35,7 @@
 @implementation VELCAAction
 @synthesize innerAction = m_innerAction;
 
-- (id)initWithAction:(id <CAAction>)innerAction {
+- (id)initWithAction:(id<CAAction>)innerAction {
     self = [super init];
     if (!self)
         return nil;
@@ -44,7 +44,7 @@
     return self;
 }
 
-+ (id)actionWithAction:(id <CAAction>)innerAction {
++ (id)actionWithAction:(id<CAAction>)innerAction {
     return [[self alloc] initWithAction:innerAction];
 }
 
@@ -81,7 +81,8 @@
     }];
 
     // If we did nothing, there's no cleanup needed.
-    if (![cachedViews count]) return;
+    if (![cachedViews count])
+        return;
 
     // Set up a block to return the NSViews to rendering themselves.
     void (^completionBlock)(void) = ^{

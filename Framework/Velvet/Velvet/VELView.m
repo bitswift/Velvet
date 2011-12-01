@@ -1,7 +1,7 @@
 //
 //  VELView.m
 //  Velvet
-//  
+//
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
@@ -10,7 +10,8 @@
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSVelvetView.h>
-#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
+#import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELScrollView.h>
@@ -29,6 +30,7 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 @interface VELView ()
 @property (nonatomic, readwrite, weak) VELView *superview;
 @property (nonatomic, readwrite, weak) NSVelvetView *hostView;
+
 
 /*
  * True if we're inside the `actionForLayer:forKey:` method. This is used so we
@@ -275,23 +277,23 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 
 #pragma mark Geometry
 
-- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view; {
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {
     return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
 }
 
-- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view; {
+- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view; {
     return [view convertFromWindowPoint:[self convertToWindowPoint:point]];
 }
 
-- (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view; {
+- (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view; {
     return [self convertFromWindowRect:[view convertToWindowRect:rect]];
 }
 
-- (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view; {
+- (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view; {
     return [view convertFromWindowRect:[self convertToWindowRect:rect]];
 }
 
-#pragma mark VELGeometry
+#pragma mark VELBridgedView
 
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
     NSVelvetView *hostView = self.hostView;
@@ -438,7 +440,8 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 - (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key {
     // If we're being called inside the [layer actionForKey:key] call below,
     // retun nil, so that method will return the default action.
-    if (self.recursingActionForLayer) return nil;
+    if (self.recursingActionForLayer)
+        return nil;
 
     self.recursingActionForLayer = YES;
     id<CAAction> innerAction = [layer actionForKey:key];
@@ -449,6 +452,27 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     } else {
         return innerAction;
     }
+}
+
+- (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
+    // Clip to self
+    if (!CGRectContainsPoint(self.bounds, point))
+        return nil;
+
+    __block id<VELBridgedView> result = self;
+
+    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView <VELBridgedView> *view, NSUInteger index, BOOL *stop){
+
+        CGPoint subviewPoint = [view convertPoint:point fromView:self];
+
+        id<VELBridgedView> hitTestedView = [view descendantViewAtPoint:subviewPoint];
+        if (hitTestedView) {
+            result = hitTestedView;
+            *stop = YES;
+        }
+    }];
+
+    return result;
 }
 
 #pragma mark CALayoutManager

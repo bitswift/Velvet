@@ -21,7 +21,10 @@
     m_thumbnailImageView.image = [[NSImage imageNamed:@"screen.png"] CGImageForProposedRect:NULL context:nil hints:nil];
     [self addSubview:m_thumbnailImageView];
     
-    self.layer.shadowColor = CGColorCreateGenericGray(0.0f, 1.0f);
+    CGColorRef shadowColor = CGColorCreateGenericGray(0.0f, 1.0f);
+    self.layer.shadowColor = shadowColor;
+    CGColorRelease(shadowColor);
+    
     self.layer.shadowOffset = CGSizeMake(0, -2);
     self.layer.shadowRadius = 2.0f;
     self.layer.shadowOpacity = 0.5f;

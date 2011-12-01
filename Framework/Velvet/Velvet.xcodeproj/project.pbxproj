@@ -50,7 +50,7 @@
 		D0CE3D461485506B005CAE53 /* VELFocusRingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CE3D441485506B005CAE53 /* VELFocusRingLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0CE3D471485506B005CAE53 /* VELFocusRingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */; };
 		D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */; };
+		D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0D51D0A14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D51D0B14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */; };
 		D0D8C39B1478569600FC9015 /* Velvet.h in Headers */ = {isa = PBXBuildFile; fileRef = D0EFFC11147851A80095AB35 /* Velvet.h */; settings = {ATTRIBUTES = (Public, ); }; };

@@ -12,9 +12,9 @@
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
-#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELContext.h>
-#import <Velvet/VELGeometry.h>
+#import <Velvet/VELBridgedView.h>
 #import <Velvet/VELImageView.h>
 #import <Velvet/VELLabel.h>
 #import <Velvet/VELNSView.h>

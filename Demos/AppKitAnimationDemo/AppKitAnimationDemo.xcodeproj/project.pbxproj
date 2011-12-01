@@ -14,6 +14,7 @@
 		1A0D06601484599B007558AE /* ADAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0D065F1484599B007558AE /* ADAppDelegate.m */; };
 		1A0D06631484599B007558AE /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A0D06611484599B007558AE /* MainMenu.xib */; };
 		1A0D066A14845D10007558AE /* lolcats.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1A0D066914845D10007558AE /* lolcats.jpg */; };
+		1E844BE41485B630001078C4 /* ADDraggingDestinationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E844BE31485B630001078C4 /* ADDraggingDestinationView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,8 @@
 		1A0D065F1484599B007558AE /* ADAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADAppDelegate.m; sourceTree = "<group>"; };
 		1A0D06621484599B007558AE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		1A0D066914845D10007558AE /* lolcats.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lolcats.jpg; sourceTree = "<group>"; };
+		1E844BE21485B630001078C4 /* ADDraggingDestinationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADDraggingDestinationView.h; sourceTree = "<group>"; };
+		1E844BE31485B630001078C4 /* ADDraggingDestinationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADDraggingDestinationView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +89,8 @@
 			children = (
 				1A0D065E1484599B007558AE /* ADAppDelegate.h */,
 				1A0D065F1484599B007558AE /* ADAppDelegate.m */,
+				1E844BE21485B630001078C4 /* ADDraggingDestinationView.h */,
+				1E844BE31485B630001078C4 /* ADDraggingDestinationView.m */,
 				1A0D06611484599B007558AE /* MainMenu.xib */,
 				1A0D06531484599B007558AE /* Supporting Files */,
 			);
@@ -172,6 +177,7 @@
 			files = (
 				1A0D06591484599B007558AE /* main.m in Sources */,
 				1A0D06601484599B007558AE /* ADAppDelegate.m in Sources */,
+				1E844BE41485B630001078C4 /* ADDraggingDestinationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,6 +299,7 @@
 				1A0D06681484599B007558AE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

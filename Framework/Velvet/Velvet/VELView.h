@@ -7,7 +7,7 @@
 //
 
 #import <AppKit/AppKit.h>
-#import <Velvet/VELGeometry.h>
+#import <Velvet/VELBridgedView.h>
 
 @class VELContext;
 @class NSVelvetView;
@@ -16,7 +16,7 @@
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a <NSVelvetView>.
  */
-@interface VELView : NSResponder <VELGeometry>
+@interface VELView : NSResponder <VELBridgedView>
 
 /**
  * @name Initialization
@@ -63,7 +63,7 @@
  * @warning *Important:* The receiver and `view` must be rooted at the same
  * window.
  */
-- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view;
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view;
 
 /**
  * Transforms a point from the coordinate system of the receiver to that of
@@ -75,7 +75,7 @@
  * @warning *Important:* The receiver and `view` must be rooted at the same
  * window.
  */
-- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view;
+- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view;
 
 /**
  * Transforms a rectangle from the coordinate system of another view to that of
@@ -87,7 +87,7 @@
  * @warning *Important:* The receiver and `view` must be rooted at the same
  * window.
  */
-- (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view;
+- (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view;
 
 /**
  * Transforms a rectangle from the coordinate system of the receiver to that of
@@ -99,7 +99,7 @@
  * @warning *Important:* The receiver and `view` must be rooted at the same
  * window.
  */
-- (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view;
+- (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view;
 
 /**
  * @name View Hierarchy
@@ -130,6 +130,15 @@
  * The window in which the receiver is displayed.
  */
 @property (readonly, weak) NSWindow *window;
+
+/**
+ * Adds the given view as a subview of the receiver, on top of the other
+ * subviews.
+ *
+ * @param view The view to add as a subview. This view is removed from its
+ * current superview before being added.
+ */
+- (void)addSubview:(VELView *)view;
 
 /**
  * Returns the closest ancestor that is shared by the receiver and another view,
@@ -172,6 +181,14 @@
  * The default implementation of this method does nothing.
  */
 - (void)layoutSubviews;
+
+/**
+ * Adds a view to the end of the receiver's subviews list.
+ *
+ * @param view The view to be added. The view is retained be the receiver. After
+ * being added, this view appears on top of any other subviews.
+ */
+- (void)addSubview:(VELView *)view;
 
 /**
  * Calculates and returns the preferred size of the receiver that fits within

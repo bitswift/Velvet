@@ -1,7 +1,7 @@
 //
 //  VELView.m
 //  Velvet
-//  
+//
 //  Created by Justin Spahr-Summers on 19.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
@@ -11,7 +11,8 @@
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
-#import <Velvet/NSView+VELGeometryAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
+#import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/VELContext.h>
 #import <Velvet/VELCAAction.h>
@@ -24,6 +25,7 @@
 @property (readwrite, weak) VELView *superview;
 @property (readwrite, weak) NSVelvetView *hostView;
 @property (readwrite, strong) VELContext *context;
+
 
 /*
  * True if we're inside the `actionForLayer:forKey:` method. This is used so we
@@ -91,28 +93,10 @@
             [view removeFromSuperview];
         }
 
+        m_subviews = nil;
+
         for (VELView *view in subviews) {
-            [view removeFromSuperview];
-        }
-
-        m_subviews = [subviews copy];
-
-        NSVelvetView *hostView = self.hostView;
-        for (VELView *view in m_subviews) {
-            [view willMoveToHostView:hostView];
-
-            // match the context of this view with 'view'
-            if (!view.context) {
-                view.context = self.context;
-            } else if (!self.context) {
-                self.context = view.context;
-            } else {
-                NSAssert([view.context isEqual:self.context], @"VELContext of a new subview should match that of its superview");
-            }
-
-            view.superview = self;
-            [self addSubviewToLayer:view];
-            [view didMoveToHostView];
+            [self addSubview:view];
         }
     });
 }
@@ -233,6 +217,32 @@
 
 #pragma mark View hierarchy
 
+- (void)addSubview:(VELView *)view; {
+    [view removeFromSuperview];
+
+    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        [view willMoveToHostView:self.hostView];
+
+        // match the context of this view with 'view'
+        if (!view.context) {
+            view.context = self.context;
+        } else if (!self.context) {
+            self.context = view.context;
+        } else {
+            NSAssert([view.context isEqual:self.context], @"VELContext of a new subview should match that of its superview");
+        }
+
+        if (!m_subviews)
+            m_subviews = [NSArray arrayWithObject:view];
+        else
+            m_subviews = [m_subviews arrayByAddingObject:view];
+
+        view.superview = self;
+        [self addSubviewToLayer:view];
+        [view didMoveToHostView];
+    });
+}
+
 - (void)addSubviewToLayer:(VELView *)view; {
     [self.layer addSublayer:view.layer];
 }
@@ -302,23 +312,23 @@
 
 #pragma mark Geometry
 
-- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELGeometry>)view; {
+- (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {
     return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
 }
 
-- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELGeometry>)view; {
+- (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view; {
     return [view convertFromWindowPoint:[self convertToWindowPoint:point]];
 }
 
-- (CGRect)convertRect:(CGRect)rect fromView:(id<VELGeometry>)view; {
+- (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view; {
     return [self convertFromWindowRect:[view convertToWindowRect:rect]];
 }
 
-- (CGRect)convertRect:(CGRect)rect toView:(id<VELGeometry>)view; {
+- (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view; {
     return [view convertFromWindowRect:[self convertToWindowRect:rect]];
 }
 
-#pragma mark VELGeometry
+#pragma mark VELBridgedView
 
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
     NSVelvetView *hostView = self.hostView;
@@ -415,16 +425,17 @@
     [NSGraphicsContext setCurrentContext:previousGraphicsContext];
 }
 
-- (id < CAAction >)actionForLayer:(CALayer *)layer forKey:(NSString *)key
+- (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key
 {
     // If we're being called inside the [layer actionForKey:key] call below,
     // retun nil, so that method will return the default action.
-    if (self.recursingActionForLayer) return nil;
+    if (self.recursingActionForLayer)
+        return nil;
 
 //    NSLog(@"ACTIONFORKEY. %@", key);
 
     self.recursingActionForLayer = YES;
-    id <CAAction> innerAction = [layer actionForKey:key];
+    id<CAAction> innerAction = [layer actionForKey:key];
     self.recursingActionForLayer = NO;
 
     if ([VELCAAction interceptsActionForKey:key]) {
@@ -432,6 +443,27 @@
     } else {
         return innerAction;
     }
+}
+
+- (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
+    // Clip to self
+    if (!CGRectContainsPoint(self.bounds, point))
+        return nil;
+
+    __block id<VELBridgedView> result = self;
+
+    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView <VELBridgedView> *view, NSUInteger index, BOOL *stop){
+
+        CGPoint subviewPoint = [view convertPoint:point fromView:self];
+
+        id<VELBridgedView> hitTestedView = [view descendantViewAtPoint:subviewPoint];
+        if (hitTestedView) {
+            result = hitTestedView;
+            *stop = YES;
+        }
+    }];
+
+    return result;
 }
 
 #pragma mark CALayoutManager

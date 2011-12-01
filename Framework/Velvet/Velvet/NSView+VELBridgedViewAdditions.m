@@ -8,6 +8,7 @@
 
 #import <AppKit/AppKit.h>
 #import <Velvet/VELNSView.h>
+#import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import "EXTSafeCategory.h"
@@ -38,23 +39,14 @@
 }
 
 - (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
-    // Clip to self
-    if (!CGRectContainsPoint(self.bounds, point))
-        return nil;
+    NSPoint superviewPoint = [self convertPoint:point toView:self.superview];
+    id hitView = [self hitTest:superviewPoint];
 
-    __block id<VELBridgedView> result = (id<VELBridgedView>)self;
+    if ([hitView isKindOfClass:[NSVelvetView class]]) {
+        NSPoint descendantPoint = [self convertPoint:point toView:hitView];
+        return [hitView descendantViewAtPoint:descendantPoint];
+    }
 
-    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView <VELBridgedView> *view, NSUInteger index, BOOL *stop){
-
-        CGPoint subviewPoint = [view convertPoint:point fromView:self];
-
-        id<VELBridgedView>hitTestedView = [view descendantViewAtPoint:subviewPoint];
-        if (hitTestedView) {
-            result = hitTestedView;
-            *stop = YES;
-        }
-    }];
-
-    return result;
+    return hitView;
 }
 @end

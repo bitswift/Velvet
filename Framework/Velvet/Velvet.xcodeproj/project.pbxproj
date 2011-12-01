@@ -44,6 +44,7 @@
 		D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */; };
+		D05AEF871487269400EBF398 /* libsafedispatch.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D05AEF831487268800EBF398 /* libsafedispatch.a */; };
 		D0911B1D147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0911B1E147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */; };
 		D0CACD35147C86C0008C42B2 /* VELGeometry.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELGeometry.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -72,6 +73,34 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D05AEF7E1487268800EBF398 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D05AEF751487268800EBF398 /* SafeDispatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D01FEA931485EBC200A37CA6;
+			remoteInfo = SafeDispatch;
+		};
+		D05AEF801487268800EBF398 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D05AEF751487268800EBF398 /* SafeDispatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D01FEAAB1485EBC200A37CA6;
+			remoteInfo = SafeDispatchTests;
+		};
+		D05AEF821487268800EBF398 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D05AEF751487268800EBF398 /* SafeDispatch.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D05AEF4D148725A100EBF398;
+			remoteInfo = libsafedispatch;
+		};
+		D05AEF851487269000EBF398 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D05AEF751487268800EBF398 /* SafeDispatch.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D05AEF4C148725A100EBF398;
+			remoteInfo = libsafedispatch;
+		};
 		D0EFFC1D147851A80095AB35 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D0EFFBF7147851A80095AB35 /* Project object */;
@@ -119,6 +148,7 @@
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
 		D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+ScrollViewAdditions.h"; sourceTree = "<group>"; };
 		D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+ScrollViewAdditions.m"; sourceTree = "<group>"; };
+		D05AEF751487268800EBF398 /* SafeDispatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SafeDispatch.xcodeproj; path = ../SafeDispatch/Framework/SafeDispatch/SafeDispatch.xcodeproj; sourceTree = "<group>"; };
 		D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+VELGeometryAdditions.h"; sourceTree = "<group>"; };
 		D0911B1C147C93AD00C7DF4E /* NSView+VELGeometryAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELGeometryAdditions.m"; sourceTree = "<group>"; };
 		D0CACD34147C86C0008C42B2 /* VELGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELGeometry.h; sourceTree = "<group>"; };
@@ -173,6 +203,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D05AEF871487269400EBF398 /* libsafedispatch.a in Frameworks */,
 				1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */,
 				D0D8C3AD14785CEE00FC9015 /* QuartzCore.framework in Frameworks */,
 				D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */,
@@ -257,6 +288,16 @@
 			name = Native;
 			sourceTree = "<group>";
 		};
+		D05AEF761487268800EBF398 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D05AEF7F1487268800EBF398 /* SafeDispatch.framework */,
+				D05AEF811487268800EBF398 /* SafeDispatchTests.octest */,
+				D05AEF831487268800EBF398 /* liblibsafedispatch.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D0D7305A147C860900090122 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -297,6 +338,7 @@
 		D0EFFC03147851A80095AB35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D05AEF751487268800EBF398 /* SafeDispatch.xcodeproj */,
 				D0FBA3201482085500F9F5F6 /* libextobjc */,
 				D0EFFC07147851A80095AB35 /* AppKit.framework */,
 				1E7BBD4B147B17400010375D /* ApplicationServices.framework */,
@@ -482,6 +524,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D05AEF861487269000EBF398 /* PBXTargetDependency */,
 			);
 			name = Velvet;
 			productName = Velvet;
@@ -526,6 +569,12 @@
 			mainGroup = D0EFFBF5147851A80095AB35;
 			productRefGroup = D0EFFC02147851A80095AB35 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D05AEF761487268800EBF398 /* Products */;
+					ProjectRef = D05AEF751487268800EBF398 /* SafeDispatch.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D0EFFC00147851A80095AB35 /* Velvet */,
@@ -533,6 +582,30 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D05AEF7F1487268800EBF398 /* SafeDispatch.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SafeDispatch.framework;
+			remoteRef = D05AEF7E1487268800EBF398 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D05AEF811487268800EBF398 /* SafeDispatchTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = SafeDispatchTests.octest;
+			remoteRef = D05AEF801487268800EBF398 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D05AEF831487268800EBF398 /* liblibsafedispatch.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libsafedispatch.a;
+			remoteRef = D05AEF821487268800EBF398 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D0EFFBFF147851A80095AB35 /* Resources */ = {
@@ -611,6 +684,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D05AEF861487269000EBF398 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libsafedispatch;
+			targetProxy = D05AEF851487269000EBF398 /* PBXContainerItemProxy */;
+		};
 		D0EFFC1E147851A80095AB35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D0EFFC00147851A80095AB35 /* Velvet */;

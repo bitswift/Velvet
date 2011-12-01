@@ -32,7 +32,7 @@ NSUInteger RandomInRange(NSUInteger min, NSUInteger max);
 }
 
 NSUInteger RandomInRange(NSUInteger min, NSUInteger max) {
-    return floor(rand() * (max - min) / RAND_MAX + min);
+    return (NSUInteger)floor(rand() * (max - min) / RAND_MAX + min);
 }
 
 - (void)createViews {

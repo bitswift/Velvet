@@ -107,6 +107,16 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     }];
 }
 
+- (CGFloat)alpha {
+    return self.layer.opacity;
+}
+
+- (void)setAlpha:(CGFloat)alpha {
+    [[self class] changeLayerProperties:^{
+        self.layer.opacity = (float)alpha;
+    }];
+}
+
 - (void)setSubviews:(NSArray *)subviews {
     for (VELView *view in m_subviews) {
         [view removeFromSuperview];

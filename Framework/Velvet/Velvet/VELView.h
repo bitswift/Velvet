@@ -286,6 +286,11 @@ typedef enum {
  */
 
 /**
+ * The opacity of the receiver.
+ */
+@property (nonatomic, assign) CGFloat alpha;
+
+/**
  * If the view's appearance is not provided by its layer, this method should
  * draw the view into the current `NSGraphicsContext`.
  *

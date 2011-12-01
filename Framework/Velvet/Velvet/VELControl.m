@@ -33,7 +33,7 @@ typedef void (^VELControlActionBlock)(void);
 
 #pragma mark Event Dispatch
 
-- (id)addAction:(void (^)(void))actionBlock forControlEvents:(VELControlEventMask)eventMask; {
+- (id)addActionForControlEvents:(VELControlEventMask)eventMask usingBlock:(void (^)(void))actionBlock; {
     id action = [actionBlock copy];
 
     NSNumber *actionEvents = [self.actions objectForKey:action];

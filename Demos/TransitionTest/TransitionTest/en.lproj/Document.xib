@@ -30,9 +30,9 @@
 				<string key="NSClassName">FirstResponder</string>
 			</object>
 			<object class="NSWindowTemplate" id="275939982">
-				<int key="NSWindowStyleMask">15</int>
+				<int key="NSWindowStyleMask">7</int>
 				<int key="NSWindowBacking">2</int>
-				<string key="NSWindowRect">{{133, 235}, {1024, 768}}</string>
+				<string key="NSWindowRect">{{30, 30}, {1024, 768}}</string>
 				<int key="NSWTFlags">1886912512</int>
 				<string key="NSWindowTitle">Window</string>
 				<string key="NSWindowClass">VELWindow</string>

@@ -19,6 +19,7 @@
     self.openCloseButton = [[RotatingControl alloc] init];
     self.openCloseButton.frame = CGRectMake(0, 0, 64, 44);
     self.openCloseButton.icon = [NSImage imageNamed:@"arrow.png"];
+    [self addSubview:self.openCloseButton];
 
     self.layer.backgroundColor = CGColorGetConstantColor(kCGColorBlack);
     return self;

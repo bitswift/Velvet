@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0DCD37C6147DB86200A9D6E4 /* NSVelvetHostView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DCD37C4147DB86200A9D6E4 /* NSVelvetHostView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		0DCD37C7147DB86200A9D6E4 /* NSVelvetHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */; };
-		0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DEDDD3D147B5D5C0087037C /* VELWindow.h */; };
+		0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DEDDD3D147B5D5C0087037C /* VELWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DEDDD3E147B5D5C0087037C /* VELWindow.m */; };
 		1E1790EC1481CC6C00177DC0 /* NSViewClipRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E1790EA1481CC6C00177DC0 /* NSViewClipRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1E1790ED1481CC6C00177DC0 /* NSViewClipRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E1790EB1481CC6C00177DC0 /* NSViewClipRenderer.m */; };

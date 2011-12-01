@@ -354,6 +354,14 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 - (void)layoutSubviews; {
 }
 
+- (BOOL)needsLayout; {
+    return self.layer.needsLayout;
+}
+
+- (void)setNeedsLayout; {
+    [self.layer setNeedsLayout];
+}
+
 - (CGSize)sizeThatFits:(CGSize)constraint; {
     return self.bounds.size;
 }

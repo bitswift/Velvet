@@ -200,15 +200,6 @@ typedef enum {
 - (void)addSubview:(VELView *)view;
 
 /**
- * Adds the given view as a subview of the receiver, on top of the other
- * subviews.
- *
- * @param view The view to add as a subview. This view is removed from its
- * current superview before being added.
- */
-- (void)addSubview:(VELView *)view;
-
-/**
  * Returns the closest ancestor that is shared by the receiver and another view,
  * or `nil` if there is no such view.
  *
@@ -257,12 +248,14 @@ typedef enum {
 - (void)layoutSubviews;
 
 /**
- * Adds a view to the end of the receiver's subviews list.
- *
- * @param view The view to be added. The view is retained be the receiver. After
- * being added, this view appears on top of any other subviews.
+ * Whether the receiver is waiting to lay out its subviews.
  */
-- (void)addSubview:(VELView *)view;
+- (BOOL)needsLayout;
+
+/**
+ * Marks the receiver as needing layout.
+ */
+- (void)setNeedsLayout;
 
 /**
  * Calculates and returns the preferred size of the receiver that fits within

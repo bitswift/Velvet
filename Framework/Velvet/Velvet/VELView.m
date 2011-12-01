@@ -117,6 +117,16 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     }];
 }
 
+- (BOOL)isHidden {
+    return self.layer.hidden;
+}
+
+- (void)setHidden:(BOOL)hidden {
+    [[self class] changeLayerProperties:^{
+        self.layer.hidden = hidden;
+    }];
+}
+
 - (void)setSubviews:(NSArray *)subviews {
     for (VELView *view in m_subviews) {
         [view removeFromSuperview];

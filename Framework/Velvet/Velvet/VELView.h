@@ -291,6 +291,11 @@ typedef enum {
 @property (nonatomic, assign) CGFloat alpha;
 
 /**
+ * Whether the receiver is hidden.
+ */
+@property (nonatomic, assign, getter = isHidden) BOOL hidden;
+
+/**
  * If the view's appearance is not provided by its layer, this method should
  * draw the view into the current `NSGraphicsContext`.
  *

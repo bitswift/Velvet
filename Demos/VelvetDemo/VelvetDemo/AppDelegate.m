@@ -47,9 +47,8 @@
     [self performSelector:@selector(animateViews) withObject:nil afterDelay:2.0];
 #else
 //    [self draggingTests];
-//    [self hierarchyTests];
-    [self scalingTests];
-
+//    [self scalingTests];
+    [self hierarchyTests];
 #endif
 }
 

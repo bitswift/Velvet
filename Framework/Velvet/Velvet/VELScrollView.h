@@ -24,7 +24,7 @@
  *
  * This defaults to `CGSizeZero`.
  */
-@property (assign) CGSize contentSize;
+@property (nonatomic, assign) CGSize contentSize;
 
 /**
  * @name Scrollers
@@ -33,10 +33,10 @@
 /**
  * The horizontal scroller displayed in the scroll view.
  */
-@property (strong, readonly) NSScroller *horizontalScroller;
+@property (nonatomic, strong, readonly) NSScroller *horizontalScroller;
 
 /**
  * The vertical scroller displayed in the scroll view.
  */
-@property (strong, readonly) NSScroller *verticalScroller;
+@property (nonatomic, strong, readonly) NSScroller *verticalScroller;
 @end

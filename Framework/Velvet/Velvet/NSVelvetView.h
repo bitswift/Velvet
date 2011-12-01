@@ -25,23 +25,6 @@
  * The root view of a <VELView>-based hierarchy to be displayed in the receiver.
  * The value of this property is a plain <VELView> by default, but can be replaced
  * with another instance of <VELView> or any subclass.
- *
- * This property is not thread-safe. It must be set from the main thread.
  */
 @property (nonatomic, strong) VELView *rootView;
-
-/**
- * @name Rendering Context
- */
-
-/**
- * The context in which to render and manage the receiver's <VELView> hierarchy.
- *
- * This context is automatically created when the view is initialized, and
- * should be considered owned by the receiver.
- *
- * This property is *not* automatically set up as the current thread's
- * context.
- */
-@property (nonatomic, readonly, strong) VELContext *context;
 @end

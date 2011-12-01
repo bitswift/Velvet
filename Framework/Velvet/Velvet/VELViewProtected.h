@@ -25,8 +25,6 @@
  * it at all.
  *
  * @param view The view being added as a subview.
- *
- * @warning This method may be invoked on a background thread.
  */
 - (void)addSubviewToLayer:(VELView *)view;
 
@@ -35,8 +33,6 @@
  * or clipping the receiver.
  *
  * The default implementation forwards the message to all subviews.
- *
- * @warning This method may be invoked on a background thread.
  */
 - (void)ancestorDidScroll;
 
@@ -47,8 +43,6 @@
  * implementation forwards the message to the receiver's subviews.
  *
  * @param hostView The view which will now host the receiver's hierarchy.
- *
- * @warning This method may be invoked on a background thread.
  */
 - (void)willMoveToHostView:(NSVelvetView *)hostView;
 
@@ -57,8 +51,6 @@
  *
  * This method is invoked on every view in the hierarchy. The default
  * implementation forwards the message to the receiver's subviews.
- *
- * @warning This method may be invoked on a background thread.
  */
 - (void)didMoveToHostView;
 @end

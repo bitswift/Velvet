@@ -12,7 +12,6 @@
 #import <Velvet/NSVelvetHostView.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
-#import <Velvet/VELContext.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELNSViewPrivate.h>
@@ -107,7 +106,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 #pragma mark Properties
 
-@synthesize context = m_context;
 @synthesize rootView = m_rootView;
 @synthesize velvetHostView = m_velvetHostView;
 @synthesize userInteractionEnabled = m_userInteractionEnabled;
@@ -146,8 +144,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)setUp; {
-    m_context = [[VELContext alloc] init];
-
     self.userInteractionEnabled = YES;
 
     // enable layer-backing for this view

@@ -20,8 +20,6 @@
  * Whether the receiver should render its `NSView`.
  *
  * If set to `NO`, the `NSView` is rendered once and cached into the receiver's layer. This is typically used for animations.
- *
- * This property is not thread-safe, and must be set from the main thread.
  */
 @property (nonatomic, assign) BOOL rendersContainedView;
 
@@ -40,7 +38,7 @@
  *
  * This layer may not be a descendant of the receiver's layer.
  */
-@property (strong) VELFocusRingLayer *focusRingLayer;
+@property (nonatomic, strong) VELFocusRingLayer *focusRingLayer;
 
 /*
  * This will synchronize the geometry of the receiver's `NSView` with that of

@@ -9,11 +9,9 @@
 #import <Velvet/VELView.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
-#import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELGeometryAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
-#import <Velvet/VELContext.h>
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELScrollView.h>
 #import <Velvet/VELViewPrivate.h>
@@ -21,9 +19,8 @@
 #import "EXTScope.h"
 
 @interface VELView ()
-@property (readwrite, weak) VELView *superview;
-@property (readwrite, weak) NSVelvetView *hostView;
-@property (readwrite, strong) VELContext *context;
+@property (nonatomic, readwrite, weak) VELView *superview;
+@property (nonatomic, readwrite, weak) NSVelvetView *hostView;
 
 /*
  * True if we're inside the `actionForLayer:forKey:` method. This is used so we
@@ -42,8 +39,6 @@
 @synthesize superview = m_superview;
 @synthesize hostView = m_hostView;
 @synthesize recursingActionForLayer = m_recursingActionForLayer;
-@synthesize canDrawConcurrently = m_canDrawConcurrently;
-@synthesize context = m_context;
 
 // For geometry properties, it makes sense to reuse the layer's geometry,
 // keeping them coupled as much as possible to allow easy modification of either
@@ -86,101 +81,33 @@
     self.layer.autoresizingMask = autoresizingMask;
 }
 
-- (NSArray *)subviews {
-    __block NSArray *subviews = nil;
-
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        subviews = [m_subviews copy];
-    });
-
-    return subviews;
-}
-
 - (void)setSubviews:(NSArray *)subviews {
-    dispatch_async(self.context.dispatchQueue, ^{
-        for (VELView *view in m_subviews) {
-            [view removeFromSuperview];
-        }
+    for (VELView *view in m_subviews) {
+        [view removeFromSuperview];
+    }
 
-        m_subviews = nil;
+    m_subviews = nil;
 
-        for (VELView *view in subviews) {
-            [self addSubview:view];
-        }
-    });
-}
-
-- (VELView *)superview {
-    __block VELView *superview = nil;
-
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        superview = m_superview;
-    });
-
-    return superview;
-}
-
-- (void)setSuperview:(VELView *)superview {
-    dispatch_async(self.context.dispatchQueue, ^{
-        m_superview = superview;
-    });
+    for (VELView *view in subviews) {
+        [self addSubview:view];
+    }
 }
 
 - (NSVelvetView *)hostView {
-    __block NSVelvetView *view = nil;
-
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        view = m_hostView;
-    });
-
-    if (view)
-        return view;
+    if (m_hostView)
+        return m_hostView;
     else
         return self.superview.hostView;
 }
 
 - (void)setHostView:(NSVelvetView *)view {
-    if (!view) {
-        dispatch_sync_recursive(self.context.dispatchQueue, ^{
-            [self willMoveToHostView:nil];
-            m_hostView = nil;
-            [self didMoveToHostView];
-        });
-
-        return;
-    }
-
-    dispatch_multibarrier_sync(^{
-        self.context = view.context;
-    
-    // if 'self.context' is nil, it will (intentionally) short-circuit the list
-    // of arguments here
-    }, view.context.dispatchQueue, self.context.dispatchQueue, NULL);
-
-    dispatch_async(self.context.dispatchQueue, ^{
-        [self willMoveToHostView:view];
-        m_hostView = view;
-        [self didMoveToHostView];
-    });
+    [self willMoveToHostView:view];
+    m_hostView = view;
+    [self didMoveToHostView];
 }
 
 - (NSWindow *)window {
     return self.hostView.window;
-}
-
-- (NSUInteger)viewDepth {
-    // naive implementation
-    __block NSUInteger depth = 1;
-
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        VELView *superview = self.superview;
-        while (superview) {
-            ++depth;
-            superview = superview.superview;
-        }
-    });
-
-    return depth;
 }
 
 #pragma mark Layer handling
@@ -202,9 +129,6 @@
     m_layer.delegate = self;
     m_layer.needsDisplayOnBoundsChange = YES;
 
-    // set up a context so we get synchronization right off the bat
-    self.context = [[VELContext alloc] init];
-
     return self;
 }
 
@@ -225,18 +149,16 @@
 
     __block VELView *result = self;
 
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        // subviews are ordered back-to-front, but we should test for hits in the
-        // opposite order
-        [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView *view, NSUInteger index, BOOL *stop){
-            CGPoint subviewPoint = [view convertPoint:point fromView:self];
-            VELView *hitView = [view hitTest:subviewPoint];
-            if (hitView) {
-                result = hitView;
-                *stop = YES;
-            }
-        }];
-    });
+    // subviews are ordered back-to-front, but we should test for hits in the
+    // opposite order
+    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView *view, NSUInteger index, BOOL *stop){
+        CGPoint subviewPoint = [view convertPoint:point fromView:self];
+        VELView *hitView = [view hitTest:subviewPoint];
+        if (hitView) {
+            result = hitView;
+            *stop = YES;
+        }
+    }];
 
     return result;
 }
@@ -250,28 +172,16 @@
 
 - (void)addSubview:(VELView *)view; {
     [view removeFromSuperview];
+    [view willMoveToHostView:self.hostView];
 
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        [view willMoveToHostView:self.hostView];
+    if (!m_subviews)
+        m_subviews = [NSArray arrayWithObject:view];
+    else
+        m_subviews = [m_subviews arrayByAddingObject:view];
 
-        dispatch_sync_recursive(view.context.dispatchQueue, ^{
-            // match the context of this view with 'view'
-            if (!self.context) {
-                self.context = view.context;
-            } else {
-                view.context = self.context;
-            }
-        });
-
-        if (!m_subviews)
-            m_subviews = [NSArray arrayWithObject:view];
-        else
-            m_subviews = [m_subviews arrayByAddingObject:view];
-
-        view.superview = self;
-        [self addSubviewToLayer:view];
-        [view didMoveToHostView];
-    });
+    view.superview = self;
+    [self addSubviewToLayer:view];
+    [view didMoveToHostView];
 }
 
 - (void)addSubviewToLayer:(VELView *)view; {
@@ -285,25 +195,21 @@
 }
 
 - (VELView *)ancestorSharedWithView:(VELView *)view; {
-    __block VELView *parentView = self;
+    VELView *parentView = self;
 
-    dispatch_sync_recursive(view.context.dispatchQueue, ^{
-        do {
-            if ([view isDescendantOfView:parentView]) 
-                return;
+    do {
+        if ([view isDescendantOfView:parentView]) 
+            return parentView;
 
-            parentView = parentView.superview;
-        } while (parentView);
-    });
+        parentView = parentView.superview;
+    } while (parentView);
 
-    return parentView;
+    return nil;
 }
 
 - (void)didMoveToHostView; {
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        for (VELView *subview in self.subviews)
-            [subview didMoveToHostView];
-    });
+    for (VELView *subview in self.subviews)
+        [subview didMoveToHostView];
 }
 
 - (id)ancestorScrollView; {
@@ -317,36 +223,30 @@
 - (BOOL)isDescendantOfView:(VELView *)view; {
     NSParameterAssert(view != nil);
 
-    __block VELView *testView = self;
+    VELView *testView = self;
 
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        do {
-            if (testView == view)
-                return;
+    do {
+        if (testView == view)
+            return YES;
 
-            testView = testView.superview;
-        } while (testView);
-    });
+        testView = testView.superview;
+    } while (testView);
 
-    return (testView != nil);
+    return NO;
 }
 
 - (void)removeFromSuperview; {
-    dispatch_async(self.context.dispatchQueue, ^{
-        [self willMoveToHostView:nil];
+    [self willMoveToHostView:nil];
 
-        [self.layer removeFromSuperlayer];
-        self.superview = nil;
+    [self.layer removeFromSuperlayer];
+    self.superview = nil;
 
-        [self didMoveToHostView];
-    });
+    [self didMoveToHostView];
 }
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView; {
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        for (VELView *subview in self.subviews)
-            [subview willMoveToHostView:hostView];
-    });
+    for (VELView *subview in self.subviews)
+        [subview willMoveToHostView:hostView];
 }
 
 #pragma mark Geometry
@@ -421,71 +321,50 @@
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
-    dispatch_block_t displayBlock = ^{
-        CGRect bounds = self.bounds;
-        if (CGRectIsEmpty(bounds) || CGRectIsNull(bounds)) {
-            // can't do anything
-            return;
-        }
+    CGRect bounds = self.bounds;
+    if (CGRectIsEmpty(bounds) || CGRectIsNull(bounds)) {
+        // can't do anything
+        return;
+    }
 
-        CGContextRef context = CGBitmapContextCreateGeneric(bounds.size);
-        if (!context) {
-            return;
-        }
+    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size);
+    if (!context) {
+        return;
+    }
 
-        [self drawLayer:layer inContext:context];
+    [self drawLayer:layer inContext:context];
 
-        CGImageRef image = CGBitmapContextCreateImage(context);
-        layer.contents = (__bridge_transfer id)image;
+    CGImageRef image = CGBitmapContextCreateImage(context);
+    layer.contents = (__bridge_transfer id)image;
 
-        CGContextRelease(context);
-    };
-
-    if (self.canDrawConcurrently)
-        dispatch_async(self.context.dispatchQueue, displayBlock);
-    else
-        displayBlock();
+    CGContextRelease(context);
 }
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
-    dispatch_block_t displayBlock = ^{
-        if (!context)
-            return;
+    if (!context)
+        return;
 
-        CGRect bounds = self.bounds;
+    CGRect bounds = self.bounds;
 
-        CGContextClearRect(context, bounds);
-        CGContextClipToRect(context, bounds);
+    CGContextClearRect(context, bounds);
+    CGContextClipToRect(context, bounds);
 
-        // enable sub-pixel antialiasing (if drawing onto anything opaque)
-        CGContextSetShouldSmoothFonts(context, YES);
+    // enable sub-pixel antialiasing (if drawing onto anything opaque)
+    CGContextSetShouldSmoothFonts(context, YES);
 
-        NSGraphicsContext *previousGraphicsContext = [NSGraphicsContext currentContext];
+    NSGraphicsContext *previousGraphicsContext = [NSGraphicsContext currentContext];
 
-        // push a new NSGraphicsContext representing this CGContext, which drawRect:
-        // will render into
-        NSGraphicsContext *graphicsContext = [NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
-        [NSGraphicsContext setCurrentContext:graphicsContext];
+    // push a new NSGraphicsContext representing this CGContext, which drawRect:
+    // will render into
+    NSGraphicsContext *graphicsContext = [NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
+    [NSGraphicsContext setCurrentContext:graphicsContext];
 
-        [self drawRect:bounds];
+    [self drawRect:bounds];
 
-        [NSGraphicsContext setCurrentContext:previousGraphicsContext];
-    };
-
-    if (self.canDrawConcurrently)
-        dispatch_sync_recursive(self.context.dispatchQueue, displayBlock);
-    else
-        dispatch_sync_recursive(dispatch_get_main_queue(), displayBlock);
+    [NSGraphicsContext setCurrentContext:previousGraphicsContext];
 }
 
 - (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key {
-    // since 'recursingActionForLayer' isn't thread-safe, we have to make sure that
-    // this whole chain of events only happens on one thread
-    [CATransaction lock];
-    @onExit {
-        [CATransaction unlock];
-    };
-
     // If we're being called inside the [layer actionForKey:key] call below,
     // retun nil, so that method will return the default action.
     if (self.recursingActionForLayer) return nil;
@@ -504,23 +383,13 @@
 #pragma mark CALayoutManager
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
-    dispatch_async(self.context.dispatchQueue, ^{
-        [CATransaction performWithDisabledActions:^{
-            [self layoutSubviews];
-        }];
-
-        [CATransaction flush];
-    });
+    [CATransaction performWithDisabledActions:^{
+        [self layoutSubviews];
+    }];
 }
 
 - (CGSize)preferredSizeOfLayer:(CALayer *)layer {
-    __block CGSize size;
-
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        size = [self sizeThatFits:CGSizeZero];
-    });
-
-    return size;
+    return [self sizeThatFits:CGSizeZero];
 }
 
 @end

@@ -31,8 +31,6 @@
 		D00816A8148732B8001CDF5B /* SDGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = D00816A4148732B8001CDF5B /* SDGroup.m */; };
 		D00816A9148732B8001CDF5B /* SDQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = D00816A5148732B8001CDF5B /* SDQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D00816AA148732B8001CDF5B /* SDQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D00816A6148732B8001CDF5B /* SDQueue.m */; };
-		D0150FDC147902AE00126F09 /* VELContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FDA147902AE00126F09 /* VELContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D0150FDD147902AE00126F09 /* VELContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FDB147902AE00126F09 /* VELContext.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
@@ -108,8 +106,6 @@
 		D00816A4148732B8001CDF5B /* SDGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDGroup.m; path = ../SafeDispatch/Framework/SafeDispatch/SafeDispatch/SDGroup.m; sourceTree = "<group>"; };
 		D00816A5148732B8001CDF5B /* SDQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDQueue.h; path = ../SafeDispatch/Framework/SafeDispatch/SafeDispatch/SDQueue.h; sourceTree = "<group>"; };
 		D00816A6148732B8001CDF5B /* SDQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDQueue.m; path = ../SafeDispatch/Framework/SafeDispatch/SafeDispatch/SDQueue.m; sourceTree = "<group>"; };
-		D0150FDA147902AE00126F09 /* VELContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELContext.h; sourceTree = "<group>"; };
-		D0150FDB147902AE00126F09 /* VELContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELContext.m; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
@@ -250,8 +246,6 @@
 		D01CF3AF1479A6BD00C88D2B /* Native */ = {
 			isa = PBXGroup;
 			children = (
-				D0150FDA147902AE00126F09 /* VELContext.h */,
-				D0150FDB147902AE00126F09 /* VELContext.m */,
 				D0305D781486FC960081D6EA /* VELControl.h */,
 				D0305D791486FC960081D6EA /* VELControl.m */,
 				D0E8B35214831419003980B4 /* VELImageView.h */,
@@ -451,7 +445,6 @@
 				D0D8C39B1478569600FC9015 /* Velvet.h in Headers */,
 				D0D8C39F1478582C00FC9015 /* NSVelvetView.h in Headers */,
 				D0D8C3AA14785A1300FC9015 /* VELView.h in Headers */,
-				D0150FDC147902AE00126F09 /* VELContext.h in Headers */,
 				D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */,
 				D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */,
 				1E7BBD40147B157C0010375D /* VELLabel.h in Headers */,
@@ -591,7 +584,6 @@
 			files = (
 				D0D8C3A01478582C00FC9015 /* NSVelvetView.m in Sources */,
 				D0D8C3AB14785A1300FC9015 /* VELView.m in Sources */,
-				D0150FDD147902AE00126F09 /* VELContext.m in Sources */,
 				D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */,
 				1E7BBD41147B157C0010375D /* VELLabel.m in Sources */,
 				0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */,

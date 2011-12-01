@@ -9,7 +9,6 @@
 #import <AppKit/AppKit.h>
 #import <Velvet/VELGeometry.h>
 
-@class VELContext;
 @class NSVelvetView;
 
 /**
@@ -89,17 +88,17 @@ typedef enum {
 /**
  * The frame of this view, in its superview's coordinate system.
  */
-@property (assign) CGRect frame;
+@property (nonatomic, assign) CGRect frame;
 
 /**
  * The drawing region of this view, relative to its <frame>.
  */
-@property (assign) CGRect bounds;
+@property (nonatomic, assign) CGRect bounds;
 
 /**
  * The center of this view, in its superview's coordinate system.
  */
-@property (assign) CGPoint center;
+@property (nonatomic, assign) CGPoint center;
 
 /**
  * Transforms a point from the coordinate system of another view to that of the
@@ -158,7 +157,7 @@ typedef enum {
  * This array can be replaced to completely change the subviews displayed by the
  * receiver.
  */
-@property (copy) NSArray *subviews;
+@property (nonatomic, copy) NSArray *subviews;
 
 /**
  * The immediate superview of the receiver, or `nil` if the receiver is a root
@@ -167,17 +166,17 @@ typedef enum {
  * To obtain the <NSVelvetView> that the receiver is hosted in, you must use
  * <hostView> instead.
  */
-@property (readonly, weak) VELView *superview;
+@property (nonatomic, readonly, weak) VELView *superview;
 
 /**
  * The <NSVelvetView> that is hosting the furthest ancestor of the receiver.
  */
-@property (readonly, weak) NSVelvetView *hostView;
+@property (nonatomic, readonly, weak) NSVelvetView *hostView;
 
 /**
  * The window in which the receiver is displayed.
  */
-@property (readonly, weak) NSWindow *window;
+@property (nonatomic, readonly, weak) NSWindow *window;
 
 /**
  * Adds the given view as a subview of the receiver, on top of the other
@@ -227,7 +226,7 @@ typedef enum {
  * Defines how the view should be resized when the bounds of its <superview>
  * changes.
  */
-@property (assign) VELAutoresizingMask autoresizingMask;
+@property (nonatomic, assign) VELAutoresizingMask autoresizingMask;
 
 /**
  * Lays out subviews.
@@ -259,7 +258,7 @@ typedef enum {
 
 /**
  * If the view's appearance is not provided by its layer, this method should
- * draw the view into the current graphics context.
+ * draw the view into the current `NSGraphicsContext`.
  *
  * The default implementation of this method does nothing.
  *
@@ -267,16 +266,6 @@ typedef enum {
  * the receiver's coordinate system.
  */
 - (void)drawRect:(CGRect)rect;
-
-/**
- * Whether this view can be rendered on a background thread.
- *
- * If `YES`, <drawRect:> must be thread-safe. If `NO`, <drawRect:> will always
- * be invoked on the main thread.
- *
- * This property defaults to `NO`.
- */
-@property (assign) BOOL canDrawConcurrently;
 
 /**
  * @name Event Handling
@@ -305,19 +294,5 @@ typedef enum {
  * The layer backing this view. This will be an instance of the <layerClass>
  * specified by the receiver's class.
  */
-@property (readonly, strong) CALayer *layer;
-
-/**
- * @name Rendering Context
- */
-
-/**
- * The rendering context for the receiver.
- *
- * This is updated when the receiver is added to a <VELView> or <NSVelvetView>.
- * This will be the same object for all views rooted at the same <NSVelvetView>.
- *
- * @warning *Important:* The receiver should not be used from a different <VELContext>.
- */
-@property (readonly, strong) VELContext *context;
+@property (nonatomic, readonly, strong) CALayer *layer;
 @end

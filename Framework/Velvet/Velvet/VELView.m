@@ -78,6 +78,14 @@
     }];
 }
 
+- (VELAutoresizingMask)autoresizingMask {
+    return self.layer.autoresizingMask;
+}
+
+- (void)setAutoresizingMask:(VELAutoresizingMask)autoresizingMask {
+    self.layer.autoresizingMask = autoresizingMask;
+}
+
 - (NSArray *)subviews {
     __block NSArray *subviews = nil;
 
@@ -94,28 +102,10 @@
             [view removeFromSuperview];
         }
 
+        m_subviews = nil;
+
         for (VELView *view in subviews) {
-            [view removeFromSuperview];
-        }
-
-        m_subviews = [subviews copy];
-
-        NSVelvetView *hostView = self.hostView;
-        for (VELView *view in m_subviews) {
-            [view willMoveToHostView:hostView];
-
-            dispatch_sync_recursive(view.context.dispatchQueue, ^{
-                // match the context of this view with 'view'
-                if (!self.context) {
-                    self.context = view.context;
-                } else {
-                    view.context = self.context;
-                }
-            });
-
-            view.superview = self;
-            [self addSubviewToLayer:view];
-            [view didMoveToHostView];
+            [self addSubview:view];
         }
     });
 }
@@ -218,6 +208,15 @@
     return self;
 }
 
+- (id)initWithFrame:(CGRect)frame; {
+    self = [self init];
+    if (!self)
+        return nil;
+
+    self.frame = frame;
+    return self;
+}
+
 #pragma mark Responder
 
 - (VELView *)hitTest:(CGPoint)point; {
@@ -248,6 +247,32 @@
 }
 
 #pragma mark View hierarchy
+
+- (void)addSubview:(VELView *)view; {
+    [view removeFromSuperview];
+
+    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        [view willMoveToHostView:self.hostView];
+
+        dispatch_sync_recursive(view.context.dispatchQueue, ^{
+            // match the context of this view with 'view'
+            if (!self.context) {
+                self.context = view.context;
+            } else {
+                view.context = self.context;
+            }
+        });
+
+        if (!m_subviews)
+            m_subviews = [NSArray arrayWithObject:view];
+        else
+            m_subviews = [m_subviews arrayByAddingObject:view];
+
+        view.superview = self;
+        [self addSubviewToLayer:view];
+        [view didMoveToHostView];
+    });
+}
 
 - (void)addSubviewToLayer:(VELView *)view; {
     [self.layer addSublayer:view.layer];

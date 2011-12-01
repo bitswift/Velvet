@@ -34,6 +34,8 @@
 		D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
+		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
 		D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E642114823DC200E99AA2 /* VELScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D03E642414823DC200E99AA2 /* VELScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E642214823DC200E99AA2 /* VELScrollView.m */; };
 		D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E6426148243E800E99AA2 /* VELViewProtected.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -107,6 +109,8 @@
 		D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "dispatch+SynchronizationAdditions.m"; sourceTree = "<group>"; };
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
+		D0305D781486FC960081D6EA /* VELControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELControl.h; sourceTree = "<group>"; };
+		D0305D791486FC960081D6EA /* VELControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELControl.m; sourceTree = "<group>"; };
 		D03E642114823DC200E99AA2 /* VELScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELScrollView.h; sourceTree = "<group>"; };
 		D03E642214823DC200E99AA2 /* VELScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELScrollView.m; sourceTree = "<group>"; };
 		D03E6426148243E800E99AA2 /* VELViewProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewProtected.h; sourceTree = "<group>"; };
@@ -235,6 +239,8 @@
 			children = (
 				D0150FDA147902AE00126F09 /* VELContext.h */,
 				D0150FDB147902AE00126F09 /* VELContext.m */,
+				D0305D781486FC960081D6EA /* VELControl.h */,
+				D0305D791486FC960081D6EA /* VELControl.m */,
 				D0E8B35214831419003980B4 /* VELImageView.h */,
 				D0E8B35314831419003980B4 /* VELImageView.m */,
 				1E7BBD3E147B157B0010375D /* VELLabel.h */,
@@ -457,6 +463,7 @@
 				D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */,
 				D0E8B35414831419003980B4 /* VELImageView.h in Headers */,
 				D0CE3D461485506B005CAE53 /* VELFocusRingLayer.h in Headers */,
+				D0305D7A1486FC960081D6EA /* VELControl.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,6 +596,7 @@
 				D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */,
 				D0E8B35514831419003980B4 /* VELImageView.m in Sources */,
 				D0CE3D471485506B005CAE53 /* VELFocusRingLayer.m in Sources */,
+				D0305D7B1486FC960081D6EA /* VELControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

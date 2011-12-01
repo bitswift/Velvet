@@ -1,8 +1,8 @@
 //
 //  main.m
-//  AppKitAnimationDemo
+//  TransitionTest
 //
-//  Created by James Lawton on 11/28/11.
+//  Created by Justin Spahr-Summers on 30.11.11.
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 

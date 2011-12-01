@@ -300,6 +300,16 @@ typedef enum {
 - (void)drawRect:(CGRect)rect;
 
 /**
+ * Whether the receiver needs to be redrawn.
+ */
+- (BOOL)needsDisplay;
+
+/**
+ * Marks the receiver as needing to be redrawn.
+ */
+- (void)setNeedsDisplay;
+
+/**
  * @name Event Handling
  */
 

@@ -214,6 +214,14 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 - (void)drawRect:(CGRect)rect; {
 }
 
+- (BOOL)needsDisplay; {
+    return self.layer.needsDisplay;
+}
+
+- (void)setNeedsDisplay; {
+    [self.layer setNeedsDisplay];
+}
+
 #pragma mark View hierarchy
 
 - (void)addSubview:(VELView *)view; {

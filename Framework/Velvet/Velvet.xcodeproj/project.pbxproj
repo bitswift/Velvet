@@ -34,8 +34,6 @@
 		D0150FDC147902AE00126F09 /* VELContext.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FDA147902AE00126F09 /* VELContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0150FDD147902AE00126F09 /* VELContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FDB147902AE00126F09 /* VELContext.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
 		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -113,8 +111,6 @@
 		D0150FDA147902AE00126F09 /* VELContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELContext.h; sourceTree = "<group>"; };
 		D0150FDB147902AE00126F09 /* VELContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELContext.m; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
-		D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "dispatch+SynchronizationAdditions.h"; sourceTree = "<group>"; };
-		D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "dispatch+SynchronizationAdditions.m"; sourceTree = "<group>"; };
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
 		D0305D781486FC960081D6EA /* VELControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELControl.h; sourceTree = "<group>"; };
@@ -220,8 +216,6 @@
 				1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */,
 				1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */,
 				1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */,
-				D0150FF614790C3F00126F09 /* dispatch+SynchronizationAdditions.h */,
-				D0150FF714790C3F00126F09 /* dispatch+SynchronizationAdditions.m */,
 				D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */,
 				D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */,
 				D0911B1B147C93AD00C7DF4E /* NSView+VELGeometryAdditions.h */,
@@ -458,7 +452,6 @@
 				D0D8C39F1478582C00FC9015 /* NSVelvetView.h in Headers */,
 				D0D8C3AA14785A1300FC9015 /* VELView.h in Headers */,
 				D0150FDC147902AE00126F09 /* VELContext.h in Headers */,
-				D0150FF814790C3F00126F09 /* dispatch+SynchronizationAdditions.h in Headers */,
 				D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */,
 				D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */,
 				1E7BBD40147B157C0010375D /* VELLabel.h in Headers */,
@@ -599,7 +592,6 @@
 				D0D8C3A01478582C00FC9015 /* NSVelvetView.m in Sources */,
 				D0D8C3AB14785A1300FC9015 /* VELView.m in Sources */,
 				D0150FDD147902AE00126F09 /* VELContext.m in Sources */,
-				D0150FF914790C3F00126F09 /* dispatch+SynchronizationAdditions.m in Sources */,
 				D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */,
 				1E7BBD41147B157C0010375D /* VELLabel.m in Sources */,
 				0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */,

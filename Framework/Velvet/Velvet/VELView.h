@@ -180,6 +180,15 @@ typedef enum {
 @property (readonly, weak) NSWindow *window;
 
 /**
+ * Adds the given view as a subview of the receiver, on top of the other
+ * subviews.
+ *
+ * @param view The view to add as a subview. This view is removed from its
+ * current superview before being added.
+ */
+- (void)addSubview:(VELView *)view;
+
+/**
  * Returns the closest ancestor that is shared by the receiver and another view,
  * or `nil` if there is no such view.
  *

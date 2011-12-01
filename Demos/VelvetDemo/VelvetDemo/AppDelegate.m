@@ -68,15 +68,12 @@
     [containerView addSubview:backgroundView];
 
 
-    NSButton *scalingView = [[NSButton alloc] init];
+    NSTextField *scalingView = [[NSTextField alloc] init];
     [backgroundView setNSView:scalingView];
-    [scalingView setButtonType:NSMomentaryPushInButton];
-    [scalingView setBezelStyle:NSRoundedBezelStyle];
-    [scalingView setTitle:@"Test Button"];
-    [scalingView setTarget:self];
-    [scalingView setAction:@selector(testButtonPushed:)];
+    [scalingView setBezelStyle:NSTextFieldSquareBezel];
 
-    containerView.layer.transform = CATransform3DScale(containerView.layer.transform, 2.0, 2.0, 2.0);
+    const CGFloat scale = 3.0f;
+    containerView.layer.transform = CATransform3DScale(containerView.layer.transform, scale, scale, scale);
 }
 
 

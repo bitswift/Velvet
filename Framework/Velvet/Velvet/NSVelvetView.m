@@ -248,6 +248,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
             if (sublayer.delegate || sublayer == self.velvetHostView.layer) {
                 // this is ours
                 continue;
+            } else if ([sublayer isKindOfClass:[VELFocusRingLayer class]]) {
+                if ([[(VELFocusRingLayer *)sublayer performSelector:@selector(originalLayer)] superlayer] != self.layer) {
+                    [sublayer removeFromSuperlayer];
+                    [[sublayer performSelector:@selector(hostView)] setFocusRingLayer:nil];
+                }
+
+                continue;
             }
 
             // this is probably a focus ring -- try to find the view that it
@@ -274,6 +281,8 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)attachFocusRingLayerToView:(VELNSView *)hostView replacingLayer:(CALayer *)layer; {
     NSAssert1(hostView.superview, @"%@ should have a superview if its NSView is in the NSVelvetView", hostView);
+
+    [hostView.focusRingLayer removeFromSuperlayer];
 
     VELFocusRingLayer *focusRingLayer = [[VELFocusRingLayer alloc] initWithOriginalLayer:layer hostView:hostView];
     [self.layer addSublayer:focusRingLayer];

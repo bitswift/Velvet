@@ -132,6 +132,15 @@
 @property (readonly, weak) NSWindow *window;
 
 /**
+ * Adds the given view as a subview of the receiver, on top of the other
+ * subviews.
+ *
+ * @param view The view to add as a subview. This view is removed from its
+ * current superview before being added.
+ */
+- (void)addSubview:(VELView *)view;
+
+/**
  * Returns the closest ancestor that is shared by the receiver and another view,
  * or `nil` if there is no such view.
  *
@@ -172,17 +181,6 @@
  * The default implementation of this method does nothing.
  */
 - (void)layoutSubviews;
-
-/**
- * Inserts a subview at the specified index.
- *
- * @param view The view to insert. This value cannot be nil.
- *
- * @param index The index in the array of the subviews property at which to insert
- * the subview. Subview indices start at zero and cannot be greater than the number
- * of subviews.
- */
-- (void)insertSubview:(VELView *)view atIndex:(NSUInteger)index;
 
 /**
  * Adds a view to the end of the receiver's subviews list.

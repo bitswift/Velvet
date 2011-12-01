@@ -93,28 +93,10 @@
             [view removeFromSuperview];
         }
 
+        m_subviews = nil;
+
         for (VELView *view in subviews) {
-            [view removeFromSuperview];
-        }
-
-        m_subviews = [subviews copy];
-
-        NSVelvetView *hostView = self.hostView;
-        for (VELView *view in m_subviews) {
-            [view willMoveToHostView:hostView];
-
-            // match the context of this view with 'view'
-            if (!view.context) {
-                view.context = self.context;
-            } else if (!self.context) {
-                self.context = view.context;
-            } else {
-                NSAssert([view.context isEqual:self.context], @"VELContext of a new subview should match that of its superview");
-            }
-
-            view.superview = self;
-            [self addSubviewToLayer:view];
-            [view didMoveToHostView];
+            [self addSubview:view];
         }
     });
 }
@@ -235,17 +217,30 @@
 
 #pragma mark View hierarchy
 
-- (void)insertSubview:(VELView *)view atIndex:(NSUInteger)index
-{
-    NSMutableArray *subviews = [self.subviews mutableCopy];
-    if (!subviews)
-        subviews = [NSMutableArray array];
-    [subviews insertObject:view atIndex:index];
-    self.subviews = subviews;
-}
+- (void)addSubview:(VELView *)view; {
+    [view removeFromSuperview];
 
-- (void)addSubview:(VELView *)view {
-    [self insertSubview:view atIndex:[self.subviews count]];
+    dispatch_sync_recursive(self.context.dispatchQueue, ^{
+        [view willMoveToHostView:self.hostView];
+
+        // match the context of this view with 'view'
+        if (!view.context) {
+            view.context = self.context;
+        } else if (!self.context) {
+            self.context = view.context;
+        } else {
+            NSAssert([view.context isEqual:self.context], @"VELContext of a new subview should match that of its superview");
+        }
+
+        if (!m_subviews)
+            m_subviews = [NSArray arrayWithObject:view];
+        else
+            m_subviews = [m_subviews arrayByAddingObject:view];
+
+        view.superview = self;
+        [self addSubviewToLayer:view];
+        [view didMoveToHostView];
+    });
 }
 
 - (void)addSubviewToLayer:(VELView *)view; {

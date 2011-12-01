@@ -28,43 +28,4 @@
     CGContextFillRect(context, self.bounds);
 }
 
-- (void)mouseDown:(NSEvent *)theEvent {
-    NSLog(@"mouseDown!");
-}
-
-- (void)mouseUp:(NSEvent *)theEvent {
-    NSLog(@"mouseUp!");
-}
-
-- (void)rightMouseDown:(NSEvent *)theEvent {
-    NSLog(@"rightMouseDown!");
-
-}
-
-- (void)rightMouseUp:(NSEvent *)theEvent {
-    NSLog(@"rightMouseUp!");
-
-}
-//- (void)mouseMoved:(NSEvent *)theEvent {
-//    NSLog(@"mouseMoved!");
-//}
-
-- (void)mouseDragged:(NSEvent *)theEvent {
-    NSLog(@"mouseDragged!");
-
-}
-- (void)rightMouseDragged:(NSEvent *)theEvent {
-    NSLog(@"rightMouseDragged!");
-
-}
-- (void)mouseEntered:(NSEvent *)theEvent {
-    NSLog(@"mouseEntered!");
-
-}
-- (void)mouseExited:(NSEvent *)theEvent {
-    NSLog(@"mouseExited!");
-
-}
-
-
 @end

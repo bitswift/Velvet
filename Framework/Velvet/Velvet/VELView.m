@@ -187,28 +187,6 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     return self;
 }
 
-#pragma mark Responder
-
-- (VELView *)hitTest:(CGPoint)point; {
-    if (!CGRectContainsPoint(self.bounds, point))
-        return nil;
-
-    __block VELView *result = self;
-
-    // subviews are ordered back-to-front, but we should test for hits in the
-    // opposite order
-    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView *view, NSUInteger index, BOOL *stop){
-        CGPoint subviewPoint = [view convertPoint:point fromView:self];
-        VELView *hitView = [view hitTest:subviewPoint];
-        if (hitView) {
-            result = hitView;
-            *stop = YES;
-        }
-    }];
-
-    return result;
-}
-
 #pragma mark Rendering
 
 - (void)drawRect:(CGRect)rect; {

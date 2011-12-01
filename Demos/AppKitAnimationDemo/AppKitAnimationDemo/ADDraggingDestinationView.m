@@ -3,7 +3,7 @@
 //  AppKitAnimationDemo
 //
 //  Created by Josh Vera on 11/29/11.
-//  Copyright (c) 2011 Übermind, Inc. All rights reserved.
+//  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
 #import "ADDraggingDestinationView.h"

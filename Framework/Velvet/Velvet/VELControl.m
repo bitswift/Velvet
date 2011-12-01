@@ -94,4 +94,14 @@ typedef void (^VELControlActionBlock)(void);
     }
 }
 
+#pragma mark Event Handling
+
+- (BOOL)acceptsFirstResponder {
+    return YES;
+}
+
+- (void)mouseUp:(NSEvent *)theEvent {
+    [self sendActionsForControlEvents:VELControlEventClicked];
+}
+
 @end

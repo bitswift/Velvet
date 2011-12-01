@@ -223,20 +223,6 @@
 - (void)drawRect:(CGRect)rect;
 
 /**
- * @name Event Handling
- */
-
-/**
- * Returns the farthest descendant of the receiver in the view hierarchy (including itself)
- * that contains a given point.
- *
- * Returns `nil` if `point` lies completely outside the receiver.
- *
- * @param point A point specified in the coordinate system of the receiver.
- */
-- (VELView *)hitTest:(CGPoint)point;
-
-/**
  * @name Core Animation Layer
  */
 

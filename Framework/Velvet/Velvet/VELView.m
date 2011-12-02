@@ -377,6 +377,16 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     return self.bounds.size;
 }
 
+- (void)sizeToFit; {
+    [CATransaction performWithDisabledActions:^{
+        CGPoint center = self.center;
+        CGSize size = [self sizeThatFits:CGSizeZero];
+
+        self.bounds = CGRectMake(0, 0, size.width, size.height);
+        self.center = center;
+    }];
+}
+
 #pragma mark Animations
 
 + (void)animate:(void (^)(void))animations; {

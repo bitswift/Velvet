@@ -124,8 +124,11 @@
         self.editorView.autoresizingMask = VELAutoresizingFlexibleWidth | VELAutoresizingFlexibleHeight; 
 
         VELWindow *window = (id)[[self.windowControllers objectAtIndex:0] window];
-        [window.rootView addSubview:self.editorView];
-        [window.rootView addSubview:self.navBar];
+
+        NSMutableArray *subviews = [[window.rootView subviews] mutableCopy];
+        NSUInteger index = [subviews indexOfObjectIdenticalTo:self.treeView];
+        [subviews insertObject:self.editorView atIndex:index];
+        window.rootView.subviews = subviews;
     }
 
     [VELView

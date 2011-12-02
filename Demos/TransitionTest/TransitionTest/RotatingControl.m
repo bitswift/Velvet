@@ -31,7 +31,7 @@
     m_iconImageView.layer.backgroundColor = backgroundColor;
     CGColorRelease(backgroundColor);
 
-    self.upward = YES;
+    self.upward = NO;
     return self;
 }
 
@@ -45,9 +45,6 @@
 }
 
 - (void)setUpward:(BOOL)value animated:(BOOL)animated; {
-    if (m_upward == value)
-        return;
-
     CGFloat rads = M_PI;
     if (self.upward)
         rads *= 2;

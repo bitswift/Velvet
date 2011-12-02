@@ -61,7 +61,9 @@
 
     VELNSView *backgroundView = [[VELNSView alloc] init];
     backgroundView.frame = CGRectMake(5,5, 50,50);
-    backgroundView.layer.backgroundColor = CGColorCreateGenericRGB(1.0, 0.0, 0.0, 1.0);
+    CGColorRef redColor = CGColorCreateGenericRGB(1.0, 0.0, 0.0, 1.0);
+    backgroundView.layer.backgroundColor = redColor;
+    CGColorRelease(redColor);
 
 
     [self.hostView.rootView addSubview:containerView];
@@ -72,8 +74,18 @@
     [backgroundView setNSView:scalingView];
     [scalingView setBezelStyle:NSTextFieldSquareBezel];
 
-    const CGFloat scale = 3.0f;
-    containerView.layer.transform = CATransform3DScale(containerView.layer.transform, scale, scale, scale);
+    
+    int64_t delayInSeconds = (int64_t)2.0;
+
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [CATransaction begin];
+        [CATransaction setAnimationDuration:2.0];
+        [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+        const CGFloat scale = 3.0f;
+        containerView.layer.transform = CATransform3DScale(containerView.layer.transform, scale, scale, scale);
+        [CATransaction commit];
+    });
 }
 
 

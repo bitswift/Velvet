@@ -9,6 +9,8 @@
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELNSViewPrivate.h>
+#import <Velvet/VELFocusRingLayer.h>
+#import <Velvet/CATransaction+BlockAdditions.h>
 #import <objc/runtime.h>
 
 
@@ -29,6 +31,7 @@
  * geometry property.
  */
 + (BOOL)interceptsGeometryActionForKey:(NSString *)key;
+
 @end
 
 
@@ -75,6 +78,12 @@
     // hierarchy we're animating.
     NSMutableArray *cachedViews = [NSMutableArray array];
     [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
+        if (view.focusRingLayer) {
+            [CATransaction performWithDisabledActions:^{
+                view.focusRingLayer.opacity = 0.0f;
+            }];
+        }
+        
         view.rendersContainedView = YES;
         view.NSView.alphaValue = 0.0;
         [cachedViews addObject:view];
@@ -91,6 +100,8 @@
             [view synchronizeNSViewGeometry];
 
             view.NSView.alphaValue = 1.0;
+
+            view.focusRingLayer.opacity = 1.0f;
         }];
     };
 
@@ -100,7 +111,7 @@
 }
 
 + (BOOL)interceptsGeometryActionForKey:(NSString *)key {
-    return [key isEqualToString:@"position"] || [key isEqualToString:@"bounds"];
+    return [key isEqualToString:@"position"] || [key isEqualToString:@"bounds"] || [key isEqualToString:@"transform"];
 }
 
 + (BOOL)interceptsActionForKey:(NSString *)key {

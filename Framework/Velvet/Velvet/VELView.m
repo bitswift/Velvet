@@ -224,17 +224,19 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 #pragma mark View hierarchy
 
 - (void)addSubview:(VELView *)view; {
-    [view removeFromSuperview];
-    [view willMoveToHostView:self.hostView];
+    [CATransaction performWithDisabledActions:^{
+        [view removeFromSuperview];
+        [view willMoveToHostView:self.hostView];
 
-    if (!m_subviews)
-        m_subviews = [NSArray arrayWithObject:view];
-    else
-        m_subviews = [m_subviews arrayByAddingObject:view];
+        if (!m_subviews)
+            m_subviews = [NSArray arrayWithObject:view];
+        else
+            m_subviews = [m_subviews arrayByAddingObject:view];
 
-    view.superview = self;
-    [self addSubviewToLayer:view];
-    [view didMoveToHostView];
+        view.superview = self;
+        [self addSubviewToLayer:view];
+        [view didMoveToHostView];
+    }];
 }
 
 - (void)addSubviewToLayer:(VELView *)view; {
@@ -289,12 +291,14 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 }
 
 - (void)removeFromSuperview; {
-    [self willMoveToHostView:nil];
+    [CATransaction performWithDisabledActions:^{
+        [self willMoveToHostView:nil];
 
-    [self.layer removeFromSuperlayer];
-    self.superview = nil;
+        [self.layer removeFromSuperlayer];
+        self.superview = nil;
 
-    [self didMoveToHostView];
+        [self didMoveToHostView];
+    }];
 }
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView; {

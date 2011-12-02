@@ -76,7 +76,8 @@
     [VELView
         animateWithDuration:0.45f
         animations:^{
-            self.tempScreen.center = window.rootView.center;
+            NSRect newRect = NSMakeRect((self.treeView.frame.size.width - 320.0f) / 2.0f, (self.treeView.frame.size.height - 480.f) / 2.0f, 320.0f, 480.f);
+            self.tempScreen.frame = newRect;
         }
 
         completion:^{

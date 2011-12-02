@@ -7,11 +7,11 @@
 //
 
 #import <Velvet/VELView.h>
+#import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELScrollView.h>
@@ -384,6 +384,8 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 }
 
 + (void)animate:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
+    [CATransaction flush];
+
     [CATransaction begin];
     [CATransaction setDisableActions:NO];
     [CATransaction setCompletionBlock:completionBlock];
@@ -400,6 +402,8 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 }
 
 + (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
+    [CATransaction flush];
+
     [CATransaction begin];
     [CATransaction setAnimationDuration:duration];
     [CATransaction setDisableActions:NO];
@@ -477,6 +481,9 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 }
 
 - (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key {
+    if (![VELCAAction interceptsActionForKey:key])
+        return nil;
+
     // If we're being called inside the [layer actionForKey:key] call below,
     // retun nil, so that method will return the default action.
     if (self.recursingActionForLayer)
@@ -486,11 +493,7 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     id<CAAction> innerAction = [layer actionForKey:key];
     self.recursingActionForLayer = NO;
 
-    if ([VELCAAction interceptsActionForKey:key]) {
-        return [VELCAAction actionWithAction:innerAction];
-    } else {
-        return innerAction;
-    }
+    return [VELCAAction actionWithAction:innerAction];
 }
 
 - (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {

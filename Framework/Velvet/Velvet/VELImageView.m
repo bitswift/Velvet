@@ -31,6 +31,16 @@
     return self;
 }
 
+#pragma mark Layout
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    CGImageRef image = self.image;
+    if (!image)
+        return CGSizeZero;
+
+    return CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
+}
+
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {

@@ -7,31 +7,17 @@
 //
 
 #import <Velvet/VELLabel.h>
-#import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <ApplicationServices/ApplicationServices.h>
-#import <Velvet/VELContext.h>
 
 @implementation VELLabel
 
 #pragma mark Properties
 
-@synthesize text = m_text;
+@synthesize formattedText = m_formattedText;
 
-- (NSAttributedString *)text {
-    __block NSAttributedString *str = nil;
-
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        str = [m_text copy];
-    });
-
-    return str;
-}
-
-- (void)setText:(NSAttributedString *)str {
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        m_text = [str copy];
-        [self.layer setNeedsDisplay];
-    });
+- (void)setFormattedText:(NSAttributedString *)str {
+    m_formattedText = [str copy];
+    [self.layer setNeedsDisplay];
 }
 
 #pragma mark Drawing
@@ -45,7 +31,7 @@
 
     CGPathAddRect(path, NULL, self.bounds);
 
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.text);
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.formattedText);
 
     CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
     CTFrameDraw(frame, context);

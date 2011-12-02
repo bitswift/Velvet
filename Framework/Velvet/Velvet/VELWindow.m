@@ -61,6 +61,28 @@
 
 @implementation VELWindow
 
+#pragma mark Properties
+
+- (VELView *)rootView; {
+    NSVelvetView *contentView = self.contentView;
+    NSAssert([contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
+
+    return contentView.rootView;
+}
+
+#pragma mark Lifecycle
+
+- (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)windowStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)deferCreation screen:(NSScreen *)screen {
+    self = [super initWithContentRect:contentRect styleMask:windowStyle backing:bufferingType defer:deferCreation screen:screen];
+    if (!self)
+        return nil;
+
+    self.contentView = [[NSVelvetView alloc] init];
+    return self;
+}
+
+#pragma mark Event handling
+
 - (void)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder; {
     switch ([event type]) {
         case NSLeftMouseDown:
@@ -166,10 +188,10 @@
 - (id)bridgedHitTest:(CGPoint)windowPoint; {
     NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
 
-    id velvetView = [(id)self.contentView rootView];
+    id velvetView = self.rootView;
     while (YES) {
         if ([velvetView isKindOfClass:[VELNSView class]]) {
-            NSView *nsView = [velvetView NSView];
+            NSView *nsView = [(id)velvetView NSView];
 
             NSPoint viewPoint = NSPointFromCGPoint([[nsView superview] convertFromWindowPoint:windowPoint]);
             id testView = [nsView hitTest:viewPoint];
@@ -183,9 +205,19 @@
 
             NSVelvetView *hostView = testView;
             velvetView = hostView.rootView;
+
+            if (![velvetView isUserInteractionEnabled]) {
+                return hostView;
+            }
         } else {
             CGPoint viewPoint = [velvetView convertFromWindowPoint:windowPoint];
             id testView = [velvetView descendantViewAtPoint:viewPoint];
+
+            if ([testView isKindOfClass:[VELView class]]) {
+                while (testView && ![testView isUserInteractionEnabled]) {
+                    testView = [testView superview];
+                }
+            }
 
             if (![testView isKindOfClass:[VELNSView class]]) {
                 if (testView)
@@ -200,6 +232,8 @@
 }
 
 - (void)sendHitTestedEvent:(NSEvent *)event {
+    NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
+
     NSVelvetView *contentView = (id)self.contentView;
     CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
     id hitView = [self bridgedHitTest:windowPoint];

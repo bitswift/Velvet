@@ -13,8 +13,8 @@
 #import <Velvet/VELView.h>
 
 @interface VELFocusRingLayer ()
-@property (nonatomic, weak) CALayer *originalLayer;
-@property (nonatomic, weak) VELView *hostView;
+@property (nonatomic, weak, readonly) CALayer *originalLayer;
+@property (nonatomic, weak, readonly) VELView *hostView;
 @end
 
 @implementation VELFocusRingLayer
@@ -35,9 +35,9 @@
     if (!self)
         return nil;
 
-    self.originalLayer = layer;
-    self.originalLayer.hidden = YES;
-    self.hostView = hostView;
+    m_originalLayer = layer;
+    m_originalLayer.hidden = YES;
+    m_hostView = hostView;
 
     [self setNeedsDisplay];
     return self;

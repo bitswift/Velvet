@@ -11,10 +11,15 @@
 
 @safecategory (CATransaction, BlockAdditions)
 + (void)performWithDisabledActions:(void(^)(void))block {
-    [self begin];
-    [self setDisableActions:YES];
-    block();
-    [self commit];
+    if ([self disableActions]) {
+        // actions are already disabled
+        block();
+    } else {
+        [self begin];
+        [self setDisableActions:YES];
+        block();
+        [self commit];
+    }
 }
 
 @end

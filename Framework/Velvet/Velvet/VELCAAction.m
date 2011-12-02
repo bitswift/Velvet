@@ -17,7 +17,7 @@
  * The action that this action is proxying, as specified at the time of
  * initialization.
  */
-@property (nonatomic, strong) id<CAAction> innerAction;
+@property (nonatomic, strong, readonly) id <CAAction> innerAction;
 
 /*
  * Invoked whenever the geometry property `key` of `layer` has changed.
@@ -37,10 +37,10 @@
 
 - (id)initWithAction:(id<CAAction>)innerAction {
     self = [super init];
-    if (self) {
-        self.innerAction = innerAction;
-    }
+    if (!self)
+        return nil;
 
+    m_innerAction = innerAction;
     return self;
 }
 

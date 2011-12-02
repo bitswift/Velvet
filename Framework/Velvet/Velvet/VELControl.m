@@ -65,7 +65,7 @@ typedef void (^VELControlActionBlock)(void);
             return;
         }
 
-        [self.actions enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id action, NSNumber *actionEvents, BOOL *stop){
+        [[self.actions copy] enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id action, NSNumber *actionEvents, BOOL *stop){
             VELControlEventMask newMask = [actionEvents unsignedIntegerValue] & (~eventMask);
             [self.actions setObject:[NSNumber numberWithUnsignedInteger:newMask] forKey:action];
         }];
@@ -73,7 +73,8 @@ typedef void (^VELControlActionBlock)(void);
 }
 
 - (void)sendActionsForControlEvents:(VELControlEventMask)eventMask; {
-    for (VELControlActionBlock action in self.actions) {
+    // copy actions in case any handler wants to remove it
+    for (VELControlActionBlock action in [self.actions copy]) {
         NSNumber *actionEvents = [self.actions objectForKey:action];
         if ([actionEvents unsignedIntegerValue] & eventMask) {
             action();

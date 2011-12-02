@@ -65,7 +65,7 @@ typedef void (^VELControlActionBlock)(void);
             return;
         }
 
-        [[self.actions copy] enumerateKeysAndObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id action, NSNumber *actionEvents, BOOL *stop){
+        [[self.actions copy] enumerateKeysAndObjectsUsingBlock:^(id action, NSNumber *actionEvents, BOOL *stop){
             VELControlEventMask newMask = [actionEvents unsignedIntegerValue] & (~eventMask);
             [self.actions setObject:[NSNumber numberWithUnsignedInteger:newMask] forKey:action];
         }];
@@ -89,6 +89,10 @@ typedef void (^VELControlActionBlock)(void);
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {
+    CGPoint point = [self convertFromWindowPoint:[theEvent locationInWindow]];
+    if (!CGRectContainsPoint(self.bounds, point))
+        return;
+
     [self sendActionsForControlEvents:VELControlEventClicked];
 }
 

@@ -26,6 +26,8 @@
  * Returns an `NSColor` corresponding to the given `CGColor`.
  *
  * @param color The `CGColor` to convert to an `NSColor`.
+ *
+ * @warning *Important:* This will not correctly handle pattern colors.
  */
 + (NSColor *)colorWithCGColor:(CGColorRef)color;
 @end

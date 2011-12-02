@@ -13,10 +13,10 @@
 
 #pragma mark Properties
 
-@synthesize text = m_text;
+@synthesize formattedText = m_formattedText;
 
-- (void)setText:(NSAttributedString *)str {
-    m_text = [str copy];
+- (void)setFormattedText:(NSAttributedString *)str {
+    m_formattedText = [str copy];
     [self.layer setNeedsDisplay];
 }
 
@@ -31,7 +31,7 @@
 
     CGPathAddRect(path, NULL, self.bounds);
 
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.text);
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.formattedText);
 
     CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
     CTFrameDraw(frame, context);

@@ -190,7 +190,7 @@
     NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
 
     id view = self.NSView;
-    __block NSSize cellSize = NSMakeSize(10000, 10000);
+    NSSize cellSize = NSMakeSize(10000, 10000);
 
     NSCell *cell = nil;
 

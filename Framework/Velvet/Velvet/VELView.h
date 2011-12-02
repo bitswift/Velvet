@@ -275,14 +275,14 @@ typedef enum {
 - (CGSize)sizeThatFits:(CGSize)constraint;
 
 /**
- * Expands the receiver's <bounds> to its preferred size, as defined by
- * <sizeThatFits:>.
+ * Expands or shrinks the receiver's <bounds> to its preferred size, as defined
+ * by <sizeThatFits:>.
  *
- * The receiver is expanded outward from its <center>.
+ * The receiver is sized around its <center>.
  *
  * You should not override this method. Implement <sizeThatFits:> instead.
  */
-- (void)sizeToFit;
+- (void)centeredSizeToFit;
 
 /**
  * @name Drawing

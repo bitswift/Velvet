@@ -23,7 +23,7 @@
 
     self.deviceFrame = [[VELImageView alloc] init];
     self.deviceFrame.image = [[NSImage imageNamed:@"device.png"] CGImage];
-    [self.deviceFrame sizeToFit];
+    [self.deviceFrame centeredSizeToFit];
 
     self.deviceFrame.alpha = 0;
     [self addSubview:self.deviceFrame];

@@ -124,6 +124,7 @@
 
         VELWindow *window = (id)[[self.windowControllers objectAtIndex:0] window];
         [window.rootView addSubview:self.editorView];
+        [window.rootView addSubview:self.navBar];
     }
 
     [VELView

@@ -46,7 +46,7 @@
 
 - (void)setUpward:(BOOL)value animated:(BOOL)animated; {
     CGFloat rads = M_PI;
-    if (self.upward)
+    if (value)
         rads *= 2;
 
     void (^changes)(void) = ^{

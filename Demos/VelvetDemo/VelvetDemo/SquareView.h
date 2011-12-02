@@ -11,5 +11,5 @@
 /**
  * Draws a square.
  */
-@interface SquareView : VELView
+@interface SquareView : VELControl
 @end

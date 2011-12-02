@@ -21,5 +21,5 @@
  * The text to display in the receiver, formatted with any desired CoreText
  * attributes.
  */
-@property (copy) NSAttributedString *text;
+@property (nonatomic, copy) NSAttributedString *text;
 @end

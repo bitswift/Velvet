@@ -9,8 +9,48 @@
 #import <AppKit/AppKit.h>
 #import <Velvet/VELBridgedView.h>
 
-@class VELContext;
 @class NSVelvetView;
+
+/**
+ * Defines how a <VELView> automatically resizes. These flags can be bitwise
+ * ORed together to combine behaviors.
+ */
+typedef enum {
+    /**
+     * The view does not automatically resize.
+     */
+    VELAutoresizingNone = kCALayerNotSizable,
+
+    /**
+     * The left margin between the view and its superview is flexible.
+     */
+    VELAutoresizingFlexibleLeftMargin = kCALayerMinXMargin,
+
+    /**
+     * The view's width is flexible.
+     */
+    VELAutoresizingFlexibleWidth = kCALayerWidthSizable,
+
+    /**
+     * The right margin between the view and its superview is flexible.
+     */
+    VELAutoresizingFlexibleRightMargin = kCALayerMaxXMargin,
+
+    /**
+     * The top margin between the view and its superview is flexible.
+     */
+    VELAutoresizingFlexibleTopMargin = kCALayerMaxYMargin,
+
+    /**
+     * The view's height is flexible.
+     */
+    VELAutoresizingFlexibleHeight = kCALayerHeightSizable,
+
+    /**
+     * The bottom margin between the view and its superview is flexible.
+     */
+    VELAutoresizingFlexibleBottomMargin = kCALayerMinYMargin
+} VELAutoresizingMask;
 
 /**
  * A layer-backed view. A view hierarchy built using this class must ultimately
@@ -35,23 +75,42 @@
 - (id)init;
 
 /**
+ * Initializes the receiver, setting its initial frame.
+ *
+ * @param frame The initial frame for the receiver.
+ */
+- (id)initWithFrame:(CGRect)frame;
+
+/**
  * @name Geometry
  */
 
 /**
  * The frame of this view, in its superview's coordinate system.
  */
-@property (assign) CGRect frame;
+@property (nonatomic, assign) CGRect frame;
 
 /**
  * The drawing region of this view, relative to its <frame>.
  */
-@property (assign) CGRect bounds;
+@property (nonatomic, assign) CGRect bounds;
 
 /**
  * The center of this view, in its superview's coordinate system.
  */
-@property (assign) CGPoint center;
+@property (nonatomic, assign) CGPoint center;
+
+/**
+ * A transform applied to the receiver, relative to the center of its <bounds>.
+ *
+ * This will get and set the underlying `CATransform3D` of the receiver's
+ * <layer>.
+ *
+ * @warning *Important:* When reading the property, if the layer has an existing
+ * 3D transform that cannot be represented as an affine transform,
+ * `CGAffineTransformIdentity` is returned.
+ */
+@property (nonatomic, assign) CGAffineTransform transform;
 
 /**
  * Transforms a point from the coordinate system of another view to that of the
@@ -110,7 +169,7 @@
  * This array can be replaced to completely change the subviews displayed by the
  * receiver.
  */
-@property (copy) NSArray *subviews;
+@property (nonatomic, copy) NSArray *subviews;
 
 /**
  * The immediate superview of the receiver, or `nil` if the receiver is a root
@@ -119,17 +178,17 @@
  * To obtain the <NSVelvetView> that the receiver is hosted in, you must use
  * <hostView> instead.
  */
-@property (readonly, weak) VELView *superview;
+@property (nonatomic, readonly, weak) VELView *superview;
 
 /**
  * The <NSVelvetView> that is hosting the furthest ancestor of the receiver.
  */
-@property (readonly, weak) NSVelvetView *hostView;
+@property (nonatomic, readonly, weak) NSVelvetView *hostView;
 
 /**
  * The window in which the receiver is displayed.
  */
-@property (readonly, weak) NSWindow *window;
+@property (nonatomic, readonly, weak) NSWindow *window;
 
 /**
  * Adds the given view as a subview of the receiver, on top of the other
@@ -176,6 +235,12 @@
  */
 
 /**
+ * Defines how the view should be resized when the bounds of its <superview>
+ * changes.
+ */
+@property (nonatomic, assign) VELAutoresizingMask autoresizingMask;
+
+/**
  * Lays out subviews.
  *
  * The default implementation of this method does nothing.
@@ -183,12 +248,14 @@
 - (void)layoutSubviews;
 
 /**
- * Adds a view to the end of the receiver's subviews list.
- *
- * @param view The view to be added. The view is retained be the receiver. After
- * being added, this view appears on top of any other subviews.
+ * Whether the receiver is waiting to lay out its subviews.
  */
-- (void)addSubview:(VELView *)view;
+- (BOOL)needsLayout;
+
+/**
+ * Marks the receiver as needing layout.
+ */
+- (void)setNeedsLayout;
 
 /**
  * Calculates and returns the preferred size of the receiver that fits within
@@ -208,12 +275,32 @@
 - (CGSize)sizeThatFits:(CGSize)constraint;
 
 /**
+ * Expands the receiver's <bounds> to its preferred size, as defined by
+ * <sizeThatFits:>.
+ *
+ * The receiver is expanded outward from its <center>.
+ *
+ * You should not override this method. Implement <sizeThatFits:> instead.
+ */
+- (void)sizeToFit;
+
+/**
  * @name Drawing
  */
 
 /**
+ * The opacity of the receiver.
+ */
+@property (nonatomic, assign) CGFloat alpha;
+
+/**
+ * Whether the receiver is hidden.
+ */
+@property (nonatomic, assign, getter = isHidden) BOOL hidden;
+
+/**
  * If the view's appearance is not provided by its layer, this method should
- * draw the view into the current graphics context.
+ * draw the view into the current `NSGraphicsContext`.
  *
  * The default implementation of this method does nothing.
  *
@@ -221,6 +308,80 @@
  * the receiver's coordinate system.
  */
 - (void)drawRect:(CGRect)rect;
+
+/**
+ * Whether the receiver needs to be redrawn.
+ */
+- (BOOL)needsDisplay;
+
+/**
+ * Marks the receiver as needing to be redrawn.
+ */
+- (void)setNeedsDisplay;
+
+/**
+ * @name Event Handling
+ */
+
+/**
+ * Whether user interaction is enabled for the receiver.
+ *
+ * If user interaction is not enabled, `NSResponder` messages are not sent to
+ * the receiver, and event handling behaves as if the view is not there.
+ *
+ * The default is `YES`. Subclasses may initialize this to a different value.
+ */
+@property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
+
+/**
+ * @name Animations
+ */
+
+/**
+ * Animates changes to one or more views using the default duration.
+ *
+ * @param animations A block containing the changes to make that should be
+ * animated.
+ */
++ (void)animate:(void (^)(void))animations;
+
+/**
+ * Animates changes to one or more views using the default duration.
+ *
+ * @param animations A block containing the changes to make that should be
+ * animated.
+ * @param completionBlock A block to execute when the effect of the animation
+ * completes.
+ */
++ (void)animate:(void (^)(void))animations completion:(void (^)(void))completionBlock;
+
+/**
+ * Animates changes to one or more views with a custom duration.
+ *
+ * @param duration The length of the animation.
+ * @param animations A block containing the changes to make that should be
+ * animated.
+ */
++ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations;
+
+/**
+ * Animates changes to one or more views with a custom duration.
+ *
+ * @param duration The length of the animation.
+ * @param animations A block containing the changes to make that should be
+ * animated.
+ * @param completionBlock A block to execute when the effect of the animation
+ * completes.
+ */
++ (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(void))completionBlock;
+
+/**
+ * Whether changes are currently being added to an animation.
+ *
+ * This is not whether an animation is currently in progress, but whether the
+ * calling code is running from an animation block.
+ */
++ (BOOL)isAnimating;
 
 /**
  * @name Core Animation Layer
@@ -235,19 +396,5 @@
  * The layer backing this view. This will be an instance of the <layerClass>
  * specified by the receiver's class.
  */
-@property (readonly, strong) CALayer *layer;
-
-/**
- * @name Rendering Context
- */
-
-/**
- * The rendering context for the receiver.
- *
- * This is set when the receiver is added to a <VELView> or <NSVelvetView>. This
- * will be the same object for all views rooted at the same <NSVelvetView>.
- *
- * @warning *Important:* The receiver should not be used from a different <VELContext>.
- */
-@property (readonly, strong) VELContext *context;
+@property (nonatomic, readonly, strong) CALayer *layer;
 @end

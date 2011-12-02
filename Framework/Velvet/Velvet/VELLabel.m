@@ -7,9 +7,7 @@
 //
 
 #import <Velvet/VELLabel.h>
-#import <Velvet/dispatch+SynchronizationAdditions.h>
 #import <ApplicationServices/ApplicationServices.h>
-#import <Velvet/VELContext.h>
 
 @implementation VELLabel
 
@@ -17,21 +15,9 @@
 
 @synthesize text = m_text;
 
-- (NSAttributedString *)text {
-    __block NSAttributedString *str = nil;
-
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        str = [m_text copy];
-    });
-
-    return str;
-}
-
 - (void)setText:(NSAttributedString *)str {
-    dispatch_sync_recursive(self.context.dispatchQueue, ^{
-        m_text = [str copy];
-        [self.layer setNeedsDisplay];
-    });
+    m_text = [str copy];
+    [self.layer setNeedsDisplay];
 }
 
 #pragma mark Drawing

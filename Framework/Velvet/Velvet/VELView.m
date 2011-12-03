@@ -17,6 +17,7 @@
 #import <Velvet/VELScrollView.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
+#import <objc/runtime.h>
 #import "EXTScope.h"
 
 /*
@@ -26,6 +27,14 @@
  * nested animations are being defined.
  */
 static NSUInteger VELViewAnimationBlockDepth = 0;
+
+/*
+ * The function pointer to <VELView>'s implementation of <drawRect:>.
+ *
+ * This is compared against the pointers of any subclasses to determine whether
+ * they provide their own implementation of the method.
+ */
+static IMP VELViewDrawRectIMP = NULL;
 
 @interface VELView () {
     struct {
@@ -44,6 +53,15 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
  * without entering an infinite loop.
  */
 @property (nonatomic, assign, getter = isRecursingActionForLayer) BOOL recursingActionForLayer;
+
+/*
+ * Whether this view class does its own drawing, as determined by the
+ * implementation of a <drawRect:> method.
+ *
+ * If this is `YES`, a bitmap context is automatically created for drawing, and
+ * the results of any drawing are cached in its layer.
+ */
++ (BOOL)doesCustomDrawing;
 @end
 
 @implementation VELView
@@ -185,6 +203,10 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     return self.hostView.window;
 }
 
++ (BOOL)doesCustomDrawing {
+    return VELViewDrawRectIMP != class_getMethodImplementation(self, @selector(drawRect:));
+}
+
 #pragma mark Layer handling
 
 + (Class)layerClass; {
@@ -192,6 +214,15 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 }
 
 #pragma mark Lifecycle
+
++ (void)initialize {
+    if (self != [VELView class])
+        return;
+
+    // save our -drawRect: implementation pointer so we can differentiate ours
+    // from that of any subclasses
+    VELViewDrawRectIMP = class_getMethodImplementation(self, @selector(drawRect:));
+}
 
 - (id)init; {
     self = [super init];
@@ -457,6 +488,9 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {
+    if (![[self class] doesCustomDrawing])
+        return;
+
     CGRect bounds = self.bounds;
     if (CGRectIsEmpty(bounds) || CGRectIsNull(bounds)) {
         // can't do anything
@@ -477,7 +511,7 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 }
 
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
-    if (!context)
+    if (!context || ![[self class] doesCustomDrawing])
         return;
 
     CGRect bounds = self.bounds;

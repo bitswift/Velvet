@@ -487,7 +487,15 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     CGContextClipToRect(context, bounds);
 
     // enable sub-pixel antialiasing (if drawing onto anything opaque)
+    CGContextSetAllowsAntialiasing(context, YES);
+    CGContextSetAllowsFontSmoothing(context, YES);
+    CGContextSetAllowsFontSubpixelPositioning(context, YES);
+    CGContextSetAllowsFontSubpixelQuantization(context, YES);
+
+    CGContextSetShouldAntialias(context, YES);
     CGContextSetShouldSmoothFonts(context, YES);
+    CGContextSetShouldSubpixelPositionFonts(context, YES);
+    CGContextSetShouldSubpixelQuantizeFonts(context, YES);
 
     NSGraphicsContext *previousGraphicsContext = [NSGraphicsContext currentContext];
 

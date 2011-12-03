@@ -32,6 +32,8 @@
 		1A0D065F1484599B007558AE /* ADAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADAppDelegate.m; sourceTree = "<group>"; };
 		1A0D06621484599B007558AE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		1A0D066914845D10007558AE /* lolcats.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lolcats.jpg; sourceTree = "<group>"; };
+		1E844BE21485B630001078C4 /* ADDraggingDestinationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADDraggingDestinationView.h; sourceTree = "<group>"; };
+		1E844BE31485B630001078C4 /* ADDraggingDestinationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADDraggingDestinationView.m; sourceTree = "<group>"; };
 		D07A68011486F4190051C961 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		D07A68031486F4190051C961 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		D07A68041486F4190051C961 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Profile.xcconfig; sourceTree = "<group>"; };
@@ -47,8 +49,6 @@
 		D07A68111486F4190051C961 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
 		D07A68121486F4190051C961 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D07A68131486F4190051C961 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		1E844BE21485B630001078C4 /* ADDraggingDestinationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADDraggingDestinationView.h; sourceTree = "<group>"; };
-		1E844BE31485B630001078C4 /* ADDraggingDestinationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADDraggingDestinationView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -363,6 +363,39 @@
 			};
 			name = Release;
 		};
+		D0EEC6021489F609002F8441 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D07A68041486F4190051C961 /* Profile.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Profile;
+		};
+		D0EEC6031489F609002F8441 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D07A680E1486F4190051C961 /* Mac-Application.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AppKitAnimationDemo/AppKitAnimationDemo-Prefix.pch";
+				INFOPLIST_FILE = "AppKitAnimationDemo/AppKitAnimationDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Profile;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -371,6 +404,7 @@
 			buildConfigurations = (
 				1A0D06641484599B007558AE /* Debug */,
 				1A0D06651484599B007558AE /* Release */,
+				D0EEC6021489F609002F8441 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -380,6 +414,7 @@
 			buildConfigurations = (
 				1A0D06671484599B007558AE /* Debug */,
 				1A0D06681484599B007558AE /* Release */,
+				D0EEC6031489F609002F8441 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

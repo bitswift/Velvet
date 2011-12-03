@@ -518,6 +518,56 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		D0EEC6051489F612002F8441 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0EFFCDD147852D50095AB35 /* Profile.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "../../Framework/Velvet/build/$(CONFIGURATION)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "../../Framework/Velvet/build/$(CONFIGURATION)/Velvet.framework";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Profile;
+		};
+		D0EEC6061489F612002F8441 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0EFFCE7147852D50095AB35 /* Mac-Application.xcconfig */;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VelvetDemo/VelvetDemo-Prefix.pch";
+				INFOPLIST_FILE = "VelvetDemo/VelvetDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Profile;
+		};
+		D0EEC6071489F612002F8441 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0EFFCE7147852D50095AB35 /* Mac-Application.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/VelvetDemo.app/Contents/MacOS/VelvetDemo";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "VelvetDemo/VelvetDemo-Prefix.pch";
+				INFOPLIST_FILE = "VelvetDemoTests/VelvetDemoTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Profile;
+		};
 		D0EFFCD0147852A70095AB35 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D0EFFCDC147852D50095AB35 /* Debug.xcconfig */;
@@ -633,6 +683,7 @@
 			buildConfigurations = (
 				D0EFFCD0147852A70095AB35 /* Debug */,
 				D0EFFCD1147852A70095AB35 /* Release */,
+				D0EEC6051489F612002F8441 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -642,6 +693,7 @@
 			buildConfigurations = (
 				D0EFFCD3147852A70095AB35 /* Debug */,
 				D0EFFCD4147852A70095AB35 /* Release */,
+				D0EEC6061489F612002F8441 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -651,6 +703,7 @@
 			buildConfigurations = (
 				D0EFFCD6147852A70095AB35 /* Debug */,
 				D0EFFCD7147852A70095AB35 /* Release */,
+				D0EEC6071489F612002F8441 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

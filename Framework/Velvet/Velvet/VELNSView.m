@@ -219,7 +219,7 @@
 #pragma mark CALayer delegate
 
 - (void)renderContainedViewInLayer:(CALayer *)layer {
-    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size);
+    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size, YES);
 
     [self.NSView.layer renderInContext:context];
 

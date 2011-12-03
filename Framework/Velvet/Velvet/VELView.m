@@ -464,7 +464,7 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
         return;
     }
 
-    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size);
+    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size, YES);
     if (!context) {
         return;
     }

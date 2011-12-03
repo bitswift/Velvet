@@ -12,5 +12,6 @@
  * Returns a context suitable for rendering views.
  *
  * @param size The size, in pixels, to use for the created bitmap context.
+ * @param hasAlpha Whether the context has an alpha channel.
  */
-CGContextRef CGBitmapContextCreateGeneric(CGSize size);
+CGContextRef CGBitmapContextCreateGeneric(CGSize size, BOOL hasAlpha);

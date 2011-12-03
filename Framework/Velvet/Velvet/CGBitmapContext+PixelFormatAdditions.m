@@ -8,8 +8,18 @@
 
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 
-CGContextRef CGBitmapContextCreateGeneric(CGSize size) {
+CGContextRef CGBitmapContextCreateGeneric(CGSize size, BOOL hasAlpha) {
     size_t width = (size_t)ceil(size.width);
+
+    CGImageAlphaInfo alphaInfo;
+    if (hasAlpha)
+        alphaInfo = kCGImageAlphaPremultipliedFirst;
+    else
+        alphaInfo = kCGImageAlphaNoneSkipFirst;
+
+    // (A)RGB in host byte order (which is, incidentally, the only
+    // pixel layout that correctly supports sub-pixel antialiasing text)
+    CGBitmapInfo bitmapInfo = alphaInfo | kCGBitmapByteOrder32Host;
 
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGContextRef context = CGBitmapContextCreate(
@@ -19,9 +29,7 @@ CGContextRef CGBitmapContextCreateGeneric(CGSize size) {
         8, // bits per component
         width * 4, // bytes per row
         colorSpace,
-        // ARGB in host byte order (which is, incidentally, the only
-        // CGBitmapInfo that correctly supports sub-pixel antialiasing text)
-        kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host
+        bitmapInfo
     );
 
     CGColorSpaceRelease(colorSpace);

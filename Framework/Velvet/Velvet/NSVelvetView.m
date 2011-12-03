@@ -175,9 +175,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     self.rootView = [[VELView alloc] init];
     self.rootView.frame = self.bounds;
 
-    [self
-        registerForDraggedTypes:[NSArray
-            arrayWithObjects: NSColorPboardType, NSFilenamesPboardType, NSPasteboardTypePDF, nil]];
+    [self registerForDraggedTypes:[NSArray arrayWithObjects:NSColorPboardType, NSFilenamesPboardType, NSPasteboardTypePDF, nil]];
 }
 
 #pragma mark Layout

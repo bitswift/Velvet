@@ -469,6 +469,13 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
         return;
     }
 
+    // always allow antialiasing and sub-pixel antialiasing
+    // these calls alone do not enable it -- they only make the context allow it
+    CGContextSetAllowsAntialiasing(context, YES);
+    CGContextSetAllowsFontSmoothing(context, YES);
+    CGContextSetAllowsFontSubpixelPositioning(context, YES);
+    CGContextSetAllowsFontSubpixelQuantization(context, YES);
+
     [self drawLayer:layer inContext:context];
 
     CGImageRef image = CGBitmapContextCreateImage(context);
@@ -487,11 +494,6 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     CGContextClipToRect(context, bounds);
 
     // enable sub-pixel antialiasing (if drawing onto anything opaque)
-    CGContextSetAllowsAntialiasing(context, YES);
-    CGContextSetAllowsFontSmoothing(context, YES);
-    CGContextSetAllowsFontSubpixelPositioning(context, YES);
-    CGContextSetAllowsFontSubpixelQuantization(context, YES);
-
     CGContextSetShouldAntialias(context, YES);
     CGContextSetShouldSmoothFonts(context, YES);
     CGContextSetShouldSubpixelPositionFonts(context, YES);

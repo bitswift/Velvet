@@ -10,6 +10,7 @@
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
+#import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
@@ -170,6 +171,16 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     [self willMoveToHostView:view];
     m_hostView = view;
     [self didMoveToHostView];
+}
+
+- (NSColor *)backgroundColor {
+    return [NSColor colorWithCGColor:self.layer.backgroundColor];
+}
+
+- (void)setBackgroundColor:(NSColor *)color {
+    [[self class] changeLayerProperties:^{
+        self.layer.backgroundColor = color.CGColor;
+    }];
 }
 
 - (NSWindow *)window {

@@ -299,6 +299,14 @@ typedef enum {
 @property (nonatomic, assign, getter = isHidden) BOOL hidden;
 
 /**
+ * The background color of the receiver.
+ *
+ * The default value for this property is `nil`, meaning that no background is
+ * automatically drawn.
+ */
+@property (nonatomic, strong) NSColor *backgroundColor;
+
+/**
  * If the view's appearance is not provided by its layer, this method should
  * draw the view into the current `NSGraphicsContext`.
  *

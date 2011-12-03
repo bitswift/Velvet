@@ -13,10 +13,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D0EFFC00147851A80095AB35"
-               BuildableName = "Velvet.framework"
-               BlueprintName = "Velvet"
-               ReferencedContainer = "container:Velvet.xcodeproj">
+               BlueprintIdentifier = "D07A67C51486F3F10051C961"
+               BuildableName = "TransitionTest.app"
+               BlueprintName = "TransitionTest"
+               ReferencedContainer = "container:TransitionTest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -27,17 +27,16 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D0EFFC18147851A80095AB35"
-               BuildableName = "VelvetTests.octest"
-               BlueprintName = "VelvetTests"
-               ReferencedContainer = "container:Velvet.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "D07A67C51486F3F10051C961"
+            BuildableName = "TransitionTest.app"
+            BlueprintName = "TransitionTest"
+            ReferencedContainer = "container:TransitionTest.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </TestAction>
    <LaunchAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
@@ -47,6 +46,15 @@
       buildConfiguration = "Debug"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "D07A67C51486F3F10051C961"
+            BuildableName = "TransitionTest.app"
+            BlueprintName = "TransitionTest"
+            ReferencedContainer = "container:TransitionTest.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -56,6 +64,15 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Profile"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "D07A67C51486F3F10051C961"
+            BuildableName = "TransitionTest.app"
+            BlueprintName = "TransitionTest"
+            ReferencedContainer = "container:TransitionTest.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

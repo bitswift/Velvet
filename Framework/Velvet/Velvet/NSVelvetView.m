@@ -182,10 +182,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize; {
     // always resize the root view to fill this view
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    self.rootView.layer.frame = self.velvetHostView.layer.frame = self.bounds;
-    [CATransaction commit];
+    [CATransaction performWithDisabledActions:^{
+        self.rootView.layer.frame = self.velvetHostView.layer.frame = self.bounds;
+    }];
 }
 
 - (NSView *)hitTest:(NSPoint)point {

@@ -13,7 +13,6 @@
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/VELContext.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELNSViewPrivate.h>
@@ -65,9 +64,18 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 @interface NSVelvetView ()
-@property (nonatomic, strong) NSView *velvetHostView;
-@property (nonatomic, readwrite, strong) VELContext *context;
+/*
+ * Documented in <NSVelvetViewPrivate>.
+ */
 @property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
+
+/*
+ * The layer-hosted view which actually holds the Velvet hierarchy.
+ *
+ * <NSVelvetHostView> exists to avoid having to make this view layer-hosted. It
+ * is layer-backed instead, for compatible with `NSView`.
+ */
+@property (nonatomic, readonly, strong) NSVelvetHostView *velvetHostView;
 
 /*
  * Holds a reference to the descendant destination view of the current dragging operation
@@ -114,7 +122,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 #pragma mark Properties
 
-@synthesize context = m_context;
 @synthesize rootView = m_rootView;
 @synthesize velvetHostView = m_velvetHostView;
 @synthesize userInteractionEnabled = m_userInteractionEnabled;
@@ -123,18 +130,15 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
+    [CATransaction performWithDisabledActions:^{
+        [m_rootView.layer removeFromSuperlayer];
+        [self.velvetHostView.layer addSublayer:view.layer];
 
-    [m_rootView.layer removeFromSuperlayer];
-    [self.velvetHostView.layer addSublayer:view.layer];
+        m_rootView.hostView = nil;
+        view.hostView = self;
 
-    m_rootView.hostView = nil;
-    view.hostView = self;
-
-    m_rootView = view;
-
-    [CATransaction commit];
+        m_rootView = view;
+    }];
 }
 
 #pragma mark Lifecycle
@@ -158,16 +162,15 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)setUp; {
-    self.context = [[VELContext alloc] init];
     self.userInteractionEnabled = YES;
 
     // enable layer-backing for this view
     [self setWantsLayer:YES];
     self.layer.layoutManager = self;
 
-    self.velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
-    self.velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    [self addSubview:self.velvetHostView];
+    m_velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
+    m_velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    [self addSubview:m_velvetHostView];
 
     self.rootView = [[VELView alloc] init];
     self.rootView.frame = self.bounds;

@@ -74,7 +74,9 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.65;
 }
 
 - (void)setContentSize:(CGSize)contentSize {
-    self.scrollLayer.contentsRect = CGRectMake(0, 0, contentSize.width, contentSize.height);
+    [[self class] changeLayerProperties:^{
+        self.scrollLayer.contentsRect = CGRectMake(0, 0, contentSize.width, contentSize.height);
+    }];
 }
 
 - (void)setSubviews:(NSArray *)subviews {

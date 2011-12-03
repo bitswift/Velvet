@@ -74,7 +74,7 @@
     [backgroundView setNSView:scalingView];
     [scalingView setBezelStyle:NSTextFieldSquareBezel];
 
-    
+
     int64_t delayInSeconds = (int64_t)2.0;
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
@@ -144,6 +144,7 @@
 
     VELView *rootSquareView = [[SquareView alloc] init];
     rootSquareView.frame = CGRectMake(20, 20, 300, 300);
+    rootSquareView.layer.opacity = 0.8f;
     imageView.subviews = [NSArray arrayWithObject:rootSquareView];
 
     VELNSView *textFieldHost = [[VELNSView alloc] initWithNSView:textField];
@@ -156,14 +157,19 @@
                                 ];
 
     VELLabel *label = [[VELLabel alloc] init];
-    label.text = [[NSAttributedString alloc] initWithString:@"** Hello world! **" attributes:attributes];
+    label.formattedText = [[NSAttributedString alloc] initWithString:@"** Hello world! **" attributes:attributes];
     label.frame = CGRectMake(0, 400, 300, 60);
 
     self.hostView.rootView.subviews = [NSArray arrayWithObjects:label, self.scrollView, nil];
 
     self.nestedSquareView = [[SquareView alloc] init];
+    self.nestedSquareView.layer.opacity = 0.25f;
     self.nestedSquareView.layer.masksToBounds = YES;
     self.nestedSquareView.frame = CGRectMake(0, 0, 80, 80);
+
+    [self.nestedSquareView addActionForControlEvents:VELControlEventClicked usingBlock:^{
+        NSLog(@"Square view click action!");
+    }];
 
     NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 28)];
     [button setButtonType:NSMomentaryPushInButton];

@@ -38,7 +38,7 @@
  *
  * This layer may not be a descendant of the receiver's layer.
  */
-@property (strong) VELFocusRingLayer *focusRingLayer;
+@property (nonatomic, strong) VELFocusRingLayer *focusRingLayer;
 
 /*
  * This will synchronize the geometry of the receiver's `NSView` with that of

@@ -20,6 +20,27 @@
     self.layer.contents = (__bridge id)image;
 }
 
+#pragma mark Lifecycle
+
+- (id)init {
+    self = [super init];
+    if (!self)
+        return nil;
+
+    self.userInteractionEnabled = NO;
+    return self;
+}
+
+#pragma mark Layout
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    CGImageRef image = self.image;
+    if (!image)
+        return CGSizeZero;
+
+    return CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
+}
+
 #pragma mark CALayer delegate
 
 - (void)displayLayer:(CALayer *)layer {

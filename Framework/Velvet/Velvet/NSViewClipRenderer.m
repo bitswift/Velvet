@@ -13,15 +13,13 @@
 #import <Velvet/VELView.h>
 #import <Velvet/VELNSView.h>
 #import <QuartzCore/QuartzCore.h>
+#import "EXTScope.h"
 
 @interface NSViewClipRenderer ()
-@property (nonatomic, weak, readwrite) VELView *clippedView;
-@property (nonatomic, strong, readwrite) CALayer *layer;
-
 /*
  * The clip renderers used on the immediate sublayers of the receiver's layer.
  */
-@property (nonatomic, strong) NSMutableArray *sublayerRenderers;
+@property (nonatomic, strong, readonly) NSMutableArray *sublayerRenderers;
 
 /*
  * The original delegate for the layer of the `NSView` that should be clipped.
@@ -29,7 +27,7 @@
  * The receiver will forward delegate messages to this object once it has
  * performed the necessary setup.
  */
-@property (nonatomic, strong) id originalLayerDelegate;
+@property (nonatomic, strong, readonly) id originalLayerDelegate;
 
 /*
  * The original layout manager for the layer of the `NSView` that should be
@@ -38,7 +36,7 @@
  * The receiver will forward layout messages to this object once it has
  * performed the necessary setup.
  */
-@property (nonatomic, strong) id originalLayerLayoutManager;
+@property (nonatomic, strong, readonly) id originalLayerLayoutManager;
 
 /*
  * Returns `YES` if the given selector is part of the `CALayoutManager` informal
@@ -76,18 +74,17 @@
     if (!self)
         return nil;
 
-    self.clippedView = clippedView;
-    self.layer = layer;
-    self.sublayerRenderers = [[NSMutableArray alloc] init];
+    m_clippedView = clippedView;
+    m_layer = layer;
+    m_sublayerRenderers = [[NSMutableArray alloc] init];
 
-    self.originalLayerDelegate = layer.delegate;
+    m_originalLayerDelegate = layer.delegate;
     layer.delegate = self;
 
-    self.originalLayerLayoutManager = layer.layoutManager;
+    m_originalLayerLayoutManager = layer.layoutManager;
     layer.layoutManager = self;
 
     [self setUpSublayerRenderers];
-    [self clip];
     return self;
 }
 
@@ -103,21 +100,15 @@
         [self.layer setNeedsDisplay];
         [self.layer displayIfNeeded];
 
-        [self.sublayerRenderers makeObjectsPerformSelector:@selector(clip)];
+        for (NSViewClipRenderer *renderer in self.sublayerRenderers) {
+            [renderer clip];
+        }
     }];
 }
 
 #pragma mark Sublayers
 
 - (void)setUpSublayerRenderers; {
-    #if 0
-    NSIndexSet *abandonedRenderers = [self.sublayerRenderers indexesOfObjectsPassingTest:^ BOOL (NSViewClipRenderer *renderer, NSUInteger index, BOOL *stop){
-        return (renderer.layer.superlayer == nil);
-    }];
-
-    [self.sublayerRenderers removeObjectsAtIndexes:abandonedRenderers];
-    #endif
-
     NSArray *sublayers = self.layer.sublayers;
 
     [sublayers enumerateObjectsUsingBlock:^(CALayer *sublayer, NSUInteger index, BOOL *stop){

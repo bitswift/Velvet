@@ -31,6 +31,7 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     struct {
         unsigned userInteractionEnabled:1;
         unsigned recursingActionForLayer:1;
+        unsigned clearsContextBeforeDrawing:1;
     } m_flags;
 }
 
@@ -68,6 +69,14 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
     m_flags.userInteractionEnabled = (userInteractionEnabled ? 1 : 0);
+}
+
+- (BOOL)clearsContextBeforeDrawing {
+    return (m_flags.clearsContextBeforeDrawing ? YES : NO);
+}
+
+- (void)setClearsContextBeforeDrawing:(BOOL)clearsContext {
+    m_flags.clearsContextBeforeDrawing = (clearsContext ? 1 : 0);
 }
 
 // For geometry properties, it makes sense to reuse the layer's geometry,
@@ -196,6 +205,7 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     m_layer.needsDisplayOnBoundsChange = YES;
 
     self.userInteractionEnabled = YES;
+    self.clearsContextBeforeDrawing = YES;
     return self;
 }
 
@@ -472,7 +482,9 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
 
     CGRect bounds = self.bounds;
 
-    CGContextClearRect(context, bounds);
+    if (self.clearsContextBeforeDrawing)
+        CGContextClearRect(context, bounds);
+
     CGContextClipToRect(context, bounds);
 
     // enable sub-pixel antialiasing (if drawing onto anything opaque)

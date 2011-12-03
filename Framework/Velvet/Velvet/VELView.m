@@ -183,6 +183,16 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     }];
 }
 
+- (BOOL)isOpaque {
+    return self.layer.opaque;
+}
+
+- (void)setOpaque:(BOOL)opaque {
+    [[self class] changeLayerProperties:^{
+        self.layer.opaque = opaque;
+    }];
+}
+
 - (NSWindow *)window {
     return self.hostView.window;
 }
@@ -464,7 +474,7 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
         return;
     }
 
-    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size, YES);
+    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size, !self.opaque);
     if (!context) {
         return;
     }

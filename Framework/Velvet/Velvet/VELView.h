@@ -307,6 +307,17 @@ typedef enum {
 @property (nonatomic, strong) NSColor *backgroundColor;
 
 /**
+ * Whether the receiver is opaque.
+ *
+ * If `YES`, the view's content must completely fill its bounds and contain no
+ * transparency, allowing the rendering system to skip any blending of this view
+ * with content below it. If `NO`, the view is rendered normally.
+ *
+ * The default value for this property is `NO` (unlike `UIView`).
+ */
+@property (nonatomic, assign, getter = isOpaque) BOOL opaque;
+
+/**
  * If the view's appearance is not provided by its layer, this method should
  * draw the view into the current `NSGraphicsContext`.
  *

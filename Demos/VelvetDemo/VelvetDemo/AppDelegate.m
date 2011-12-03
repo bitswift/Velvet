@@ -160,6 +160,7 @@
     label.formattedText = [[NSAttributedString alloc] initWithString:@"** Hello world! **" attributes:attributes];
     label.frame = CGRectMake(0, 400, 300, 60);
     label.backgroundColor = [NSColor whiteColor];
+    label.opaque = YES;
 
     self.hostView.rootView.subviews = [NSArray arrayWithObjects:label, self.scrollView, nil];
 

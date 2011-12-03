@@ -252,11 +252,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
                 // this is ours
                 continue;
             } else if ([sublayer isKindOfClass:[VELFocusRingLayer class]]) {
-                if ([[(VELFocusRingLayer *)sublayer performSelector:@selector(originalLayer)] superlayer] != self.layer) {
-                    [sublayer removeFromSuperlayer];
-                    [[sublayer performSelector:@selector(hostView)] setFocusRingLayer:nil];
-                }
-
                 continue;
             }
 

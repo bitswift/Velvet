@@ -131,11 +131,11 @@ static IMP VELViewDrawRectIMP = NULL;
     }];
 }
 
-- (VELAutoresizingMask)autoresizingMask {
+- (VELViewAutoresizingMask)autoresizingMask {
     return self.layer.autoresizingMask;
 }
 
-- (void)setAutoresizingMask:(VELAutoresizingMask)autoresizingMask {
+- (void)setAutoresizingMask:(VELViewAutoresizingMask)autoresizingMask {
     [[self class] changeLayerProperties:^{
         self.layer.autoresizingMask = autoresizingMask;
     }];

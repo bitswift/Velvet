@@ -175,19 +175,16 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     self.rootView = [[VELView alloc] init];
     self.rootView.frame = self.bounds;
 
-    [self
-        registerForDraggedTypes:[NSArray
-            arrayWithObjects: NSColorPboardType, NSFilenamesPboardType, NSPasteboardTypePDF, nil]];
+    [self registerForDraggedTypes:[NSArray arrayWithObjects:NSColorPboardType, NSFilenamesPboardType, NSPasteboardTypePDF, nil]];
 }
 
 #pragma mark Layout
 
 - (void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize; {
     // always resize the root view to fill this view
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    self.rootView.layer.frame = self.velvetHostView.layer.frame = self.bounds;
-    [CATransaction commit];
+    [CATransaction performWithDisabledActions:^{
+        self.rootView.layer.frame = self.velvetHostView.layer.frame = self.bounds;
+    }];
 }
 
 - (NSView *)hitTest:(NSPoint)point {

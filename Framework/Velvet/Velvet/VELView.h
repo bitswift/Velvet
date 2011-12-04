@@ -19,38 +19,38 @@ typedef enum {
     /**
      * The view does not automatically resize.
      */
-    VELAutoresizingNone = kCALayerNotSizable,
+    VELViewAutoresizingNone = kCALayerNotSizable,
 
     /**
      * The left margin between the view and its superview is flexible.
      */
-    VELAutoresizingFlexibleLeftMargin = kCALayerMinXMargin,
+    VELViewAutoresizingFlexibleLeftMargin = kCALayerMinXMargin,
 
     /**
      * The view's width is flexible.
      */
-    VELAutoresizingFlexibleWidth = kCALayerWidthSizable,
+    VELViewAutoresizingFlexibleWidth = kCALayerWidthSizable,
 
     /**
      * The right margin between the view and its superview is flexible.
      */
-    VELAutoresizingFlexibleRightMargin = kCALayerMaxXMargin,
+    VELViewAutoresizingFlexibleRightMargin = kCALayerMaxXMargin,
 
     /**
      * The top margin between the view and its superview is flexible.
      */
-    VELAutoresizingFlexibleTopMargin = kCALayerMaxYMargin,
+    VELViewAutoresizingFlexibleTopMargin = kCALayerMaxYMargin,
 
     /**
      * The view's height is flexible.
      */
-    VELAutoresizingFlexibleHeight = kCALayerHeightSizable,
+    VELViewAutoresizingFlexibleHeight = kCALayerHeightSizable,
 
     /**
      * The bottom margin between the view and its superview is flexible.
      */
-    VELAutoresizingFlexibleBottomMargin = kCALayerMinYMargin
-} VELAutoresizingMask;
+    VELViewAutoresizingFlexibleBottomMargin = kCALayerMinYMargin
+} VELViewAutoresizingMask;
 
 /**
  * A layer-backed view. A view hierarchy built using this class must ultimately
@@ -238,7 +238,7 @@ typedef enum {
  * Defines how the view should be resized when the bounds of its <superview>
  * changes.
  */
-@property (nonatomic, assign) VELAutoresizingMask autoresizingMask;
+@property (nonatomic, assign) VELViewAutoresizingMask autoresizingMask;
 
 /**
  * Lays out subviews.

@@ -18,7 +18,7 @@
 
     m_thumbnailImageView = [[VELImageView alloc] initWithFrame:self.bounds];
 
-    self.thumbnailImageView.autoresizingMask = VELAutoresizingFlexibleWidth | VELAutoresizingFlexibleHeight; 
+    self.thumbnailImageView.autoresizingMask = VELViewAutoresizingFlexibleWidth | VELViewAutoresizingFlexibleHeight; 
     self.thumbnailImageView.image = [[NSImage imageNamed:@"screen.png"] CGImageForProposedRect:NULL context:nil hints:nil];
     [self addSubview:self.thumbnailImageView];
     

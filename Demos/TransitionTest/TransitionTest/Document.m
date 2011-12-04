@@ -33,12 +33,12 @@
 
     self.treeView = [[TreeView alloc] init];
     self.treeView.frame = CGRectMake(0, 0, 1024, 724);
-    self.treeView.autoresizingMask = VELAutoresizingFlexibleWidth | VELAutoresizingFlexibleHeight;
+    self.treeView.autoresizingMask = VELViewAutoresizingFlexibleWidth | VELViewAutoresizingFlexibleHeight;
     [window.rootView addSubview:self.treeView];
 
     self.navBar = [[NavigationBar alloc] init];
     self.navBar.frame = CGRectMake(0, 724, 1024, 44);
-    self.navBar.autoresizingMask = VELAutoresizingFlexibleWidth | VELAutoresizingFlexibleBottomMargin;
+    self.navBar.autoresizingMask = VELViewAutoresizingFlexibleWidth | VELViewAutoresizingFlexibleBottomMargin;
     [window.rootView addSubview:self.navBar];
 
     __weak id weakSelf = self;

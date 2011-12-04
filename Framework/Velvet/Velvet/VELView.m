@@ -367,6 +367,7 @@ static IMP VELViewDrawRectIMP = NULL;
     self.clearsContextBeforeDrawing = YES;
     self.contentMode = VELViewContentModeRedraw;
 
+    [self setNeedsDisplay];
     return self;
 }
 

@@ -23,7 +23,7 @@
         return nil;
 
     m_iconImageView = [[VELImageView alloc] init];
-    m_iconImageView.autoresizingMask = VELAutoresizingFlexibleWidth | VELAutoresizingFlexibleHeight;
+    m_iconImageView.autoresizingMask = VELViewAutoresizingFlexibleWidth | VELViewAutoresizingFlexibleHeight;
     m_iconImageView.layer.contentsGravity = kCAGravityCenter;
     [self addSubview:m_iconImageView];
 

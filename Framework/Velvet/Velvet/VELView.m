@@ -220,6 +220,110 @@ static IMP VELViewDrawRectIMP = NULL;
     }];
 }
 
+- (VELViewContentMode)contentMode {
+    if (self.layer.needsDisplayOnBoundsChange)
+        return VELViewContentModeRedraw;
+
+    NSString *contentsGravity = self.layer.contentsGravity;
+
+    // ordered roughly by expected frequency, to reduce the number of string
+    // comparisons necessary
+    if ([contentsGravity isEqualToString:kCAGravityResize]) {
+        return VELViewContentModeScaleToFill;
+    } else if ([contentsGravity isEqualToString:kCAGravityResizeAspect]) {
+        return VELViewContentModeScaleAspectFit;
+    } else if ([contentsGravity isEqualToString:kCAGravityResizeAspectFill]) {
+        return VELViewContentModeScaleAspectFill;
+    } else if ([contentsGravity isEqualToString:kCAGravityCenter]) {
+        return VELViewContentModeCenter;
+    } else if ([contentsGravity isEqualToString:kCAGravityTopLeft]) {
+        return VELViewContentModeTopLeft;
+    } else if ([contentsGravity isEqualToString:kCAGravityTop]) {
+        return VELViewContentModeTop;
+    } else if ([contentsGravity isEqualToString:kCAGravityBottom]) {
+        return VELViewContentModeBottom;
+    } else if ([contentsGravity isEqualToString:kCAGravityLeft]) {
+        return VELViewContentModeLeft;
+    } else if ([contentsGravity isEqualToString:kCAGravityRight]) {
+        return VELViewContentModeRight;
+    } else if ([contentsGravity isEqualToString:kCAGravityTopRight]) {
+        return VELViewContentModeTopRight;
+    } else if ([contentsGravity isEqualToString:kCAGravityBottomLeft]) {
+        return VELViewContentModeBottomLeft;
+    } else if ([contentsGravity isEqualToString:kCAGravityBottomRight]) {
+        return VELViewContentModeBottomRight;
+    }
+
+    NSAssert1(NO, @"Unknown CALayer contentsGravity \"%@\"", contentsGravity);
+    return VELViewContentModeRedraw;
+}
+
+- (void)setContentMode:(VELViewContentMode)contentMode {
+    switch (contentMode) {
+        case VELViewContentModeScaleToFill:
+            self.layer.contentsGravity = kCAGravityResize;
+            break;
+
+        case VELViewContentModeScaleAspectFit:
+            self.layer.contentsGravity = kCAGravityResizeAspect;
+            break;
+
+        case VELViewContentModeScaleAspectFill:
+            self.layer.contentsGravity = kCAGravityResizeAspectFill;
+            break;
+
+        case VELViewContentModeCenter:
+            self.layer.contentsGravity = kCAGravityCenter;
+            break;
+
+        case VELViewContentModeTop:
+            self.layer.contentsGravity = kCAGravityTop;
+            break;
+
+        case VELViewContentModeBottom:
+            self.layer.contentsGravity = kCAGravityBottom;
+            break;
+
+        case VELViewContentModeLeft:
+            self.layer.contentsGravity = kCAGravityLeft;
+            break;
+
+        case VELViewContentModeRight:
+            self.layer.contentsGravity = kCAGravityRight;
+            break;
+
+        case VELViewContentModeTopLeft:
+            self.layer.contentsGravity = kCAGravityTopLeft;
+            break;
+
+        case VELViewContentModeTopRight:
+            self.layer.contentsGravity = kCAGravityTopRight;
+            break;
+
+        case VELViewContentModeBottomLeft:
+            self.layer.contentsGravity = kCAGravityBottomLeft;
+            break;
+
+        case VELViewContentModeBottomRight:
+            self.layer.contentsGravity = kCAGravityBottomRight;
+            break;
+
+        default:
+            NSAssert1(NO, @"Unknown VELViewContentMode %i", contentMode);
+            // fall through in case assertions are disabled
+
+        case VELViewContentModeRedraw:
+            self.layer.contentsGravity = kCAGravityResize;
+            self.layer.needsDisplayOnBoundsChange = YES;
+
+            // return, don't break, because the other content modes disable
+            // 'needsDisplayOnBoundsChange'
+            return;
+    }
+
+    self.layer.needsDisplayOnBoundsChange = NO;
+}
+
 - (NSWindow *)window {
     return self.hostView.window;
 }
@@ -254,10 +358,15 @@ static IMP VELViewDrawRectIMP = NULL;
     // change after initialization
     m_layer = [[[self class] layerClass] layer];
     m_layer.delegate = self;
-    m_layer.needsDisplayOnBoundsChange = YES;
 
     self.userInteractionEnabled = YES;
+
+    // prefer safer defaults over performant defaults -- disregarding safety (or
+    // more correct rendering) in favor of performance should be explicit
+    self.opaque = NO;
     self.clearsContextBeforeDrawing = YES;
+    self.contentMode = VELViewContentModeRedraw;
+
     return self;
 }
 

@@ -324,6 +324,16 @@ static IMP VELViewDrawRectIMP = NULL;
     self.layer.needsDisplayOnBoundsChange = NO;
 }
 
+- (CGRect)contentStretch {
+    return self.layer.contentsCenter;
+}
+
+- (void)setContentStretch:(CGRect)stretch {
+    [[self class] changeLayerProperties:^{
+        self.layer.contentsCenter = stretch;
+    }];
+}
+
 - (NSWindow *)window {
     return self.hostView.window;
 }

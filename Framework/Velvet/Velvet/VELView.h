@@ -419,6 +419,24 @@ typedef enum {
 @property (nonatomic, assign) VELViewContentMode contentMode;
 
 /**
+ * Defines which portions of the receiver's content are stretchable.
+ *
+ * This controls how a view's content is stretched to fill its bounds, such as
+ * during an animation, or if the <contentMode> is
+ * `VELViewContentModeScaleToFill`.
+ *
+ * This property is specified in the unit coordinate space, where the values of
+ * the rectangle are normalized from zero to one, inclusive. Specifying a value
+ * of 0.5, for instance, indicates a span that is half of the size of the view
+ * in that dimension.
+ *
+ * The default value for this property is a rectangle starting at `(0, 0)` and
+ * extending to `(1, 1)`, indicating that the entirety of the view's content is
+ * stretchable.
+ */
+@property (nonatomic, assign) CGRect contentStretch;
+
+/**
  * If the view's appearance is not provided by its layer, this method should
  * draw the view into the current `NSGraphicsContext`.
  *

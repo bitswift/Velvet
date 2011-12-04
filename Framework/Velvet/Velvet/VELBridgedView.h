@@ -47,7 +47,7 @@
  */
 - (CGRect)convertToWindowRect:(CGRect)rect;
 
-/*
+/**
  * Returns the <VELBridgedView> which is occupying the given point, or
  * `nil` if there is no such view.
  *

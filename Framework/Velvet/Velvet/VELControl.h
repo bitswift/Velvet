@@ -51,15 +51,15 @@ typedef enum {
 
 /**
  * De-registers a block or blocks previously added with
- * <addAction:forControlEvents:> from a set of events.
+ * <addActionForControlEvents:usingBlock:> from a set of events.
  *
  * Trying to remove an action from events for which it is not registered will
  * have no effect.
  *
- * @param action An object returned from <addActionforControlEvents:usingBlock:>
+ * @param action An object returned from <addActionForControlEvents:usingBlock:>
  * corresponding to the block that you wish to de-register. If this argument is
  * `nil`, all blocks corresponding to the `eventMask` are de-registered.
- * @param eventMask The events to stop listening for. Use <VELControlAllEvents>
+ * @param eventMask The events to stop listening for. Use `VELControlAllEvents`
  * to stop listening for any events.
  */
 - (void)removeAction:(id)action forControlEvents:(VELControlEventMask)eventMask;

@@ -24,7 +24,7 @@
 
     m_iconImageView = [[VELImageView alloc] init];
     m_iconImageView.autoresizingMask = VELViewAutoresizingFlexibleWidth | VELViewAutoresizingFlexibleHeight;
-    m_iconImageView.layer.contentsGravity = kCAGravityCenter;
+    m_iconImageView.contentMode = VELViewContentModeCenter;
     [self addSubview:m_iconImageView];
 
     CGColorRef backgroundColor = CGColorCreateGenericGray(0.0f, 0.0f);

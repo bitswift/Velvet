@@ -20,10 +20,29 @@
     [self.layer setNeedsDisplay];
 }
 
+#pragma mark Lifecycle
+
+- (id)init {
+    self = [super init];
+    if (!self)
+        return nil;
+
+    self.backgroundColor = [NSColor clearColor];
+    return self;
+}
+
 #pragma mark Drawing
 
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
+
+    // clear our context to our background color
+    if (self.layer.backgroundColor) {
+        CGContextSetFillColorWithColor(context, self.layer.backgroundColor);
+        CGContextFillRect(context, rect);
+    } else {
+        CGContextClearRect(context, rect);
+    }
 
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
 

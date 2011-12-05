@@ -662,34 +662,64 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		D0EFFC29147851A80095AB35 /* Debug */ = {
+		D0EEC6081489F631002F8441 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D0EFFC35147851E70095AB35 /* Debug.xcconfig */;
+			baseConfigurationReference = D0EFFC36147851E70095AB35 /* Profile.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../SafeDispatch/Framework/SafeDispatch,
 					"../libextobjc/extobjc/**",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Profile;
+		};
+		D0EEC6091489F631002F8441 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0EFFC43147851E70095AB35 /* Mac-Framework.xcconfig */;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				INFOPLIST_FILE = "Velvet/Velvet-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Profile;
+		};
+		D0EEC60A1489F631002F8441 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0EFFC40147851E70095AB35 /* Mac-Application.xcconfig */;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				INFOPLIST_FILE = "VelvetTests/VelvetTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Profile;
+		};
+		D0EFFC29147851A80095AB35 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0EFFC35147851E70095AB35 /* Debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				HEADER_SEARCH_PATHS = (
+					../SafeDispatch/Framework/SafeDispatch,
+					"../libextobjc/extobjc/**",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -698,18 +728,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D0EFFC37147851E70095AB35 /* Release.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					../SafeDispatch/Framework/SafeDispatch,
 					"../libextobjc/extobjc/**",
@@ -783,6 +805,7 @@
 			buildConfigurations = (
 				D0EFFC29147851A80095AB35 /* Debug */,
 				D0EFFC2A147851A80095AB35 /* Release */,
+				D0EEC6081489F631002F8441 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -792,6 +815,7 @@
 			buildConfigurations = (
 				D0EFFC2C147851A80095AB35 /* Debug */,
 				D0EFFC2D147851A80095AB35 /* Release */,
+				D0EEC6091489F631002F8441 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -801,6 +825,7 @@
 			buildConfigurations = (
 				D0EFFC2F147851A80095AB35 /* Debug */,
 				D0EFFC30147851A80095AB35 /* Release */,
+				D0EEC60A1489F631002F8441 /* Profile */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

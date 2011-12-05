@@ -121,7 +121,7 @@
 
         self.editorView = [[EditorView alloc] init];
         self.editorView.frame = rect;
-        self.editorView.autoresizingMask = VELAutoresizingFlexibleWidth | VELAutoresizingFlexibleHeight; 
+        self.editorView.autoresizingMask = VELViewAutoresizingFlexibleWidth | VELViewAutoresizingFlexibleHeight; 
 
         VELWindow *window = (id)[[self.windowControllers objectAtIndex:0] window];
 

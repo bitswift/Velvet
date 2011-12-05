@@ -25,6 +25,9 @@ static void releasePatternInfo (void *info) {
 
 @safecategory (NSColor, CoreGraphicsAdditions)
 + (NSColor *)colorWithCGColor:(CGColorRef)color; {
+    if (!color)
+        return nil;
+
     CGColorSpaceRef colorSpaceRef = CGColorGetColorSpace(color);
 
     NSColorSpace *colorSpace = [[NSColorSpace alloc] initWithCGColorSpace:colorSpaceRef];

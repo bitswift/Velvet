@@ -10,6 +10,7 @@
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
+#import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
@@ -170,6 +171,26 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     [self willMoveToHostView:view];
     m_hostView = view;
     [self didMoveToHostView];
+}
+
+- (NSColor *)backgroundColor {
+    return [NSColor colorWithCGColor:self.layer.backgroundColor];
+}
+
+- (void)setBackgroundColor:(NSColor *)color {
+    [[self class] changeLayerProperties:^{
+        self.layer.backgroundColor = color.CGColor;
+    }];
+}
+
+- (BOOL)isOpaque {
+    return self.layer.opaque;
+}
+
+- (void)setOpaque:(BOOL)opaque {
+    [[self class] changeLayerProperties:^{
+        self.layer.opaque = opaque;
+    }];
 }
 
 - (NSWindow *)window {
@@ -453,10 +474,17 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
         return;
     }
 
-    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size);
+    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size, !self.opaque);
     if (!context) {
         return;
     }
+
+    // always allow antialiasing and sub-pixel antialiasing
+    // these calls alone do not enable it -- they only make the context allow it
+    CGContextSetAllowsAntialiasing(context, YES);
+    CGContextSetAllowsFontSmoothing(context, YES);
+    CGContextSetAllowsFontSubpixelPositioning(context, YES);
+    CGContextSetAllowsFontSubpixelQuantization(context, YES);
 
     [self drawLayer:layer inContext:context];
 
@@ -476,7 +504,10 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
     CGContextClipToRect(context, bounds);
 
     // enable sub-pixel antialiasing (if drawing onto anything opaque)
+    CGContextSetShouldAntialias(context, YES);
     CGContextSetShouldSmoothFonts(context, YES);
+    CGContextSetShouldSubpixelPositionFonts(context, YES);
+    CGContextSetShouldSubpixelQuantizeFonts(context, YES);
 
     NSGraphicsContext *previousGraphicsContext = [NSGraphicsContext currentContext];
 

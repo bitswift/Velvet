@@ -19,7 +19,7 @@
 
     self.selectedScreen = [[Screen alloc] init];
     self.selectedScreen.bounds = CGRectMake(0, 0, 64.0f, 96.0f);
-    self.selectedScreen.autoresizingMask = VELAutoresizingFlexibleLeftMargin | VELAutoresizingFlexibleTopMargin | VELAutoresizingFlexibleRightMargin | VELAutoresizingFlexibleBottomMargin;
+    self.selectedScreen.autoresizingMask = VELViewAutoresizingFlexibleLeftMargin | VELViewAutoresizingFlexibleTopMargin | VELViewAutoresizingFlexibleRightMargin | VELViewAutoresizingFlexibleBottomMargin;
     [self addSubview:self.selectedScreen];
 
     self.selectedScreen.center = self.center;

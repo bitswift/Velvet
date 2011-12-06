@@ -41,9 +41,4 @@
     return CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
 }
 
-#pragma mark CALayer delegate
-
-- (void)displayLayer:(CALayer *)layer {
-}
-
 @end

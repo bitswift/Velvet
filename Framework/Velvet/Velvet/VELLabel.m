@@ -27,6 +27,10 @@
     if (!self)
         return nil;
 
+    // don't automatically clear the context -- we'll fill it with our
+    // background color in drawRect: so that we get SPAA on top
+    self.clearsContextBeforeDrawing = NO;
+
     self.backgroundColor = [NSColor clearColor];
     return self;
 }

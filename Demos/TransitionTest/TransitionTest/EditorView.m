@@ -28,6 +28,9 @@
     self.deviceFrame.alpha = 0;
     [self addSubview:self.deviceFrame];
 
+    self.opaque = YES;
+    self.clearsContextBeforeDrawing = NO;
+
     return self;
 }
 

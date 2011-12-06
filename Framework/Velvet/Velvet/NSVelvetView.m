@@ -138,6 +138,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         view.hostView = self;
 
         m_rootView = view;
+        m_rootView.frame = self.bounds;
     }];
 }
 
@@ -173,7 +174,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [self addSubview:m_velvetHostView];
 
     self.rootView = [[VELView alloc] init];
-    self.rootView.frame = self.bounds;
 
     [self registerForDraggedTypes:[NSArray arrayWithObjects:NSColorPboardType, NSFilenamesPboardType, NSPasteboardTypePDF, nil]];
 }

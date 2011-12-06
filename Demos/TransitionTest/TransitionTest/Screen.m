@@ -17,9 +17,10 @@
         return nil;
 
     m_thumbnailImageView = [[VELImageView alloc] initWithFrame:self.bounds];
-    m_thumbnailImageView.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable; 
-    m_thumbnailImageView.image = [[NSImage imageNamed:@"screen.png"] CGImageForProposedRect:NULL context:nil hints:nil];
-    [self addSubview:m_thumbnailImageView];
+
+    self.thumbnailImageView.autoresizingMask = VELViewAutoresizingFlexibleWidth | VELViewAutoresizingFlexibleHeight; 
+    self.thumbnailImageView.image = [[NSImage imageNamed:@"screen.png"] CGImageForProposedRect:NULL context:nil hints:nil];
+    [self addSubview:self.thumbnailImageView];
     
     CGColorRef shadowColor = CGColorCreateGenericGray(0.0f, 1.0f);
     self.layer.shadowColor = shadowColor;

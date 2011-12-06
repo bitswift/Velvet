@@ -299,6 +299,18 @@ typedef enum {
 @property (nonatomic, assign, getter = isHidden) BOOL hidden;
 
 /**
+ * Whether the clear the view's bounds before drawing.
+ *
+ * If this is set to `YES`, the rectangle passed in to <drawRect:> has been
+ * cleared to transparent black. If `NO`, the view is expected to fill the
+ * entire rectangle with its drawing (perhaps including transparency).
+ *
+ * The default value of this property is `YES`. Setting this to `NO` can
+ * dramatically speed up rendering if the view's rendering fills its bounds.
+ */
+@property (nonatomic, assign) BOOL clearsContextBeforeDrawing;
+
+/**
  * The background color of the receiver.
  *
  * The default value for this property is `nil`, meaning that no background is

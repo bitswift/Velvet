@@ -249,9 +249,4 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.65;
     self.scrollersVisible = NO;
 }
 
-#pragma mark CALayer delegate
-
-- (void)displayLayer:(CALayer *)layer {
-}
-
 @end

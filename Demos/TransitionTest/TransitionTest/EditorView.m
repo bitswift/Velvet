@@ -30,6 +30,7 @@
 
     self.opaque = YES;
     self.clearsContextBeforeDrawing = NO;
+    self.contentMode = VELViewContentModeScaleToFill;
 
     return self;
 }

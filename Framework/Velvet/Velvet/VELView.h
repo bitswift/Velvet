@@ -53,6 +53,87 @@ typedef enum {
 } VELViewAutoresizingMask;
 
 /**
+ * Defines how the content of a <VELView> is adjusted when its size changes.
+ */
+typedef enum {
+    /**
+     * Scale the content to fit the new size, changing its aspect ratio if
+     * necessary.
+     */
+    VELViewContentModeScaleToFill,
+
+    /**
+     * Scale the content to fit within the new size, preserving its aspect
+     * ratio. Any remaining area is transparent.
+     */
+    VELViewContentModeScaleAspectFit,
+
+    /**
+     * Scale the content to fill the new size, preserving its aspect ratio.
+     * Portions of the content may be clipped to the visible area.
+     */
+    VELViewContentModeScaleAspectFill,
+
+    /**
+     * Redraw the content for the new size, by invoking <drawRect:>.
+     */
+    VELViewContentModeRedraw,
+
+    /**
+     * Center the content in the new size, without resizing the content iself.
+     */
+    VELViewContentModeCenter,
+
+    /**
+     * Keep the content centered at the top in the new size, without resizing
+     * the content iself.
+     */
+    VELViewContentModeTop,
+
+    /**
+     * Keep the content centered at the bottom in the new size, without resizing
+     * the content itself.
+     */
+    VELViewContentModeBottom,
+
+    /**
+     * Keep the content centered at the left in the new size, without resizing
+     * the content itself.
+     */
+    VELViewContentModeLeft,
+
+    /**
+     * Keep the content centered at the right in the new size, without resizing
+     * the content itself.
+     */
+    VELViewContentModeRight,
+
+    /**
+     * Keep the content in the top-left of the new size, without resizing the
+     * content itself.
+     */
+    VELViewContentModeTopLeft,
+
+    /**
+     * Keep the content in the top-right of the new size, without resizing the
+     * content itself.
+     */
+    VELViewContentModeTopRight,
+
+    /**
+     * Keep the content in the bottom-left of the new size, without resizing the
+     * content itself.
+     */
+    VELViewContentModeBottomLeft,
+
+    /**
+     * Keep the content in the bottom-right of the new size, without resizing
+     * the content itself.
+     */
+    VELViewContentModeBottomRight
+} VELViewContentMode;
+
+/**
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a <NSVelvetView>.
  */
@@ -328,6 +409,32 @@ typedef enum {
  * The default value for this property is `NO` (unlike `UIView`).
  */
 @property (nonatomic, assign, getter = isOpaque) BOOL opaque;
+
+/**
+ * Determines how the content of the view is adjusted when its <bounds> changes.
+ *
+ * The default value for this property is `VELViewContentModeRedraw` (unlike
+ * `UIView`). Subclasses may initialize this to a different value.
+ */
+@property (nonatomic, assign) VELViewContentMode contentMode;
+
+/**
+ * Defines which portions of the receiver's content are stretchable.
+ *
+ * This controls how a view's content is stretched to fill its bounds, such as
+ * during an animation, or if the <contentMode> is
+ * `VELViewContentModeScaleToFill`.
+ *
+ * This property is specified in the unit coordinate space, where the values of
+ * the rectangle are normalized from zero to one, inclusive. Specifying a value
+ * of 0.5, for instance, indicates a span that is half of the size of the view
+ * in that dimension.
+ *
+ * The default value for this property is a rectangle starting at `(0, 0)` and
+ * extending to `(1, 1)`, indicating that the entirety of the view's content is
+ * stretchable.
+ */
+@property (nonatomic, assign) CGRect contentStretch;
 
 /**
  * If the view's appearance is not provided by its layer, this method should

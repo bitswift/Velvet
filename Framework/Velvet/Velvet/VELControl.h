@@ -34,13 +34,13 @@ typedef enum {
 @interface VELControl : VELView
 
 /**
- * @name Setting and Getting Control Attributes
+ * @name Setting and Getting Control States
  */
 
 /**
  * A Boolean value that determines the receiver’s selected state.
  */
-@property (nonatomic, assign) BOOL selected;
+@property (nonatomic, assign, getter = isSelected) BOOL selected;
 
 /**
  * @name Event Dispatch

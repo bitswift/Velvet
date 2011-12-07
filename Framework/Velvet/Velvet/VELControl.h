@@ -26,6 +26,14 @@ typedef enum {
     VELControlEventDoubleClicked = (1 << 1),
 
     /**
+     * The value of the control has changed.
+     *
+     * The concept of the control's "value" is specific to the type of control
+     * being used. <VELControl> itself does not trigger this event.
+     */
+    VELControlEventValueChanged = (1 << 2),
+
+    /**
      * A range of event values available for application use.
      */
     VELControlEventApplicationReserved = 0xFF000000,

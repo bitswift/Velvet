@@ -9,6 +9,8 @@
 #import <Velvet/VELLabel.h>
 #import <ApplicationServices/ApplicationServices.h>
 
+static NSString * const VELLabelEmptyAttributedString = @"\0";
+
 @implementation VELLabel
 
 #pragma mark Properties
@@ -18,6 +20,69 @@
 - (void)setFormattedText:(NSAttributedString *)str {
     m_formattedText = [str copy];
     [self.layer setNeedsDisplay];
+}
+
+- (NSString *)text {
+    NSString *str = self.formattedText.string;
+
+    if ([str isEqualToString:VELLabelEmptyAttributedString])
+        return nil;
+    else
+        return str;
+}
+
+- (void)setText:(NSString *)text {
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:VELLabelEmptyAttributedString];
+
+    if (self.formattedText)
+        [attributedString setAttributedString:self.formattedText];
+
+    if (!text)
+        text = VELLabelEmptyAttributedString;
+
+    [attributedString replaceCharactersInRange:NSMakeRange(0, attributedString.length) withString:text];
+
+    self.formattedText = attributedString;
+}
+
+- (NSFont *)font {
+    return [self.formattedText attribute:NSFontAttributeName atIndex:0 effectiveRange:NULL];
+}
+
+- (void)setFont:(NSFont *)font {
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:VELLabelEmptyAttributedString];
+
+    if (self.formattedText)
+        [attributedString setAttributedString:self.formattedText];
+
+    NSRange range = NSMakeRange(0, attributedString.length);
+
+    if (font)
+        [attributedString addAttribute:NSFontAttributeName value:font range:range];
+    else
+        [attributedString removeAttribute:NSFontAttributeName range:range];
+
+    self.formattedText = attributedString;
+}
+
+- (NSColor *)textColor {
+    return [self.formattedText attribute:NSForegroundColorAttributeName atIndex:0 effectiveRange:NULL];
+}
+
+- (void)setTextColor:(NSColor *)color {
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:VELLabelEmptyAttributedString];
+
+    if (self.formattedText)
+        [attributedString setAttributedString:self.formattedText];
+
+    NSRange range = NSMakeRange(0, attributedString.length);
+
+    if (color)
+        [attributedString addAttribute:NSForegroundColorAttributeName value:color range:range];
+    else
+        [attributedString removeAttribute:NSForegroundColorAttributeName range:range];
+
+    self.formattedText = attributedString;
 }
 
 #pragma mark Lifecycle

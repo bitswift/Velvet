@@ -59,6 +59,7 @@
 		D0D8C3AA14785A1300FC9015 /* VELView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D8C3A814785A1300FC9015 /* VELView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D8C3AB14785A1300FC9015 /* VELView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C3A914785A1300FC9015 /* VELView.m */; };
 		D0D8C3AD14785CEE00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
+		D0DB8A7D149028D60082D3DA /* VELLabelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0DB8A7C149028D60082D3DA /* VELLabelTests.m */; };
 		D0E8B35414831419003980B4 /* VELImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E8B35214831419003980B4 /* VELImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0E8B35514831419003980B4 /* VELImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E8B35314831419003980B4 /* VELImageView.m */; };
 		D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
@@ -67,7 +68,6 @@
 		D0EFFC1C147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
 		D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC01147851A80095AB35 /* Velvet.framework */; };
 		D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC23147851A80095AB35 /* InfoPlist.strings */; };
-		D0EFFC28147851A80095AB35 /* VelvetTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFC27147851A80095AB35 /* VelvetTests.m */; };
 		D0FBA3221482086100F9F5F6 /* metamacros.h in Headers */ = {isa = PBXBuildFile; fileRef = D0FBA3211482086100F9F5F6 /* metamacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0FBA3271482086B00F9F5F6 /* EXTRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0FBA3231482086B00F9F5F6 /* EXTRuntimeExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0FBA3281482086B00F9F5F6 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0FBA3241482086B00F9F5F6 /* EXTRuntimeExtensions.m */; };
@@ -137,6 +137,8 @@
 		D0D8C3A814785A1300FC9015 /* VELView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELView.h; sourceTree = "<group>"; };
 		D0D8C3A914785A1300FC9015 /* VELView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELView.m; sourceTree = "<group>"; };
 		D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D0DB8A7B149028D60082D3DA /* VELLabelTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabelTests.h; sourceTree = "<group>"; };
+		D0DB8A7C149028D60082D3DA /* VELLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabelTests.m; sourceTree = "<group>"; };
 		D0E8B35214831419003980B4 /* VELImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELImageView.h; sourceTree = "<group>"; };
 		D0E8B35314831419003980B4 /* VELImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELImageView.m; sourceTree = "<group>"; };
 		D0EFFC01147851A80095AB35 /* Velvet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Velvet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -152,8 +154,6 @@
 		D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		D0EFFC22147851A80095AB35 /* VelvetTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "VelvetTests-Info.plist"; sourceTree = "<group>"; };
 		D0EFFC24147851A80095AB35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		D0EFFC26147851A80095AB35 /* VelvetTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VelvetTests.h; sourceTree = "<group>"; };
-		D0EFFC27147851A80095AB35 /* VelvetTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VelvetTests.m; sourceTree = "<group>"; };
 		D0EFFC33147851E70095AB35 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		D0EFFC35147851E70095AB35 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		D0EFFC36147851E70095AB35 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Profile.xcconfig; sourceTree = "<group>"; };
@@ -354,8 +354,8 @@
 		D0EFFC20147851A80095AB35 /* VelvetTests */ = {
 			isa = PBXGroup;
 			children = (
-				D0EFFC26147851A80095AB35 /* VelvetTests.h */,
-				D0EFFC27147851A80095AB35 /* VelvetTests.m */,
+				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
+				D0DB8A7C149028D60082D3DA /* VELLabelTests.m */,
 				D0EFFC21147851A80095AB35 /* Supporting Files */,
 			);
 			path = VelvetTests;
@@ -628,7 +628,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D0EFFC28147851A80095AB35 /* VelvetTests.m in Sources */,
+				D0DB8A7D149028D60082D3DA /* VELLabelTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

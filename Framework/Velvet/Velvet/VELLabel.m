@@ -113,13 +113,17 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
         CGContextClearRect(context, rect);
     }
 
+    NSAttributedString *attributedString = self.formattedText;
+    if ([attributedString.string isEqualToString:VELLabelEmptyAttributedString])
+        return;
+
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
 
     CGMutablePathRef path = CGPathCreateMutable();
 
     CGPathAddRect(path, NULL, self.bounds);
 
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.formattedText);
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
 
     CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
     CTFrameDraw(frame, context);

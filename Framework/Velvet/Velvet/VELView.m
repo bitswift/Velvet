@@ -488,6 +488,10 @@ static IMP VELViewDrawRectIMP = NULL;
         [subview willMoveToHostView:hostView];
 }
 
+- (NSResponder *)nextResponder {
+    return self.superview ?: self.hostView;
+}
+
 #pragma mark Geometry
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {

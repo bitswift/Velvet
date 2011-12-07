@@ -19,6 +19,7 @@ typedef void (^VELControlActionBlock)(void);
 #pragma mark Properties
 
 @synthesize actions = m_actions;
+@synthesize selected = m_selected;
 
 #pragma mark Lifecycle
 

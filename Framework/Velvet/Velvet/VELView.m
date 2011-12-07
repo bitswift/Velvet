@@ -435,7 +435,7 @@ static IMP VELViewDrawRectIMP = NULL;
     VELView *parentView = self;
 
     do {
-        if ([view isDescendantOfView:parentView]) 
+        if ([view isDescendantOfView:parentView])
             return parentView;
 
         parentView = parentView.superview;
@@ -475,6 +475,13 @@ static IMP VELViewDrawRectIMP = NULL;
 - (void)removeFromSuperview; {
     [CATransaction performWithDisabledActions:^{
         [self willMoveToHostView:nil];
+        
+        id responder = [self.window firstResponder];
+        if ([responder isKindOfClass:[VELView class]]) {
+            if ([responder isDescendantOfView:self]) {
+                [self.window makeFirstResponder:self.nextResponder];
+            }
+        }
 
         [self.layer removeFromSuperlayer];
         self.superview = nil;
@@ -491,6 +498,8 @@ static IMP VELViewDrawRectIMP = NULL;
 - (NSResponder *)nextResponder {
     return self.superview ?: self.hostView;
 }
+
+
 
 #pragma mark Geometry
 

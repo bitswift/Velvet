@@ -173,6 +173,10 @@
         NSLog(@"Square view click action!");
     }];
 
+    [self.nestedSquareView addActionForControlEvents:VELControlEventDoubleClicked usingBlock:^{
+        NSLog(@"Square view double-click action!");
+    }];
+
     NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 28)];
     [button setButtonType:NSMomentaryPushInButton];
     [button setBezelStyle:NSRoundedBezelStyle];

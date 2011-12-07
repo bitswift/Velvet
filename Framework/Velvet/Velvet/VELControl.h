@@ -18,6 +18,14 @@ typedef enum {
     VELControlEventClicked = (1 << 0),
 
     /**
+     * The control was double-clicked.
+     *
+     * This event is always sent after two <VELControlEventClicked> events (one
+     * for each click).
+     */
+    VELControlEventDoubleClicked = (1 << 1),
+
+    /**
      * A range of event values available for application use.
      */
     VELControlEventApplicationReserved = 0xFF000000,

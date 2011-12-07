@@ -95,6 +95,10 @@ typedef void (^VELControlActionBlock)(void);
         return;
 
     [self sendActionsForControlEvents:VELControlEventClicked];
+
+    if (theEvent.clickCount > 0 && (theEvent.clickCount % 2) == 0) {
+        [self sendActionsForControlEvents:VELControlEventDoubleClicked];
+    }
 }
 
 @end

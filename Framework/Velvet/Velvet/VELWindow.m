@@ -189,6 +189,12 @@
     NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
 
     id velvetView = self.rootView;
+
+    CGPoint viewPoint = [velvetView convertFromWindowPoint:windowPoint];
+    if (!CGRectContainsPoint(self.rootView.bounds, viewPoint)) {
+        return nil;
+    }
+    
     while (YES) {
         if ([velvetView isKindOfClass:[VELNSView class]]) {
             NSView *nsView = [(id)velvetView NSView];

@@ -19,6 +19,20 @@
                ReferencedContainer = "container:Velvet.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D0EFFC18147851A80095AB35"
+               BuildableName = "VelvetTests.octest"
+               BlueprintName = "VelvetTests"
+               ReferencedContainer = "container:Velvet.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

@@ -445,6 +445,8 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)didMoveToHostView; {
+    self.nextResponder = self.superview ?: self.hostView;
+
     for (VELView *subview in self.subviews)
         [subview didMoveToHostView];
 }
@@ -494,12 +496,6 @@ static IMP VELViewDrawRectIMP = NULL;
     for (VELView *subview in self.subviews)
         [subview willMoveToHostView:hostView];
 }
-
-- (NSResponder *)nextResponder {
-    return self.superview ?: self.hostView;
-}
-
-
 
 #pragma mark Geometry
 

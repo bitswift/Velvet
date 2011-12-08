@@ -167,72 +167,45 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
         CFRelease(framesetter);
     };
     
-    CFRange range = CFRangeMake(0, 0);
+    CFRange entireRange = CFRangeMake(0, 0);
     
-    CGMutablePathRef path = CGPathCreateMutable();
-    @onExit {
-        CGPathRelease(path);
-    };
+    // the range of text that we will actually display
+    CFRange desiredRange;
     
-    CGPathAddRect(path, NULL, CGRectMake(0, 0, constraint.width, constraint.height));
-    
-    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, range, path, NULL);
-    @onExit {
-        CFRelease(frame);
-    };
-
-    NSArray *lines = (__bridge NSArray *)CTFrameGetLines(frame);
-    NSUInteger count = [lines count];
-    if (!count) {
-        return CGSizeZero;
-    }
-    
-    CGPoint *origins = calloc(count, sizeof(*origins));
-    if (!origins) {
-        NSLog(@"*** Could not allocate text origins");
-        return CGSizeZero;
-    }
-    
-    @onExit {
-        free(origins);
-    };
-    
-    CTFrameGetLineOrigins(frame, CFRangeMake(0, count), origins);
-    
-    __block CGRect finalRect = CGRectZero;
-    __block CGFloat yOffset = 0;
-    
-    // enumerate through every line, calculating each line's rectangle and unioning them all together to get the final size of our text
-    [lines enumerateObjectsUsingBlock:^(id line, NSUInteger index, BOOL *stop){
-        if (maximumLines > 0 && index >= maximumLines) {
-            *stop = YES;
-            return;
+    if (maximumLines == 0) {
+        desiredRange = entireRange;
+    } else {
+        CGMutablePathRef path = CGPathCreateMutable();
+        @onExit {
+            CGPathRelease(path);
+        };
+        
+        CGPathAddRect(path, NULL, CGRectMake(0, 0, constraint.width, constraint.height));
+        
+        CTFrameRef frame = CTFramesetterCreateFrame(framesetter, entireRange, path, NULL);
+        @onExit {
+            CFRelease(frame);
+        };
+        
+        NSArray *lines = (__bridge NSArray *)CTFrameGetLines(frame);
+        NSUInteger count = [lines count];
+        if (!count) {
+            return CGSizeZero;
         }
+        
+        NSUInteger lastIndex = count - 1;
+        if (maximumLines && (lastIndex >= maximumLines))
+            lastIndex = maximumLines - 1;
+        
+        CTLineRef lastLine = (__bridge CTLineRef)[lines objectAtIndex:lastIndex];
+        CFRange lastLineRange = CTLineGetStringRange(lastLine);
+        desiredRange = CFRangeMake(0, lastLineRange.location + lastLineRange.length);
+    }
     
-        CGFloat ascent, descent, leading;
-        
-        // get the width of the line, minus any trailing whitespace
-        CGFloat lineWidth = CTLineGetTypographicBounds((__bridge CTLineRef)line, &ascent, &descent, &leading);
-        lineWidth -= CTLineGetTrailingWhitespaceWidth((__bridge CTLineRef)line);
-        
-        // get the height of the line
-        CGFloat lineHeight = ascent + descent + leading;
-        
-        // calculate where this line should start from vertically, flipping the inverted coordinates that Core Text gives us
-        yOffset += constraint.height - origins[index].y;
-        
-        // the rectangle for this line alone
-        CGRect lineRect = CGRectMake(origins[index].x, yOffset, ceil(lineWidth), ceil(lineHeight));
-        
-        // concatenate this line's rectangle with all previous lines
-        finalRect = CGRectUnion(finalRect, lineRect);
-        
-        // and update Y position to skip over this line's height
-        yOffset += CGRectGetHeight(lineRect);
-    }];
+    CGSize textSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, desiredRange, NULL, constraint, NULL);
     
-    // return the size of the total rectangle for all the text
-    return finalRect.size;
+    // round to integral points
+    return CGSizeMake(ceil(textSize.width), ceil(textSize.height));
 }
 
 @end

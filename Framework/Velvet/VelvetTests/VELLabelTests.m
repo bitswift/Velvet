@@ -74,6 +74,25 @@
     STAssertTrue(styleBreakMode == kCTLineBreakByClipping, @"");
 }
 
+- (void)testTextAlignment {
+    VELTextAlignment textAlignment = VELTextAlignmentJustified;
+
+    VELLabel *label = [[VELLabel alloc] init];
+    label.textAlignment = textAlignment;
+
+    STAssertEquals(label.textAlignment, textAlignment, @"");
+
+    NSDictionary *attributes = [label.formattedText attributesAtIndex:0 effectiveRange:NULL];
+    STAssertNotNil(attributes, @"");
+
+    CTParagraphStyleRef style = (__bridge CTParagraphStyleRef)[attributes objectForKey:NSParagraphStyleAttributeName];
+
+    CTTextAlignment styleAlignment;
+    STAssertTrue(CTParagraphStyleGetValueForSpecifier(style, kCTParagraphStyleSpecifierAlignment, sizeof(styleAlignment), &styleAlignment), @"");
+
+    STAssertTrue(styleAlignment = kCTJustifiedTextAlignment, @"");
+}
+
 - (void)testFormattedText {
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"The quick brown fox jumped over the lazy dog."];
 

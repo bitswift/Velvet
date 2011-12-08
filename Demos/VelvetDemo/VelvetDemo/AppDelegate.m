@@ -157,8 +157,9 @@
                                 ];
 
     VELLabel *label = [[VELLabel alloc] init];
-    label.formattedText = [[NSAttributedString alloc] initWithString:@"** Hello world! **" attributes:attributes];
-    label.frame = CGRectMake(0, 400, 300, 60);
+    label.formattedText = [[NSAttributedString alloc] initWithString:@"** Hello world! This is a really long string. **" attributes:attributes];
+    label.frame = CGRectMake(0, 400, 100, 60);
+    label.lineBreakMode = VELLineBreakModeMiddleTruncation;
     label.backgroundColor = [NSColor whiteColor];
     label.opaque = YES;
 

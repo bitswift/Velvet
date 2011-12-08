@@ -7,10 +7,22 @@
 //
 
 #import <Velvet/VELLabel.h>
-#import <ApplicationServices/ApplicationServices.h>
 #import "EXTScope.h"
 
 static NSString * const VELLabelEmptyAttributedString = @"\0";
+
+@interface VELLabel ()
+/*
+ * Sets an attribute over the full length of the <formattedText>.
+ *
+ * This will replace any existing attributes with the given name.
+ *
+ * @param attributeName The name of the attribute to set.
+ * @param value The value of the attribute. If this argument is `nil`, any
+ * existing attributes are removed instead of being replaced.
+ */
+- (void)setAttribute:(NSString *)attributeName value:(id)value;
+@end
 
 @implementation VELLabel
 
@@ -52,19 +64,7 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 }
 
 - (void)setFont:(NSFont *)font {
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:VELLabelEmptyAttributedString];
-
-    if (self.formattedText)
-        [attributedString setAttributedString:self.formattedText];
-
-    NSRange range = NSMakeRange(0, attributedString.length);
-
-    if (font)
-        [attributedString addAttribute:NSFontAttributeName value:font range:range];
-    else
-        [attributedString removeAttribute:NSFontAttributeName range:range];
-
-    self.formattedText = attributedString;
+    [self setAttribute:NSFontAttributeName value:font];
 }
 
 - (NSColor *)textColor {
@@ -72,19 +72,34 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 }
 
 - (void)setTextColor:(NSColor *)color {
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:VELLabelEmptyAttributedString];
+    [self setAttribute:NSForegroundColorAttributeName value:color];
+}
 
-    if (self.formattedText)
-        [attributedString setAttributedString:self.formattedText];
+- (VELLineBreakMode)lineBreakMode {
+    CTParagraphStyleRef paragraphStyle = (__bridge CTParagraphStyleRef)[self.formattedText attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:NULL];
 
-    NSRange range = NSMakeRange(0, attributedString.length);
+    CTLineBreakMode lineBreakMode = 0;
 
-    if (color)
-        [attributedString addAttribute:NSForegroundColorAttributeName value:color range:range];
-    else
-        [attributedString removeAttribute:NSForegroundColorAttributeName range:range];
+    if (paragraphStyle) {
+        CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierLineBreakMode, sizeof(lineBreakMode), &lineBreakMode);
+    }
 
-    self.formattedText = attributedString;
+    return lineBreakMode;
+}
+
+- (void)setLineBreakMode:(VELLineBreakMode)mode {
+    CTLineBreakMode lineBreakMode = mode;
+    
+    CTParagraphStyleSetting settings[] = {
+        {
+            .spec = kCTParagraphStyleSpecifierLineBreakMode,
+            .valueSize = sizeof(lineBreakMode),
+            .value = &lineBreakMode
+        }
+    };
+
+    CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(settings, sizeof(settings) / sizeof(*settings));
+    [self setAttribute:NSParagraphStyleAttributeName value:(__bridge_transfer id)paragraphStyle];
 }
 
 - (void)setNumberOfLines:(NSUInteger)numberOfLines {
@@ -206,6 +221,24 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
     
     // round to integral points
     return CGSizeMake(ceil(textSize.width), ceil(textSize.height));
+}
+
+#pragma mark Formatting
+
+- (void)setAttribute:(NSString *)attributeName value:(id)value; {
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:VELLabelEmptyAttributedString];
+
+    if (self.formattedText)
+        [attributedString setAttributedString:self.formattedText];
+
+    NSRange range = NSMakeRange(0, attributedString.length);
+
+    if (value)
+        [attributedString addAttribute:attributeName value:value range:range];
+    else
+        [attributedString removeAttribute:attributeName range:range];
+
+    self.formattedText = attributedString;
 }
 
 @end

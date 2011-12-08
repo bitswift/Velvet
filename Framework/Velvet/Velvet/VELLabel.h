@@ -7,6 +7,48 @@
 //
 
 #import <Velvet/VELView.h>
+#import <ApplicationServices/ApplicationServices.h>
+
+/**
+ * Describes how text should wrap or truncate.
+ */
+typedef enum {
+    /**
+     * Wrap text only at word boundaries.
+     */
+    VELLineBreakModeWordWrap = kCTLineBreakByWordWrapping,
+
+    /**
+     * Wrap text at the closest character boundary.
+     */
+    VELLineBreakModeCharacterWrap = kCTLineBreakByCharWrapping,
+
+    /**
+     * Clip rendered text when the end of the drawing rectangle is reached.
+     */
+    VELLineBreakModeClip = kCTLineBreakByClipping,
+
+    /**
+     * Truncate text as needed from the beginning of the line.
+     *
+     * For multiple lines of text, only text on the first line is truncated.
+     */
+    VELLineBreakModeHeadTruncation = kCTLineBreakByTruncatingHead,
+
+    /**
+     * Truncate text as needed from the end of the line.
+     *
+     * For multiple lines of text, only text on the last line is truncated.
+     */
+    VELLineBreakModeTailTruncation = kCTLineBreakByTruncatingTail,
+
+    /**
+     * Truncate text as needed from the middle of the line.
+     *
+     * For multiple lines of text, only the text at the middle is truncated.
+     */
+    VELLineBreakModeMiddleTruncation = kCTLineBreakByTruncatingMiddle
+} VELLineBreakMode;
 
 /**
  * A simple text label.
@@ -69,5 +111,17 @@
  * Defaults to 1.
  */
 @property (nonatomic, assign) NSUInteger numberOfLines;
+
+/**
+ * How the the text of the label should wrap or truncate, if it is too large for
+ * the label's bounds.
+ *
+ * Setting this property will apply a paragraph style to the whole
+ * <formattedText> string, replacing any existing paragraph style(s).
+ *
+ * When reading this property, if <formattedText> contains multiple paragraph
+ * styles, this will return the first one.
+ */
+@property (nonatomic, assign) VELLineBreakMode lineBreakMode;
 
 @end

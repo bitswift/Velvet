@@ -97,7 +97,7 @@
     CGSize multiLineSize = [label sizeThatFits:CGSizeMake(width, 0)];
     NSLog(@"multiLineSize: %@", NSStringFromSize(multiLineSize));
     
-    STAssertTrue(multiLineSize.width <= width, @"");
+    STAssertTrue(multiLineSize.width <= singleLineSize.width, @"");
     STAssertTrue(multiLineSize.height > singleLineSize.height, @"");
 }
 

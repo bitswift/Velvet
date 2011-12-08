@@ -157,9 +157,9 @@
                                 ];
 
     VELLabel *label = [[VELLabel alloc] init];
-    label.formattedText = [[NSAttributedString alloc] initWithString:@"** Hello world! This is a really long string. **" attributes:attributes];
+    label.formattedText = [[NSAttributedString alloc] initWithString:@"Justified text!" attributes:attributes];
     label.frame = CGRectMake(0, 400, 100, 60);
-    label.lineBreakMode = VELLineBreakModeMiddleTruncation;
+    label.textAlignment = VELTextAlignmentJustified;
     label.backgroundColor = [NSColor whiteColor];
     label.opaque = YES;
 

@@ -120,7 +120,7 @@ typedef enum {
  * <formattedText> string, replacing any existing paragraph style(s).
  *
  * When reading this property, if <formattedText> contains multiple paragraph
- * styles, this will return the first one.
+ * styles, this will return the line break mode of the first one.
  */
 @property (nonatomic, assign) VELLineBreakMode lineBreakMode;
 

@@ -22,6 +22,12 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
  * existing attributes are removed instead of being replaced.
  */
 - (void)setAttribute:(NSString *)attributeName value:(id)value;
+
+/*
+ * Replaces the paragraph style of the <formattedText> with one created from the
+ * receiver's style properties.
+ */
+- (void)setParagraphStyle;
 @end
 
 @implementation VELLabel
@@ -30,6 +36,7 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 
 @synthesize formattedText = m_formattedText;
 @synthesize numberOfLines = m_numberOfLines;
+@synthesize lineBreakMode = m_lineBreakMode;
 
 - (void)setFormattedText:(NSAttributedString *)str {
     m_formattedText = [str copy];
@@ -88,18 +95,8 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 }
 
 - (void)setLineBreakMode:(VELLineBreakMode)mode {
-    CTLineBreakMode lineBreakMode = mode;
-    
-    CTParagraphStyleSetting settings[] = {
-        {
-            .spec = kCTParagraphStyleSpecifierLineBreakMode,
-            .valueSize = sizeof(lineBreakMode),
-            .value = &lineBreakMode
-        }
-    };
-
-    CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(settings, sizeof(settings) / sizeof(*settings));
-    [self setAttribute:NSParagraphStyleAttributeName value:(__bridge_transfer id)paragraphStyle];
+    m_lineBreakMode = mode;
+    [self setParagraphStyle];
 }
 
 - (void)setNumberOfLines:(NSUInteger)numberOfLines {
@@ -239,6 +236,21 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
         [attributedString removeAttribute:attributeName range:range];
 
     self.formattedText = attributedString;
+}
+
+- (void)setParagraphStyle {
+    CTLineBreakMode lineBreakMode = m_lineBreakMode;
+    
+    CTParagraphStyleSetting settings[] = {
+        {
+            .spec = kCTParagraphStyleSpecifierLineBreakMode,
+            .valueSize = sizeof(lineBreakMode),
+            .value = &lineBreakMode
+        }
+    };
+
+    CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(settings, sizeof(settings) / sizeof(*settings));
+    [self setAttribute:NSParagraphStyleAttributeName value:(__bridge_transfer id)paragraphStyle];
 }
 
 @end

@@ -75,6 +75,33 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
     [self setAttribute:NSForegroundColorAttributeName value:color];
 }
 
+- (VELLineBreakMode)lineBreakMode {
+    CTParagraphStyleRef paragraphStyle = (__bridge CTParagraphStyleRef)[self.formattedText attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:NULL];
+
+    CTLineBreakMode lineBreakMode = 0;
+
+    if (paragraphStyle) {
+        CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierLineBreakMode, sizeof(lineBreakMode), &lineBreakMode);
+    }
+
+    return lineBreakMode;
+}
+
+- (void)setLineBreakMode:(VELLineBreakMode)mode {
+    CTLineBreakMode lineBreakMode = mode;
+    
+    CTParagraphStyleSetting settings[] = {
+        {
+            .spec = kCTParagraphStyleSpecifierLineBreakMode,
+            .valueSize = sizeof(lineBreakMode),
+            .value = &lineBreakMode
+        }
+    };
+
+    CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(settings, sizeof(settings) / sizeof(*settings));
+    [self setAttribute:NSParagraphStyleAttributeName value:(__bridge_transfer id)paragraphStyle];
+}
+
 - (void)setNumberOfLines:(NSUInteger)numberOfLines {
     m_numberOfLines = numberOfLines;
     [self setNeedsDisplay];

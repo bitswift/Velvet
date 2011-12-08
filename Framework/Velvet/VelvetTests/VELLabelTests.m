@@ -80,4 +80,25 @@
     STAssertEqualObjects(label.textColor, firstColor, @"");
 }
 
+- (void)testNumberOfLines {
+    VELLabel *label = [[VELLabel alloc] init];
+    label.text = @"This is a really long string. This is a really long string. This is a really long string. This is a really long string.";
+    
+    STAssertEquals(label.numberOfLines, (NSUInteger)1, @"");
+    
+    CGFloat width = 80;
+    CGSize singleLineSize = [label sizeThatFits:CGSizeMake(width, 0)];
+    NSLog(@"singleLineSize: %@", NSStringFromSize(singleLineSize));
+    
+    STAssertTrue(singleLineSize.width > width, @"");
+    STAssertTrue(singleLineSize.height > 0.0f, @"");
+    
+    label.numberOfLines = 3;
+    CGSize multiLineSize = [label sizeThatFits:CGSizeMake(width, 0)];
+    NSLog(@"multiLineSize: %@", NSStringFromSize(multiLineSize));
+    
+    STAssertTrue(multiLineSize.width <= width, @"");
+    STAssertTrue(multiLineSize.height > singleLineSize.height, @"");
+}
+
 @end

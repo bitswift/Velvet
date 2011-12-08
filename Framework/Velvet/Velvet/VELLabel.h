@@ -57,4 +57,17 @@
  */
 @property (nonatomic, copy) NSColor *textColor;
 
+/**
+ * The maximum number of lines to draw the formatted text into.
+ * 
+ * If `numberOfLines` is 0, text will be drawn using as many lines
+ * as required.
+ * 
+ * If the text doesn't fit in the number of lines specified, within the
+ * bounds of the control, it will be truncated.
+ * 
+ * Defaults to 1.
+ */
+@property (nonatomic, assign) NSUInteger numberOfLines;
+
 @end

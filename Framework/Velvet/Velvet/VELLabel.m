@@ -37,6 +37,7 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 @synthesize formattedText = m_formattedText;
 @synthesize numberOfLines = m_numberOfLines;
 @synthesize lineBreakMode = m_lineBreakMode;
+@synthesize textAlignment = m_textAlignment;
 
 - (void)setFormattedText:(NSAttributedString *)str {
     m_formattedText = [str copy];
@@ -102,6 +103,23 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 - (void)setNumberOfLines:(NSUInteger)numberOfLines {
     m_numberOfLines = numberOfLines;
     [self setNeedsDisplay];
+}
+
+- (VELTextAlignment)textAlignment {
+    CTParagraphStyleRef paragraphStyle = (__bridge CTParagraphStyleRef)[self.formattedText attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:NULL];
+
+    CTTextAlignment textAlignment = 0;
+
+    if (paragraphStyle) {
+        CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierAlignment, sizeof(textAlignment), &textAlignment);
+    }
+
+    return textAlignment;
+}
+
+- (void)setTextAlignment:(VELTextAlignment)alignment {
+    m_textAlignment = alignment;
+    [self setParagraphStyle];
 }
 
 #pragma mark Lifecycle
@@ -240,12 +258,18 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 
 - (void)setParagraphStyle {
     CTLineBreakMode lineBreakMode = m_lineBreakMode;
+    CTTextAlignment textAlignment = m_textAlignment;
     
     CTParagraphStyleSetting settings[] = {
         {
             .spec = kCTParagraphStyleSpecifierLineBreakMode,
             .valueSize = sizeof(lineBreakMode),
             .value = &lineBreakMode
+        },
+        {
+            .spec = kCTParagraphStyleSpecifierAlignment,
+            .valueSize = sizeof(textAlignment),
+            .value = &textAlignment
         }
     };
 

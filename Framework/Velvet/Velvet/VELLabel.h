@@ -51,6 +51,37 @@ typedef enum {
 } VELLineBreakMode;
 
 /**
+ * Describes the alignment of a line or block of text.
+ */
+typedef enum {
+    /**
+     * Text is visually left-aligned.
+     */
+    VELTextAlignmentLeft = kCTLeftTextAlignment,
+
+    /**
+     * Text is visually center-aligned.
+     */
+    VELTextAlignmentCenter = kCTCenterTextAlignment,
+
+    /**
+     * Text is visually right-aligned.
+     */
+    VELTextAlignmentRight = kCTRightTextAlignment,
+
+    /**
+     * Everything but the last line of text is fully justified. The last line of
+     * text is naturally aligned.
+     */
+    VELTextAlignmentJustified = kCTJustifiedTextAlignment,
+
+    /**
+     * Text uses its script's natural alignment.
+     */
+    VELTextAlignmentNatural = kCTNaturalTextAlignment
+} VELTextAlignment;
+
+/**
  * A simple text label.
  */
 @interface VELLabel : VELView
@@ -117,11 +148,24 @@ typedef enum {
  * the label's bounds.
  *
  * Setting this property will apply a paragraph style to the whole
- * <formattedText> string, replacing any existing paragraph style(s).
+ * <formattedText> string. Any existing paragraph style(s) will be replaced with
+ * one constructed from the values of this property and <textAlignment>.
  *
  * When reading this property, if <formattedText> contains multiple paragraph
  * styles, this will return the line break mode of the first one.
  */
 @property (nonatomic, assign) VELLineBreakMode lineBreakMode;
+
+/**
+ * How the text of the label should be aligned.
+ *
+ * Setting this property will apply a paragraph style to the whole
+ * <formattedText> string. Any existing paragraph style(s) will be replaced with
+ * one constructed from the values of this property and <lineBreakMode>.
+ *
+ * When reading this property, if <formattedText> contains multiple paragraph
+ * styles, this will return the text alignment of the first one.
+ */
+@property (nonatomic, assign) VELTextAlignment textAlignment;
 
 @end

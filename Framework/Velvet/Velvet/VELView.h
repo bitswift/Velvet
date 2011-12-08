@@ -350,8 +350,9 @@ typedef enum {
  * <bounds>.
  *
  * @param constraint The size to which the receiver should be constrained. If
- * this is `CGSizeZero`, the receiver should return its generally preferred
- * size.
+ * either dimension of this size is zero, the receiver is not constrained in
+ * that dimension. If both dimensions are zero (the size is `CGSizeZero`), the
+ * receiver should return its generally preferred size.
  */
 - (CGSize)sizeThatFits:(CGSize)constraint;
 

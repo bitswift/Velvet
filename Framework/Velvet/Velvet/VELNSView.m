@@ -149,6 +149,8 @@
 - (void)willMoveToHostView:(NSVelvetView *)hostView {
     [super willMoveToHostView:hostView];
     [self.NSView removeFromSuperview];
+    [self.focusRingLayer removeFromSuperlayer];
+    self.focusRingLayer = nil;
 }
 
 - (void)didMoveToHostView {

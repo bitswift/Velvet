@@ -161,15 +161,37 @@
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
     if (!context)
         return;
+    
+    BOOL shouldClip = YES;
 
-    CGRect contextBounds = self.clippedView.layer.bounds;
-    CGRect viewBounds = [self.clippedView.layer convertAndClipRect:contextBounds toLayer:layer];
+    // whether the view to clip to is within a scroll view of our creation
+    // if this is true, we should always clip
+    BOOL clippingToScrollView = ([self.clippedView ancestorScrollView] != nil);
+
+    if (!clippingToScrollView && [self.originalLayerDelegate isKindOfClass:[NSView class]]) {
+        NSView *originalView = self.originalLayerDelegate;
+
+        // if one of the ancestors of this view is a scroll view or clip view,
+        // we shouldn't clip it ourselves
+        while ((originalView = originalView.superview)) {
+            if ([originalView isKindOfClass:[NSClipView class]] || [originalView isKindOfClass:[NSScrollView class]]) {
+                shouldClip = NO;
+                break;
+            }
+
+            originalView = originalView.superview;
+        }
+    }
 
     CGContextSaveGState(context);
-    CGContextClipToRect(context, viewBounds);
+
+    if (shouldClip) {
+        CGRect contextBounds = self.clippedView.layer.bounds;
+        CGRect viewBounds = [self.clippedView.layer convertAndClipRect:contextBounds toLayer:layer];
+        CGContextClipToRect(context, viewBounds);
+    }
 
     [self.originalLayerDelegate drawLayer:layer inContext:context];
-
     CGContextRestoreGState(context);
 }
 

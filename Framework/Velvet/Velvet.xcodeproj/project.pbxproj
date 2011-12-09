@@ -11,6 +11,9 @@
 		0DCD37C7147DB86200A9D6E4 /* NSVelvetHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */; };
 		0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DEDDD3D147B5D5C0087037C /* VELWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DEDDD3E147B5D5C0087037C /* VELWindow.m */; };
+		1ABB20311492994D002F7D6D /* VELNSArrayAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ABB20301492994C002F7D6D /* VELNSArrayAdditionsTests.m */; };
+		1ABB203414929961002F7D6D /* NSArray+HigherOrderAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1ABB203214929961002F7D6D /* NSArray+HigherOrderAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1ABB203514929961002F7D6D /* NSArray+HigherOrderAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ABB203314929961002F7D6D /* NSArray+HigherOrderAdditions.m */; };
 		1E1790EC1481CC6C00177DC0 /* NSViewClipRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E1790EA1481CC6C00177DC0 /* NSViewClipRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1E1790ED1481CC6C00177DC0 /* NSViewClipRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E1790EB1481CC6C00177DC0 /* NSViewClipRenderer.m */; };
 		1E2819481481EAEF006A747C /* VELCAAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819451481EAEF006A747C /* VELCAAction.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -93,6 +96,10 @@
 		0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetHostView.m; sourceTree = "<group>"; };
 		0DEDDD3D147B5D5C0087037C /* VELWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELWindow.h; sourceTree = "<group>"; };
 		0DEDDD3E147B5D5C0087037C /* VELWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELWindow.m; sourceTree = "<group>"; };
+		1ABB202F1492994C002F7D6D /* VELNSArrayAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSArrayAdditionsTests.h; sourceTree = "<group>"; };
+		1ABB20301492994C002F7D6D /* VELNSArrayAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSArrayAdditionsTests.m; sourceTree = "<group>"; };
+		1ABB203214929961002F7D6D /* NSArray+HigherOrderAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+HigherOrderAdditions.h"; sourceTree = "<group>"; };
+		1ABB203314929961002F7D6D /* NSArray+HigherOrderAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+HigherOrderAdditions.m"; sourceTree = "<group>"; };
 		1E1790EA1481CC6C00177DC0 /* NSViewClipRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewClipRenderer.h; sourceTree = "<group>"; };
 		1E1790EB1481CC6C00177DC0 /* NSViewClipRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewClipRenderer.m; sourceTree = "<group>"; };
 		1E2819451481EAEF006A747C /* VELCAAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELCAAction.h; sourceTree = "<group>"; };
@@ -222,6 +229,8 @@
 		D0150FF414790BF500126F09 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1ABB203214929961002F7D6D /* NSArray+HigherOrderAdditions.h */,
+				1ABB203314929961002F7D6D /* NSArray+HigherOrderAdditions.m */,
 				1E28194C1481EB14006A747C /* CALayer+GeometryAdditions.h */,
 				1E28194D1481EB14006A747C /* CALayer+GeometryAdditions.m */,
 				1E28194E1481EB14006A747C /* CATransaction+BlockAdditions.h */,
@@ -362,6 +371,8 @@
 		D0EFFC20147851A80095AB35 /* VelvetTests */ = {
 			isa = PBXGroup;
 			children = (
+				1ABB202F1492994C002F7D6D /* VELNSArrayAdditionsTests.h */,
+				1ABB20301492994C002F7D6D /* VELNSArrayAdditionsTests.m */,
 				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
 				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
 				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
@@ -499,6 +510,7 @@
 				D00816A9148732B8001CDF5B /* SDQueue.h in Headers */,
 				D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */,
 				D0D51D0A14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h in Headers */,
+				1ABB203414929961002F7D6D /* NSArray+HigherOrderAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,6 +647,7 @@
 				D00816AA148732B8001CDF5B /* SDQueue.m in Sources */,
 				D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */,
 				D0D51D0B14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m in Sources */,
+				1ABB203514929961002F7D6D /* NSArray+HigherOrderAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,6 +658,7 @@
 				D0DB8A7D149028D60082D3DA /* VELLabelTests.m in Sources */,
 				D0B23AF91491872B009CF46A /* VELImageViewTests.m in Sources */,
 				D0B75C6F14918EB9005C81D5 /* VELViewTests.m in Sources */,
+				1ABB20311492994D002F7D6D /* VELNSArrayAdditionsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

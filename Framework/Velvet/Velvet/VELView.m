@@ -565,7 +565,13 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (CGSize)sizeThatFits:(CGSize)constraint; {
-    return self.bounds.size;
+    CGRect subviewsRect = CGRectZero;
+
+    for (VELView *view in self.subviews) {
+        subviewsRect = CGRectUnion(subviewsRect, view.frame);
+    }
+
+    return subviewsRect.size;
 }
 
 - (void)centeredSizeToFit; {

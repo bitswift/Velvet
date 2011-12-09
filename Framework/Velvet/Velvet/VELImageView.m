@@ -39,7 +39,42 @@
     if (!image)
         return CGSizeZero;
 
-    return CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
+    size_t width = CGImageGetWidth(image);
+    size_t height = CGImageGetHeight(image);
+    if (!width || !height)
+        return CGSizeZero;
+
+    CGSize actualSize = CGSizeMake(width, height);
+
+    if (fabs(size.width) < 0.01)
+        size.width = CGFLOAT_MAX;
+
+    if (fabs(size.height) < 0.01)
+        size.height = CGFLOAT_MAX;
+
+    if (size.width >= width && size.height >= height) {
+        // the given constraint is bigger than the image, so just use the
+        // image's actual size
+        return actualSize;
+    }
+
+    CGFloat aspectRatio = (CGFloat)width / height;
+    CGFloat constraintAspectRatio = size.width / size.height;
+
+    if (fabs(constraintAspectRatio - aspectRatio) < 0.001) {
+        // effectively the correct aspect ratio
+        return actualSize;
+    }
+
+    if (constraintAspectRatio > aspectRatio) {
+        // the given size is proportionally too wide, so match its height and
+        // scale down width accordingly
+        return CGSizeMake(round(size.height * aspectRatio), size.height);
+    } else {
+        // the given size is proportionally too tall, so match its width and
+        // scale down height accordingly
+        return CGSizeMake(size.width, round(size.width / aspectRatio));
+    }
 }
 
 @end

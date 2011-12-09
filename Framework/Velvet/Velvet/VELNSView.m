@@ -147,6 +147,7 @@
 }
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView {
+    [super willMoveToHostView:hostView];
     [self.NSView removeFromSuperview];
 }
 

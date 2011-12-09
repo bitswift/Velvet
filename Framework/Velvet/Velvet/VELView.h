@@ -346,8 +346,8 @@ typedef enum {
  * constraint available. If the receiver cannot fit in the constrained size, it
  * should return the smallest size that it will fit in.
  *
- * The default implementation of this method returns the size of the receiver's
- * <bounds>.
+ * The default implementation of this method returns the smallest rectangle
+ * that can contain all its subviews.
  *
  * @param constraint The size to which the receiver should be constrained. If
  * either dimension of this size is zero, the receiver is not constrained in

@@ -48,6 +48,7 @@
 		D0911B1E147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */; };
 		D0B23AF91491872B009CF46A /* VELImageViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B23AF81491872B009CF46A /* VELImageViewTests.m */; };
 		D0B75C68149188FD005C81D5 /* testimage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0B75C67149188FD005C81D5 /* testimage.jpg */; };
+		D0B75C6F14918EB9005C81D5 /* VELViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B75C6E14918EB9005C81D5 /* VELViewTests.m */; };
 		D0CACD35147C86C0008C42B2 /* VELBridgedView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELBridgedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0CE3D461485506B005CAE53 /* VELFocusRingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CE3D441485506B005CAE53 /* VELFocusRingLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0CE3D471485506B005CAE53 /* VELFocusRingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */; };
@@ -130,6 +131,8 @@
 		D0B23AF71491872B009CF46A /* VELImageViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELImageViewTests.h; sourceTree = "<group>"; };
 		D0B23AF81491872B009CF46A /* VELImageViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELImageViewTests.m; sourceTree = "<group>"; };
 		D0B75C67149188FD005C81D5 /* testimage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = testimage.jpg; sourceTree = "<group>"; };
+		D0B75C6D14918EB9005C81D5 /* VELViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewTests.h; sourceTree = "<group>"; };
+		D0B75C6E14918EB9005C81D5 /* VELViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewTests.m; sourceTree = "<group>"; };
 		D0CACD34147C86C0008C42B2 /* VELBridgedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELBridgedView.h; sourceTree = "<group>"; };
 		D0CE3D441485506B005CAE53 /* VELFocusRingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELFocusRingLayer.h; sourceTree = "<group>"; };
 		D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELFocusRingLayer.m; sourceTree = "<group>"; };
@@ -363,6 +366,8 @@
 				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
 				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
 				D0DB8A7C149028D60082D3DA /* VELLabelTests.m */,
+				D0B75C6D14918EB9005C81D5 /* VELViewTests.h */,
+				D0B75C6E14918EB9005C81D5 /* VELViewTests.m */,
 				D0EFFC21147851A80095AB35 /* Supporting Files */,
 			);
 			path = VelvetTests;
@@ -639,6 +644,7 @@
 			files = (
 				D0DB8A7D149028D60082D3DA /* VELLabelTests.m in Sources */,
 				D0B23AF91491872B009CF46A /* VELImageViewTests.m in Sources */,
+				D0B75C6F14918EB9005C81D5 /* VELViewTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

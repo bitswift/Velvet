@@ -44,6 +44,8 @@ static IMP VELViewDrawRectIMP = NULL;
         unsigned recursingActionForLayer:1;
         unsigned clearsContextBeforeDrawing:1;
     } m_flags;
+
+    NSMutableArray *m_subviews;
 }
 
 @property (nonatomic, readwrite, weak) VELView *superview;
@@ -407,14 +409,17 @@ static IMP VELViewDrawRectIMP = NULL;
 #pragma mark View hierarchy
 
 - (void)addSubview:(VELView *)view; {
+    if (view.superview == self)
+        return;
+
     [CATransaction performWithDisabledActions:^{
         [view removeFromSuperview];
         [view willMoveToHostView:self.hostView];
 
         if (!m_subviews)
-            m_subviews = [NSArray arrayWithObject:view];
-        else
-            m_subviews = [m_subviews arrayByAddingObject:view];
+            m_subviews = [[NSMutableArray alloc] init];
+
+        [m_subviews addObject:view];
 
         view.superview = self;
         [self addSubviewToLayer:view];
@@ -476,9 +481,12 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)removeFromSuperview; {
+    if (!self.superview)
+        return;
+
     [CATransaction performWithDisabledActions:^{
         [self willMoveToHostView:nil];
-        
+
         id responder = [self.window firstResponder];
         if ([responder isKindOfClass:[VELView class]]) {
             if ([responder isDescendantOfView:self]) {
@@ -487,7 +495,10 @@ static IMP VELViewDrawRectIMP = NULL;
         }
 
         [self.layer removeFromSuperlayer];
+
+        VELView *superview = self.superview;
         self.superview = nil;
+        [superview->m_subviews removeObjectIdenticalTo:self];
 
         [self didMoveToHostView];
     }];

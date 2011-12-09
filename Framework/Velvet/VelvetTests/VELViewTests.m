@@ -26,4 +26,17 @@
     STAssertEqualsWithAccuracy(view.bounds.size.height, (CGFloat)200, 0.001, @"");
 }
 
+- (void)testRemoveFromSuperview {
+    VELView *view = [[VELView alloc] init];
+    VELView *subview = [[VELView alloc] init];
+
+    [view addSubview:subview];
+    STAssertEqualObjects([subview superview], view, @"");
+    STAssertEqualObjects([[view subviews] lastObject], subview, @"");
+
+    [subview removeFromSuperview];
+    STAssertNil([subview superview], @"");
+    STAssertEquals([[view subviews] count], (NSUInteger)0, @"");
+}
+
 @end

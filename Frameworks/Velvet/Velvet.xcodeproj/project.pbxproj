@@ -33,6 +33,7 @@
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
+		D01E23C61492F15B00219D40 /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
 		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
 		D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E642114823DC200E99AA2 /* VELScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -78,6 +79,41 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D01E23BB1492F14E00219D40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0DB5CC41492DDD5005955FB;
+			remoteInfo = "Proton Mac";
+		};
+		D01E23BD1492F14E00219D40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0DB5CDC1492DDD5005955FB;
+			remoteInfo = "Proton Mac Tests";
+		};
+		D01E23BF1492F14E00219D40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0B07ACE1492E72800A1E816;
+			remoteInfo = "Proton iOS";
+		};
+		D01E23C11492F14E00219D40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0B07ADC1492E72800A1E816;
+			remoteInfo = "Proton iOS Tests";
+		};
+		D01E23C41492F15800219D40 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D0DB5CC31492DDD5005955FB;
+			remoteInfo = "Proton Mac";
+		};
 		D0EFFC1D147851A80095AB35 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D0EFFBF7147851A80095AB35 /* Project object */;
@@ -115,6 +151,7 @@
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
+		D01E23B11492F14D00219D40 /* Proton.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proton.xcodeproj; path = ../Proton/Frameworks/Proton/Proton.xcodeproj; sourceTree = "<group>"; };
 		D0305D781486FC960081D6EA /* VELControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELControl.h; sourceTree = "<group>"; };
 		D0305D791486FC960081D6EA /* VELControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELControl.m; sourceTree = "<group>"; };
 		D03E642114823DC200E99AA2 /* VELScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELScrollView.h; sourceTree = "<group>"; };
@@ -188,6 +225,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D01E23C61492F15B00219D40 /* Proton.framework in Frameworks */,
 				1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */,
 				D0D8C3AD14785CEE00FC9015 /* QuartzCore.framework in Frameworks */,
 				D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */,
@@ -274,6 +312,17 @@
 			name = Native;
 			sourceTree = "<group>";
 		};
+		D01E23B21492F14D00219D40 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D01E23BC1492F14E00219D40 /* Proton.framework */,
+				D01E23BE1492F14E00219D40 /* Proton Mac Tests.octest */,
+				D01E23C01492F14E00219D40 /* libProton.a */,
+				D01E23C21492F14E00219D40 /* Proton iOS Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D0D7305A147C860900090122 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -315,6 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				D0FBA3201482085500F9F5F6 /* libextobjc */,
+				D01E23B11492F14D00219D40 /* Proton.xcodeproj */,
 				D0EFFC07147851A80095AB35 /* AppKit.framework */,
 				1E7BBD4B147B17400010375D /* ApplicationServices.framework */,
 				D0EFFC04147851A80095AB35 /* Cocoa.framework */,
@@ -508,6 +558,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D01E23C51492F15800219D40 /* PBXTargetDependency */,
 			);
 			name = Velvet;
 			productName = Velvet;
@@ -552,6 +603,12 @@
 			mainGroup = D0EFFBF5147851A80095AB35;
 			productRefGroup = D0EFFC02147851A80095AB35 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D01E23B21492F14D00219D40 /* Products */;
+					ProjectRef = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D0EFFC00147851A80095AB35 /* Velvet */,
@@ -559,6 +616,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D01E23BC1492F14E00219D40 /* Proton.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Proton.framework;
+			remoteRef = D01E23BB1492F14E00219D40 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D01E23BE1492F14E00219D40 /* Proton Mac Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Proton Mac Tests.octest";
+			remoteRef = D01E23BD1492F14E00219D40 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D01E23C01492F14E00219D40 /* libProton.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libProton.a;
+			remoteRef = D01E23BF1492F14E00219D40 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D01E23C21492F14E00219D40 /* Proton iOS Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Proton iOS Tests.octest";
+			remoteRef = D01E23C11492F14E00219D40 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D0EFFBFF147851A80095AB35 /* Resources */ = {
@@ -642,6 +730,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D01E23C51492F15800219D40 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Proton Mac";
+			targetProxy = D01E23C41492F15800219D40 /* PBXContainerItemProxy */;
+		};
 		D0EFFC1E147851A80095AB35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D0EFFC00147851A80095AB35 /* Velvet */;
@@ -675,9 +768,10 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = "../Proton/Frameworks/Proton/build/$(CONFIGURATION)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				HEADER_SEARCH_PATHS = "../libextobjc/extobjc/**";
+				HEADER_SEARCH_PATHS = "../Proton/Frameworks/Proton/build/$(CONFIGURATION)/Proton.framework";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				TEST_AFTER_BUILD = YES;
@@ -718,9 +812,10 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = "../Proton/Frameworks/Proton/build/$(CONFIGURATION)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				HEADER_SEARCH_PATHS = "../libextobjc/extobjc/**";
+				HEADER_SEARCH_PATHS = "../Proton/Frameworks/Proton/build/$(CONFIGURATION)/Proton.framework";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				TEST_AFTER_BUILD = YES;
@@ -733,9 +828,10 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				FRAMEWORK_SEARCH_PATHS = "../Proton/Frameworks/Proton/build/$(CONFIGURATION)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				HEADER_SEARCH_PATHS = "../libextobjc/extobjc/**";
+				HEADER_SEARCH_PATHS = "../Proton/Frameworks/Proton/build/$(CONFIGURATION)/Proton.framework";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				TEST_AFTER_BUILD = YES;

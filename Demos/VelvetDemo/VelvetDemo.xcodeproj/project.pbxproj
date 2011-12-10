@@ -263,7 +263,7 @@
 				D0EFFCEC147852D50095AB35 /* README.md */,
 			);
 			name = Configuration;
-			path = ../../Configuration;
+			path = ../../Frameworks/Proton/Frameworks/libextobjc/Configuration;
 			sourceTree = "<group>";
 		};
 		D0EFFCD9147852D50095AB35 /* Base */ = {

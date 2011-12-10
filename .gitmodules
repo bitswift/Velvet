@@ -4,3 +4,6 @@
 [submodule "Frameworks/libextobjc"]
 	path = Frameworks/libextobjc
 	url = git://github.com/jspahrsummers/libextobjc.git
+[submodule "Frameworks/Proton"]
+	path = Frameworks/Proton
+	url = git@github.com:emeraldlark/Proton.git

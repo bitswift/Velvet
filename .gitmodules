@@ -1,6 +1,6 @@
 [submodule "Configuration"]
 	path = Configuration
 	url = git://github.com/jspahrsummers/xcconfigs.git
-[submodule "Framework/libextobjc"]
-	path = Framework/libextobjc
+[submodule "Frameworks/libextobjc"]
+	path = Frameworks/libextobjc
 	url = git://github.com/jspahrsummers/libextobjc.git

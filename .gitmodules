@@ -4,6 +4,3 @@
 [submodule "Framework/libextobjc"]
 	path = Framework/libextobjc
 	url = git://github.com/jspahrsummers/libextobjc.git
-[submodule "Framework/SafeDispatch"]
-	path = Framework/SafeDispatch
-	url = git://github.com/jspahrsummers/SafeDispatch.git

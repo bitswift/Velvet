@@ -30,10 +30,6 @@
 		1E7BBD40147B157C0010375D /* VELLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E7BBD3E147B157B0010375D /* VELLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E7BBD41147B157C0010375D /* VELLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7BBD3F147B157B0010375D /* VELLabel.m */; };
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
-		D00816A7148732B8001CDF5B /* SDGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = D00816A3148732B8001CDF5B /* SDGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D00816A8148732B8001CDF5B /* SDGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = D00816A4148732B8001CDF5B /* SDGroup.m */; };
-		D00816A9148732B8001CDF5B /* SDQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = D00816A5148732B8001CDF5B /* SDQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D00816AA148732B8001CDF5B /* SDQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D00816A6148732B8001CDF5B /* SDQueue.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
@@ -116,10 +112,6 @@
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
 		1E7BBD3F147B157B0010375D /* VELLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabel.m; sourceTree = "<group>"; };
 		1E7BBD4B147B17400010375D /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
-		D00816A3148732B8001CDF5B /* SDGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDGroup.h; path = ../SafeDispatch/Framework/SafeDispatch/SafeDispatch/SDGroup.h; sourceTree = "<group>"; };
-		D00816A4148732B8001CDF5B /* SDGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDGroup.m; path = ../SafeDispatch/Framework/SafeDispatch/SafeDispatch/SDGroup.m; sourceTree = "<group>"; };
-		D00816A5148732B8001CDF5B /* SDQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDQueue.h; path = ../SafeDispatch/Framework/SafeDispatch/SafeDispatch/SDQueue.h; sourceTree = "<group>"; };
-		D00816A6148732B8001CDF5B /* SDQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDQueue.m; path = ../SafeDispatch/Framework/SafeDispatch/SafeDispatch/SDQueue.m; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
@@ -215,17 +207,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D00816A2148732A7001CDF5B /* Safe Dispatch */ = {
-			isa = PBXGroup;
-			children = (
-				D00816A3148732B8001CDF5B /* SDGroup.h */,
-				D00816A4148732B8001CDF5B /* SDGroup.m */,
-				D00816A5148732B8001CDF5B /* SDQueue.h */,
-				D00816A6148732B8001CDF5B /* SDQueue.m */,
-			);
-			name = "Safe Dispatch";
-			sourceTree = "<group>";
-		};
 		D0150FF414790BF500126F09 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -334,7 +315,6 @@
 			isa = PBXGroup;
 			children = (
 				D0FBA3201482085500F9F5F6 /* libextobjc */,
-				D00816A2148732A7001CDF5B /* Safe Dispatch */,
 				D0EFFC07147851A80095AB35 /* AppKit.framework */,
 				1E7BBD4B147B17400010375D /* ApplicationServices.framework */,
 				D0EFFC04147851A80095AB35 /* Cocoa.framework */,
@@ -506,8 +486,6 @@
 				D0E8B35414831419003980B4 /* VELImageView.h in Headers */,
 				D0CE3D461485506B005CAE53 /* VELFocusRingLayer.h in Headers */,
 				D0305D7A1486FC960081D6EA /* VELControl.h in Headers */,
-				D00816A7148732B8001CDF5B /* SDGroup.h in Headers */,
-				D00816A9148732B8001CDF5B /* SDQueue.h in Headers */,
 				D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */,
 				D0D51D0A14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h in Headers */,
 				1ABB203414929961002F7D6D /* NSArray+HigherOrderAdditions.h in Headers */,
@@ -643,8 +621,6 @@
 				D0E8B35514831419003980B4 /* VELImageView.m in Sources */,
 				D0CE3D471485506B005CAE53 /* VELFocusRingLayer.m in Sources */,
 				D0305D7B1486FC960081D6EA /* VELControl.m in Sources */,
-				D00816A8148732B8001CDF5B /* SDGroup.m in Sources */,
-				D00816AA148732B8001CDF5B /* SDQueue.m in Sources */,
 				D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */,
 				D0D51D0B14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m in Sources */,
 				1ABB203514929961002F7D6D /* NSArray+HigherOrderAdditions.m in Sources */,

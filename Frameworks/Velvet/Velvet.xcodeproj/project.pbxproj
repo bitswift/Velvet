@@ -677,10 +677,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				HEADER_SEARCH_PATHS = (
-					../SafeDispatch/Framework/SafeDispatch,
-					"../libextobjc/extobjc/**",
-				);
+				HEADER_SEARCH_PATHS = "../libextobjc/extobjc/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				TEST_AFTER_BUILD = YES;
@@ -723,10 +720,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				HEADER_SEARCH_PATHS = (
-					../SafeDispatch/Framework/SafeDispatch,
-					"../libextobjc/extobjc/**",
-				);
+				HEADER_SEARCH_PATHS = "../libextobjc/extobjc/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				TEST_AFTER_BUILD = YES;
@@ -741,10 +735,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				HEADER_SEARCH_PATHS = (
-					../SafeDispatch/Framework/SafeDispatch,
-					"../libextobjc/extobjc/**",
-				);
+				HEADER_SEARCH_PATHS = "../libextobjc/extobjc/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				TEST_AFTER_BUILD = YES;

@@ -7,7 +7,7 @@
 //
 
 #import <Velvet/CATransaction+BlockAdditions.h>
-#import "EXTSafeCategory.h"
+#import <Proton/EXTSafeCategory.h>
 
 @safecategory (CATransaction, BlockAdditions)
 + (void)performWithDisabledActions:(void(^)(void))block {

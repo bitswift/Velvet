@@ -42,13 +42,6 @@
 		D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */; };
-		D05BD5271492E2470058B153 /* EXTRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D05BD5211492E2470058B153 /* EXTRuntimeExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D05BD5281492E2470058B153 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D05BD5221492E2470058B153 /* EXTRuntimeExtensions.m */; };
-		D05BD5291492E2470058B153 /* EXTSafeCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = D05BD5231492E2470058B153 /* EXTSafeCategory.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D05BD52A1492E2470058B153 /* EXTSafeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = D05BD5241492E2470058B153 /* EXTSafeCategory.m */; };
-		D05BD52B1492E2470058B153 /* EXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = D05BD5251492E2470058B153 /* EXTScope.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D05BD52C1492E2470058B153 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = D05BD5261492E2470058B153 /* EXTScope.m */; };
-		D05BD52E1492E24D0058B153 /* metamacros.h in Headers */ = {isa = PBXBuildFile; fileRef = D05BD52D1492E24D0058B153 /* metamacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0911B1D147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0911B1E147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */; };
 		D0B23AF91491872B009CF46A /* VELImageViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B23AF81491872B009CF46A /* VELImageViewTests.m */; };
@@ -160,13 +153,6 @@
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
 		D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+ScrollViewAdditions.h"; sourceTree = "<group>"; };
 		D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+ScrollViewAdditions.m"; sourceTree = "<group>"; };
-		D05BD5211492E2470058B153 /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTRuntimeExtensions.h; path = extobjc/Modules/EXTRuntimeExtensions.h; sourceTree = "<group>"; };
-		D05BD5221492E2470058B153 /* EXTRuntimeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTRuntimeExtensions.m; path = extobjc/Modules/EXTRuntimeExtensions.m; sourceTree = "<group>"; };
-		D05BD5231492E2470058B153 /* EXTSafeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTSafeCategory.h; path = extobjc/Modules/EXTSafeCategory.h; sourceTree = "<group>"; };
-		D05BD5241492E2470058B153 /* EXTSafeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTSafeCategory.m; path = extobjc/Modules/EXTSafeCategory.m; sourceTree = "<group>"; };
-		D05BD5251492E2470058B153 /* EXTScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EXTScope.h; path = extobjc/Modules/EXTScope.h; sourceTree = "<group>"; };
-		D05BD5261492E2470058B153 /* EXTScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EXTScope.m; path = extobjc/Modules/EXTScope.m; sourceTree = "<group>"; };
-		D05BD52D1492E24D0058B153 /* metamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = metamacros.h; path = extobjc/metamacros.h; sourceTree = "<group>"; };
 		D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+VELBridgedViewAdditions.h"; sourceTree = "<group>"; };
 		D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELBridgedViewAdditions.m"; sourceTree = "<group>"; };
 		D0B23AF71491872B009CF46A /* VELImageViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELImageViewTests.h; sourceTree = "<group>"; };
@@ -363,7 +349,6 @@
 		D0EFFC03147851A80095AB35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D0FBA3201482085500F9F5F6 /* libextobjc */,
 				D01E23B11492F14D00219D40 /* Proton.xcodeproj */,
 				D0EFFC07147851A80095AB35 /* AppKit.framework */,
 				1E7BBD4B147B17400010375D /* ApplicationServices.framework */,
@@ -433,7 +418,7 @@
 				D0EFFC45147851E70095AB35 /* README.md */,
 			);
 			name = Configuration;
-			path = ../../Configuration;
+			path = ../Proton/Frameworks/libextobjc/Configuration;
 			sourceTree = "<group>";
 		};
 		D0EFFC32147851E70095AB35 /* Base */ = {
@@ -487,21 +472,6 @@
 			path = "Mac OS X";
 			sourceTree = "<group>";
 		};
-		D0FBA3201482085500F9F5F6 /* libextobjc */ = {
-			isa = PBXGroup;
-			children = (
-				D05BD5211492E2470058B153 /* EXTRuntimeExtensions.h */,
-				D05BD5221492E2470058B153 /* EXTRuntimeExtensions.m */,
-				D05BD5231492E2470058B153 /* EXTSafeCategory.h */,
-				D05BD5241492E2470058B153 /* EXTSafeCategory.m */,
-				D05BD5251492E2470058B153 /* EXTScope.h */,
-				D05BD5261492E2470058B153 /* EXTScope.m */,
-				D05BD52D1492E24D0058B153 /* metamacros.h */,
-			);
-			name = libextobjc;
-			path = ../libextobjc;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -527,10 +497,6 @@
 				1E2819561481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h in Headers */,
 				1E2819721481EE7B006A747C /* NSView+VELNSViewAdditions.h in Headers */,
 				D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */,
-				D05BD5271492E2470058B153 /* EXTRuntimeExtensions.h in Headers */,
-				D05BD5291492E2470058B153 /* EXTSafeCategory.h in Headers */,
-				D05BD52B1492E2470058B153 /* EXTScope.h in Headers */,
-				D05BD52E1492E24D0058B153 /* metamacros.h in Headers */,
 				D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */,
 				D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */,
 				D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */,
@@ -710,9 +676,6 @@
 				D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */,
 				D0D51D0B14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m in Sources */,
 				1ABB203514929961002F7D6D /* NSArray+HigherOrderAdditions.m in Sources */,
-				D05BD5281492E2470058B153 /* EXTRuntimeExtensions.m in Sources */,
-				D05BD52A1492E2470058B153 /* EXTSafeCategory.m in Sources */,
-				D05BD52C1492E2470058B153 /* EXTScope.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -135,7 +135,7 @@
 				D07A68131486F4190051C961 /* README.md */,
 			);
 			name = Configuration;
-			path = ../../Configuration;
+			path = ../../Frameworks/Proton/Frameworks/libextobjc/Configuration;
 			sourceTree = "<group>";
 		};
 		D07A68001486F4190051C961 /* Base */ = {

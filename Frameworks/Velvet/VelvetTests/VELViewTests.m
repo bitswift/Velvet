@@ -39,4 +39,26 @@
     STAssertEquals([[view subviews] count], (NSUInteger)0, @"");
 }
 
+- (void)testSetSubviews {
+    VELView *view = [[VELView alloc] init];
+
+    NSMutableArray *subviews = [[NSMutableArray alloc] init];
+    for (NSUInteger i = 0;i < 4;++i) {
+        [subviews addObject:[[VELView alloc] init]];
+    }
+
+    view.subviews = subviews;
+    STAssertEqualObjects(view.subviews, subviews, @"");
+
+    [[subviews lastObject] removeFromSuperview];
+    [subviews removeLastObject];
+
+    STAssertEqualObjects(view.subviews, subviews, @"");
+
+    [subviews removeLastObject];
+    view.subviews = subviews;
+
+    STAssertEqualObjects(view.subviews, subviews, @"");
+}
+
 @end

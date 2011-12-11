@@ -241,19 +241,23 @@
     NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
 
     NSVelvetView *contentView = (id)self.contentView;
-    CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
-    id hitView = [self bridgedHitTest:windowPoint];
+    
+    // Currently VELWindow does not support any click-through events when the window is not already key
+    if ([self isKeyWindow]) {
+        CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
+        id hitView = [self bridgedHitTest:windowPoint];
 
-    if ([hitView isKindOfClass:[VELView class]]) {
-        [self dispatchEvent:event toResponder:hitView];
-        [self makeFirstResponder:hitView];
+        if ([hitView isKindOfClass:[VELView class]]) {
+            [self dispatchEvent:event toResponder:hitView];
+            [self makeFirstResponder:hitView];
 
-        // now, we still want to pass on events to the window, since it
-        // does some magic, but we should omit any Velvet-hosted NSViews
-        // from consideration
-        contentView.userInteractionEnabled = NO;
+            // now, we still want to pass on events to the window, since it
+            // does some magic, but we should omit any Velvet-hosted NSViews
+            // from consideration
+            contentView.userInteractionEnabled = NO;
+        }
     }
-
+    
     // also pass the event upward if we hit an NSView
     [super sendEvent:event];
 

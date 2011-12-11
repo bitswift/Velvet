@@ -94,6 +94,7 @@
     if (!self)
         return nil;
 
+    self.layer.masksToBounds = NO;
     return self;
 }
 
@@ -104,7 +105,6 @@
     if (!self)
         return nil;
 
-    self.layer.masksToBounds = NO;
     self.NSView = view;
     self.frame = view.frame;
     return self;

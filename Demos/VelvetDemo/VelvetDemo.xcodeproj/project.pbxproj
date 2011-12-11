@@ -616,16 +616,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"../../Frameworks/Velvet/build/$(CONFIGURATION)",
-					"../../Frameworks/Proton/Frameworks/Proton/build/$(CONFIGURATION)",
-				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				HEADER_SEARCH_PATHS = (
-					"../../Frameworks/Velvet/build/$(CONFIGURATION)/Velvet.framework",
-					"../../Frameworks/Proton/Frameworks/Proton/build/$(CONFIGURATION)/Proton.framework",
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
@@ -664,16 +656,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"../../Frameworks/Velvet/build/$(CONFIGURATION)",
-					"../../Frameworks/Proton/Frameworks/Proton/build/$(CONFIGURATION)",
-				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				HEADER_SEARCH_PATHS = (
-					"../../Frameworks/Velvet/build/$(CONFIGURATION)/Velvet.framework",
-					"../../Frameworks/Proton/Frameworks/Proton/build/$(CONFIGURATION)/Proton.framework",
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};
@@ -685,16 +669,8 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"../../Frameworks/Velvet/build/$(CONFIGURATION)",
-					"../../Frameworks/Proton/Frameworks/Proton/build/$(CONFIGURATION)",
-				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				HEADER_SEARCH_PATHS = (
-					"../../Frameworks/Velvet/build/$(CONFIGURATION)/Velvet.framework",
-					"../../Frameworks/Proton/Frameworks/Proton/build/$(CONFIGURATION)/Proton.framework",
-				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 			};

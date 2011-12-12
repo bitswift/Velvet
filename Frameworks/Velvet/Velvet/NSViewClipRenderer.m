@@ -162,32 +162,17 @@
     if (!context)
         return;
     
-    BOOL shouldClip = YES;
+    VELView *clippingView = [self.clippedView ancestorScrollView];
 
-    // whether the view to clip to is within a scroll view of our creation
-    // if this is true, we should always clip
-    BOOL clippingToScrollView = ([self.clippedView ancestorScrollView] != nil);
-
-    if (!clippingToScrollView && [self.originalLayerDelegate isKindOfClass:[NSView class]]) {
-        NSView *originalView = self.originalLayerDelegate;
-
-        // if one of the ancestors of this view is a scroll view or clip view,
-        // we shouldn't clip it ourselves
-        while ((originalView = originalView.superview)) {
-            if ([originalView isKindOfClass:[NSClipView class]] || [originalView isKindOfClass:[NSScrollView class]]) {
-                shouldClip = NO;
-                break;
-            }
-
-            originalView = originalView.superview;
-        }
-    }
+    // only clip to scroll views of our creation
+    if (![clippingView isKindOfClass:[VELView class]])
+        clippingView = nil;
 
     CGContextSaveGState(context);
 
-    if (shouldClip) {
-        CGRect contextBounds = self.clippedView.layer.bounds;
-        CGRect viewBounds = [self.clippedView.layer convertAndClipRect:contextBounds toLayer:layer];
+    if (clippingView) {
+        CGRect contextBounds = clippingView.layer.bounds;
+        CGRect viewBounds = [clippingView.layer convertAndClipRect:contextBounds toLayer:layer];
         CGContextClipToRect(context, viewBounds);
     }
 

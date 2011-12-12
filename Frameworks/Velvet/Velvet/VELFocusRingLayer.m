@@ -50,13 +50,19 @@
     if (!self.originalLayer || !hostSuperlayer)
         return;
 
-    CGRect contextBounds = hostSuperlayer.bounds;
-    CGRect viewBounds = [hostSuperlayer convertAndClipRect:contextBounds toLayer:self];
-
-    viewBounds = CGRectIntersection(viewBounds, self.bounds);
+    VELView *clippingView = [self.hostView ancestorScrollView];
+    
+    // only clip to scroll views of our creation
+    if (![clippingView isKindOfClass:[VELView class]])
+        clippingView = nil;
 
     CGContextSaveGState(context);
-    CGContextClipToRect(context, viewBounds);
+
+    if (clippingView) {
+        CGRect contextBounds = clippingView.layer.bounds;
+        CGRect viewBounds = [clippingView.layer convertAndClipRect:contextBounds toLayer:self];
+        CGContextClipToRect(context, viewBounds);
+    }
 
     [CATransaction performWithDisabledActions:^{
         self.originalLayer.hidden = NO;

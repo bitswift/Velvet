@@ -10,6 +10,10 @@
 #import <Cocoa/Cocoa.h>
 #import <Velvet/Velvet.h>
 
+@interface VELLabelTests ()
+- (void)verifyLabelSize:(VELLabel *)label;
+@end
+
 @implementation VELLabelTests
 
 - (void)testInitialization {
@@ -121,9 +125,24 @@
 - (void)testNumberOfLines {
     VELLabel *label = [[VELLabel alloc] init];
     label.text = @"This is a really long string. This is a really long string. This is a really long string. This is a really long string.";
-    
+
     STAssertEquals(label.numberOfLines, (NSUInteger)1, @"");
-    
+    [self verifyLabelSize:label];
+}
+
+- (void)testSizingWithLineBreakMode {
+    VELLabel *label = [[VELLabel alloc] init];
+    label.text = @"This is a really long string. This is a really long string. This is a really long string. This is a really long string.";
+
+    // make sure that the label still sizes to multiple lines with a different
+    // line break mode
+    label.lineBreakMode = VELLineBreakModeMiddleTruncation;
+    [self verifyLabelSize:label];
+}
+
+- (void)verifyLabelSize:(VELLabel *)label; {
+    label.numberOfLines = 1;
+
     CGFloat width = 80;
     CGSize singleLineSize = [label sizeThatFits:CGSizeMake(width, 0)];
     NSLog(@"singleLineSize: %@", NSStringFromSize(singleLineSize));

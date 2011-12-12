@@ -11,7 +11,6 @@
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
-#import <Velvet/NSArray+HigherOrderAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
@@ -19,8 +18,8 @@
 #import <Velvet/VELScrollView.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
+#import <Proton/Proton.h>
 #import <objc/runtime.h>
-#import <Proton/EXTScope.h>
 
 /*
  * The number of animation blocks currently being run.

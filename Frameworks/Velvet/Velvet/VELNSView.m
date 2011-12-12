@@ -68,6 +68,8 @@
         [self.hostView addSubview:m_NSView];
         m_NSView.hostView = self;
 
+        m_NSView.nextResponder = self;
+
         self.clipRenderer = [[NSViewClipRenderer alloc] initWithClippedView:self layer:view.layer];
     }
 }
@@ -154,6 +156,8 @@
 }
 
 - (void)didMoveToHostView {
+    [super didMoveToHostView];
+
     // verify that VELNSViews are on top of other subviews
     #if DEBUG
     NSArray *siblings = self.superview.subviews;
@@ -172,6 +176,8 @@
     // because it'll do some ancestor checks for NSView ordering
     [self.hostView addSubview:self.NSView];
     [self synchronizeNSViewGeometry];
+
+    self.NSView.nextResponder = self;
 }
 
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {

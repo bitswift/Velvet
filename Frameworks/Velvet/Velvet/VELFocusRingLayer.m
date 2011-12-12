@@ -13,7 +13,6 @@
 #import <Velvet/VELView.h>
 
 @interface VELFocusRingLayer ()
-@property (nonatomic, weak, readonly) CALayer *originalLayer;
 @property (nonatomic, weak, readonly) VELView *hostView;
 @end
 

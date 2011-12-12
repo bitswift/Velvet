@@ -47,17 +47,26 @@
         [subviews addObject:[[VELView alloc] init]];
     }
 
-    view.subviews = subviews;
+    // make sure that -setSubviews: does not throw an exception
+    // (such as mutation while enumerating)
+    STAssertNoThrow(view.subviews = subviews, @"");
+
+    // the two arrays should have the same objects, but should not be the same
+    // array instance
+    STAssertFalse(view.subviews == subviews, @"");
     STAssertEqualObjects(view.subviews, subviews, @"");
 
+    // removing the last subview should remove the last object from the subviews
+    // array
     [[subviews lastObject] removeFromSuperview];
     [subviews removeLastObject];
 
     STAssertEqualObjects(view.subviews, subviews, @"");
 
     [subviews removeLastObject];
-    view.subviews = subviews;
 
+    // calling -setSubviews: with a new array should replace the old one
+    view.subviews = subviews;
     STAssertEqualObjects(view.subviews, subviews, @"");
 }
 

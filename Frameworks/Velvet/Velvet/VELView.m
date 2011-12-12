@@ -179,11 +179,12 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)setSubviews:(NSArray *)subviews {
-    for (VELView *view in m_subviews) {
+    NSArray *oldSubviews = [m_subviews copy];
+    m_subviews = nil;
+
+    for (VELView *view in oldSubviews) {
         [view removeFromSuperview];
     }
-
-    m_subviews = nil;
 
     for (VELView *view in subviews) {
         [self addSubview:view];

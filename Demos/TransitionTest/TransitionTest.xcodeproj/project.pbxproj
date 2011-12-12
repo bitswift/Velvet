@@ -16,7 +16,6 @@
 		D07A67DE1486F3F10051C961 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = D07A67DD1486F3F10051C961 /* Document.m */; };
 		D07A67E11486F3F10051C961 /* Document.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07A67DF1486F3F10051C961 /* Document.xib */; };
 		D07A67E41486F3F10051C961 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07A67E21486F3F10051C961 /* MainMenu.xib */; };
-		D07A68171486F4580051C961 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D07A68151486F4580051C961 /* Velvet.framework */; };
 		D07A68181486F4580051C961 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D07A68161486F4580051C961 /* QuartzCore.framework */; };
 		D0D51CF61488076600F15DA9 /* TreeView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51CF51488076600F15DA9 /* TreeView.m */; };
 		D0D51D0614880E3800F15DA9 /* EditorView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51D0514880E3800F15DA9 /* EditorView.m */; };
@@ -25,7 +24,85 @@
 		D0D51D5D148840DA00F15DA9 /* device.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D51D59148840DA00F15DA9 /* device.png */; };
 		D0D51D5E148840DA00F15DA9 /* pattern.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D51D5A148840DA00F15DA9 /* pattern.png */; };
 		D0D51D5F148840DA00F15DA9 /* screen.png in Resources */ = {isa = PBXBuildFile; fileRef = D0D51D5B148840DA00F15DA9 /* screen.png */; };
+		D0FBE244149303ED00588996 /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FBE23B149303E700588996 /* Proton.framework */; };
+		D0FBE245149303ED00588996 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0FBE219149303BF00588996 /* Velvet.framework */; };
+		D0FBE247149303FE00588996 /* Proton.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D0FBE23B149303E700588996 /* Proton.framework */; };
+		D0FBE248149303FE00588996 /* Velvet.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D0FBE219149303BF00588996 /* Velvet.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D0FBE218149303BF00588996 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0FBE213149303BF00588996 /* Velvet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0EFFC01147851A80095AB35;
+			remoteInfo = Velvet;
+		};
+		D0FBE21A149303BF00588996 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0FBE213149303BF00588996 /* Velvet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0EFFC19147851A80095AB35;
+			remoteInfo = VelvetTests;
+		};
+		D0FBE22B149303D500588996 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0FBE213149303BF00588996 /* Velvet.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D0EFFC00147851A80095AB35;
+			remoteInfo = Velvet;
+		};
+		D0FBE23A149303E700588996 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0FBE233149303E700588996 /* Proton.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0DB5CC41492DDD5005955FB;
+			remoteInfo = "Proton Mac";
+		};
+		D0FBE23C149303E700588996 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0FBE233149303E700588996 /* Proton.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0DB5CDC1492DDD5005955FB;
+			remoteInfo = "Proton Mac Tests";
+		};
+		D0FBE23E149303E700588996 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0FBE233149303E700588996 /* Proton.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0B07ACE1492E72800A1E816;
+			remoteInfo = "Proton iOS";
+		};
+		D0FBE240149303E700588996 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0FBE233149303E700588996 /* Proton.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0B07ADC1492E72800A1E816;
+			remoteInfo = "Proton iOS Tests";
+		};
+		D0FBE242149303EA00588996 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0FBE233149303E700588996 /* Proton.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D0DB5CC31492DDD5005955FB;
+			remoteInfo = "Proton Mac";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D0FBE246149303F100588996 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D0FBE247149303FE00588996 /* Proton.framework in Copy Frameworks */,
+				D0FBE248149303FE00588996 /* Velvet.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D0305D711486F7670081D6EA /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
@@ -61,7 +138,6 @@
 		D07A67FC1486F4140051C961 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
 		D07A67FD1486F4140051C961 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D07A67FE1486F4140051C961 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
-		D07A68151486F4580051C961 /* Velvet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Velvet.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Velvet-aawylcmkqeadwgclifbwmulekybf/Build/Products/Debug/Velvet.framework"; sourceTree = "<group>"; };
 		D07A68161486F4580051C961 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0D51CF41488076600F15DA9 /* TreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeView.h; sourceTree = "<group>"; };
 		D0D51CF51488076600F15DA9 /* TreeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeView.m; sourceTree = "<group>"; };
@@ -73,6 +149,8 @@
 		D0D51D59148840DA00F15DA9 /* device.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = device.png; sourceTree = "<group>"; };
 		D0D51D5A148840DA00F15DA9 /* pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pattern.png; sourceTree = "<group>"; };
 		D0D51D5B148840DA00F15DA9 /* screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screen.png; sourceTree = "<group>"; };
+		D0FBE213149303BF00588996 /* Velvet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Velvet.xcodeproj; path = ../../Frameworks/Velvet/Velvet.xcodeproj; sourceTree = "<group>"; };
+		D0FBE233149303E700588996 /* Proton.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proton.xcodeproj; path = ../../Frameworks/Proton/Frameworks/Proton/Proton.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +158,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D07A68171486F4580051C961 /* Velvet.framework in Frameworks */,
+				D0FBE244149303ED00588996 /* Proton.framework in Frameworks */,
+				D0FBE245149303ED00588996 /* Velvet.framework in Frameworks */,
 				D07A68181486F4580051C961 /* QuartzCore.framework in Frameworks */,
 				D07A67CB1486F3F10051C961 /* Cocoa.framework in Frameworks */,
 			);
@@ -130,7 +209,8 @@
 		D07A67C91486F3F10051C961 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D07A68151486F4580051C961 /* Velvet.framework */,
+				D0FBE233149303E700588996 /* Proton.xcodeproj */,
+				D0FBE213149303BF00588996 /* Velvet.xcodeproj */,
 				D07A68161486F4580051C961 /* QuartzCore.framework */,
 				D07A67CA1486F3F10051C961 /* Cocoa.framework */,
 				D07A67CC1486F3F10051C961 /* Other Frameworks */,
@@ -180,7 +260,7 @@
 				D07A67FE1486F4140051C961 /* README.md */,
 			);
 			name = Configuration;
-			path = ../../Configuration;
+			path = ../../Frameworks/Proton/Frameworks/libextobjc/Configuration;
 			sourceTree = "<group>";
 		};
 		D07A67EB1486F4140051C961 /* Base */ = {
@@ -245,6 +325,26 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		D0FBE214149303BF00588996 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D0FBE219149303BF00588996 /* Velvet.framework */,
+				D0FBE21B149303BF00588996 /* VelvetTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D0FBE234149303E700588996 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D0FBE23B149303E700588996 /* Proton.framework */,
+				D0FBE23D149303E700588996 /* Proton Mac Tests.octest */,
+				D0FBE23F149303E700588996 /* libProton.a */,
+				D0FBE241149303E700588996 /* Proton iOS Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -255,10 +355,13 @@
 				D07A67C21486F3F10051C961 /* Sources */,
 				D07A67C31486F3F10051C961 /* Frameworks */,
 				D07A67C41486F3F10051C961 /* Resources */,
+				D0FBE246149303F100588996 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D0FBE243149303EA00588996 /* PBXTargetDependency */,
+				D0FBE22C149303D500588996 /* PBXTargetDependency */,
 			);
 			name = TransitionTest;
 			productName = TransitionTest;
@@ -284,12 +387,67 @@
 			mainGroup = D07A67BB1486F3F10051C961;
 			productRefGroup = D07A67C71486F3F10051C961 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D0FBE234149303E700588996 /* Products */;
+					ProjectRef = D0FBE233149303E700588996 /* Proton.xcodeproj */;
+				},
+				{
+					ProductGroup = D0FBE214149303BF00588996 /* Products */;
+					ProjectRef = D0FBE213149303BF00588996 /* Velvet.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D07A67C51486F3F10051C961 /* TransitionTest */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D0FBE219149303BF00588996 /* Velvet.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Velvet.framework;
+			remoteRef = D0FBE218149303BF00588996 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D0FBE21B149303BF00588996 /* VelvetTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = VelvetTests.octest;
+			remoteRef = D0FBE21A149303BF00588996 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D0FBE23B149303E700588996 /* Proton.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Proton.framework;
+			remoteRef = D0FBE23A149303E700588996 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D0FBE23D149303E700588996 /* Proton Mac Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Proton Mac Tests.octest";
+			remoteRef = D0FBE23C149303E700588996 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D0FBE23F149303E700588996 /* libProton.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libProton.a;
+			remoteRef = D0FBE23E149303E700588996 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D0FBE241149303E700588996 /* Proton iOS Tests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Proton iOS Tests.octest";
+			remoteRef = D0FBE240149303E700588996 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D07A67C41486F3F10051C961 /* Resources */ = {
@@ -325,6 +483,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D0FBE22C149303D500588996 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Velvet;
+			targetProxy = D0FBE22B149303D500588996 /* PBXContainerItemProxy */;
+		};
+		D0FBE243149303EA00588996 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Proton Mac";
+			targetProxy = D0FBE242149303EA00588996 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		D07A67D31486F3F10051C961 /* InfoPlist.strings */ = {
@@ -392,10 +563,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D07A67F91486F4140051C961 /* Mac-Application.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-aawylcmkqeadwgclifbwmulekybf/Build/Products/Debug\"",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransitionTest/TransitionTest-Prefix.pch";
 				INFOPLIST_FILE = "TransitionTest/TransitionTest-Info.plist";
@@ -408,10 +575,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D07A67F91486F4140051C961 /* Mac-Application.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-aawylcmkqeadwgclifbwmulekybf/Build/Products/Debug\"",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransitionTest/TransitionTest-Prefix.pch";
 				INFOPLIST_FILE = "TransitionTest/TransitionTest-Info.plist";
@@ -437,10 +600,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D07A67F91486F4140051C961 /* Mac-Application.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../Library/Developer/Xcode/DerivedData/Velvet-aawylcmkqeadwgclifbwmulekybf/Build/Products/Debug\"",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransitionTest/TransitionTest-Prefix.pch";
 				INFOPLIST_FILE = "TransitionTest/TransitionTest-Info.plist";

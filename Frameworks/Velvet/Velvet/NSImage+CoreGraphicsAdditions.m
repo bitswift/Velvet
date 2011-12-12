@@ -7,7 +7,7 @@
 //
 
 #import <Velvet/NSImage+CoreGraphicsAdditions.h>
-#import "EXTSafeCategory.h"
+#import <Proton/EXTSafeCategory.h>
 
 @safecategory (NSImage, CoreGraphicsAdditions)
 - (CGImageRef)CGImage; {

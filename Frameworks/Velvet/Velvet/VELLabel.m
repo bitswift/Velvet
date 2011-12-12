@@ -7,7 +7,7 @@
 //
 
 #import <Velvet/VELLabel.h>
-#import "EXTScope.h"
+#import <Proton/EXTScope.h>
 
 static NSString * const VELLabelEmptyAttributedString = @"\0";
 

@@ -20,7 +20,7 @@
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
 #import <objc/runtime.h>
-#import "EXTScope.h"
+#import <Proton/EXTScope.h>
 
 /*
  * The number of animation blocks currently being run.

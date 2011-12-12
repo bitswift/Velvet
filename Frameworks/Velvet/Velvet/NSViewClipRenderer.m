@@ -12,8 +12,8 @@
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELNSView.h>
+#import <Proton/EXTScope.h>
 #import <QuartzCore/QuartzCore.h>
-#import "EXTScope.h"
 
 @interface NSViewClipRenderer ()
 /*

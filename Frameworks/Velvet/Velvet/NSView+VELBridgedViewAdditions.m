@@ -11,7 +11,7 @@
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
-#import "EXTSafeCategory.h"
+#import <Proton/EXTSafeCategory.h>
 
 @safecategory (NSView, VELBridgeViewAdditions)
 - (CGPoint)convertFromWindowPoint:(CGPoint)point; {

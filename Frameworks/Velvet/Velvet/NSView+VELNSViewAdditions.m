@@ -9,7 +9,7 @@
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/VELNSView.h>
 #import <objc/runtime.h>
-#import "EXTSafeCategory.h"
+#import <Proton/EXTSafeCategory.h>
 
 @safecategory (NSView, VELNSViewAdditions)
 

@@ -14,7 +14,6 @@
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/NSArray+HigherOrderAdditions.h>
 #import <Velvet/VELBridgedView.h>
 #import <Velvet/VELControl.h>
 #import <Velvet/VELImageView.h>

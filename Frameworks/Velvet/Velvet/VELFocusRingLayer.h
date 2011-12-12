@@ -34,4 +34,15 @@
  * @param hostView The <VELView> which has focus.
  */
 - (id)initWithOriginalLayer:(CALayer *)layer hostView:(VELView *)hostView;
+
+/*
+ * @name Original Layer
+ */
+
+/*
+ * The original focus ring layer, as provided to
+ * <initWithOriginalLayer:hostView:>.
+ */
+@property (nonatomic, weak, readonly) CALayer *originalLayer;
+
 @end

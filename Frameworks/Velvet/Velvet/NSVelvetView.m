@@ -249,6 +249,14 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
                 // this is ours
                 continue;
             } else if ([sublayer isKindOfClass:[VELFocusRingLayer class]]) {
+                VELFocusRingLayer *focusRingLayer = (id)sublayer;
+
+                // if the original focus ring was removed...
+                if ([existingSublayers indexOfObjectIdenticalTo:focusRingLayer.originalLayer] == NSNotFound) {
+                    // remove ours as well
+                    [focusRingLayer removeFromSuperlayer];
+                }
+
                 continue;
             }
 

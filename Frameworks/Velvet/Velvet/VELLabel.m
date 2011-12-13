@@ -192,7 +192,14 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
     if (maximumLines != 1 || constraint.height == 0)
         constraint.height = CGFLOAT_MAX;
 
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.formattedText);
+    NSMutableAttributedString *string = [self.formattedText mutableCopy];
+
+    // remove all paragraph styles (such as line break mode and alignment) so
+    // that the size returned is as much space as the full, left-aligned text
+    // would take -- and then can be reduced from there when rendered
+    [string removeAttribute:NSParagraphStyleAttributeName range:NSMakeRange(0, [string length])];
+
+    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)string);
     @onExit {
         CFRelease(framesetter);
     };

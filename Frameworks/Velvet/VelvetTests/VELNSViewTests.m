@@ -18,12 +18,6 @@
     NSView *contained = [[NSView alloc] initWithFrame:CGRectZero];
     VELNSView *view = [[VELNSView alloc] initWithNSView:contained];
 
-    // Check that the contained NSView has its nextResponder set as the VELNSView,
-    // and the VELNSView has no nextResponder
-    STAssertNil([view nextResponder], @"");
-    STAssertNil([contained superview], @"");
-    STAssertEquals(view, [contained nextResponder], @"");
-
     // Set up a Velvet hierarchy
     NSVelvetView *host = [[NSVelvetView alloc] initWithFrame:CGRectZero];
     host.rootView.subviews = [NSArray arrayWithObject:view];
@@ -32,7 +26,6 @@
     // though its superview has been changed. Check that the VELNSView's nextResponder
     // is now set.
     STAssertEquals(host.rootView, [view nextResponder], @"");
-    STAssertEquals(host, [contained superview], @"");
     STAssertEquals(view, [contained nextResponder], @"");
 }
 

@@ -171,11 +171,25 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
     };
 
     CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
-    @onExit {
-        CFRelease(frame);
-    };
+    // TODO: why does onExit crash? :(
+//    @onExit {
+//        CFRelease(frame);
+//    };
 
-    CTFrameDraw(frame, context);
+//    CTFrameDraw(frame, context);
+    
+    CFArrayRef lines = CTFrameGetLines(frame);
+    CGPoint *origins;
+    CFRange r = CFRangeMake(0, 0);
+    CTFrameGetLineOrigins(frame, r, origins);
+    
+    int i;
+    for (i = 0; i < CFArrayGetCount(lines); i++) {
+        CGContextSetTextPosition(context, origins[i].x, origins[i].x);
+        CTLineDraw(CFArrayGetValueAtIndex(lines, i), context);
+    }
+    
+
 }
 
 - (CGSize)sizeThatFits:(CGSize)constraint {

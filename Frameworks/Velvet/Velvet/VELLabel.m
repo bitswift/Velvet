@@ -158,19 +158,19 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
 
-    CGMutablePathRef path = CGPathCreateMutable();
-    @onExit {
-        CGPathRelease(path);
-    };
+//    CGMutablePathRef path = CGPathCreateMutable();
+//    @onExit {
+//        CGPathRelease(path);
+//    };
+//
+//    CGPathAddRect(path, NULL, self.bounds);
 
-    CGPathAddRect(path, NULL, self.bounds);
+//    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
+//    @onExit {
+//        CFRelease(framesetter);
+//    };
 
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
-    @onExit {
-        CFRelease(framesetter);
-    };
-
-    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
+//    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
     // TODO: why does onExit crash? :(
 //    @onExit {
 //        CFRelease(frame);
@@ -178,16 +178,59 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 
 //    CTFrameDraw(frame, context);
     
-    CFArrayRef lines = CTFrameGetLines(frame);
-    CGPoint *origins;
-    CFRange r = CFRangeMake(0, 0);
-    CTFrameGetLineOrigins(frame, r, origins);
+    //CTTypesetterSuggestLineBreak
     
-    int i;
-    for (i = 0; i < CFArrayGetCount(lines); i++) {
-        CGContextSetTextPosition(context, origins[i].x, origins[i].x);
-        CTLineDraw(CFArrayGetValueAtIndex(lines, i), context);
+    NSUInteger lineIndex = 0;
+    CFIndex characterIndex = 0;
+    CGFloat originY = 0.0f;
+    while (characterIndex < (CFIndex)attributedString.length - 1) {
+        CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
+        CFIndex characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
+        
+        CTLineRef line = NULL;
+        if (characterIndex + characterCount < (CFIndex)attributedString.length - 1 && lineIndex == self.numberOfLines - 1) {
+            line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, (CFIndex)attributedString.length - characterIndex));
+            
+            // only called if we actually need to truncate
+            CTLineRef ellipsis = NULL;
+            UniChar elip = 0x2026;
+            CFStringRef elipString = CFStringCreateWithCharacters(NULL, &elip, 1);
+            CFAttributedStringRef elipAttrString = CFAttributedStringCreate(NULL, elipString, NULL);
+            ellipsis = CTLineCreateWithAttributedString(elipAttrString);
+            line = CTLineCreateTruncatedLine(line, self.bounds.size.width, kCTLineTruncationMiddle, ellipsis);
+            characterIndex = (CFIndex)attributedString.length - 1;
+        } else {
+            line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, characterCount));
+        }
+        
+        CGFloat ascent;
+        CGFloat descent;
+        CGFloat leading;
+        
+        CGFloat lineWidth = CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
+        CGFloat whitespaceWidth = CTLineGetTrailingWhitespaceWidth(line);
+        originY += ascent + descent + leading;
+        
+        CGContextSetTextPosition(context, floor((self.bounds.size.width - (lineWidth - whitespaceWidth))/2.0f), ceil(self.bounds.size.height - originY));
+        CTLineDraw(line, context);
+        
+        characterIndex += characterCount;
+        lineIndex++;
     }
+    
+    
+    
+//    CFArrayRef lines = CTFrameGetLines(frame);
+//    
+//    int i;
+//    for (i = 0; i < CFArrayGetCount(lines); i++) {
+//        CGPoint origin;
+//        CFRange r = CFRangeMake(i, 1);
+//        CTFrameGetLineOrigins(frame, r, &origin);
+//        
+//        CGContextSetTextPosition(context, origin.x, origin.y);
+//        CTLineDraw(CFArrayGetValueAtIndex(lines, i), context);
+//    }
     
 
 }

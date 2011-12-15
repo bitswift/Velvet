@@ -164,8 +164,12 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
     CGFloat originY = 0.0f;
     while (characterIndex < strLength - 1) {
         CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
-        CFIndex characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
-        
+        CFIndex characterCount;
+        if (self.lineBreakMode == VELLineBreakModeCharacterWrap) {
+            characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, self.bounds.size.width);
+        } else {
+            characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
+        }
         CTLineRef line = NULL;
         // If we are on the last line
         //   and have some sort of truncation set

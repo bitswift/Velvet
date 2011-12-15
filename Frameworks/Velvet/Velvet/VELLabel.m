@@ -167,6 +167,8 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
         CFIndex characterCount;
         if (self.lineBreakMode == VELLineBreakModeCharacterWrap) {
             characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, self.bounds.size.width);
+        } else if (self.lineBreakMode == VELLineBreakModeClip) {
+            characterCount = strLength;
         } else {
             characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
         }

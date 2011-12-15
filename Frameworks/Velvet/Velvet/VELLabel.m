@@ -157,48 +157,53 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
         return;
 
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-
-//    CGMutablePathRef path = CGPathCreateMutable();
-//    @onExit {
-//        CGPathRelease(path);
-//    };
-//
-//    CGPathAddRect(path, NULL, self.bounds);
-
-//    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
-//    @onExit {
-//        CFRelease(framesetter);
-//    };
-
-//    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
-    // TODO: why does onExit crash? :(
-//    @onExit {
-//        CFRelease(frame);
-//    };
-
-//    CTFrameDraw(frame, context);
     
-    //CTTypesetterSuggestLineBreak
-    
+    CFIndex strLength = (CFIndex)attributedString.length;
     NSUInteger lineIndex = 0;
     CFIndex characterIndex = 0;
     CGFloat originY = 0.0f;
-    while (characterIndex < (CFIndex)attributedString.length - 1) {
+    while (characterIndex < strLength - 1) {
         CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
         CFIndex characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
         
         CTLineRef line = NULL;
-        if (characterIndex + characterCount < (CFIndex)attributedString.length - 1 && lineIndex == self.numberOfLines - 1) {
-            line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, (CFIndex)attributedString.length - characterIndex));
-            
-            // only called if we actually need to truncate
+        // If we are on the last line
+        //   and have some sort of truncation set
+        //   and we will have characters left over after the ones we're about to draw for this line
+        //   then we need to truncate the remaining text
+        if (lineIndex == self.numberOfLines - 1 && 
+            (self.lineBreakMode == VELLineBreakModeHeadTruncation ||
+             self.lineBreakMode == VELLineBreakModeMiddleTruncation ||
+             self.lineBreakMode == VELLineBreakModeTailTruncation) &&
+            characterIndex + characterCount < strLength - 1) {
+            line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, strLength - characterIndex));
             CTLineRef ellipsis = NULL;
             UniChar elip = 0x2026;
             CFStringRef elipString = CFStringCreateWithCharacters(NULL, &elip, 1);
             CFAttributedStringRef elipAttrString = CFAttributedStringCreate(NULL, elipString, NULL);
             ellipsis = CTLineCreateWithAttributedString(elipAttrString);
-            line = CTLineCreateTruncatedLine(line, self.bounds.size.width, kCTLineTruncationMiddle, ellipsis);
-            characterIndex = (CFIndex)attributedString.length - 1;
+            
+            CTLineTruncationType lineTruncation = kCTLineTruncationEnd;
+            switch (self.lineBreakMode) {
+                case VELLineBreakModeHeadTruncation:
+                    // not yet supported
+//                    lineTruncation = kCTLineTruncationStart;
+                    break;
+                case VELLineBreakModeMiddleTruncation:
+                    lineTruncation = kCTLineTruncationMiddle;
+                    break;
+                case VELLineBreakModeTailTruncation:
+                default:
+                    lineTruncation = kCTLineTruncationEnd;
+                    break;
+            }
+            
+            line = CTLineCreateTruncatedLine(line, self.bounds.size.width, lineTruncation, ellipsis);
+            characterIndex = strLength;
+            
+            CFRelease(elipString);
+            CFRelease(elipAttrString);
+            CFRelease(ellipsis);
         } else {
             line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, characterCount));
         }
@@ -209,30 +214,35 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
         
         CGFloat lineWidth = CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
         CGFloat whitespaceWidth = CTLineGetTrailingWhitespaceWidth(line);
-        originY += ascent + descent + leading;
+         // we seem to need 1 more px for some reason
+        originY += ceil(ascent + descent + leading + 1);
         
-        CGContextSetTextPosition(context, floor((self.bounds.size.width - (lineWidth - whitespaceWidth))/2.0f), ceil(self.bounds.size.height - originY));
+        CGFloat indentWidth = 0.0f;
+        switch (self.textAlignment) {
+            case VELTextAlignmentCenter:
+                indentWidth = (self.bounds.size.width - (lineWidth - whitespaceWidth))/2.0f;
+                break;
+            case VELTextAlignmentRight:
+                indentWidth = self.bounds.size.width - lineWidth + whitespaceWidth;
+                break;                
+            case VELTextAlignmentLeft:
+            case VELTextAlignmentJustified:
+            default:
+                // keep at 0.0f
+                break;
+        }
+        
+        CGContextSetTextPosition(context, indentWidth, ceil(self.bounds.size.height - originY));
+        // only create a justified line if there are more characters to draw after this line
+        //   and the textAlignment is set to be justified
+        if (characterIndex + characterCount < strLength - 1 && self.textAlignment == VELTextAlignmentJustified) {
+            line = CTLineCreateJustifiedLine(line, 1.0f, self.bounds.size.width);
+        }
         CTLineDraw(line, context);
-        
+
         characterIndex += characterCount;
         lineIndex++;
     }
-    
-    
-    
-//    CFArrayRef lines = CTFrameGetLines(frame);
-//    
-//    int i;
-//    for (i = 0; i < CFArrayGetCount(lines); i++) {
-//        CGPoint origin;
-//        CFRange r = CFRangeMake(i, 1);
-//        CTFrameGetLineOrigins(frame, r, &origin);
-//        
-//        CGContextSetTextPosition(context, origin.x, origin.y);
-//        CTLineDraw(CFArrayGetValueAtIndex(lines, i), context);
-//    }
-    
-
 }
 
 - (CGSize)sizeThatFits:(CGSize)constraint {

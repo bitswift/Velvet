@@ -181,7 +181,7 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
             (self.lineBreakMode == VELLineBreakModeHeadTruncation ||
              self.lineBreakMode == VELLineBreakModeMiddleTruncation ||
              self.lineBreakMode == VELLineBreakModeTailTruncation) &&
-            characterIndex + characterCount < strLength - 1) {
+            characterIndex + characterCount < strLength) {
             line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, strLength - characterIndex));
             CTLineRef ellipsis = NULL;
             UniChar elip = 0x2026;

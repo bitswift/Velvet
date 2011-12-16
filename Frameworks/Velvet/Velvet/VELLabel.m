@@ -28,6 +28,13 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
  * receiver's style properties.
  */
 - (void)setParagraphStyle;
+
+/*
+ * Returns an array of all lines necessary to draw the full <formattedText>
+ * within the width of the label's bounds.
+ */
+- (NSArray *)linesToDraw;
+
 @end
 
 @implementation VELLabel
@@ -139,7 +146,41 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
     return self;
 }
 
+
+#pragma mark Line Calculations
+
+- (NSArray *)linesToDraw {
+    CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.formattedText);
+    CFIndex strLength = (CFIndex)self.formattedText.length;
+    CFIndex characterIndex = 0;
+    NSMutableArray *lines = [NSMutableArray array];
+    while (characterIndex < strLength - 1) {
+        CFIndex characterCount = 0;
+        switch (self.lineBreakMode) {
+            case VELLineBreakModeCharacterWrap:
+                characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, self.bounds.size.width);
+                break;
+            case VELLineBreakModeClip:
+                characterCount = strLength;
+                break;
+            case VELLineBreakModeWordWrap:
+            // truncation is treated similar to word wrap before we condense it down and add an elipsis
+            case VELLineBreakModeHeadTruncation:
+            case VELLineBreakModeMiddleTruncation:
+            case VELLineBreakModeTailTruncation:
+            default:
+                characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
+                break;
+        }
+        CTLineRef line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, characterCount));
+        [lines addObject:(__bridge id)line];
+        characterIndex += characterCount;
+    }
+    return [NSArray arrayWithArray:lines];
+}
+
 #pragma mark Drawing
+
 
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
@@ -158,103 +199,140 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
     
-    CFIndex strLength = (CFIndex)attributedString.length;
-    NSUInteger lineIndex = 0;
-    CFIndex characterIndex = 0;
-    CGFloat originY = 0.0f;
-    while (characterIndex < strLength - 1) {
-        CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
-        CFIndex characterCount;
-        if (self.lineBreakMode == VELLineBreakModeCharacterWrap) {
-            characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, self.bounds.size.width);
-        } else if (self.lineBreakMode == VELLineBreakModeClip) {
-            characterCount = strLength;
-        } else {
-            characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
-        }
-        CTLineRef line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, strLength - characterIndex));
+    NSArray *lines = [self linesToDraw];
+    
+    CGFloat requiredHeight = 0.0f;
+    NSUInteger i;
+    for (i = 0; i < lines.count; i++) {
+        CTLineRef aLine = (__bridge CTLineRef)[lines objectAtIndex:i];
         CGFloat ascent;
         CGFloat descent;
         CGFloat leading;
-        CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
-        CGFloat lineHeight = ceil(ascent + descent + leading + 1);
+        CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
+        requiredHeight += ceil(ascent + descent + leading);
+    }
+    
+    if (requiredHeight > self.bounds.size.height) {
+        // we may need to consolodate lines depending on the lineBreakMode
         
-        // If we have enough vertical height to draw a line after this one
-        // OR
-        //   we are on the last line
-        //   and have some sort of truncation set
-        //   and we will have characters left over after the ones we're about to draw for this line
-        // THEN 
-        //     we need to truncate the remaining text
-        if (originY + lineHeight + lineHeight > self.bounds.size.height ||
-            (lineIndex == self.numberOfLines - 1 && 
-            (self.lineBreakMode == VELLineBreakModeHeadTruncation ||
-             self.lineBreakMode == VELLineBreakModeMiddleTruncation ||
-             self.lineBreakMode == VELLineBreakModeTailTruncation) &&
-            characterIndex + characterCount < strLength)) {
-            line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, strLength - characterIndex));
-            CTLineRef ellipsis = NULL;
-            UniChar elip = 0x2026;
-            CFStringRef elipString = CFStringCreateWithCharacters(NULL, &elip, 1);
-            CFAttributedStringRef elipAttrString = CFAttributedStringCreate(NULL, elipString, NULL);
-            ellipsis = CTLineCreateWithAttributedString(elipAttrString);
-            
-            CTLineTruncationType lineTruncation = kCTLineTruncationEnd;
-            switch (self.lineBreakMode) {
-                case VELLineBreakModeHeadTruncation:
-                    // not yet supported
-//                    lineTruncation = kCTLineTruncationStart;
-                    break;
-                case VELLineBreakModeMiddleTruncation:
-                    lineTruncation = kCTLineTruncationMiddle;
-                    break;
-                case VELLineBreakModeTailTruncation:
-                default:
-                    lineTruncation = kCTLineTruncationEnd;
-                    break;
-            }
-            
-            line = CTLineCreateTruncatedLine(line, self.bounds.size.width, lineTruncation, ellipsis);
-            characterIndex = strLength;
-            
-            CFRelease(elipString);
-            CFRelease(elipAttrString);
-            CFRelease(ellipsis);
-        } else {
-            line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, characterCount));
-        }
         
-        CGFloat lineWidth = CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
-        CGFloat whitespaceWidth = CTLineGetTrailingWhitespaceWidth(line);
-         // we seem to need 1 more px for some reason
-        originY += ceil(ascent + descent + leading + 1);
+        
+    }
+    
+    CGFloat originY = 0.0f;
+    for (i = 0; i < lines.count; i++) {
+        CTLineRef aLine = (__bridge CTLineRef)[lines objectAtIndex:i];
+        
+        CGFloat ascent;
+        CGFloat descent;
+        CGFloat leading;
+        CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
+        
+        originY += ceil(ascent + descent + leading);
         
         CGFloat indentWidth = 0.0f;
-        switch (self.textAlignment) {
-            case VELTextAlignmentCenter:
-                indentWidth = (self.bounds.size.width - (lineWidth - whitespaceWidth))/2.0f;
-                break;
-            case VELTextAlignmentRight:
-                indentWidth = self.bounds.size.width - lineWidth + whitespaceWidth;
-                break;                
-            case VELTextAlignmentLeft:
-            case VELTextAlignmentJustified:
-            default:
-                // keep at 0.0f
-                break;
-        }
-        
         CGContextSetTextPosition(context, indentWidth, self.bounds.size.height - originY);
-        // only create a justified line if there are more characters to draw after this line
-        //   and the textAlignment is set to be justified
-        if (characterIndex + characterCount < strLength - 1 && self.textAlignment == VELTextAlignmentJustified) {
-            line = CTLineCreateJustifiedLine(line, 1.0f, self.bounds.size.width);
-        }
-        CTLineDraw(line, context);
-
-        characterIndex += characterCount;
-        lineIndex++;
+        CTLineDraw(aLine, context);
     }
+
+    
+//    CFIndex strLength = (CFIndex)attributedString.length;
+//    NSUInteger lineIndex = 0;
+//    CFIndex characterIndex = 0;
+//    CGFloat originY = 0.0f;
+//    while (characterIndex < strLength - 1) {
+//        CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
+//        CFIndex characterCount;
+//        if (self.lineBreakMode == VELLineBreakModeCharacterWrap) {
+//            characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, self.bounds.size.width);
+//        } else if (self.lineBreakMode == VELLineBreakModeClip) {
+//            characterCount = strLength;
+//        } else {
+//            characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
+//        }
+//        CTLineRef line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, strLength - characterIndex));
+//        CGFloat ascent;
+//        CGFloat descent;
+//        CGFloat leading;
+//        CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
+//        CGFloat lineHeight = ceil(ascent + descent + leading + 1);
+//        
+//        // If we have enough vertical height to draw a line after this one
+//        // OR
+//        //   we are on the last line
+//        //   and have some sort of truncation set
+//        //   and we will have characters left over after the ones we're about to draw for this line
+//        // THEN 
+//        //     we need to truncate the remaining text
+//        if (originY + lineHeight + lineHeight > self.bounds.size.height ||
+//            (lineIndex == self.numberOfLines - 1 && 
+//            (self.lineBreakMode == VELLineBreakModeHeadTruncation ||
+//             self.lineBreakMode == VELLineBreakModeMiddleTruncation ||
+//             self.lineBreakMode == VELLineBreakModeTailTruncation) &&
+//            characterIndex + characterCount < strLength)) {
+//            line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, strLength - characterIndex));
+//            CTLineRef ellipsis = NULL;
+//            UniChar elip = 0x2026;
+//            CFStringRef elipString = CFStringCreateWithCharacters(NULL, &elip, 1);
+//            CFAttributedStringRef elipAttrString = CFAttributedStringCreate(NULL, elipString, NULL);
+//            ellipsis = CTLineCreateWithAttributedString(elipAttrString);
+//            
+//            CTLineTruncationType lineTruncation = kCTLineTruncationEnd;
+//            switch (self.lineBreakMode) {
+//                case VELLineBreakModeHeadTruncation:
+//                    // not yet supported
+////                    lineTruncation = kCTLineTruncationStart;
+//                    break;
+//                case VELLineBreakModeMiddleTruncation:
+//                    lineTruncation = kCTLineTruncationMiddle;
+//                    break;
+//                case VELLineBreakModeTailTruncation:
+//                default:
+//                    lineTruncation = kCTLineTruncationEnd;
+//                    break;
+//            }
+//            
+//            line = CTLineCreateTruncatedLine(line, self.bounds.size.width, lineTruncation, ellipsis);
+//            characterIndex = strLength;
+//            
+//            CFRelease(elipString);
+//            CFRelease(elipAttrString);
+//            CFRelease(ellipsis);
+//        } else {
+//            line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, characterCount));
+//        }
+//        
+//        CGFloat lineWidth = CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
+//        CGFloat whitespaceWidth = CTLineGetTrailingWhitespaceWidth(line);
+//         // we seem to need 1 more px for some reason
+//        originY += ceil(ascent + descent + leading + 1);
+//        
+//        CGFloat indentWidth = 0.0f;
+//        switch (self.textAlignment) {
+//            case VELTextAlignmentCenter:
+//                indentWidth = (self.bounds.size.width - (lineWidth - whitespaceWidth))/2.0f;
+//                break;
+//            case VELTextAlignmentRight:
+//                indentWidth = self.bounds.size.width - lineWidth + whitespaceWidth;
+//                break;                
+//            case VELTextAlignmentLeft:
+//            case VELTextAlignmentJustified:
+//            default:
+//                // keep at 0.0f
+//                break;
+//        }
+//        
+//        CGContextSetTextPosition(context, indentWidth, self.bounds.size.height - originY);
+//        // only create a justified line if there are more characters to draw after this line
+//        //   and the textAlignment is set to be justified
+//        if (characterIndex + characterCount < strLength - 1 && self.textAlignment == VELTextAlignmentJustified) {
+//            line = CTLineCreateJustifiedLine(line, 1.0f, self.bounds.size.width);
+//        }
+//        CTLineDraw(line, context);
+//
+//        characterIndex += characterCount;
+//        lineIndex++;
+//    }
 }
 
 - (CGSize)sizeThatFits:(CGSize)constraint {

@@ -172,16 +172,26 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
         } else {
             characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
         }
-        CTLineRef line = NULL;
-        // If we are on the last line
+        CTLineRef line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, strLength - characterIndex));
+        CGFloat ascent;
+        CGFloat descent;
+        CGFloat leading;
+        CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
+        CGFloat lineHeight = ceil(ascent + descent + leading + 1);
+        
+        // If we have enough vertical height to draw a line after this one
+        // OR
+        //   we are on the last line
         //   and have some sort of truncation set
         //   and we will have characters left over after the ones we're about to draw for this line
-        //   then we need to truncate the remaining text
-        if (lineIndex == self.numberOfLines - 1 && 
+        // THEN 
+        //     we need to truncate the remaining text
+        if (originY + lineHeight + lineHeight > self.bounds.size.height ||
+            (lineIndex == self.numberOfLines - 1 && 
             (self.lineBreakMode == VELLineBreakModeHeadTruncation ||
              self.lineBreakMode == VELLineBreakModeMiddleTruncation ||
              self.lineBreakMode == VELLineBreakModeTailTruncation) &&
-            characterIndex + characterCount < strLength) {
+            characterIndex + characterCount < strLength)) {
             line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, strLength - characterIndex));
             CTLineRef ellipsis = NULL;
             UniChar elip = 0x2026;
@@ -214,10 +224,6 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
             line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, characterCount));
         }
         
-        CGFloat ascent;
-        CGFloat descent;
-        CGFloat leading;
-        
         CGFloat lineWidth = CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
         CGFloat whitespaceWidth = CTLineGetTrailingWhitespaceWidth(line);
          // we seem to need 1 more px for some reason
@@ -238,7 +244,7 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
                 break;
         }
         
-        CGContextSetTextPosition(context, indentWidth, ceil(self.bounds.size.height - originY));
+        CGContextSetTextPosition(context, indentWidth, self.bounds.size.height - originY);
         // only create a justified line if there are more characters to draw after this line
         //   and the textAlignment is set to be justified
         if (characterIndex + characterCount < strLength - 1 && self.textAlignment == VELTextAlignmentJustified) {

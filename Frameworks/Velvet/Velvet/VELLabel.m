@@ -236,6 +236,12 @@ NSRange NSRangeFromCFRange(CFRange r) {
         CFAttributedStringRef ellipsisAttributedString = CFAttributedStringCreate(NULL, ellipsisString, NULL);
         ellipsisLine = CTLineCreateWithAttributedString(ellipsisAttributedString);
         
+        @onExit {
+            CFRelease(ellipsisAttributedString);
+            CFRelease(ellipsisLine);
+            CFRelease(ellipsisString);
+        };
+        
         if (self.lineBreakMode == VELLineBreakModeHeadTruncation) {
             // Calculate the truncated first line if we have more lines than will be drawn
             //   and the label uses VELLineBreakModeHeadTruncation
@@ -277,10 +283,6 @@ NSRange NSRangeFromCFRange(CFRange r) {
             lines = [lines subarrayWithRange:NSMakeRange(0, visibleLineCount - 1)];
             lines = [lines arrayByAddingObject:(__bridge id)lastLine];
         }
-        
-        CFRelease(ellipsisString);
-        CFRelease(ellipsisAttributedString);
-        CFRelease(ellipsisLine);
     }
     
     // Draw all the visible lines

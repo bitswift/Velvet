@@ -223,39 +223,54 @@ NSRange NSRangeFromCFRange(CFRange r) {
         visibleLineCount++;
     }
     
-    // calculate the truncated last line if we have more lines than will be drawn
-    //   and the label has a truncation lineBreakMode
-    if (visibleLineCount < lines.count &&
-        (self.lineBreakMode == VELLineBreakModeHeadTruncation ||
-        self.lineBreakMode == VELLineBreakModeMiddleTruncation ||
-        self.lineBreakMode == VELLineBreakModeTailTruncation)) {
-
-        CTLineRef lastVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:visibleLineCount - 1];
-        NSRange lastLineRange = NSRangeFromCFRange(CTLineGetStringRange(lastVisibleLine));
-        lastLineRange.length = attributedString.length - lastLineRange.location;
-        
-        NSAttributedString *lastLineAttrStr = [attributedString attributedSubstringFromRange:lastLineRange];
-        CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
-        
+    if (visibleLineCount < lines.count) {
         CTLineRef ellipsis = NULL;
         UniChar elip = 0x2026;
         CFStringRef elipString = CFStringCreateWithCharacters(NULL, &elip, 1);
         CFAttributedStringRef elipAttrString = CFAttributedStringCreate(NULL, elipString, NULL);
         ellipsis = CTLineCreateWithAttributedString(elipAttrString);
         
-        switch (self.lineBreakMode) {
-            // currently we don't support VELLineBreakModeHeadTruncation
-            case VELLineBreakModeMiddleTruncation:
-                lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationMiddle, ellipsis);
-                break;
-            case VELLineBreakModeTailTruncation:
-            default:
-                lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationEnd, ellipsis);
-                break;
+        if (self.lineBreakMode == VELLineBreakModeHeadTruncation) {
+            // calculate the truncated first line if we have more lines than will be drawn
+            //   and the label uses VELLineBreakModeHeadTruncation
+            CTLineRef firstVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:lines.count - visibleLineCount];
+            NSRange firstLineRange = NSRangeFromCFRange(CTLineGetStringRange(firstVisibleLine));
+            // what we really want is a range from the beginning to the end of `firstVisibleLine`
+            firstLineRange.length = firstLineRange.location + firstLineRange.length;
+            firstLineRange.location = 0;
+            
+            NSAttributedString *firstLineAttrStr = [attributedString attributedSubstringFromRange:firstLineRange];
+            CTLineRef firstLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)firstLineAttrStr);
+            firstLine = CTLineCreateTruncatedLine(firstLine, self.bounds.size.width, kCTLineTruncationStart, ellipsis);
+            
+            // replace the first line with our truncated version
+            NSArray *newLines = [NSArray arrayWithObject:(__bridge id)firstLine];
+            lines = [newLines arrayByAddingObjectsFromArray:[lines subarrayWithRange:NSMakeRange(lines.count - visibleLineCount + 1, visibleLineCount - 1)]];
+        } else if (self.lineBreakMode == VELLineBreakModeMiddleTruncation ||
+                   self.lineBreakMode == VELLineBreakModeTailTruncation) {
+            // calculate the truncated last line if we have more lines than will be drawn
+            //   and the label has truncation affecting the last line
+            
+            CTLineRef lastVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:visibleLineCount - 1];
+            NSRange lastLineRange = NSRangeFromCFRange(CTLineGetStringRange(lastVisibleLine));
+            lastLineRange.length = attributedString.length - lastLineRange.location;
+            
+            NSAttributedString *lastLineAttrStr = [attributedString attributedSubstringFromRange:lastLineRange];
+            CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
+            
+            switch (self.lineBreakMode) {
+                case VELLineBreakModeMiddleTruncation:
+                    lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationMiddle, ellipsis);
+                    break;
+                case VELLineBreakModeTailTruncation:
+                default:
+                    lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationEnd, ellipsis);
+                    break;
+            }
+            
+            lines = [lines subarrayWithRange:NSMakeRange(0, visibleLineCount - 1)];
+            lines = [lines arrayByAddingObject:(__bridge id)lastLine];
         }
-        
-        lines = [lines subarrayWithRange:NSMakeRange(0, visibleLineCount - 1)];
-        lines = [lines arrayByAddingObject:(__bridge id)lastLine];
         
         CFRelease(elipString);
         CFRelease(elipAttrString);

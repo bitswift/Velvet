@@ -25,6 +25,8 @@ typedef enum {
 
     /**
      * Clip rendered text when the end of the drawing rectangle is reached.
+     * 
+     * @warning VELLineBreakModeClip ignores lineCount.
      */
     VELLineBreakModeClip = kCTLineBreakByClipping,
 

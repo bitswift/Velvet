@@ -11,6 +11,11 @@
 
 static NSString * const VELLabelEmptyAttributedString = @"\0";
 
+NSRange NSRangeFromCFRange(CFRange r);
+NSRange NSRangeFromCFRange(CFRange r) {
+    return NSMakeRange(r.location, r.length);
+}
+
 @interface VELLabel ()
 /*
  * Sets an attribute over the full length of the <formattedText>.
@@ -154,7 +159,7 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
     CFIndex strLength = (CFIndex)self.formattedText.length;
     CFIndex characterIndex = 0;
     NSMutableArray *lines = [NSMutableArray array];
-    while (characterIndex < strLength - 1) {
+    while (characterIndex < strLength) {
         CFIndex characterCount = 0;
         switch (self.lineBreakMode) {
             case VELLineBreakModeCharacterWrap:
@@ -201,7 +206,8 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
     
     NSArray *lines = [self linesToDraw];
     
-    CGFloat requiredHeight = 0.0f;
+    CGFloat height = 0.0f;
+    NSUInteger visibleLineCount = 0;
     NSUInteger i;
     for (i = 0; i < lines.count; i++) {
         CTLineRef aLine = (__bridge CTLineRef)[lines objectAtIndex:i];
@@ -209,16 +215,54 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
         CGFloat descent;
         CGFloat leading;
         CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
-        requiredHeight += ceil(ascent + descent + leading);
+        height += ceil(ascent + descent + leading);
+        
+        if (height > self.bounds.size.height) {
+            break;
+        }
+        visibleLineCount++;
     }
     
-    if (requiredHeight > self.bounds.size.height) {
-        // we may need to consolodate lines depending on the lineBreakMode
+    // calculate the truncated last line if we have more lines than will be drawn
+    //   and the label has a truncation lineBreakMode
+    if (visibleLineCount < lines.count &&
+        (self.lineBreakMode == VELLineBreakModeHeadTruncation ||
+        self.lineBreakMode == VELLineBreakModeMiddleTruncation ||
+        self.lineBreakMode == VELLineBreakModeTailTruncation)) {
+
+        CTLineRef lastVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:visibleLineCount - 1];
+        NSRange lastLineRange = NSRangeFromCFRange(CTLineGetStringRange(lastVisibleLine));
+        lastLineRange.length = attributedString.length - lastLineRange.location;
         
+        NSAttributedString *lastLineAttrStr = [attributedString attributedSubstringFromRange:lastLineRange];
+        CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
         
+        CTLineRef ellipsis = NULL;
+        UniChar elip = 0x2026;
+        CFStringRef elipString = CFStringCreateWithCharacters(NULL, &elip, 1);
+        CFAttributedStringRef elipAttrString = CFAttributedStringCreate(NULL, elipString, NULL);
+        ellipsis = CTLineCreateWithAttributedString(elipAttrString);
         
+        switch (self.lineBreakMode) {
+            // currently we don't support VELLineBreakModeHeadTruncation
+            case VELLineBreakModeMiddleTruncation:
+                lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationMiddle, ellipsis);
+                break;
+            case VELLineBreakModeTailTruncation:
+            default:
+                lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationEnd, ellipsis);
+                break;
+        }
+        
+        lines = [lines subarrayWithRange:NSMakeRange(0, visibleLineCount - 1)];
+        lines = [lines arrayByAddingObject:(__bridge id)lastLine];
+        
+        CFRelease(elipString);
+        CFRelease(elipAttrString);
+        CFRelease(ellipsis);
     }
     
+    // draw all the visible lines
     CGFloat originY = 0.0f;
     for (i = 0; i < lines.count; i++) {
         CTLineRef aLine = (__bridge CTLineRef)[lines objectAtIndex:i];
@@ -226,13 +270,27 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
         CGFloat ascent;
         CGFloat descent;
         CGFloat leading;
-        CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
+        CGFloat lineWidth = CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
         
-        originY += ceil(ascent + descent + leading);
+        originY += ceil(ascent + leading);
         
         CGFloat indentWidth = 0.0f;
+        switch (self.textAlignment) {
+            case VELTextAlignmentCenter:
+                indentWidth = (self.bounds.size.width - (lineWidth - CTLineGetTrailingWhitespaceWidth(aLine)))/2.0f;
+                break;
+            case VELTextAlignmentRight:
+                indentWidth = self.bounds.size.width - (lineWidth - CTLineGetTrailingWhitespaceWidth(aLine));
+                break;
+            default:
+                break;
+        }
+        
+        
         CGContextSetTextPosition(context, indentWidth, self.bounds.size.height - originY);
         CTLineDraw(aLine, context);
+        
+        originY += descent;
     }
 
     

@@ -288,6 +288,10 @@ NSRange NSRangeFromCFRange(CFRange r) {
         
         
         CGContextSetTextPosition(context, indentWidth, self.bounds.size.height - originY);
+        if (i < lines.count - 1 && self.textAlignment == kCTJustifiedTextAlignment) {
+            // only create justified lines if we are NOT at the last line yet
+            aLine = CTLineCreateJustifiedLine(aLine, 1.0f, self.bounds.size.width);
+        }
         CTLineDraw(aLine, context);
         
         originY += descent;

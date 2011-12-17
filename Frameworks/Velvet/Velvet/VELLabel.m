@@ -159,8 +159,10 @@ NSRange NSRangeFromCFRange(CFRange r) {
     CFIndex strLength = (CFIndex)self.formattedText.length;
     CFIndex characterIndex = 0;
     NSMutableArray *lines = [NSMutableArray array];
+    
     while (characterIndex < strLength) {
         CFIndex characterCount = 0;
+        
         switch (self.lineBreakMode) {
             case VELLineBreakModeCharacterWrap:
                 characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, self.bounds.size.width);
@@ -169,7 +171,7 @@ NSRange NSRangeFromCFRange(CFRange r) {
                 characterCount = strLength;
                 break;
             case VELLineBreakModeWordWrap:
-            // truncation is treated similar to word wrap before we condense it down and add an elipsis
+            // Truncation is treated similar to word wrap before we condense it down and add an elipsis
             case VELLineBreakModeHeadTruncation:
             case VELLineBreakModeMiddleTruncation:
             case VELLineBreakModeTailTruncation:
@@ -177,10 +179,12 @@ NSRange NSRangeFromCFRange(CFRange r) {
                 characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
                 break;
         }
+        
         CTLineRef line = CTTypesetterCreateLine(typesetter, CFRangeMake(characterIndex, characterCount));
         [lines addObject:(__bridge id)line];
         characterIndex += characterCount;
     }
+    
     return [NSArray arrayWithArray:lines];
 }
 
@@ -226,11 +230,11 @@ NSRange NSRangeFromCFRange(CFRange r) {
     
     // If we have more lines than will fit and the label uses truncation, we'll need to cull the lines
     if (visibleLineCount < lines.count) {
-        CTLineRef ellipsis = NULL;
-        UniChar elip = 0x2026;
-        CFStringRef elipString = CFStringCreateWithCharacters(NULL, &elip, 1);
-        CFAttributedStringRef elipAttrString = CFAttributedStringCreate(NULL, elipString, NULL);
-        ellipsis = CTLineCreateWithAttributedString(elipAttrString);
+        CTLineRef ellipsisLine = NULL;
+        UniChar ellipsisChar = 0x2026;
+        CFStringRef ellipsisString = CFStringCreateWithCharacters(NULL, &ellipsisChar, 1);
+        CFAttributedStringRef ellipsisAttributedString = CFAttributedStringCreate(NULL, ellipsisString, NULL);
+        ellipsisLine = CTLineCreateWithAttributedString(ellipsisAttributedString);
         
         if (self.lineBreakMode == VELLineBreakModeHeadTruncation) {
             // Calculate the truncated first line if we have more lines than will be drawn
@@ -243,7 +247,7 @@ NSRange NSRangeFromCFRange(CFRange r) {
             
             NSAttributedString *firstLineAttrStr = [attributedString attributedSubstringFromRange:firstLineRange];
             CTLineRef firstLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)firstLineAttrStr);
-            firstLine = CTLineCreateTruncatedLine(firstLine, self.bounds.size.width, kCTLineTruncationStart, ellipsis);
+            firstLine = CTLineCreateTruncatedLine(firstLine, self.bounds.size.width, kCTLineTruncationStart, ellipsisLine);
             
             // Replace the first line with our truncated version
             NSArray *newLines = [NSArray arrayWithObject:(__bridge id)firstLine];
@@ -262,11 +266,11 @@ NSRange NSRangeFromCFRange(CFRange r) {
             
             switch (self.lineBreakMode) {
                 case VELLineBreakModeMiddleTruncation:
-                    lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationMiddle, ellipsis);
+                    lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationMiddle, ellipsisLine);
                     break;
                 case VELLineBreakModeTailTruncation:
                 default:
-                    lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationEnd, ellipsis);
+                    lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationEnd, ellipsisLine);
                     break;
             }
             
@@ -274,9 +278,9 @@ NSRange NSRangeFromCFRange(CFRange r) {
             lines = [lines arrayByAddingObject:(__bridge id)lastLine];
         }
         
-        CFRelease(elipString);
-        CFRelease(elipAttrString);
-        CFRelease(ellipsis);
+        CFRelease(ellipsisString);
+        CFRelease(ellipsisAttributedString);
+        CFRelease(ellipsisLine);
     }
     
     // Draw all the visible lines

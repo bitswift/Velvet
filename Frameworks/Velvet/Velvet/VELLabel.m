@@ -297,9 +297,10 @@ NSRange NSRangeFromCFRange(CFRange r) {
         CGFloat indentWidth = 0.0f;
         switch (self.textAlignment) {
             case VELTextAlignmentCenter:
-                indentWidth = (self.bounds.size.width - (lineWidth - CTLineGetTrailingWhitespaceWidth(aLine)))/2.0f;
+                indentWidth = floor((self.bounds.size.width - (lineWidth - CTLineGetTrailingWhitespaceWidth(aLine)))/2.0f);
                 break;
             case VELTextAlignmentRight:
+                // It may not be appropriate to floor `indentWidth` when using `VELTextAlignmentRight`
                 indentWidth = self.bounds.size.width - (lineWidth - CTLineGetTrailingWhitespaceWidth(aLine));
                 break;
             default:

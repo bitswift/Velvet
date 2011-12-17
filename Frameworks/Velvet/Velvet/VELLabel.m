@@ -231,15 +231,12 @@ NSRange NSRangeFromCFRange(CFRange r) {
     // If we have more lines than will fit and the label uses truncation, we'll need to cull the lines
     if (visibleLineCount < lines.count) {
         CTLineRef ellipsisLine = NULL;
-        UniChar ellipsisChar = 0x2026;
-        CFStringRef ellipsisString = CFStringCreateWithCharacters(NULL, &ellipsisChar, 1);
-        CFAttributedStringRef ellipsisAttributedString = CFAttributedStringCreate(NULL, ellipsisString, NULL);
+        CFAttributedStringRef ellipsisAttributedString = CFAttributedStringCreate(NULL, (CFStringRef) @"…", NULL);
         ellipsisLine = CTLineCreateWithAttributedString(ellipsisAttributedString);
         
         @onExit {
             CFRelease(ellipsisAttributedString);
             CFRelease(ellipsisLine);
-            CFRelease(ellipsisString);
         };
         
         if (self.lineBreakMode == VELLineBreakModeHeadTruncation) {

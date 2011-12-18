@@ -9,6 +9,8 @@
 #import <Velvet/VELLabel.h>
 #import <Proton/EXTScope.h>
 
+#define VELLabelPadding 2.0f
+
 static NSString * const VELLabelEmptyAttributedString = @"\0";
 
 NSRange NSRangeFromCFRange(CFRange r);
@@ -165,7 +167,7 @@ NSRange NSRangeFromCFRange(CFRange r) {
         
         switch (self.lineBreakMode) {
             case VELLineBreakModeCharacterWrap:
-                characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, self.bounds.size.width);
+                characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, self.bounds.size.width - VELLabelPadding * 2);
                 break;
             case VELLineBreakModeClip:
                 characterCount = strLength;
@@ -176,7 +178,7 @@ NSRange NSRangeFromCFRange(CFRange r) {
             case VELLineBreakModeMiddleTruncation:
             case VELLineBreakModeTailTruncation:
             default:
-                characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width);
+                characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width - VELLabelPadding * 2);
                 break;
         }
         
@@ -222,7 +224,7 @@ NSRange NSRangeFromCFRange(CFRange r) {
         CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
         height += ceil(ascent + descent + leading);
         
-        if (height > self.bounds.size.height) {
+        if (height > self.bounds.size.height - VELLabelPadding * 2) {
             break;
         }
         visibleLineCount++;
@@ -240,45 +242,52 @@ NSRange NSRangeFromCFRange(CFRange r) {
         };
         
         if (self.lineBreakMode == VELLineBreakModeHeadTruncation) {
-            // Calculate the truncated first line if we have more lines than will be drawn
-            //   and the label uses VELLineBreakModeHeadTruncation
-            CTLineRef firstVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:lines.count - visibleLineCount];
-            NSRange firstLineRange = NSRangeFromCFRange(CTLineGetStringRange(firstVisibleLine));
-            // what we really want is a range from the beginning to the end of `firstVisibleLine`
-            firstLineRange.length = firstLineRange.location + firstLineRange.length;
-            firstLineRange.location = 0;
-            
-            NSAttributedString *firstLineAttrStr = [attributedString attributedSubstringFromRange:firstLineRange];
-            CTLineRef firstLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)firstLineAttrStr);
-            firstLine = CTLineCreateTruncatedLine(firstLine, self.bounds.size.width, kCTLineTruncationStart, ellipsisLine);
-            
-            // Replace the first line with our truncated version
-            NSArray *newLines = [NSArray arrayWithObject:(__bridge id)firstLine];
-            lines = [newLines arrayByAddingObjectsFromArray:[lines subarrayWithRange:NSMakeRange(lines.count - visibleLineCount + 1, visibleLineCount - 1)]];
+            if (visibleLineCount == 0) {
+                lines = [NSArray array];
+            } else {
+                // Calculate the truncated first line if we have more lines than will be drawn
+                //   and the label uses VELLineBreakModeHeadTruncation
+                CTLineRef firstVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:lines.count - visibleLineCount];
+                NSRange firstLineRange = NSRangeFromCFRange(CTLineGetStringRange(firstVisibleLine));
+                // what we really want is a range from the beginning to the end of `firstVisibleLine`
+                firstLineRange.length = firstLineRange.location + firstLineRange.length;
+                firstLineRange.location = 0;
+                
+                NSAttributedString *firstLineAttrStr = [attributedString attributedSubstringFromRange:firstLineRange];
+                CTLineRef firstLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)firstLineAttrStr);
+                firstLine = CTLineCreateTruncatedLine(firstLine, self.bounds.size.width - VELLabelPadding * 2, kCTLineTruncationStart, ellipsisLine);
+                
+                // Replace the first line with our truncated version
+                NSArray *newLines = [NSArray arrayWithObject:(__bridge id)firstLine];
+                lines = [newLines arrayByAddingObjectsFromArray:[lines subarrayWithRange:NSMakeRange(lines.count - visibleLineCount + 1, visibleLineCount - 1)]];
+            }
         } else if (self.lineBreakMode == VELLineBreakModeMiddleTruncation ||
                    self.lineBreakMode == VELLineBreakModeTailTruncation) {
-            // Calculate the truncated last line if we have more lines than will be drawn
-            //   and the label has truncation affecting the last line
-            
-            CTLineRef lastVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:visibleLineCount - 1];
-            NSRange lastLineRange = NSRangeFromCFRange(CTLineGetStringRange(lastVisibleLine));
-            lastLineRange.length = attributedString.length - lastLineRange.location;
-            
-            NSAttributedString *lastLineAttrStr = [attributedString attributedSubstringFromRange:lastLineRange];
-            CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
-            
-            switch (self.lineBreakMode) {
-                case VELLineBreakModeMiddleTruncation:
-                    lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationMiddle, ellipsisLine);
-                    break;
-                case VELLineBreakModeTailTruncation:
-                default:
-                    lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width, kCTLineTruncationEnd, ellipsisLine);
-                    break;
+            if (visibleLineCount == 0) {
+                lines = [NSArray array];
+            } else {
+                // Calculate the truncated last line if we have more lines than will be drawn
+                //   and the label has truncation affecting the last line
+                CTLineRef lastVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:visibleLineCount - 1];
+                NSRange lastLineRange = NSRangeFromCFRange(CTLineGetStringRange(lastVisibleLine));
+                lastLineRange.length = attributedString.length - lastLineRange.location;
+                
+                NSAttributedString *lastLineAttrStr = [attributedString attributedSubstringFromRange:lastLineRange];
+                CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
+                
+                switch (self.lineBreakMode) {
+                    case VELLineBreakModeMiddleTruncation:
+                        lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width - VELLabelPadding * 2, kCTLineTruncationMiddle, ellipsisLine);
+                        break;
+                    case VELLineBreakModeTailTruncation:
+                    default:
+                        lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width - VELLabelPadding * 2, kCTLineTruncationEnd, ellipsisLine);
+                        break;
+                }
+                
+                lines = [lines subarrayWithRange:NSMakeRange(0, visibleLineCount - 1)];
+                lines = [lines arrayByAddingObject:(__bridge id)lastLine];
             }
-            
-            lines = [lines subarrayWithRange:NSMakeRange(0, visibleLineCount - 1)];
-            lines = [lines arrayByAddingObject:(__bridge id)lastLine];
         }
     }
     
@@ -294,27 +303,25 @@ NSRange NSRangeFromCFRange(CFRange r) {
         
         originY += ceil(ascent + leading);
         
-        CGFloat indentWidth = 0.0f;
+        CGFloat indentWidth = VELLabelPadding;
         switch (self.textAlignment) {
             case VELTextAlignmentCenter:
-                indentWidth = floor((self.bounds.size.width - (lineWidth - CTLineGetTrailingWhitespaceWidth(aLine)))/2.0f);
+                indentWidth = floor(((self.bounds.size.width - VELLabelPadding * 2) - (lineWidth - CTLineGetTrailingWhitespaceWidth(aLine)))/2.0f + VELLabelPadding);
                 break;
             case VELTextAlignmentRight:
                 // It may not be appropriate to floor `indentWidth` when using `VELTextAlignmentRight`
-                indentWidth = self.bounds.size.width - (lineWidth - CTLineGetTrailingWhitespaceWidth(aLine));
+                indentWidth = (self.bounds.size.width - VELLabelPadding * 2) - (lineWidth - CTLineGetTrailingWhitespaceWidth(aLine)) + VELLabelPadding;
                 break;
             default:
                 break;
         }
         
-        
-        CGContextSetTextPosition(context, indentWidth, self.bounds.size.height - originY);
+        CGContextSetTextPosition(context, indentWidth, (self.bounds.size.height - VELLabelPadding) - originY);
         if (i < lines.count - 1 && self.textAlignment == kCTJustifiedTextAlignment) {
             // Only create justified lines if we are NOT at the last line yet
-            aLine = CTLineCreateJustifiedLine(aLine, 1.0f, self.bounds.size.width);
+            aLine = CTLineCreateJustifiedLine(aLine, 1.0f, self.bounds.size.width - VELLabelPadding * 2);
         }
         CTLineDraw(aLine, context);
-        
         originY += descent;
     }
 }
@@ -332,6 +339,10 @@ NSRange NSRangeFromCFRange(CFRange r) {
     // if not one line, don't constrain the height (the text block should be as tall as necessary)
     if (maximumLines != 1 || constraint.height == 0)
         constraint.height = CGFLOAT_MAX;
+    
+    // subtract our padding here, we'll add it back in at the end after we figure out the text size
+    constraint.width -= VELLabelPadding * 2;
+    constraint.height -= VELLabelPadding * 2;
 
     NSMutableAttributedString *string = [self.formattedText mutableCopy];
 
@@ -383,7 +394,7 @@ NSRange NSRangeFromCFRange(CFRange r) {
     CGSize textSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, desiredRange, NULL, constraint, NULL);
     
     // round to integral points
-    return CGSizeMake(ceil(textSize.width), ceil(textSize.height));
+    return CGSizeMake(ceil(textSize.width + VELLabelPadding * 2), ceil(textSize.height + VELLabelPadding * 2));
 }
 
 #pragma mark Formatting

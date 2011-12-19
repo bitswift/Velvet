@@ -13,9 +13,9 @@
 
 static NSString * const VELLabelEmptyAttributedString = @"\0";
 
-NSRange NSRangeFromCFRange(CFRange r);
-NSRange NSRangeFromCFRange(CFRange r) {
-    return NSMakeRange(r.location, r.length);
+static NSRange NSRangeFromCFRange(CFRange range) {
+    NSUInteger loc = range.location == kCFNotFound ? NSNotFound : (NSUInteger)range.location;
+    return NSMakeRange(loc, (NSUInteger)range.length);
 }
 
 @interface VELLabel ()
@@ -234,10 +234,11 @@ NSRange NSRangeFromCFRange(CFRange r) {
     if (visibleLineCount < lines.count) {
         CTLineRef ellipsisLine = NULL;
         CFAttributedStringRef ellipsisAttributedString = CFAttributedStringCreate(NULL, (CFStringRef) @"…", NULL);
-        ellipsisLine = CTLineCreateWithAttributedString(ellipsisAttributedString);
-        
         @onExit {
             CFRelease(ellipsisAttributedString);
+        };
+        ellipsisLine = CTLineCreateWithAttributedString(ellipsisAttributedString);        
+        @onExit {
             CFRelease(ellipsisLine);
         };
         

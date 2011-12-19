@@ -14,10 +14,12 @@
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
+#import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELScrollView.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
+#import <Velvet/VELNSViewPrivate.h>
 #import <Proton/Proton.h>
 #import <objc/runtime.h>
 
@@ -761,6 +763,10 @@ static IMP VELViewDrawRectIMP = NULL;
     [CATransaction performWithDisabledActions:^{
         [self layoutSubviews];
     }];
+    for (NSView *view in self.hostView.subviews) {
+        VELNSView *hostView = view.hostView;
+        [hostView synchronizeNSViewGeometry];
+    }
 }
 
 - (CGSize)preferredSizeOfLayer:(CALayer *)layer {

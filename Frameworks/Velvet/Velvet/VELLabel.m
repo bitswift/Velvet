@@ -59,7 +59,7 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
     if (self.formattedText)
         [attributedString setAttributedString:self.formattedText];
 
-    if (!text)
+    if (![text length])
         text = VELLabelEmptyAttributedString;
 
     [attributedString replaceCharactersInRange:NSMakeRange(0, attributedString.length) withString:text];

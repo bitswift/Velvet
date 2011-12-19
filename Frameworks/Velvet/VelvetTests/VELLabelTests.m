@@ -139,4 +139,34 @@
     STAssertTrue(multiLineSize.height > singleLineSize.height, @"");
 }
 
+- (void)testSetTextEmptyString {
+    VELLabel *label = [[VELLabel alloc] init];
+    NSFont *font = [NSFont systemFontOfSize:24];
+
+    label.text = @"Some text.";
+    label.textAlignment = VELTextAlignmentCenter;
+    label.font = font;
+
+    label.text = @"";
+    // Test that setting the text to an empty string keeps the formatting
+    STAssertEqualObjects(label.font, font, @"");
+    STAssertEquals(label.textAlignment, VELTextAlignmentCenter, @"");
+    STAssertEquals([label.text length], (NSUInteger)0, @"");
+}
+
+- (void)testSetTextNil {
+    VELLabel *label = [[VELLabel alloc] init];
+    NSFont *font = [NSFont systemFontOfSize:24];
+
+    label.text = @"Some text.";
+    label.textAlignment = VELTextAlignmentCenter;
+    label.font = font;
+
+    label.text = nil;
+    // Test that setting the text to nil keeps the formatting
+    STAssertEqualObjects(label.font, font, @"");
+    STAssertEquals(label.textAlignment, VELTextAlignmentCenter, @"");
+    STAssertEquals([label.text length], (NSUInteger)0, @"");
+}
+
 @end

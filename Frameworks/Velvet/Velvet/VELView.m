@@ -512,18 +512,22 @@ static IMP VELViewDrawRectIMP = NULL;
 #pragma mark Geometry
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {
+    NSAssert(self.window, @"%@ window is nil!",self);
     return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
 }
 
 - (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view; {
+    NSAssert(self.window, @"%@ window is nil!",self);
     return [view convertFromWindowPoint:[self convertToWindowPoint:point]];
 }
 
 - (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view; {
+    NSAssert(self.window, @"%@ window is nil!",self);
     return [self convertFromWindowRect:[view convertToWindowRect:rect]];
 }
 
 - (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view; {
+    NSAssert(self.window, @"%@ window is nil!",self);
     return [view convertFromWindowRect:[self convertToWindowRect:rect]];
 }
 

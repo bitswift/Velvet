@@ -135,6 +135,7 @@ static NSString * const VELLabelEmptyAttributedString = @"\0";
 
     self.backgroundColor = [NSColor clearColor];
     self.numberOfLines = 1;
+    self.userInteractionEnabled = NO;
 
     return self;
 }

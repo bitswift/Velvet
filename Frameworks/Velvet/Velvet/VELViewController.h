@@ -30,7 +30,7 @@
 
 /**
  * Whether a <view> has been loaded.
- * 
+ *
  * This property, unlike <view>, can be queried without a view automatically
  * being created.
  */
@@ -52,10 +52,11 @@
  * and set to `nil`.
  *
  * This method should be used for clearing out strong references to data that is
- * no longer needed once the view has been destroyed.
+ * no longer needed once the view has been destroyed. By the time this method is invoked,
+ * any `weak` references to subviews have already been set to `nil`.
  *
- * By the time this method is invoked, any `weak` references to subviews have
- * already been set to `nil`.
+ * Unlike UIKit, this method is guaranteed to always be called before the view
+ * controller is destroyed.
  *
  * @warning Unlike UIKit, the preferred pattern in Velvet is to use `weak`
  * references for all subviews, so that they can be automatically cleaned up
@@ -69,6 +70,9 @@
  *
  * This is an appropriate place to unregister subviews from notifications and
  * perform other cleanup that can only be done with valid references.
+ *
+ * Unlike UIKit, this method is guaranteed to always be called before the view
+ * controller is destroyed.
  */
 - (void)viewWillUnload;
 

@@ -10,6 +10,7 @@
 #import <Velvet/VELView.h>
 
 @class NSVelvetView;
+@class VELViewController;
 
 /*
  * Private functionality of <VELView> that needs to be exposed to other parts of
@@ -17,4 +18,9 @@
  */
 @interface VELView (VELViewPrivate)
 @property (nonatomic, readwrite, weak) NSVelvetView *hostView;
+
+/*
+ * A reference to the view controller which is managing the receiver.
+ */
+@property (nonatomic, weak) VELViewController *viewController;
 @end

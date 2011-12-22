@@ -81,15 +81,15 @@
  */
 
 /**
- * Invoked immediately before the receiver's <view> is about to be presented on
- * screen.
+ * Invoked immediately before the receiver's <view> is about to be added to
+ * a window.
  *
  * The view will not yet have a superview when this method is invoked.
  */
 - (void)viewWillAppear;
 
 /**
- * Invoked immediately after the receiver's <view> has been presented on screen.
+ * Invoked immediately after the receiver's <view> has been added to a window.
  *
  * The view will have a superview by the time this method is invoked, and will
  * have been added to a window.
@@ -98,7 +98,7 @@
 
 /**
  * Invoked immediately before the receiver's <view> is about to disappear from
- * the screen.
+ * the window.
  *
  * The view will still have a superview and a window when this method is invoked.
  */
@@ -106,7 +106,7 @@
 
 /**
  * Invoked immediately after the receiver's <view> has disappeared from the
- * screen.
+ * window.
  *
  * The view will not have a superview or a window by the time this method is
  * invoked.

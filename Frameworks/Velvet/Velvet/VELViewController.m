@@ -8,6 +8,7 @@
 
 #import <Velvet/VELViewController.h>
 #import <Velvet/VELView.h>
+#import <Velvet/VELViewPrivate.h>
 
 @interface VELViewController ()
 @property (nonatomic, strong, readwrite) VELView *view;
@@ -20,19 +21,53 @@
 @synthesize view = m_view;
 
 - (BOOL)isViewLoaded {
-    return NO;
+    return m_view != nil;
+}
+
+- (VELView *)view {
+    if (!self.viewLoaded) {
+        self.view = [self loadView];
+    }
+
+    return m_view;
+}
+
+- (void)setView:(VELView *)view {
+    if (view == m_view)
+        return;
+
+    view.viewController = self;
+
+    if (!m_view) {
+        m_view = view;
+        return;
+    }
+
+    [m_view removeFromSuperview];
+
+    if (!view)
+        [self viewWillUnload];
+
+    m_view = view;
+
+    if (!view)
+        [self viewDidUnload];
 }
 
 #pragma mark Lifecycle
 
 - (VELView *)loadView; {
-    return nil;
+    return [[VELView alloc] init];
 }
 
 - (void)viewDidUnload; {
 }
 
 - (void)viewWillUnload; {
+}
+
+- (void)dealloc {
+    self.view = nil;
 }
 
 #pragma mark Presentation

@@ -1,0 +1,116 @@
+//
+//  VELViewController.h
+//  Velvet
+//
+//  Created by Justin Spahr-Summers on 21.12.11.
+//  Copyright (c) 2011 Emerald Lark. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class VELView;
+
+/**
+ * A controller responsible for managing the lifecycle of a <VELView> and
+ * presenting it on screen.
+ */
+@interface VELViewController : NSObject
+
+/**
+ * Managing the View
+ */
+
+/**
+ * The view managed and presented by this view controller.
+ *
+ * If no view has been set up when this property is read, <loadView> is invoked
+ * to create one, and the new view is returned.
+ */
+@property (nonatomic, strong, readonly) VELView *view;
+
+/**
+ * Whether a <view> has been loaded.
+ *
+ * This property, unlike <view>, can be queried without a view automatically
+ * being created.
+ */
+@property (nonatomic, readonly, getter = isViewLoaded) BOOL viewLoaded;
+
+/**
+ * Invoked to load the <view> for the first time.
+ *
+ * The default implementation of this method creates a blank view with a bounds
+ * of `CGRectZero`.
+ *
+ * This method should never be explicitly called. It can be overridden by
+ * subclasses to perform additional work upon view load.
+ */
+- (VELView *)loadView;
+
+/**
+ * Invoked immediately after the receiver's <view> has been unloaded from memory
+ * and set to `nil`.
+ *
+ * This method should be used for clearing out strong references to data that is
+ * no longer needed once the view has been destroyed. By the time this method is invoked,
+ * any `weak` references to subviews have already been set to `nil`.
+ *
+ * Unlike UIKit, this method is guaranteed to always be called before the view
+ * controller is destroyed.
+ *
+ * @warning Unlike UIKit, the preferred pattern in Velvet is to use `weak`
+ * references for all subviews, so that they can be automatically cleaned up
+ * when the view is destroyed.
+ */
+- (void)viewDidUnload;
+
+/**
+ * Invoked immediately before the receiver's <view> has been unloaded from
+ * memory and set to `nil`.
+ *
+ * This is an appropriate place to unregister subviews from notifications and
+ * perform other cleanup that can only be done with valid references.
+ *
+ * Unlike UIKit, this method is guaranteed to always be called before the view
+ * controller is destroyed.
+ */
+- (void)viewWillUnload;
+
+/**
+ * View Presentation
+ */
+
+/**
+ * Invoked immediately before the receiver's <view> is about to be added to
+ * a window.
+ *
+ * The view will not yet have a superview when this method is invoked.
+ */
+- (void)viewWillAppear;
+
+/**
+ * Invoked immediately after the receiver's <view> has been added to a window.
+ *
+ * The view will have a superview by the time this method is invoked, and will
+ * have been added to a window.
+ */
+- (void)viewDidAppear;
+
+/**
+ * Invoked immediately before the receiver's <view> is about to disappear from
+ * the window.
+ *
+ * The view will still have a superview and a window when this method is invoked.
+ */
+- (void)viewWillDisappear;
+
+/**
+ * Invoked immediately after the receiver's <view> has disappeared from the
+ * window.
+ *
+ * The view will not have a superview or a window by the time this method is
+ * invoked.
+ */
+- (void)viewDidDisappear;
+
+@end

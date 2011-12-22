@@ -7,20 +7,21 @@
 //
 
 #import <Velvet/VELView.h>
+#import <Proton/Proton.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSVelvetView.h>
-#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/VELCAAction.h>
+#import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELScrollView.h>
+#import <Velvet/VELViewController.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
-#import <Velvet/VELNSViewPrivate.h>
-#import <Proton/Proton.h>
 #import <objc/runtime.h>
 
 /*
@@ -51,6 +52,7 @@ static IMP VELViewDrawRectIMP = NULL;
 
 @property (nonatomic, readwrite, weak) VELView *superview;
 @property (nonatomic, readwrite, weak) NSVelvetView *hostView;
+@property (nonatomic, weak) VELViewController *viewController;
 
 /*
  * True if we're inside the `actionForLayer:forKey:` method. This is used so we
@@ -91,6 +93,7 @@ static IMP VELViewDrawRectIMP = NULL;
 @synthesize subviews = m_subviews;
 @synthesize superview = m_superview;
 @synthesize hostView = m_hostView;
+@synthesize viewController = m_viewController;
 
 - (BOOL)isRecursingActionForLayer {
     return (m_flags.recursingActionForLayer ? YES : NO);
@@ -576,6 +579,11 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)didMoveFromWindow:(NSWindow *)window; {
+    if (self.window)
+        [self.viewController viewDidAppear];
+    else
+        [self.viewController viewDidDisappear];
+
     [self.subviews makeObjectsPerformSelector:_cmd withObject:window];
 }
 
@@ -584,6 +592,11 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)willMoveToWindow:(NSWindow *)window; {
+    if (window)
+        [self.viewController viewWillAppear];
+    else
+        [self.viewController viewWillDisappear];
+
     [self.subviews makeObjectsPerformSelector:_cmd withObject:window];
 }
 

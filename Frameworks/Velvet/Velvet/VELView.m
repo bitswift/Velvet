@@ -72,6 +72,15 @@ static IMP VELViewDrawRectIMP = NULL;
  * Call the given block on the receiver and all of its subviews, recursively.
  */
 - (void)recursivelyEnumerateViewsUsingBlock:(void(^)(VELView *))block;
+
+/*
+ * Removes the given view from the receiver's subview array, if present.
+ *
+ * This method modifies <subviews> and the layer hierarchy, and
+ * updates the responder chain -- it does no additional bookkeeping and
+ * does not invoke other methods.
+ */
+- (void)removeSubview:(VELView *)subview;
 @end
 
 @implementation VELView
@@ -188,6 +197,8 @@ static IMP VELViewDrawRectIMP = NULL;
     NSArray *oldSubviews = [m_subviews copy];
     m_subviews = nil;
 
+    // TODO: this could determine the intersection between the two arrays and
+    // avoid removing/re-adding the ones that exist in both
     for (VELView *view in oldSubviews) {
         [view removeFromSuperview];
     }
@@ -205,9 +216,20 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)setHostView:(NSVelvetView *)view {
+    if (view == m_hostView)
+        return;
+
+    NSWindow *oldWindow = self.window;
+
+    if (oldWindow != view.window)
+        [self willMoveToWindow:view.window];
+
     [self willMoveToHostView:view];
     m_hostView = view;
     [self didMoveToHostView];
+
+    if (oldWindow != view.window)
+        [self didMoveFromWindow:oldWindow];
 }
 
 - (NSColor *)backgroundColor {
@@ -420,8 +442,24 @@ static IMP VELViewDrawRectIMP = NULL;
         return;
 
     [CATransaction performWithDisabledActions:^{
-        [view removeFromSuperview];
-        [view willMoveToHostView:self.hostView];
+        VELView *oldSuperview = view.superview;
+        NSVelvetView *oldHostView = view.hostView;
+        NSWindow *oldWindow = view.window;
+
+        BOOL needsHostViewUpdate = (oldHostView != self.hostView);
+        BOOL needsWindowUpdate = (oldWindow != self.window);
+
+        if (needsWindowUpdate)
+            [view willMoveToWindow:self.window];
+
+        if (needsHostViewUpdate)
+            [view willMoveToHostView:self.hostView];
+
+        [view willMoveToSuperview:self];
+
+        // remove the view from any existing superview (without calling the
+        // normal -didMove and -willMove methods)
+        [view.superview removeSubview:view];
 
         if (!m_subviews)
             m_subviews = [[NSMutableArray alloc] init];
@@ -430,7 +468,14 @@ static IMP VELViewDrawRectIMP = NULL;
 
         view.superview = self;
         [self addSubviewToLayer:view];
-        [view didMoveToHostView];
+
+        [view didMoveFromSuperview:oldSuperview];
+
+        if (needsHostViewUpdate)
+            [view didMoveToHostView];
+
+        if (needsWindowUpdate)
+            [view didMoveFromWindow:oldWindow];
     }];
 }
 
@@ -491,29 +536,55 @@ static IMP VELViewDrawRectIMP = NULL;
     if (!self.superview)
         return;
 
-    [CATransaction performWithDisabledActions:^{
-        [self willMoveToHostView:nil];
+    [self willMoveToWindow:nil];
+    [self willMoveToHostView:nil];
+    [self willMoveToSuperview:nil];
 
+    VELView *superview = self.superview;
+    NSWindow *window = self.window;
+
+    [superview removeSubview:self];
+
+    [self didMoveFromSuperview:superview];
+    [self didMoveToHostView];
+    [self didMoveFromWindow:window];
+}
+
+- (void)removeSubview:(VELView *)subview; {
+    [CATransaction performWithDisabledActions:^{
         id responder = [self.window firstResponder];
         if ([responder isKindOfClass:[VELView class]]) {
-            if ([responder isDescendantOfView:self]) {
+            if ([responder isDescendantOfView:subview]) {
                 [self.window makeFirstResponder:self.nextResponder];
             }
         }
 
-        [self.layer removeFromSuperlayer];
+        [subview.layer removeFromSuperlayer];
 
-        VELView *superview = self.superview;
-        self.superview = nil;
-        [superview->m_subviews removeObjectIdenticalTo:self];
-
-        [self didMoveToHostView];
+        subview.superview = nil;
+        [m_subviews removeObjectIdenticalTo:subview];
     }];
 }
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView; {
     for (VELView *subview in self.subviews)
         [subview willMoveToHostView:hostView];
+}
+
+- (void)didMoveFromSuperview:(VELView *)superview; {
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:superview];
+}
+
+- (void)didMoveFromWindow:(NSWindow *)window; {
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:window];
+}
+
+- (void)willMoveToSuperview:(VELView *)superview; {
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:superview];
+}
+
+- (void)willMoveToWindow:(NSWindow *)window; {
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:window];
 }
 
 #pragma mark Geometry

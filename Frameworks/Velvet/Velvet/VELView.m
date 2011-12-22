@@ -220,13 +220,14 @@ static IMP VELViewDrawRectIMP = NULL;
         return;
 
     NSWindow *oldWindow = self.window;
+    NSVelvetView *oldHostView = m_hostView;
 
     if (oldWindow != view.window)
         [self willMoveToWindow:view.window];
 
     [self willMoveToHostView:view];
     m_hostView = view;
-    [self didMoveToHostView];
+    [self didMoveFromHostView:oldHostView];
 
     if (oldWindow != view.window)
         [self didMoveFromWindow:oldWindow];
@@ -472,7 +473,7 @@ static IMP VELViewDrawRectIMP = NULL;
         [view didMoveFromSuperview:oldSuperview];
 
         if (needsHostViewUpdate)
-            [view didMoveToHostView];
+            [view didMoveFromHostView:oldHostView];
 
         if (needsWindowUpdate)
             [view didMoveFromWindow:oldWindow];
@@ -502,11 +503,9 @@ static IMP VELViewDrawRectIMP = NULL;
     return nil;
 }
 
-- (void)didMoveToHostView; {
+- (void)didMoveFromHostView:(NSVelvetView *)oldHostView {
     self.nextResponder = self.superview ?: self.hostView;
-
-    for (VELView *subview in self.subviews)
-        [subview didMoveToHostView];
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:oldHostView];
 }
 
 - (id)ancestorScrollView; {
@@ -541,12 +540,13 @@ static IMP VELViewDrawRectIMP = NULL;
     [self willMoveToSuperview:nil];
 
     VELView *superview = self.superview;
+    NSVelvetView *hostView = self.hostView;
     NSWindow *window = self.window;
 
     [superview removeSubview:self];
 
     [self didMoveFromSuperview:superview];
-    [self didMoveToHostView];
+    [self didMoveFromHostView:hostView];
     [self didMoveFromWindow:window];
 }
 

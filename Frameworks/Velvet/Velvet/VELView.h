@@ -312,6 +312,67 @@ typedef enum {
 - (void)removeFromSuperview;
 
 /**
+ * Invoked after the receiver has moved to a new <superview>, which may be
+ * `nil`.
+ *
+ * The default implementation of this method notifies all subviews of the
+ * event.
+ *
+ * This method can be overridden by subclasses to perform additional
+ * actions when the superview changes. Subclasses must call the `super`
+ * implementation.
+ *
+ * @param oldSuperview The view that was previously the superview of the
+ * receiver, or `nil` if the receiver had no superview previously.
+ */
+- (void)didMoveFromSuperview:(VELView *)oldSuperview;
+
+/**
+ * Invoked after the receiver has moved to a new <window>, which may be `nil`.
+ *
+ * The default implementation of this method notifies all subviews of the
+ * event.
+ *
+ * This method can be overridden by subclasses to perform additional
+ * actions when the window changes. Subclasses must call the `super`
+ * implementation.
+ *
+ * @param oldWindow The window that previously contained the receiver, or
+ * `nil` if the receiver was not in a window previously.
+ */
+- (void)didMoveFromWindow:(NSWindow *)oldWindow;
+
+/**
+ * Invoked immediately before the receiver moves to a new superview.
+ *
+ * The default implementation of this method notifies all subviews of the
+ * event.
+ *
+ * This method can be overridden by subclasses to perform additional
+ * actions when the superview changes. Subclasses must call the `super`
+ * implementation.
+ *
+ * @param superview The view that will become the superview of the
+ * receiver, or `nil` if the receiver is being removed from its superview.
+ */
+- (void)willMoveToSuperview:(VELView *)superview;
+
+/**
+ * Invoked immediately before the receiver moves to a new window.
+ *
+ * The default implementation of this method notifies all subviews of the
+ * event.
+ *
+ * This method can be overridden by subclasses to perform additional
+ * actions when the window changes. Subclasses must call the `super`
+ * implementation.
+ *
+ * @param window The window that will host the receiver, or `nil` if the
+ * receiver is being removed from its window.
+ */
+- (void)willMoveToWindow:(NSWindow *)window;
+
+/**
  * @name Layout
  */
 

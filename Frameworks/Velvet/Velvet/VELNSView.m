@@ -155,8 +155,8 @@
     self.focusRingLayer = nil;
 }
 
-- (void)didMoveToHostView {
-    [super didMoveToHostView];
+- (void)didMoveFromHostView:(NSVelvetView *)oldHostView {
+    [super didMoveFromHostView:oldHostView];
 
     // verify that VELNSViews are on top of other subviews
     #if DEBUG

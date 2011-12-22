@@ -42,6 +42,7 @@
 		D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */; };
 		D08719E614A30AA700F304BC /* VELViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D08719E414A30AA700F304BC /* VELViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D08719E714A30AA700F304BC /* VELViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08719E514A30AA700F304BC /* VELViewController.m */; };
+		D08719EB14A30B5F00F304BC /* VELViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */; };
 		D0911B1D147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0911B1E147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */; };
 		D0B23AF91491872B009CF46A /* VELImageViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B23AF81491872B009CF46A /* VELImageViewTests.m */; };
@@ -153,6 +154,8 @@
 		D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+ScrollViewAdditions.m"; sourceTree = "<group>"; };
 		D08719E414A30AA700F304BC /* VELViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewController.h; sourceTree = "<group>"; };
 		D08719E514A30AA700F304BC /* VELViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewController.m; sourceTree = "<group>"; };
+		D08719E914A30B5F00F304BC /* VELViewControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewControllerTests.h; sourceTree = "<group>"; };
+		D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewControllerTests.m; sourceTree = "<group>"; };
 		D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+VELBridgedViewAdditions.h"; sourceTree = "<group>"; };
 		D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELBridgedViewAdditions.m"; sourceTree = "<group>"; };
 		D0B23AF71491872B009CF46A /* VELImageViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELImageViewTests.h; sourceTree = "<group>"; };
@@ -325,6 +328,23 @@
 			name = "View Controllers";
 			sourceTree = "<group>";
 		};
+		D08719E814A30B4C00F304BC /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
+				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
+				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
+				D0DB8A7C149028D60082D3DA /* VELLabelTests.m */,
+				1A5FCCF81496B61A00BB49F3 /* VELNSViewTests.h */,
+				1A5FCCF91496B61A00BB49F3 /* VELNSViewTests.m */,
+				D0B75C6D14918EB9005C81D5 /* VELViewTests.h */,
+				D0B75C6E14918EB9005C81D5 /* VELViewTests.m */,
+				D08719E914A30B5F00F304BC /* VELViewControllerTests.h */,
+				D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
 		D0D7305A147C860900090122 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -402,15 +422,8 @@
 		D0EFFC20147851A80095AB35 /* VelvetTests */ = {
 			isa = PBXGroup;
 			children = (
-				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
-				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
-				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
-				D0DB8A7C149028D60082D3DA /* VELLabelTests.m */,
-				D0B75C6D14918EB9005C81D5 /* VELViewTests.h */,
-				D0B75C6E14918EB9005C81D5 /* VELViewTests.m */,
+				D08719E814A30B4C00F304BC /* Classes */,
 				D0EFFC21147851A80095AB35 /* Supporting Files */,
-				1A5FCCF81496B61A00BB49F3 /* VELNSViewTests.h */,
-				1A5FCCF91496B61A00BB49F3 /* VELNSViewTests.m */,
 			);
 			path = VelvetTests;
 			sourceTree = "<group>";
@@ -703,6 +716,7 @@
 				D0B23AF91491872B009CF46A /* VELImageViewTests.m in Sources */,
 				D0B75C6F14918EB9005C81D5 /* VELViewTests.m in Sources */,
 				1A5FCCFA1496B61A00BB49F3 /* VELNSViewTests.m in Sources */,
+				D08719EB14A30B5F00F304BC /* VELViewControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -83,6 +83,12 @@ static IMP VELViewDrawRectIMP = NULL;
  * does not invoke other methods.
  */
 - (void)removeSubview:(VELView *)subview;
+
+/*
+ * Updates the next responder of the receiver and the receiver's view
+ * controller.
+ */
+- (void)updateViewAndViewControllerNextResponders;
 @end
 
 @implementation VELView
@@ -378,6 +384,15 @@ static IMP VELViewDrawRectIMP = NULL;
     return VELViewDrawRectIMP != class_getMethodImplementation(self, @selector(drawRect:));
 }
 
+- (void)setViewController:(VELViewController *)controller {
+    // clear out the next responder of our previous view controller, since it's
+    // no longer part of any chain
+    m_viewController.nextResponder = nil;
+    m_viewController = controller;
+
+    [self updateViewAndViewControllerNextResponders];
+}
+
 #pragma mark Layer handling
 
 + (Class)layerClass; {
@@ -507,7 +522,7 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)didMoveFromHostView:(NSVelvetView *)oldHostView {
-    self.nextResponder = self.superview ?: self.hostView;
+    [self updateViewAndViewControllerNextResponders];
     [self.subviews makeObjectsPerformSelector:_cmd withObject:oldHostView];
 }
 
@@ -558,7 +573,7 @@ static IMP VELViewDrawRectIMP = NULL;
         id responder = [self.window firstResponder];
         if ([responder isKindOfClass:[VELView class]]) {
             if ([responder isDescendantOfView:subview]) {
-                [self.window makeFirstResponder:self.nextResponder];
+                [self.window makeFirstResponder:self];
             }
         }
 
@@ -575,10 +590,13 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)didMoveFromSuperview:(VELView *)superview; {
+    [self updateViewAndViewControllerNextResponders];
     [self.subviews makeObjectsPerformSelector:_cmd withObject:superview];
 }
 
 - (void)didMoveFromWindow:(NSWindow *)window; {
+    [self updateViewAndViewControllerNextResponders];
+
     if (self.window)
         [self.viewController viewDidAppear];
     else
@@ -604,6 +622,26 @@ static IMP VELViewDrawRectIMP = NULL;
 
 - (BOOL)acceptsFirstResponder {
     return YES;
+}
+
+- (void)updateViewAndViewControllerNextResponders; {
+    NSResponder *responderAfterViewController;
+
+    if (self.superview)
+        responderAfterViewController = self.superview;
+    else if (self.hostView)
+        responderAfterViewController = self.hostView;
+    else
+        responderAfterViewController = nil;
+
+    if (self.viewController) {
+        self.nextResponder = self.viewController;
+        self.viewController.nextResponder = responderAfterViewController;
+    } else {
+        // no view controller, set the next responder as it would've been set on
+        // our view controller
+        self.nextResponder = responderAfterViewController;
+    }
 }
 
 #pragma mark Geometry

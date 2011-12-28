@@ -13,8 +13,17 @@
 /**
  * A controller responsible for managing the lifecycle of a <VELView> and
  * presenting it on screen.
+ *
+ * A view controller is the next responder for its view. A view controller's
+ * next responder is set as follows:
+ * 
+ *  1. If the <view> has a <[VELView superview]>, the superview is the next
+ *  responder.
+ *  2. If the <view> has a <[VELView hostView]>, the host view is the next
+ *  responder.
+ *  3. Otherwise, there is no next responder.
  */
-@interface VELViewController : NSObject
+@interface VELViewController : NSResponder
 
 /**
  * Managing the View

@@ -35,9 +35,16 @@ static BOOL testViewControllerDidUnloadCalled = NO;
  * testing appearance/disappearance of subviews.
  */
 @property (nonatomic, strong, readonly) VELView *visibleView;
+
+/*
+ * A window that is guaranteed to be visible on screen.
+ */
+@property (nonatomic, strong, readonly) VELWindow *window;
 @end
 
 @implementation VELViewControllerTests
+@synthesize window = m_window;
+
 - (VELView *)visibleView {
     return m_window.rootView;
 }
@@ -143,6 +150,52 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     STAssertFalse(vc.viewDidAppearCalled, @"");
     STAssertFalse(vc.viewWillDisappearCalled, @"");
     STAssertFalse(vc.viewDidDisappearCalled, @"");
+}
+
+- (void)testResponderChainWithoutSuperviewOrHostView {
+    VELViewController *vc = [[VELViewController alloc] init];
+
+    // a view's next responder should be its view controller
+    STAssertEquals(vc.view.nextResponder, vc, @"");
+
+    // the view controller's next responder should be nil in this case
+    STAssertNil(vc.nextResponder, @"");
+}
+
+- (void)testResponderChainWithSuperview {
+    VELViewController *vc = [[VELViewController alloc] init];
+
+    VELView *superview = [[VELView alloc] init];
+    [superview addSubview:vc.view];
+
+    // verify that our view's next responder is still correct
+    STAssertEquals(vc.view.nextResponder, vc, @"");
+
+    // the view controller's next responder should be the superview
+    STAssertEquals(vc.nextResponder, superview, @"");
+}
+
+- (void)testResponderChainWithHostView {
+    VELViewController *vc = [[VELViewController alloc] init];
+
+    NSVelvetView *hostView = self.window.contentView;
+    hostView.rootView = vc.view;
+
+    // verify that our view's next responder is still correct
+    STAssertEquals(vc.view.nextResponder, vc, @"");
+
+    // the view controller's next responder should be the host view
+    STAssertEquals(vc.nextResponder, hostView, @"");
+}
+
+- (void)testResponderChainWithSuperviewAndHostView {
+    VELViewController *vc = [[VELViewController alloc] init];
+
+    [self.visibleView addSubview:vc.view];
+
+    // the view controller's next responder should be the superview, not the
+    // host view
+    STAssertEquals(vc.nextResponder, self.visibleView, @"");
 }
 
 @end

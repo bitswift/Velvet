@@ -600,6 +600,12 @@ static IMP VELViewDrawRectIMP = NULL;
     [self.subviews makeObjectsPerformSelector:_cmd withObject:window];
 }
 
+#pragma mark Responder chain
+
+- (BOOL)acceptsFirstResponder {
+    return YES;
+}
+
 #pragma mark Geometry
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {

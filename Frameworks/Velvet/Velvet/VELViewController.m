@@ -84,4 +84,10 @@
 - (void)viewDidDisappear; {
 }
 
+#pragma mark Responder chain
+
+- (BOOL)acceptsFirstResponder {
+    return YES;
+}
+
 @end

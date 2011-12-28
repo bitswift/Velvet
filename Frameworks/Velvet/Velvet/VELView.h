@@ -136,6 +136,13 @@ typedef enum {
 /**
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a <NSVelvetView>.
+ *
+ * If a view has a view controller, the view's next responder is the view
+ * controller. Otherwise, the next responder is set as follows:
+ * 
+ *  1. If the view has a <superview>, the superview is the next responder.
+ *  2. If the view has a <hostView>, the host view is the next responder.
+ *  3. Otherwise, there is no next responder.
  */
 @interface VELView : NSResponder <VELBridgedView>
 

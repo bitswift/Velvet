@@ -199,6 +199,42 @@
     STAssertTrue(testView.didMoveFromWindowInvoked, @"");
 }
 
+- (void)testResponderChainWithoutSuperviewOrHostView {
+    VELView *view = [[VELView alloc] init];
+
+    // a view's next responder should be nil by default
+    STAssertNil(view.nextResponder, @"");
+}
+
+- (void)testResponderChainWithSuperview {
+    VELView *view = [[VELView alloc] init];
+
+    VELView *superview = [[VELView alloc] init];
+    [superview addSubview:view];
+
+    // the view's next responder should be the superview
+    STAssertEquals(view.nextResponder, superview, @"");
+}
+
+- (void)testResponderChainWithHostView {
+    VELView *view = [[VELView alloc] init];
+
+    NSVelvetView *hostView = self.window.contentView;
+    hostView.rootView = view;
+
+    // the view's next responder should be the host view
+    STAssertEquals(view.nextResponder, hostView, @"");
+}
+
+- (void)testResponderChainWithSuperviewAndHostView {
+    VELView *view = [[VELView alloc] init];
+
+    [self.window.rootView addSubview:view];
+
+    // the view's next responder should be the superview, not the host view
+    STAssertEquals(view.nextResponder, self.window.rootView, @"");
+}
+
 @end
 
 @implementation TestView

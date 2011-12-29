@@ -14,10 +14,7 @@
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
-<<<<<<< HEAD
-=======
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
->>>>>>> origin/master
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELNSViewPrivate.h>
@@ -25,11 +22,6 @@
 #import <Velvet/VELViewController.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
-<<<<<<< HEAD
-#import <Velvet/VELNSViewPrivate.h>
-#import <Proton/Proton.h>
-=======
->>>>>>> origin/master
 #import <objc/runtime.h>
 
 /*
@@ -655,28 +647,26 @@ static IMP VELViewDrawRectIMP = NULL;
 #pragma mark Geometry
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {
-    NSAssert(self.window, @"%@ window is nil!",self);
     return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
 }
 
 - (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view; {
-    NSAssert(self.window, @"%@ window is nil!",self);
     return [view convertFromWindowPoint:[self convertToWindowPoint:point]];
 }
 
 - (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view; {
-    NSAssert(self.window, @"%@ window is nil!",self);
     return [self convertFromWindowRect:[view convertToWindowRect:rect]];
 }
 
 - (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view; {
-    NSAssert(self.window, @"%@ window is nil!",self);
     return [view convertFromWindowRect:[self convertToWindowRect:rect]];
 }
 
 #pragma mark VELBridgedView
 
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
+    NSAssert(self.window, @"%@ window is nil!",self);
+    
     NSVelvetView *hostView = self.hostView;
 
     VELView *rootView = hostView.rootView;
@@ -686,6 +676,8 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (CGPoint)convertFromWindowPoint:(CGPoint)point {
+    NSAssert(self.window, @"%@ window is nil!",self);
+    
     NSVelvetView *hostView = self.hostView;
     CGPoint hostPoint = [hostView convertFromWindowPoint:point];
 
@@ -694,6 +686,8 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (CGRect)convertToWindowRect:(CGRect)rect {
+    NSAssert(self.window, @"%@ window is nil!",self);
+    
     NSVelvetView *hostView = self.hostView;
 
     VELView *rootView = hostView.rootView;
@@ -703,6 +697,8 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (CGRect)convertFromWindowRect:(CGRect)rect {
+    NSAssert(self.window, @"%@ window is nil!",self);
+    
     NSVelvetView *hostView = self.hostView;
     CGRect hostRect = [hostView convertFromWindowRect:rect];
 

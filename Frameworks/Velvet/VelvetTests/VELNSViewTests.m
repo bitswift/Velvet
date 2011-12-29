@@ -10,22 +10,38 @@
 #import <Cocoa/Cocoa.h>
 #import <Velvet/Velvet.h>
 
+@interface VELNSViewTests ()
+- (VELWindow *)newWindow;
+@end
+
 
 @implementation VELNSViewTests
 
+- (VELWindow *)newWindow {
+    return [[VELWindow alloc]
+        initWithContentRect:CGRectMake(100, 100, 500, 500)
+        styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
+        backing:NSBackingStoreBuffered
+        defer:NO
+        screen:nil
+    ];
+}
+
 - (void)testResponderChain {
+    // create a container window
+    VELWindow *window = [self newWindow];
+    
     // Set up a VELNSView
     NSView *contained = [[NSView alloc] initWithFrame:CGRectZero];
     VELNSView *view = [[VELNSView alloc] initWithNSView:contained];
 
     // Set up a Velvet hierarchy
-    NSVelvetView *host = [[NSVelvetView alloc] initWithFrame:CGRectZero];
-    host.rootView.subviews = [NSArray arrayWithObject:view];
+    [window.rootView addSubview:view];
 
     // Check that the contained NSView's nextResponder is still the VELNSView, even
     // though its superview has been changed. Check that the VELNSView's nextResponder
     // is now set.
-    STAssertEquals(host.rootView, [view nextResponder], @"");
+    STAssertEquals(window.rootView, [view nextResponder], @"");
     STAssertEquals(view, [contained nextResponder], @"");
 }
 

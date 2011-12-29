@@ -51,13 +51,16 @@
  *
  * This method is invoked on every view in the hierarchy. The default
  * implementation forwards the message to the receiver's subviews.
+ *
+ * @param oldHostView The view which previously hosted the receiver's
+ * hierarchy.
  */
-- (void)didMoveToHostView;
+- (void)didMoveFromHostView:(NSVelvetView *)oldHostView;
 
 /*
  * Runs a block to change properties on one or more layers, taking into account
  * whether <VELView> animations are currently enabled.
- * 
+ *
  * If this is run from inside an animation block, the changes are animated as
  * part of the animation. Otherwise, the changes take effect immediately,
  * without animation.

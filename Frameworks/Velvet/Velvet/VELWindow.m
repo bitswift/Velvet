@@ -245,6 +245,12 @@
     // Currently VELWindow does not support any click-through events when the window is not already key
     if ([self isKeyWindow]) {
         CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
+        
+        if ([[[contentView superview] hitTest:windowPoint] isKindOfClass:NSClassFromString(@"NSThemeFrame")]) {
+            [super sendEvent:event];
+            return;
+        }
+        
         id hitView = [self bridgedHitTest:windowPoint];
 
         if ([hitView isKindOfClass:[VELView class]]) {

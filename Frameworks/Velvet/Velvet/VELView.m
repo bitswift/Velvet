@@ -7,20 +7,29 @@
 //
 
 #import <Velvet/VELView.h>
+#import <Proton/Proton.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSVelvetView.h>
-#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
+<<<<<<< HEAD
+=======
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
+>>>>>>> origin/master
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/VELCAAction.h>
+#import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELScrollView.h>
+#import <Velvet/VELViewController.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
+<<<<<<< HEAD
 #import <Velvet/VELNSViewPrivate.h>
 #import <Proton/Proton.h>
+=======
+>>>>>>> origin/master
 #import <objc/runtime.h>
 
 /*
@@ -51,6 +60,7 @@ static IMP VELViewDrawRectIMP = NULL;
 
 @property (nonatomic, readwrite, weak) VELView *superview;
 @property (nonatomic, readwrite, weak) NSVelvetView *hostView;
+@property (nonatomic, weak) VELViewController *viewController;
 
 /*
  * True if we're inside the `actionForLayer:forKey:` method. This is used so we
@@ -67,6 +77,26 @@ static IMP VELViewDrawRectIMP = NULL;
  * the results of any drawing are cached in its layer.
  */
 + (BOOL)doesCustomDrawing;
+
+/*
+ * Call the given block on the receiver and all of its subviews, recursively.
+ */
+- (void)recursivelyEnumerateViewsUsingBlock:(void(^)(VELView *))block;
+
+/*
+ * Removes the given view from the receiver's subview array, if present.
+ *
+ * This method modifies <subviews> and the layer hierarchy, and
+ * updates the responder chain -- it does no additional bookkeeping and
+ * does not invoke other methods.
+ */
+- (void)removeSubview:(VELView *)subview;
+
+/*
+ * Updates the next responder of the receiver and the receiver's view
+ * controller.
+ */
+- (void)updateViewAndViewControllerNextResponders;
 @end
 
 @implementation VELView
@@ -77,6 +107,7 @@ static IMP VELViewDrawRectIMP = NULL;
 @synthesize subviews = m_subviews;
 @synthesize superview = m_superview;
 @synthesize hostView = m_hostView;
+@synthesize viewController = m_viewController;
 
 - (BOOL)isRecursingActionForLayer {
     return (m_flags.recursingActionForLayer ? YES : NO);
@@ -183,6 +214,8 @@ static IMP VELViewDrawRectIMP = NULL;
     NSArray *oldSubviews = [m_subviews copy];
     m_subviews = nil;
 
+    // TODO: this could determine the intersection between the two arrays and
+    // avoid removing/re-adding the ones that exist in both
     for (VELView *view in oldSubviews) {
         [view removeFromSuperview];
     }
@@ -200,9 +233,21 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)setHostView:(NSVelvetView *)view {
+    if (view == m_hostView)
+        return;
+
+    NSWindow *oldWindow = self.window;
+    NSVelvetView *oldHostView = m_hostView;
+
+    if (oldWindow != view.window)
+        [self willMoveToWindow:view.window];
+
     [self willMoveToHostView:view];
     m_hostView = view;
-    [self didMoveToHostView];
+    [self didMoveFromHostView:oldHostView];
+
+    if (oldWindow != view.window)
+        [self didMoveFromWindow:oldWindow];
 }
 
 - (NSColor *)backgroundColor {
@@ -347,6 +392,15 @@ static IMP VELViewDrawRectIMP = NULL;
     return VELViewDrawRectIMP != class_getMethodImplementation(self, @selector(drawRect:));
 }
 
+- (void)setViewController:(VELViewController *)controller {
+    // clear out the next responder of our previous view controller, since it's
+    // no longer part of any chain
+    m_viewController.nextResponder = nil;
+    m_viewController = controller;
+
+    [self updateViewAndViewControllerNextResponders];
+}
+
 #pragma mark Layer handling
 
 + (Class)layerClass; {
@@ -415,8 +469,24 @@ static IMP VELViewDrawRectIMP = NULL;
         return;
 
     [CATransaction performWithDisabledActions:^{
-        [view removeFromSuperview];
-        [view willMoveToHostView:self.hostView];
+        VELView *oldSuperview = view.superview;
+        NSVelvetView *oldHostView = view.hostView;
+        NSWindow *oldWindow = view.window;
+
+        BOOL needsHostViewUpdate = (oldHostView != self.hostView);
+        BOOL needsWindowUpdate = (oldWindow != self.window);
+
+        if (needsWindowUpdate)
+            [view willMoveToWindow:self.window];
+
+        if (needsHostViewUpdate)
+            [view willMoveToHostView:self.hostView];
+
+        [view willMoveToSuperview:self];
+
+        // remove the view from any existing superview (without calling the
+        // normal -didMove and -willMove methods)
+        [view.superview removeSubview:view];
 
         if (!m_subviews)
             m_subviews = [[NSMutableArray alloc] init];
@@ -425,7 +495,14 @@ static IMP VELViewDrawRectIMP = NULL;
 
         view.superview = self;
         [self addSubviewToLayer:view];
-        [view didMoveToHostView];
+
+        [view didMoveFromSuperview:oldSuperview];
+
+        if (needsHostViewUpdate)
+            [view didMoveFromHostView:oldHostView];
+
+        if (needsWindowUpdate)
+            [view didMoveFromWindow:oldWindow];
     }];
 }
 
@@ -452,11 +529,9 @@ static IMP VELViewDrawRectIMP = NULL;
     return nil;
 }
 
-- (void)didMoveToHostView; {
-    self.nextResponder = self.superview ?: self.hostView;
-
-    for (VELView *subview in self.subviews)
-        [subview didMoveToHostView];
+- (void)didMoveFromHostView:(NSVelvetView *)oldHostView {
+    [self updateViewAndViewControllerNextResponders];
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:oldHostView];
 }
 
 - (id)ancestorScrollView; {
@@ -486,29 +561,95 @@ static IMP VELViewDrawRectIMP = NULL;
     if (!self.superview)
         return;
 
-    [CATransaction performWithDisabledActions:^{
-        [self willMoveToHostView:nil];
+    [self willMoveToWindow:nil];
+    [self willMoveToHostView:nil];
+    [self willMoveToSuperview:nil];
 
+    VELView *superview = self.superview;
+    NSVelvetView *hostView = self.hostView;
+    NSWindow *window = self.window;
+
+    [superview removeSubview:self];
+
+    [self didMoveFromSuperview:superview];
+    [self didMoveFromHostView:hostView];
+    [self didMoveFromWindow:window];
+}
+
+- (void)removeSubview:(VELView *)subview; {
+    [CATransaction performWithDisabledActions:^{
         id responder = [self.window firstResponder];
         if ([responder isKindOfClass:[VELView class]]) {
-            if ([responder isDescendantOfView:self]) {
-                [self.window makeFirstResponder:self.nextResponder];
+            if ([responder isDescendantOfView:subview]) {
+                [self.window makeFirstResponder:self];
             }
         }
 
-        [self.layer removeFromSuperlayer];
+        [subview.layer removeFromSuperlayer];
 
-        VELView *superview = self.superview;
-        self.superview = nil;
-        [superview->m_subviews removeObjectIdenticalTo:self];
-
-        [self didMoveToHostView];
+        subview.superview = nil;
+        [m_subviews removeObjectIdenticalTo:subview];
     }];
 }
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView; {
     for (VELView *subview in self.subviews)
         [subview willMoveToHostView:hostView];
+}
+
+- (void)didMoveFromSuperview:(VELView *)superview; {
+    [self updateViewAndViewControllerNextResponders];
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:superview];
+}
+
+- (void)didMoveFromWindow:(NSWindow *)window; {
+    [self updateViewAndViewControllerNextResponders];
+
+    if (self.window)
+        [self.viewController viewDidAppear];
+    else
+        [self.viewController viewDidDisappear];
+
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:window];
+}
+
+- (void)willMoveToSuperview:(VELView *)superview; {
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:superview];
+}
+
+- (void)willMoveToWindow:(NSWindow *)window; {
+    if (window)
+        [self.viewController viewWillAppear];
+    else
+        [self.viewController viewWillDisappear];
+
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:window];
+}
+
+#pragma mark Responder chain
+
+- (BOOL)acceptsFirstResponder {
+    return YES;
+}
+
+- (void)updateViewAndViewControllerNextResponders; {
+    NSResponder *responderAfterViewController;
+
+    if (self.superview)
+        responderAfterViewController = self.superview;
+    else if (self.hostView)
+        responderAfterViewController = self.hostView;
+    else
+        responderAfterViewController = nil;
+
+    if (self.viewController) {
+        self.nextResponder = self.viewController;
+        self.viewController.nextResponder = responderAfterViewController;
+    } else {
+        // no view controller, set the next responder as it would've been set on
+        // our view controller
+        self.nextResponder = responderAfterViewController;
+    }
 }
 
 #pragma mark Geometry
@@ -763,14 +904,24 @@ static IMP VELViewDrawRectIMP = NULL;
     [CATransaction performWithDisabledActions:^{
         [self layoutSubviews];
     }];
-    for (NSView *view in self.hostView.subviews) {
-        VELNSView *hostView = view.hostView;
-        [hostView synchronizeNSViewGeometry];
-    }
+    
+    [self recursivelyEnumerateViewsUsingBlock:^(VELView *view) {
+        if ([view isKindOfClass:[VELNSView class]]) {
+            [(VELNSView *)view synchronizeNSViewGeometry];
+        }
+    }];
 }
 
 - (CGSize)preferredSizeOfLayer:(CALayer *)layer {
     return [self sizeThatFits:CGSizeZero];
 }
+
+- (void)recursivelyEnumerateViewsUsingBlock:(void(^)(VELView *))block {
+    block(self);
+    for (VELView * view in self.subviews) {
+        [view recursivelyEnumerateViewsUsingBlock:block];
+    }
+}
+
 
 @end

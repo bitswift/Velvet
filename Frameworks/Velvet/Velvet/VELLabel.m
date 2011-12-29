@@ -149,6 +149,7 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 
     self.backgroundColor = [NSColor clearColor];
     self.numberOfLines = 1;
+    self.userInteractionEnabled = NO;
 
     return self;
 }

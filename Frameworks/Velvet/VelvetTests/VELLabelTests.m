@@ -136,7 +136,7 @@
 
     // make sure that the label still sizes to multiple lines with a different
     // line break mode
-    label.lineBreakMode = VELLineBreakModeMiddleTruncation;
+    label.lineBreakMode = VELLineBreakModeLastLineMiddleTruncation;
     [self verifyLabelSize:label];
 }
 

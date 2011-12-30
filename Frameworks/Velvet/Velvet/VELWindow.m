@@ -14,6 +14,7 @@
 #import <Velvet/VELNSView.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
+#import <Proton/Proton.h>
 
 @class NSVelvetHostView;
 
@@ -138,7 +139,7 @@
             break;
 
         default:
-            NSLog(@"Unrecognized event %@", event);
+            DDLogError(@"Unrecognized event: %@", event);
     }
 }
 

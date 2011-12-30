@@ -665,6 +665,8 @@ static IMP VELViewDrawRectIMP = NULL;
 #pragma mark VELBridgedView
 
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
+    NSAssert(self.window, @"%@ window is nil!",self);
+    
     NSVelvetView *hostView = self.hostView;
 
     VELView *rootView = hostView.rootView;
@@ -674,6 +676,8 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (CGPoint)convertFromWindowPoint:(CGPoint)point {
+    NSAssert(self.window, @"%@ window is nil!",self);
+    
     NSVelvetView *hostView = self.hostView;
     CGPoint hostPoint = [hostView convertFromWindowPoint:point];
 
@@ -682,6 +686,8 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (CGRect)convertToWindowRect:(CGRect)rect {
+    NSAssert(self.window, @"%@ window is nil!",self);
+    
     NSVelvetView *hostView = self.hostView;
 
     VELView *rootView = hostView.rootView;
@@ -691,6 +697,8 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (CGRect)convertFromWindowRect:(CGRect)rect {
+    NSAssert(self.window, @"%@ window is nil!",self);
+    
     NSVelvetView *hostView = self.hostView;
     CGRect hostRect = [hostView convertFromWindowRect:rect];
 
@@ -892,6 +900,7 @@ static IMP VELViewDrawRectIMP = NULL;
     [CATransaction performWithDisabledActions:^{
         [self layoutSubviews];
     }];
+    
     [self recursivelyEnumerateViewsUsingBlock:^(VELView *view) {
         if ([view isKindOfClass:[VELNSView class]]) {
             [(VELNSView *)view synchronizeNSViewGeometry];

@@ -25,6 +25,8 @@ typedef enum {
 
     /**
      * Clip rendered text when the end of the drawing rectangle is reached.
+     * 
+     * @warning `VELLineBreakModeClip` ignores <[VELLabel numberOfLines]>.
      */
     VELLineBreakModeClip = kCTLineBreakByClipping,
 
@@ -45,9 +47,10 @@ typedef enum {
     /**
      * Truncate text as needed from the middle of the line.
      *
-     * For multiple lines of text, only the text at the middle is truncated.
+     * For multiple lines of text, only the text in the middle of the last
+     * line is truncated.
      */
-    VELLineBreakModeMiddleTruncation = kCTLineBreakByTruncatingMiddle
+    VELLineBreakModeLastLineMiddleTruncation = kCTLineBreakByTruncatingMiddle
 } VELLineBreakMode;
 
 /**

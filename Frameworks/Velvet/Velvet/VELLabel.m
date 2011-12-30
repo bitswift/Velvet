@@ -218,27 +218,32 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
     
+    CGFloat drawableWidth = self.bounds.size.width - VELLabelPadding * 2;
+    CGFloat drawableHeight = self.bounds.size.height - VELLabelPadding * 2;
+
     NSMutableArray *lines = [self linesToDraw];
 
     NSUInteger numberOfLinesToDraw = lines.count;
+    BOOL shouldTruncate = (self.lineBreakMode == VELLineBreakModeHeadTruncation || self.lineBreakMode == VELLineBreakModeLastLineMiddleTruncation || self.lineBreakMode == VELLineBreakModeTailTruncation);
     
     // If we are truncating then we may need to adjust numberOfLinesToDraw
-    if (self.lineBreakMode == VELLineBreakModeHeadTruncation ||
-        self.lineBreakMode == VELLineBreakModeLastLineMiddleTruncation ||
-        self.lineBreakMode == VELLineBreakModeTailTruncation) {
-        numberOfLinesToDraw = 0;    
+    if (shouldTruncate) {
+        numberOfLinesToDraw = 0;
+        
         // Determine if we have more lines than will fit vertically in our bounds
         CGFloat height = 0.0f;
         for (NSUInteger i = 0; i < lines.count; i++) {
             CTLineRef aLine = (__bridge CTLineRef)[lines objectAtIndex:i];
+            
             CGFloat ascent;
             CGFloat descent;
             CGFloat leading;
             CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
+            
             height += ceil(ascent + descent + leading);
             
             // Only draw the line if it will fully fit in the bounds
-            if (height > self.bounds.size.height - VELLabelPadding * 2) {
+            if (height > drawableHeight) {
                 break;
             }
             numberOfLinesToDraw++;
@@ -246,87 +251,84 @@ static NSRange NSRangeFromCFRange(CFRange range) {
     }
     
     // If we have more lines than will fit and the label uses truncation, we'll need to cull the lines
-    if (numberOfLinesToDraw < lines.count) {        
-        if (numberOfLinesToDraw == 0) {
-            [lines removeAllObjects];
-        }
-        else {
-            CFAttributedStringRef ellipsisAttributedString = CFAttributedStringCreate(NULL, (CFStringRef) @"…", NULL);
+    if (numberOfLinesToDraw == 0) {
+        [lines removeAllObjects];
+    } else if (numberOfLinesToDraw < lines.count) {
+        NSAssert(shouldTruncate, @"Should only have a reduced number of lines if we're truncating");
+        
+        CFAttributedStringRef ellipsisAttributedString = CFAttributedStringCreate(NULL, (CFStringRef) @"…", NULL);
+        @onExit {
+            CFRelease(ellipsisAttributedString);
+        };
+        CTLineRef ellipsisLine = NULL;
+        ellipsisLine = CTLineCreateWithAttributedString(ellipsisAttributedString);        
+        @onExit {
+            CFRelease(ellipsisLine);
+        };
+        
+        if (self.lineBreakMode == VELLineBreakModeHeadTruncation) {
+            // Calculate the truncated first line if we have more lines than will be drawn
+            //   and the label uses VELLineBreakModeHeadTruncation
+            CTLineRef firstVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:lines.count - numberOfLinesToDraw];
+            NSRange firstLineRange = NSRangeFromCFRange(CTLineGetStringRange(firstVisibleLine));
+            // what we really want is a range from the beginning to the end of `firstVisibleLine`
+            firstLineRange.length = firstLineRange.location + firstLineRange.length;
+            firstLineRange.location = 0;
+            
+            NSAttributedString *firstLineAttrStr = [attributedString attributedSubstringFromRange:firstLineRange];
+            
+            CTLineRef firstLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)firstLineAttrStr);
             @onExit {
-                CFRelease(ellipsisAttributedString);
-            };
-            CTLineRef ellipsisLine = NULL;
-            ellipsisLine = CTLineCreateWithAttributedString(ellipsisAttributedString);        
-            @onExit {
-                CFRelease(ellipsisLine);
+                CFRelease(firstLine);
             };
             
-            if (self.lineBreakMode == VELLineBreakModeHeadTruncation) {
-                // Calculate the truncated first line if we have more lines than will be drawn
-                //   and the label uses VELLineBreakModeHeadTruncation
-                CTLineRef firstVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:lines.count - numberOfLinesToDraw];
-                NSRange firstLineRange = NSRangeFromCFRange(CTLineGetStringRange(firstVisibleLine));
-                // what we really want is a range from the beginning to the end of `firstVisibleLine`
-                firstLineRange.length = firstLineRange.location + firstLineRange.length;
-                firstLineRange.location = 0;
-                
-                NSAttributedString *firstLineAttrStr = [attributedString attributedSubstringFromRange:firstLineRange];
-                
-                CTLineRef firstLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)firstLineAttrStr);
-                @onExit {
-                    CFRelease(firstLine);
-                };
-                
-                firstLine = CTLineCreateTruncatedLine(firstLine, self.bounds.size.width - VELLabelPadding * 2, kCTLineTruncationStart, ellipsisLine);
-                @onExit {
-                    CFRelease(firstLine);
-                };
-                
-                // Remove extra lines that we won't be drawing
-                [lines removeObjectsInRange:NSMakeRange(0, lines.count - numberOfLinesToDraw)];
-                // Replace the first line with our truncated version
-                [lines replaceObjectAtIndex:0 withObject:(__bridge id)firstLine];
-            } else if (self.lineBreakMode == VELLineBreakModeLastLineMiddleTruncation ||
-                       self.lineBreakMode == VELLineBreakModeTailTruncation) {
-                // Calculate the truncated last line if we have more lines than will be drawn
-                //   and the label has truncation affecting the last line
-                CTLineRef lastVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:numberOfLinesToDraw - 1];
-                NSRange lastLineRange = NSRangeFromCFRange(CTLineGetStringRange(lastVisibleLine));
-                lastLineRange.length = attributedString.length - lastLineRange.location;
-                
-                NSAttributedString *lastLineAttrStr = [attributedString attributedSubstringFromRange:lastLineRange];
-                
-                CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
-                @onExit {
-                    CFRelease(lastLine);
-                };
-                
-                CTLineTruncationType truncationType;
-                switch (self.lineBreakMode) {
-                    case VELLineBreakModeLastLineMiddleTruncation:
-                        truncationType = kCTLineTruncationMiddle;
-                        break;
-                    case VELLineBreakModeTailTruncation:
-                    default:
-                        truncationType = kCTLineTruncationEnd;
-                        break;
-                }
-                
-                lastLine = CTLineCreateTruncatedLine(lastLine, self.bounds.size.width - VELLabelPadding * 2, truncationType, ellipsisLine);
-                @onExit {
-                    CFRelease(lastLine);
-                };
-                
-                // Remove extra lines that we won't be drawing
-                [lines removeObjectsInRange:NSMakeRange(numberOfLinesToDraw, lines.count - numberOfLinesToDraw)];
-                // Replace the last line with our truncated version
-                [lines replaceObjectAtIndex:numberOfLinesToDraw - 1 withObject:(__bridge id)lastLine];
+            firstLine = CTLineCreateTruncatedLine(firstLine, drawableWidth, kCTLineTruncationStart, ellipsisLine);
+            @onExit {
+                CFRelease(firstLine);
+            };
+            
+            // Remove extra lines that we won't be drawing
+            [lines removeObjectsInRange:NSMakeRange(0, lines.count - numberOfLinesToDraw)];
+            // Replace the first line with our truncated version
+            [lines replaceObjectAtIndex:0 withObject:(__bridge id)firstLine];
+        } else {
+            // Calculate the truncated last line if we have more lines than will be drawn
+            //   and the label has truncation affecting the last line
+            CTLineRef lastVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:numberOfLinesToDraw - 1];
+            NSRange lastLineRange = NSRangeFromCFRange(CTLineGetStringRange(lastVisibleLine));
+            lastLineRange.length = attributedString.length - lastLineRange.location;
+            
+            NSAttributedString *lastLineAttrStr = [attributedString attributedSubstringFromRange:lastLineRange];
+            
+            CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
+            @onExit {
+                CFRelease(lastLine);
+            };
+            
+            CTLineTruncationType truncationType;
+            switch (self.lineBreakMode) {
+                case VELLineBreakModeLastLineMiddleTruncation:
+                    truncationType = kCTLineTruncationMiddle;
+                    break;
+                case VELLineBreakModeTailTruncation:
+                default:
+                    truncationType = kCTLineTruncationEnd;
+                    break;
             }
+            
+            lastLine = CTLineCreateTruncatedLine(lastLine, drawableWidth, truncationType, ellipsisLine);
+            @onExit {
+                CFRelease(lastLine);
+            };
+            
+            // Remove extra lines that we won't be drawing
+            [lines removeObjectsInRange:NSMakeRange(numberOfLinesToDraw, lines.count - numberOfLinesToDraw)];
+            // Replace the last line with our truncated version
+            [lines replaceObjectAtIndex:numberOfLinesToDraw - 1 withObject:(__bridge id)lastLine];
         }
     }
     
     // Draw all the visible lines
-    CGFloat drawableWidth = self.bounds.size.width - VELLabelPadding * 2;
     CGFloat originY = 0.0f;
     for (NSUInteger i = 0; i < lines.count; i++) {
         CTLineRef aLine = (__bridge CTLineRef)[lines objectAtIndex:i];
@@ -357,9 +359,7 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             // Only create justified lines if we are NOT at the last line yet
             aLine = CTLineCreateJustifiedLine(aLine, 1.0f, drawableWidth);
             CTLineDraw(aLine, context);
-            @onExit {
-                CFRelease(aLine);
-            };
+            CFRelease(aLine);
         } else {
             CTLineDraw(aLine, context);
         }

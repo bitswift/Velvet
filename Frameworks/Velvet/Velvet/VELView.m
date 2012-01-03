@@ -454,6 +454,10 @@ static IMP VELViewDrawRectIMP = NULL;
     [self.layer setNeedsDisplay];
 }
 
+- (void)setNeedsDisplayInRect:(CGRect)rect; {
+    [self.layer setNeedsDisplayInRect:rect];
+}
+
 #pragma mark View hierarchy
 
 - (void)addSubview:(VELView *)view; {

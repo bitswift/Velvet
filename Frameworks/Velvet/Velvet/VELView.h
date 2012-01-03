@@ -527,6 +527,14 @@ typedef enum {
 - (void)setNeedsDisplay;
 
 /**
+ * Marks the specified region of the receiver as needing to be redrawn.
+ *
+ * @param rect The rectangle to invalidate, specified in the coordinate system
+ * of the receiver.
+ */
+- (void)setNeedsDisplayInRect:(CGRect)rect;
+
+/**
  * @name Event Handling
  */
 

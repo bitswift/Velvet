@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class NSVelvetView;
 /*
  * Private layer-hosted view class, containing the whole Velvet view hierarchy.
  * This class needs to be a subview of an <NSVelvetView>, because the latter is
@@ -15,4 +16,10 @@
  * hierarchy.
  */
 @interface NSVelvetHostView : NSView
+
+/**
+ * The layer-hosted `NSView` that is used to host the receiver's 
+ * Velvet view hierarchy.
+ */
+@property (nonatomic, weak, readonly) NSVelvetView *velvetView;
 @end

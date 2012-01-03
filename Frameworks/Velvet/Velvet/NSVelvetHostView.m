@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/NSVelvetHostView.h>
+#import <Velvet/NSVelvetView.h>
 
 @interface NSVelvetHostView ()
 /*
@@ -17,6 +18,12 @@
 @end
 
 @implementation NSVelvetHostView
+
+#pragma mark Properties
+
+- (NSVelvetView *)velvetView {
+  return (NSVelvetView *)self.superview;
+}
 
 #pragma mark Lifecycle
 

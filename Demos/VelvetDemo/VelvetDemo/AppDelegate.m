@@ -24,7 +24,6 @@
 @property (nonatomic, strong) NSArray *views;
 
 - (void)hierarchyTests;
-- (void)animateMe;
 
 - (void)draggingTests;
 - (void)createViews;
@@ -166,7 +165,7 @@
     self.hostView.rootView.subviews = [NSArray arrayWithObjects:label, self.scrollView, nil];
 
     self.nestedSquareView = [[SquareView alloc] init];
-    self.nestedSquareView.layer.opacity = 0.25f;
+    self.nestedSquareView.layer.opacity = 1;
     self.nestedSquareView.layer.masksToBounds = YES;
     self.nestedSquareView.frame = CGRectMake(0, 0, 80, 80);
 
@@ -185,45 +184,27 @@
     [button setTarget:self];
     [button setAction:@selector(testButtonPushed:)];
 
-    self.buttonHost = [[VELNSView alloc] init];
-    self.buttonHost.layer.masksToBounds = YES;
+    self.buttonHost = [[VELNSView alloc] initWithNSView:button];
     self.buttonHost.layer.backgroundColor = CGColorGetConstantColor(kCGColorWhite);
-    self.buttonHost.frame = CGRectMake(30, 30, button.frame.size.width, button.frame.size.height);
 
     rootSquareView.subviews = [NSArray arrayWithObject:self.nestedSquareView];
     self.nestedSquareView.subviews = [NSArray arrayWithObject:self.buttonHost];
-    self.buttonHost.NSView = button;
-
-    //    [self performSelector:@selector(animateMe) withObject:nil afterDelay:1.0];
 }
 
 - (void)updateScrollers {
     self.scrollView.horizontalScroller.doubleValue = 0.2;
 }
 
-- (void)animateMe
-{
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:2.0];
-    [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
-
-    CGRect frm = self.scrollView.frame;
-    frm.origin.x += 150;
-    frm.origin.y += 20;
-//  frm.size.height /= 2.0;
-    self.scrollView.frame = frm;
-
-    CGRect frm2 = self.buttonHost.frame;
-    frm2.origin.x += 150;
-    frm2.origin.y += 20;
-//  frm.size.height /= 2.0;
-    self.buttonHost.frame = frm2;
-
-    [CATransaction commit];
-}
-
 - (void)testButtonPushed:(id)sender {
     NSLog(@"testButtonPushed");
+
+    [VELView animateWithDuration:2 animations:^{
+        self.buttonHost.alpha = 0;
+    } completion:^{
+        [VELView animateWithDuration:5 animations:^{
+            self.buttonHost.alpha = 1;
+        }];
+    }];
 }
 
 

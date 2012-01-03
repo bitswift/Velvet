@@ -8,6 +8,7 @@
 
 #import <AppKit/AppKit.h>
 
+@class NSVelvetView;
 @class VELView;
 
 /**
@@ -19,6 +20,16 @@
  * `contentView`. You must not change its content view to be any other class.
  */
 @interface VELWindow : NSWindow
+
+/**
+ * @name Velvet Hosting
+ */
+
+/**
+ * The content view of the window, hosting a Velvet hierarchy.
+ */
+@property (nonatomic, strong) NSVelvetView *contentView;
+
 /**
  * The root of the Velvet hierarchy in the receiver.
  */

@@ -798,36 +798,6 @@ static IMP VELViewDrawRectIMP = NULL;
 
 #pragma mark CALayer delegate
 
-- (void)displayLayer:(CALayer *)layer {
-    if (![[self class] doesCustomDrawing])
-        return;
-
-    CGRect bounds = self.bounds;
-    if (CGRectIsEmpty(bounds) || CGRectIsNull(bounds)) {
-        // can't do anything
-        return;
-    }
-
-    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size, !self.opaque);
-    if (!context) {
-        return;
-    }
-
-    // always allow antialiasing and sub-pixel antialiasing
-    // these calls alone do not enable it -- they only make the context allow it
-    CGContextSetAllowsAntialiasing(context, YES);
-    CGContextSetAllowsFontSmoothing(context, YES);
-    CGContextSetAllowsFontSubpixelPositioning(context, YES);
-    CGContextSetAllowsFontSubpixelQuantization(context, YES);
-
-    [self drawLayer:layer inContext:context];
-
-    CGImageRef image = CGBitmapContextCreateImage(context);
-    layer.contents = (__bridge_transfer id)image;
-
-    CGContextRelease(context);
-}
-
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
     if (!context || ![[self class] doesCustomDrawing])
         return;

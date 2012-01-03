@@ -16,56 +16,41 @@
 #import <Proton/Proton.h>
 
 @safecategory (NSWindow, EventHandlingAdditions)
-- (id)bridgedHitTest:(CGPoint)windowPoint; {
-    NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
+- (VELView *)bridgedHitTest:(CGPoint)windowPoint; {
+    NSView *nsView = self.contentView;
 
-    id velvetView = self.rootView;
+    while (nsView) {
+        CGPoint viewPoint = [[nsView superview] convertFromWindowPoint:windowPoint];
+        id testView = [nsView hitTest:viewPoint];
 
-    CGPoint viewPoint = [velvetView convertFromWindowPoint:windowPoint];
-    if (!CGRectContainsPoint(self.rootView.bounds, viewPoint)) {
-        return nil;
-    }
-    
-    while (YES) {
-        if ([velvetView isKindOfClass:[VELNSView class]]) {
-            NSView *nsView = [(id)velvetView NSView];
-
-            NSPoint viewPoint = NSPointFromCGPoint([[nsView superview] convertFromWindowPoint:windowPoint]);
-            id testView = [nsView hitTest:viewPoint];
-
-            if (![testView isKindOfClass:[NSVelvetView class]]) {
-                if (testView)
-                    return testView;
-                else
-                    return nsView;
-            }
-
-            NSVelvetView *hostView = testView;
-            velvetView = hostView.rootView;
-
-            if (![velvetView isUserInteractionEnabled]) {
-                return hostView;
-            }
-        } else {
-            CGPoint viewPoint = [velvetView convertFromWindowPoint:windowPoint];
-            id testView = [velvetView descendantViewAtPoint:viewPoint];
-
-            if ([testView isKindOfClass:[VELView class]]) {
-                while (testView && ![testView isUserInteractionEnabled]) {
-                    testView = [testView superview];
-                }
-            }
-
-            if (![testView isKindOfClass:[VELNSView class]]) {
-                if (testView)
-                    return testView;
-                else
-                    return velvetView;
-            }
-
-            velvetView = testView;
+        if (![testView isKindOfClass:[NSVelvetView class]]) {
+            break;
         }
+
+        NSVelvetView *hostView = testView;
+        VELView *velvetView = hostView.rootView;
+
+        if (![velvetView isUserInteractionEnabled]) {
+            break;
+        }
+        
+        viewPoint = [velvetView convertFromWindowPoint:windowPoint];
+        testView = [velvetView descendantViewAtPoint:viewPoint];
+
+        if ([testView isKindOfClass:[VELView class]]) {
+            while (testView && ![testView isUserInteractionEnabled]) {
+                testView = [testView superview];
+            }
+        }
+
+        if (![testView isKindOfClass:[VELNSView class]]) {
+            return testView;
+        }
+
+        nsView = [testView NSView];
     }
+
+    return nil;
 }
 
 - (VELView *)velvetViewForMouseDownEvent:(NSEvent *)event {

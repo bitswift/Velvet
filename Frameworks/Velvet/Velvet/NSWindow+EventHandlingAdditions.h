@@ -20,13 +20,13 @@
  */
 
 /*
- * Returns the <VELView> or `NSView` which is occupying the given point, or
+ * Returns the <VELView> which is occupying the given point in the window, or
  * `nil` if there is no such view.
  *
  * @param windowPoint A point, specified in the coordinate system of the window,
  * at which to look for a view.
  */
-- (id)bridgedHitTest:(CGPoint)windowPoint;
+- (VELView *)bridgedHitTest:(CGPoint)windowPoint;
 
 /*
  * Hit tests for a <VELView> in the region identified by the given event,

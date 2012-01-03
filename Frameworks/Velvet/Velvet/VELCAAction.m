@@ -56,6 +56,12 @@
 - (void)endRenderingNSViewOfView:(VELNSView *)view;
 
 /*
+ * Schedules the given block to execute when the animation of the current
+ * `CATransaction` completes.
+ */
+- (void)runWhenAnimationCompletes:(void (^)(void))block;
+
+/*
  * Returns `YES` if objects of this class add features to actions for the given
  * geometry property.
  */
@@ -153,17 +159,13 @@
     if (![cachedViews count])
         return;
 
-    // Set up a block to return the NSViews to rendering themselves.
-    void (^completionBlock)(void) = ^{
+    // return NSViews to rendering themselves after this animation completes
+    [self runWhenAnimationCompletes:^{
         [cachedViews enumerateObjectsUsingBlock:^(VELNSView *view, NSUInteger idx, BOOL *stop) {
             [self endRenderingNSViewOfView:view];
             view.focusRingLayer.opacity = 1.0f;
         }];
-    };
-
-    // Schedule the cleanup to occur when this animation ends.
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)([CATransaction animationDuration] * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), completionBlock);
+    }];
 }
 
 - (void)opacityChangedForLayer:(CALayer *)layer; {
@@ -171,13 +173,12 @@
 
     if (fabs(1 - newOpacity) < 0.001) {
         // return NSViews to rendering themselves after this animation completes
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)([CATransaction animationDuration] * NSEC_PER_SEC));
-        dispatch_after(popTime, dispatch_get_main_queue(), ^{
+        [self runWhenAnimationCompletes:^{
             [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
                 view.focusRingLayer.opacity = 1;
                 [self endRenderingNSViewOfView:view];
             }];
-        });
+        }];
     } else {
         // For all contained VELNSViews, render their NSView into their layer
         // and hide the NSView. Now the visual element is part of the layer
@@ -187,6 +188,11 @@
             [self startRenderingNSViewOfView:view];
         }];
     }
+}
+
+- (void)runWhenAnimationCompletes:(void (^)(void))block; {
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)([CATransaction animationDuration] * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), block);
 }
 
 @end

@@ -52,6 +52,7 @@
 		D0CACD35147C86C0008C42B2 /* VELBridgedView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELBridgedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0CE3D461485506B005CAE53 /* VELFocusRingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CE3D441485506B005CAE53 /* VELFocusRingLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0CE3D471485506B005CAE53 /* VELFocusRingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */; };
+		D0CE951014B3842F003581C8 /* VELWindowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE950F14B3842F003581C8 /* VELWindowTests.m */; };
 		D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0D51D0A14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -169,6 +170,8 @@
 		D0CACD34147C86C0008C42B2 /* VELBridgedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELBridgedView.h; sourceTree = "<group>"; };
 		D0CE3D441485506B005CAE53 /* VELFocusRingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELFocusRingLayer.h; sourceTree = "<group>"; };
 		D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELFocusRingLayer.m; sourceTree = "<group>"; };
+		D0CE950E14B3842F003581C8 /* VELWindowTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELWindowTests.h; sourceTree = "<group>"; };
+		D0CE950F14B3842F003581C8 /* VELWindowTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELWindowTests.m; sourceTree = "<group>"; };
 		D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+CoreGraphicsAdditions.h"; sourceTree = "<group>"; };
 		D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+CoreGraphicsAdditions.m"; sourceTree = "<group>"; };
 		D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+CoreGraphicsAdditions.h"; sourceTree = "<group>"; };
@@ -334,18 +337,20 @@
 		D08719E814A30B4C00F304BC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1EA3D70814B37F3B0007E4C4 /* NSVelvetHostViewTests.h */,
+				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
 				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
 				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
 				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
 				D0DB8A7C149028D60082D3DA /* VELLabelTests.m */,
 				1A5FCCF81496B61A00BB49F3 /* VELNSViewTests.h */,
 				1A5FCCF91496B61A00BB49F3 /* VELNSViewTests.m */,
-				D0B75C6D14918EB9005C81D5 /* VELViewTests.h */,
-				D0B75C6E14918EB9005C81D5 /* VELViewTests.m */,
 				D08719E914A30B5F00F304BC /* VELViewControllerTests.h */,
 				D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */,
-				1EA3D70814B37F3B0007E4C4 /* NSVelvetHostViewTests.h */,
-				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
+				D0B75C6D14918EB9005C81D5 /* VELViewTests.h */,
+				D0B75C6E14918EB9005C81D5 /* VELViewTests.m */,
+				D0CE950E14B3842F003581C8 /* VELWindowTests.h */,
+				D0CE950F14B3842F003581C8 /* VELWindowTests.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -723,6 +728,7 @@
 				1A5FCCFA1496B61A00BB49F3 /* VELNSViewTests.m in Sources */,
 				D08719EB14A30B5F00F304BC /* VELViewControllerTests.m in Sources */,
 				1EA3D71014B37F4A0007E4C4 /* NSVelvetHostViewTests.m in Sources */,
+				D0CE951014B3842F003581C8 /* VELWindowTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

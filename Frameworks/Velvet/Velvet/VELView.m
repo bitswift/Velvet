@@ -464,6 +464,10 @@ static IMP VELViewDrawRectIMP = NULL;
     [self.layer setNeedsDisplay];
 }
 
+- (void)setNeedsDisplayInRect:(CGRect)rect; {
+    [self.layer setNeedsDisplayInRect:rect];
+}
+
 #pragma mark View hierarchy
 
 - (void)addSubview:(VELView *)view; {
@@ -808,46 +812,14 @@ static IMP VELViewDrawRectIMP = NULL;
 
 #pragma mark CALayer delegate
 
-- (void)displayLayer:(CALayer *)layer {
-    if (![[self class] doesCustomDrawing])
-        return;
-
-    CGRect bounds = self.bounds;
-    if (CGRectIsEmpty(bounds) || CGRectIsNull(bounds)) {
-        // can't do anything
-        return;
-    }
-
-    CGContextRef context = CGBitmapContextCreateGeneric(bounds.size, !self.opaque);
-    if (!context) {
-        return;
-    }
-
-    // always allow antialiasing and sub-pixel antialiasing
-    // these calls alone do not enable it -- they only make the context allow it
-    CGContextSetAllowsAntialiasing(context, YES);
-    CGContextSetAllowsFontSmoothing(context, YES);
-    CGContextSetAllowsFontSubpixelPositioning(context, YES);
-    CGContextSetAllowsFontSubpixelQuantization(context, YES);
-
-    [self drawLayer:layer inContext:context];
-
-    CGImageRef image = CGBitmapContextCreateImage(context);
-    layer.contents = (__bridge_transfer id)image;
-
-    CGContextRelease(context);
-}
-
 - (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
     if (!context || ![[self class] doesCustomDrawing])
         return;
 
-    CGRect bounds = self.bounds;
+    CGRect drawingRegion = CGContextGetClipBoundingBox(context);
 
     if (self.clearsContextBeforeDrawing)
-        CGContextClearRect(context, bounds);
-
-    CGContextClipToRect(context, bounds);
+        CGContextClearRect(context, drawingRegion);
 
     // enable sub-pixel antialiasing (if drawing onto anything opaque)
     CGContextSetShouldAntialias(context, YES);
@@ -862,7 +834,7 @@ static IMP VELViewDrawRectIMP = NULL;
     NSGraphicsContext *graphicsContext = [NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
     [NSGraphicsContext setCurrentContext:graphicsContext];
 
-    [self drawRect:bounds];
+    [self drawRect:drawingRegion];
 
     [NSGraphicsContext setCurrentContext:previousGraphicsContext];
 }

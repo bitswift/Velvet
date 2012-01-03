@@ -235,6 +235,24 @@
     STAssertEquals(view.nextResponder, self.window.rootView, @"");
 }
 
+- (void)testFullyFlexibleAutoresizingMask {
+    VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+
+    VELView *view = [[VELView alloc] initWithFrame:CGRectMake(20, 20, 60, 60)];
+    [superview addSubview:view];
+
+    view.autoresizingMask = VELViewAutoresizingFlexibleLeftMargin | VELViewAutoresizingFlexibleRightMargin | VELViewAutoresizingFlexibleTopMargin | VELViewAutoresizingFlexibleBottomMargin;
+
+    superview.frame = CGRectMake(0, 0, 1000, 1000);
+    
+    // force a layout
+    [superview.layer setNeedsLayout];
+    [superview.layer layoutIfNeeded];
+
+    CGRect expectedFrame = CGRectMake(470, 470, 60, 60);
+    STAssertTrue(CGRectEqualToRect(view.frame, expectedFrame), @"");
+}
+
 @end
 
 @implementation TestView

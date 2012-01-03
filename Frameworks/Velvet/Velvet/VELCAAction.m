@@ -11,8 +11,8 @@
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
+#import <Proton/Proton.h>
 #import <objc/runtime.h>
-
 
 @interface VELCAAction ()
 /*
@@ -25,6 +25,11 @@
  * Invoked whenever the geometry property `key` of `layer` has changed.
  */
 - (void)geometryChangedForKey:(NSString *)key layer:(CALayer *)layer;
+
+/*
+ * Invoked whenever the opacity of `layer` has changed.
+ */
+- (void)opacityChangedForLayer:(CALayer *)layer;
 
 /*
  * Returns `YES` if objects of this class add features to actions for the given
@@ -67,7 +72,9 @@
     if (!animation)
         return;
 
-    if ([[self class] interceptsGeometryActionForKey:key]) {
+    if ([key isEqualToString:@"opacity"]) {
+        [self opacityChangedForLayer:anObject];
+    } else if ([[self class] interceptsGeometryActionForKey:key]) {
         [self geometryChangedForKey:key layer:anObject];
     }
 }
@@ -110,12 +117,26 @@
     dispatch_after(popTime, dispatch_get_main_queue(), completionBlock);
 }
 
+- (void)opacityChangedForLayer:(CALayer *)layer; {
+    float newOpacity = layer.opacity;
+
+    // For all contained VELNSViews, render their NSView into their layer
+    // and hide the NSView. Now the visual element is part of the layer
+    // hierarchy we're animating.
+    [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
+        view.focusRingLayer.opacity = newOpacity;
+
+        view.rendersContainedView = YES;
+        view.NSView.alphaValue = 0.0;
+    }];
+}
+
 + (BOOL)interceptsGeometryActionForKey:(NSString *)key {
     return [key isEqualToString:@"position"] || [key isEqualToString:@"bounds"] || [key isEqualToString:@"transform"];
 }
 
 + (BOOL)interceptsActionForKey:(NSString *)key {
-    return [self interceptsGeometryActionForKey:key];
+    return [key isEqualToString:@"opacity"] || [self interceptsGeometryActionForKey:key];
 }
 
 @end

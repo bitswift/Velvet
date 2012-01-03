@@ -235,6 +235,16 @@
     STAssertEquals(view.nextResponder, self.window.rootView, @"");
 }
 
+- (void)testPointInside {
+    VELView *view = [[VELView alloc] init];
+    view.frame = CGRectMake(0, 0, 50, 50);
+
+    STAssertTrue([view pointInside:CGPointMake(25, 25)], @"");
+    STAssertFalse([view pointInside:CGPointMake(-1, -1)], @"");
+    STAssertFalse([view pointInside:CGPointMake(50, 50)], @"");
+    STAssertTrue([view pointInside:CGPointMake(49, 49)], @"");
+}
+
 @end
 
 @implementation TestView

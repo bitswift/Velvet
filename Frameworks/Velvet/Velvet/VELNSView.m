@@ -181,9 +181,8 @@
 }
 
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
-    if (!CGRectContainsPoint(self.bounds, point))
+    if (![self pointInside:point])
         return nil;
-
 
     CGPoint NSViewPoint = [self.NSView convertFromWindowPoint:[self convertToWindowPoint:point]];
     return [self.NSView descendantViewAtPoint:NSViewPoint] ?: [super descendantViewAtPoint:point];

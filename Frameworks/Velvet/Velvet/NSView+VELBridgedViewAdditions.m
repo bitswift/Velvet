@@ -49,4 +49,9 @@
 
     return hitView;
 }
+
+- (BOOL)pointInside:(CGPoint)point {
+    return [self hitTest:point] ? YES : NO;
+}
+
 @end

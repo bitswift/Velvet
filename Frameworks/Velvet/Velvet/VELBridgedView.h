@@ -56,4 +56,11 @@
  */
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point;
 
+/**
+ * Returns whether the receiver is occupying the given point.
+ *
+ * @param point A point, specified in the coordinate system of the receiver.
+ */
+- (BOOL)pointInside:(CGPoint)point;
+
 @end

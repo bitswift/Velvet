@@ -91,7 +91,7 @@ typedef void (^VELControlActionBlock)(void);
 
 - (void)mouseUp:(NSEvent *)theEvent {
     CGPoint point = [self convertFromWindowPoint:[theEvent locationInWindow]];
-    if (!CGRectContainsPoint(self.bounds, point))
+    if (![self pointInside:point])
         return;
 
     [self sendActionsForControlEvents:VELControlEventClicked];

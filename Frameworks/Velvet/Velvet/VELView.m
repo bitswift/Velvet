@@ -875,7 +875,7 @@ static IMP VELViewDrawRectIMP = NULL;
 
 - (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
     // Clip to self
-    if (!CGRectContainsPoint(self.bounds, point))
+    if (![self pointInside:point])
         return nil;
 
     __block id<VELBridgedView> result = self;
@@ -892,6 +892,10 @@ static IMP VELViewDrawRectIMP = NULL;
     }];
 
     return result;
+}
+
+- (BOOL)pointInside:(CGPoint)point {
+    return CGRectContainsPoint(self.bounds, point);
 }
 
 #pragma mark CALayoutManager

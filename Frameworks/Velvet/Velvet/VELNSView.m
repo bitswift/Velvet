@@ -121,13 +121,14 @@
 - (void)synchronizeNSViewGeometry; {
     NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
 
-    if (!self.hostView) {
-        // can't do this without a host view
+    if (!self.window) {
+        // can't do this without being in a window
         return;
     }
 
-    CGRect frame = self.NSViewFrame;
+    NSAssert(self.hostView, @"%@ should have a hostView if it has a window", self);
 
+    CGRect frame = self.NSViewFrame;
     self.NSView.frame = frame;
 
     [CATransaction performWithDisabledActions:^{

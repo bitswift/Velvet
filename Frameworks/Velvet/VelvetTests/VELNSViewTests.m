@@ -45,4 +45,17 @@
     STAssertEquals(view, [contained nextResponder], @"");
 }
 
+// INTERNAL-226
+- (void)testSettingNSViewBeforeHavingSuperview {
+    NSView *contained = [[NSView alloc] initWithFrame:CGRectZero];
+
+    VELNSView *view = [[VELNSView alloc] init];
+    view.NSView = contained;
+
+    NSVelvetView *hostView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
+    [hostView.rootView addSubview:view];
+
+    STAssertEquals(contained.superview, hostView, @"");
+}
+
 @end

@@ -19,6 +19,7 @@
 @property (nonatomic, unsafe_unretained) VELView *nextSuperview;
 @property (nonatomic, unsafe_unretained) VELWindow *oldWindow;
 @property (nonatomic, unsafe_unretained) VELWindow *nextWindow;
+@property (nonatomic, assign) CGRect drawRectRegion;
 
 - (void)reset;
 @end
@@ -263,6 +264,19 @@
     STAssertTrue(CGRectEqualToRect(view.frame, expectedFrame), @"");
 }
 
+- (void)testOnlyDrawingDirtyRegion {
+    TestView *view = [[TestView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    [view.layer displayIfNeeded];
+
+    CGRect invalidatedRegion = CGRectMake(10, 10, 25, 25);
+    [view setNeedsDisplayInRect:invalidatedRegion];
+    [view.layer displayIfNeeded];
+
+    // make sure that -drawRect: was called only with the rectangle we
+    // invalidated
+    STAssertTrue(CGRectEqualToRect(view.drawRectRegion, invalidatedRegion), @"");
+}
+
 @end
 
 @implementation TestView
@@ -274,6 +288,7 @@
 @synthesize oldWindow = m_oldWindow;
 @synthesize nextSuperview;
 @synthesize nextWindow;
+@synthesize drawRectRegion = m_drawRectRegion;
 
 - (void)willMoveToSuperview:(VELView *)superview {
     [super willMoveToSuperview:superview];
@@ -327,6 +342,10 @@
     self.didMoveFromWindowInvoked = YES;
 }
 
+- (void)drawRect:(CGRect)rect {
+    self.drawRectRegion = rect;
+}
+
 - (void)reset; {
     self.willMoveToSuperviewInvoked = NO;
     self.willMoveToWindowInvoked = NO;
@@ -336,6 +355,7 @@
     self.oldWindow = nil;
     self.nextSuperview = nil;
     self.nextWindow = nil;
+    self.drawRectRegion = CGRectNull;
 }
 
 @end

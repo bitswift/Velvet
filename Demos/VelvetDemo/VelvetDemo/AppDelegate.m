@@ -166,8 +166,8 @@
 
     self.nestedSquareView = [[SquareView alloc] init];
     self.nestedSquareView.layer.opacity = 1;
-    self.nestedSquareView.layer.masksToBounds = YES;
-    self.nestedSquareView.frame = CGRectMake(0, 0, 80, 80);
+    self.nestedSquareView.clipsToBounds = YES;
+    self.nestedSquareView.frame = CGRectMake(0, 0, 40, 80);
 
     [self.nestedSquareView addActionForControlEvents:VELControlEventClicked usingBlock:^{
         NSLog(@"Square view click action!");

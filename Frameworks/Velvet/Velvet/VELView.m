@@ -802,12 +802,10 @@ static IMP VELViewDrawRectIMP = NULL;
     if (!context || ![[self class] doesCustomDrawing])
         return;
 
-    CGRect bounds = self.bounds;
+    CGRect drawingRegion = CGContextGetClipBoundingBox(context);
 
     if (self.clearsContextBeforeDrawing)
-        CGContextClearRect(context, bounds);
-
-    CGContextClipToRect(context, bounds);
+        CGContextClearRect(context, drawingRegion);
 
     // enable sub-pixel antialiasing (if drawing onto anything opaque)
     CGContextSetShouldAntialias(context, YES);
@@ -822,7 +820,7 @@ static IMP VELViewDrawRectIMP = NULL;
     NSGraphicsContext *graphicsContext = [NSGraphicsContext graphicsContextWithGraphicsPort:context flipped:NO];
     [NSGraphicsContext setCurrentContext:graphicsContext];
 
-    [self drawRect:bounds];
+    [self drawRect:drawingRegion];
 
     [NSGraphicsContext setCurrentContext:previousGraphicsContext];
 }

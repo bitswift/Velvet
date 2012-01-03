@@ -64,6 +64,9 @@
 
 #pragma mark Properties
 
+// implemented by NSWindow
+@dynamic contentView;
+
 - (VELView *)rootView; {
     NSVelvetView *contentView = self.contentView;
     NSAssert([contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);

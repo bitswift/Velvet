@@ -390,6 +390,18 @@ typedef enum {
 @property (nonatomic, assign) VELViewAutoresizingMask autoresizingMask;
 
 /**
+ * Whether subviews are clipped to the receiver's <bounds>.
+ *
+ * If set to `NO`, subviews will remain visible when positioned outside of the
+ * receiver's <bounds>.
+ *
+ * @warning **Important:** Setting this property to `NO` will not affect event
+ * handling. Events that are outside of the bounds of the receiver will still be
+ * ignored by default.
+ */
+@property (nonatomic, assign) BOOL clipsToBounds;
+
+/**
  * Lays out subviews.
  *
  * The default implementation of this method does nothing.

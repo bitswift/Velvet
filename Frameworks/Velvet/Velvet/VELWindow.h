@@ -12,12 +12,7 @@
 @class VELView;
 
 /**
- * An `NSWindow` with support for dispatching events to <VELView> hierarchies
- * contained within. You must use an instance of this class in order for events
- * to be received correctly by Velvet.
- *
- * The window is automatically set up with an <NSVelvetView> for its
- * `contentView`. You must not change its content view to be any other class.
+ * An `NSWindow` automatically set up with a Velvet hierarchy.
  */
 @interface VELWindow : NSWindow
 
@@ -27,6 +22,8 @@
 
 /**
  * The content view of the window, hosting a Velvet hierarchy.
+ *
+ * This must be set to a view which is an instance of <NSVelvetView>.
  */
 @property (nonatomic, strong) NSVelvetView *contentView;
 

@@ -32,6 +32,30 @@
 - (void)opacityChangedForLayer:(CALayer *)layer;
 
 /*
+ * Renders the `NSView` of the given view into its layer and hides the `NSView`.
+ *
+ * This can be used to capture a static rendering of the `NSView` for animation
+ * or other purposes.
+ *
+ * @param view The <VELNSView> hosting the `NSView`.
+ *
+ * @warning **Important:** <endRenderingNSViewOfView:> should be invoked
+ * to restore the normal rendering of the `NSView`. Calls to these methods
+ * cannot be nested.
+ */
+- (void)startRenderingNSViewOfView:(VELNSView *)view;
+
+/*
+ * Restores the normal rendering of the given view's `NSView` after a previous
+ * call to <startRenderingNSViewOfView:>.
+ *
+ * @param view The <VELNSView> hosting the `NSView`.
+ *
+ * @warning **Important:** Calls to this method cannot be nested.
+ */
+- (void)endRenderingNSViewOfView:(VELNSView *)view;
+
+/*
  * Returns `YES` if objects of this class add features to actions for the given
  * geometry property.
  */
@@ -39,9 +63,13 @@
 
 @end
 
-
 @implementation VELCAAction
+
+#pragma mark Properties
+
 @synthesize innerAction = m_innerAction;
+
+#pragma mark Lifecycle
 
 - (id)initWithAction:(id<CAAction>)innerAction {
     self = [super init];
@@ -56,6 +84,8 @@
     return [[self alloc] initWithAction:innerAction];
 }
 
+#pragma mark VELNSView support
+
 - (void)enumerateVELNSViewsInLayer:(CALayer *)layer block:(void(^)(VELNSView *))block {
     if ([layer.delegate isKindOfClass:[VELNSView class]]) {
         block(layer.delegate);
@@ -65,6 +95,20 @@
         }
     }
 }
+
+- (void)startRenderingNSViewOfView:(VELNSView *)view; {
+    view.rendersContainedView = YES;
+    view.NSView.alphaValue = 0.0;
+}
+
+- (void)endRenderingNSViewOfView:(VELNSView *)view; {
+    view.rendersContainedView = NO;
+    [view synchronizeNSViewGeometry];
+
+    view.NSView.alphaValue = 1.0;
+}
+
+#pragma mark Action interception
 
 - (void)runActionForKey:(NSString *)key object:(id)anObject arguments:(NSDictionary *)dict {
     [self.innerAction runActionForKey:key object:anObject arguments:dict];
@@ -79,6 +123,16 @@
     }
 }
 
++ (BOOL)interceptsGeometryActionForKey:(NSString *)key {
+    return [key isEqualToString:@"position"] || [key isEqualToString:@"bounds"] || [key isEqualToString:@"transform"];
+}
+
++ (BOOL)interceptsActionForKey:(NSString *)key {
+    return [key isEqualToString:@"opacity"] || [self interceptsGeometryActionForKey:key];
+}
+
+#pragma mark Action handlers
+
 - (void)geometryChangedForKey:(NSString *)key layer:(CALayer *)layer {
     // For all contained VELNSViews, render their NSView into their layer
     // and hide the NSView. Now the visual element is part of the layer
@@ -91,8 +145,7 @@
             }];
         }
         
-        view.rendersContainedView = YES;
-        view.NSView.alphaValue = 0.0;
+        [self startRenderingNSViewOfView:view];
         [cachedViews addObject:view];
     }];
 
@@ -103,11 +156,7 @@
     // Set up a block to return the NSViews to rendering themselves.
     void (^completionBlock)(void) = ^{
         [cachedViews enumerateObjectsUsingBlock:^(VELNSView *view, NSUInteger idx, BOOL *stop) {
-            view.rendersContainedView = NO;
-            [view synchronizeNSViewGeometry];
-
-            view.NSView.alphaValue = 1.0;
-
+            [self endRenderingNSViewOfView:view];
             view.focusRingLayer.opacity = 1.0f;
         }];
     };
@@ -120,23 +169,24 @@
 - (void)opacityChangedForLayer:(CALayer *)layer; {
     float newOpacity = layer.opacity;
 
-    // For all contained VELNSViews, render their NSView into their layer
-    // and hide the NSView. Now the visual element is part of the layer
-    // hierarchy we're animating.
-    [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
-        view.focusRingLayer.opacity = newOpacity;
-
-        view.rendersContainedView = YES;
-        view.NSView.alphaValue = 0.0;
-    }];
-}
-
-+ (BOOL)interceptsGeometryActionForKey:(NSString *)key {
-    return [key isEqualToString:@"position"] || [key isEqualToString:@"bounds"] || [key isEqualToString:@"transform"];
-}
-
-+ (BOOL)interceptsActionForKey:(NSString *)key {
-    return [key isEqualToString:@"opacity"] || [self interceptsGeometryActionForKey:key];
+    if (fabs(1 - newOpacity) < 0.001) {
+        // return NSViews to rendering themselves after this animation completes
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)([CATransaction animationDuration] * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^{
+            [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
+                view.focusRingLayer.opacity = 1;
+                [self endRenderingNSViewOfView:view];
+            }];
+        });
+    } else {
+        // For all contained VELNSViews, render their NSView into their layer
+        // and hide the NSView. Now the visual element is part of the layer
+        // hierarchy we're animating.
+        [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
+            view.focusRingLayer.opacity = newOpacity;
+            [self startRenderingNSViewOfView:view];
+        }];
+    }
 }
 
 @end

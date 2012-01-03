@@ -102,27 +102,27 @@ static IMP VELViewDrawRectIMP = NULL;
 @synthesize viewController = m_viewController;
 
 - (BOOL)isRecursingActionForLayer {
-    return (m_flags.recursingActionForLayer ? YES : NO);
+    return m_flags.recursingActionForLayer;
 }
 
 - (void)setRecursingActionForLayer:(BOOL)recursing {
-    m_flags.recursingActionForLayer = (recursing ? 1 : 0);
+    m_flags.recursingActionForLayer = recursing;
 }
 
 - (BOOL)isUserInteractionEnabled {
-    return (m_flags.userInteractionEnabled ? YES : NO);
+    return m_flags.userInteractionEnabled;
 }
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
-    m_flags.userInteractionEnabled = (userInteractionEnabled ? 1 : 0);
+    m_flags.userInteractionEnabled = userInteractionEnabled;
 }
 
 - (BOOL)clearsContextBeforeDrawing {
-    return (m_flags.clearsContextBeforeDrawing ? YES : NO);
+    return m_flags.clearsContextBeforeDrawing;
 }
 
 - (void)setClearsContextBeforeDrawing:(BOOL)clearsContext {
-    m_flags.clearsContextBeforeDrawing = (clearsContext ? 1 : 0);
+    m_flags.clearsContextBeforeDrawing = clearsContext;
 }
 
 // For geometry properties, it makes sense to reuse the layer's geometry,

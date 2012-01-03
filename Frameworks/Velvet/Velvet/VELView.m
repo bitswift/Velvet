@@ -899,12 +899,10 @@ static IMP VELViewDrawRectIMP = NULL;
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
     [CATransaction performWithDisabledActions:^{
         [self layoutSubviews];
-    }];
-    
-    [self recursivelyEnumerateViewsUsingBlock:^(VELView *view) {
-        if ([view isKindOfClass:[VELNSView class]]) {
-            [(VELNSView *)view synchronizeNSViewGeometry];
-        }
+
+        [self.subviews enumerateObjectsUsingBlock:^(VELView *subview, NSUInteger i, BOOL *stop){
+            [subview ancestorDidLayout];
+        }];
     }];
 }
 

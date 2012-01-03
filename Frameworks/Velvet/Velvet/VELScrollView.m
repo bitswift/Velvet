@@ -203,10 +203,6 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.65;
 
     [CATransaction performWithDisabledActions:^{
         [self.scrollLayer scrollToPoint:point];
-
-        for (VELView *view in self.subviews) {
-            [view ancestorDidLayout];
-        }
     }];
 
     CGSize contentSize = self.scrollLayer.contentsRect.size;

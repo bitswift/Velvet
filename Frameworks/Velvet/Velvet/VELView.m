@@ -502,9 +502,9 @@ static IMP VELViewDrawRectIMP = NULL;
     [self.layer addSublayer:view.layer];
 }
 
-- (void)ancestorDidScroll; {
-    [self.subviews enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(VELView *subview, NSUInteger i, BOOL *stop){
-        [subview ancestorDidScroll];
+- (void)ancestorDidLayout; {
+    [self.subviews enumerateObjectsUsingBlock:^(VELView *subview, NSUInteger i, BOOL *stop){
+        [subview ancestorDidLayout];
     }];
 }
 

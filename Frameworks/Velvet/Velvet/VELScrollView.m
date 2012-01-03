@@ -205,7 +205,7 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.65;
         [self.scrollLayer scrollToPoint:point];
 
         for (VELView *view in self.subviews) {
-            [view ancestorDidScroll];
+            [view ancestorDidLayout];
         }
     }];
 

@@ -125,6 +125,16 @@ static IMP VELViewDrawRectIMP = NULL;
     m_flags.clearsContextBeforeDrawing = clearsContext;
 }
 
+- (BOOL)clipsToBounds {
+    return self.layer.masksToBounds;
+}
+
+- (void)setClipsToBounds:(BOOL)clipsToBounds {
+    [[self class] changeLayerProperties:^{
+        self.layer.masksToBounds = clipsToBounds;
+    }];
+}
+
 // For geometry properties, it makes sense to reuse the layer's geometry,
 // keeping them coupled as much as possible to allow easy modification of either
 // (while affecting both).

@@ -143,9 +143,9 @@
 
 #pragma mark View hierarchy
 
-- (void)ancestorDidScroll; {
+- (void)ancestorDidLayout; {
     [self synchronizeNSViewGeometry];
-    [super ancestorDidScroll];
+    [super ancestorDidLayout];
 }
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView {

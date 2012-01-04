@@ -103,6 +103,14 @@
 }
 
 - (void)startRenderingNSViewOfView:(VELNSView *)view; {
+    // Resign first responder on an animating NSView
+    // to disable focus ring.
+    id responder = view.window.firstResponder;
+    if ([responder isKindOfClass:[NSView class]]) {
+        if ([responder isDescendantOf:view.NSView])
+            [view.window makeFirstResponder:nil];
+    }
+
     view.rendersContainedView = YES;
     view.NSView.alphaValue = 0.0;
 }

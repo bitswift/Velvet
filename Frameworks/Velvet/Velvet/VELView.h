@@ -494,8 +494,12 @@ typedef enum {
 /**
  * Determines how the content of the view is adjusted when its <bounds> changes.
  *
- * The default value for this property is `VELViewContentModeRedraw` (unlike
- * `UIView`). Subclasses may initialize this to a different value.
+ * The default value for this property depends on whether the class (or one of
+ * its superclasses) reimplements <drawRect:>. If <drawRect:> is reimplemented,
+ * `VELViewContentModeRedraw` will be used as the default (unlike `UIView`);
+ * otherwise, `VELViewContentModeScaleToFill` will be used.
+ *
+ * Subclasses may initialize this to a different value.
  */
 @property (nonatomic, assign) VELViewContentMode contentMode;
 

@@ -436,9 +436,12 @@ static IMP VELViewDrawRectIMP = NULL;
     // more correct rendering) in favor of performance should be explicit
     self.opaque = NO;
     self.clearsContextBeforeDrawing = YES;
-    self.contentMode = VELViewContentModeRedraw;
 
-    [self setNeedsDisplay];
+    if ([[self class] doesCustomDrawing])
+        self.contentMode = VELViewContentModeRedraw;
+    else
+        self.contentMode = VELViewContentModeScaleToFill;
+
     return self;
 }
 

@@ -54,9 +54,7 @@
 }
 
 - (VELView *)velvetViewForMouseDownEvent:(NSEvent *)event {
-    NSAssert([self.contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
-
-    NSVelvetView *contentView = (id)self.contentView;
+    id contentView = self.contentView;
     
     // we currently do not support any click-through events when the window is
     // not already key

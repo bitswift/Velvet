@@ -131,6 +131,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
     [CATransaction performWithDisabledActions:^{
+        
+        // we need to set the frame of the view before it is added as a sublayer to the velvetHostView's layer
+        view.frame = self.bounds;
+        
         [m_rootView.layer removeFromSuperlayer];
         [self.velvetHostView.layer addSublayer:view.layer];
 
@@ -138,7 +142,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         view.hostView = self;
 
         m_rootView = view;
-        m_rootView.frame = self.bounds;
     }];
 }
 

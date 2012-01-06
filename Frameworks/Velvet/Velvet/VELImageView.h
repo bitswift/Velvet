@@ -36,4 +36,20 @@
  */
 @property CGImageRef image;
 
+/**
+ * @name Scaling Behavior
+ */
+
+/**
+ * Specifies the end caps of the receiver's <image>.
+ *
+ * During resizing, areas covered by a cap are not scaled or resized. The areas
+ * not covered by a cap are scaled according to the receiver's <[VELView
+ * contentMode]>.
+ *
+ * This is a convenience property which simply translates the receiver's
+ * <[VELView contentStretch]> to and from the dimensions of the <image>.
+ */
+@property NSEdgeInsets endCapInsets;
+
 @end

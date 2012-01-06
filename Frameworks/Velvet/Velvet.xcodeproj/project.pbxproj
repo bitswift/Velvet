@@ -25,6 +25,7 @@
 		1E2819571481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */; };
 		1E2819721481EE7B006A747C /* NSView+VELNSViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819701481EE7B006A747C /* NSView+VELNSViewAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1E2819731481EE7B006A747C /* NSView+VELNSViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2819711481EE7B006A747C /* NSView+VELNSViewAdditions.m */; };
+		1E71313614B7B79800D6D7DF /* NSVelvetViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */; };
 		1E7BBD40147B157C0010375D /* VELLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E7BBD3E147B157B0010375D /* VELLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E7BBD41147B157C0010375D /* VELLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7BBD3F147B157B0010375D /* VELLabel.m */; };
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
@@ -143,6 +144,8 @@
 		1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGBitmapContext+PixelFormatAdditions.m"; sourceTree = "<group>"; };
 		1E2819701481EE7B006A747C /* NSView+VELNSViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+VELNSViewAdditions.h"; sourceTree = "<group>"; };
 		1E2819711481EE7B006A747C /* NSView+VELNSViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELNSViewAdditions.m"; sourceTree = "<group>"; };
+		1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewTests.h; sourceTree = "<group>"; };
+		1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetViewTests.m; sourceTree = "<group>"; };
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
 		1E7BBD3F147B157B0010375D /* VELLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabel.m; sourceTree = "<group>"; };
 		1E7BBD4B147B17400010375D /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
@@ -363,6 +366,8 @@
 				D0B75C6E14918EB9005C81D5 /* VELViewTests.m */,
 				D0CE950E14B3842F003581C8 /* VELWindowTests.h */,
 				D0CE950F14B3842F003581C8 /* VELWindowTests.m */,
+				1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */,
+				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -745,6 +750,7 @@
 				D08719EB14A30B5F00F304BC /* VELViewControllerTests.m in Sources */,
 				1EA3D71014B37F4A0007E4C4 /* NSVelvetHostViewTests.m in Sources */,
 				D0CE951014B3842F003581C8 /* VELWindowTests.m in Sources */,
+				1E71313614B7B79800D6D7DF /* NSVelvetViewTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

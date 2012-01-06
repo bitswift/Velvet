@@ -131,17 +131,16 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
     [CATransaction performWithDisabledActions:^{
-        
+
         // we need to set the frame of the view before it is added as a sublayer to the velvetHostView's layer
         view.frame = self.bounds;
-        
+
         [m_rootView.layer removeFromSuperlayer];
         [self.velvetHostView.layer addSublayer:view.layer];
 
         m_rootView.hostView = nil;
-        view.hostView = self;
-
         m_rootView = view;
+        view.hostView = self;
     }];
 }
 
@@ -193,13 +192,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (NSView *)hitTest:(NSPoint)point {
     if (!self.userInteractionEnabled)
         return nil;
-    
+
     // convert point into our coordinate system, so it's ready to go for all
     // subviews (which expect it in their superview's coordinate system)
     point = [self convertPoint:point fromView:self.superview];
-    
+
     __block NSView *result = self;
-    
+
     // we need to avoid hitting any NSViews that are clipped by their
     // corresponding Velvet views
     [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView *view, NSUInteger index, BOOL *stop){
@@ -207,21 +206,21 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         if (hostView) {
             CGRect bounds = hostView.layer.bounds;
             CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
-            
+
             CGPoint subviewPoint = [view convertPoint:point fromView:self];
             if (!CGRectContainsPoint(clippedBounds, subviewPoint)) {
                 // skip this view
                 return;
             }
         }
-        
+
         NSView *hitTestedView = [view hitTest:point];
         if (hitTestedView) {
             result = hitTestedView;
             *stop = YES;
         }
     }];
-    
+
     return result;
 }
 

@@ -58,7 +58,7 @@
         return nil;
 
     self.userInteractionEnabled = NO;
-    self.contentMode = VELViewContentModeScaleAspectFit;
+    self.contentMode = VELViewContentModeScaleToFill;
     return self;
 }
 

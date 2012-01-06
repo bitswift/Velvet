@@ -32,6 +32,16 @@
     return self;
 }
 
+- (id)initWithImage:(CGImageRef)image; {
+    self = [self init];
+    if (!self)
+        return nil;
+
+    self.image = image;
+    self.bounds = CGRectMake(0, 0, CGImageGetWidth(image), CGImageGetHeight(image));
+    return self;
+}
+
 #pragma mark Layout
 
 - (CGSize)sizeThatFits:(CGSize)size {

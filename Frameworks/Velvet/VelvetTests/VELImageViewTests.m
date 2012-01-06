@@ -26,6 +26,24 @@
     return testImage;
 }
 
+- (void)testInitialization {
+    VELImageView *imageView = [[VELImageView alloc] init];
+    STAssertNotNil(imageView, @"");
+
+    STAssertTrue(!imageView.image, @"");
+}
+
+- (void)testInitializationWithImage {
+    NSImage *image = [self image];
+    CGImageRef CGImage = image.CGImage;
+
+    VELImageView *imageView = [[VELImageView alloc] initWithImage:CGImage];
+    STAssertNotNil(imageView, @"");
+
+    STAssertEquals(imageView.image, CGImage, @"");
+    STAssertTrue(CGSizeEqualToSize(imageView.bounds.size, image.size), @"");
+}
+
 - (void)testImage {
     NSImage *testImage = [self image];
 

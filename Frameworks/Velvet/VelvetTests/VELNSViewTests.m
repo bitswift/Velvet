@@ -58,4 +58,53 @@
     STAssertEquals(contained.superview, hostView, @"");
 }
 
+// INTERNAL-380
+- (void)testNSViewFrameSynchronizesWithVELNSViewFrameChanges {
+    // create a container window
+    VELWindow *window = [self newWindow];
+
+    NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
+    VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
+
+    [window.rootView addSubview:view];
+
+    view.frame = CGRectMake(20, 30, 40, 50);
+    STAssertTrue(CGRectEqualToRect(view.frame, hosted.frame), @"");
+}
+
+// INTERNAL-380
+- (void)testNSViewFrameSynchronizesWithVELNSViewCenterChanges {
+    // create a container window
+    VELWindow *window = [self newWindow];
+
+    NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
+    VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
+
+    [window.rootView addSubview:view];
+
+    // Change the center and make sure the hosted view's center changes too.
+    view.center = CGPointMake(20, 30);
+    STAssertTrue(CGRectEqualToRect(view.frame, hosted.frame), @"");
+}
+
+- (void)testNSViewFrameOriginSynchronizesWithAncestorFrameChanges {
+    VELWindow *window = [self newWindow];
+    VELView *supersuperview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
+    VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
+    NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
+    VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
+    
+    // Create a hierarchy deeper than one level to better test cascade effect.
+    [window.rootView addSubview:supersuperview];
+    [supersuperview addSubview:superview];
+    [superview addSubview:view];
+
+    // Modifying the top level frame should cascade synchronizations down the chain.
+    supersuperview.frame = CGRectMake(1, 1, 100, 100);
+
+    // If the hosted frame's origin is the same, the frame change is synchronized.
+    CGPoint absoluteViewOrigin = [view convertToWindowPoint:CGPointMake(0, 0)];
+    STAssertTrue(CGPointEqualToPoint(hosted.frame.origin, absoluteViewOrigin), @"");
+}
+
 @end

@@ -11,7 +11,7 @@
 #import <Velvet/Velvet.h>
 
 @interface VELImageViewTests ()
-- (NSImage *)image;
+@property (nonatomic, strong, readonly) NSImage *image;
 @end
 
 @implementation VELImageViewTests
@@ -24,6 +24,30 @@
     STAssertNotNil(testImage, @"");
 
     return testImage;
+}
+
+- (void)testInitialization {
+    VELImageView *imageView = [[VELImageView alloc] init];
+    STAssertNotNil(imageView, @"");
+
+    STAssertTrue(!imageView.image, @"");
+
+    NSEdgeInsets zeroInsets = NSEdgeInsetsMake(0, 0, 0, 0);
+    STAssertTrue(NSEqualEdgeInsets(imageView.endCapInsets, zeroInsets), @"");
+}
+
+- (void)testInitializationWithImage {
+    NSImage *image = [self image];
+    CGImageRef CGImage = image.CGImage;
+
+    VELImageView *imageView = [[VELImageView alloc] initWithImage:CGImage];
+    STAssertNotNil(imageView, @"");
+
+    STAssertEquals(imageView.image, CGImage, @"");
+    STAssertTrue(CGSizeEqualToSize(imageView.bounds.size, image.size), @"");
+
+    NSEdgeInsets zeroInsets = NSEdgeInsetsMake(0, 0, 0, 0);
+    STAssertTrue(NSEqualEdgeInsets(imageView.endCapInsets, zeroInsets), @"");
 }
 
 - (void)testImage {
@@ -80,6 +104,41 @@
         CGFloat constrainedAspectRatio = constrainedSize.width / constrainedSize.height;
         STAssertEqualsWithAccuracy(aspectRatio, constrainedAspectRatio, 0.01, @"");
     }
+}
+
+- (void)testEndCapInsetsUpdatesContentStretch {
+    NSImage *image = self.image;
+    VELImageView *imageView = [[VELImageView alloc] initWithImage:image.CGImage];
+
+    // top, left, bottom, right
+    imageView.endCapInsets = NSEdgeInsetsMake(4, 2, 4, 2);
+
+    CGRect contentStretch = imageView.contentStretch;
+
+    CGFloat expectedXInset = (2 / image.size.width);
+    CGFloat expectedYInset = (4 / image.size.height);
+    
+    STAssertEqualsWithAccuracy(contentStretch.origin.x, expectedXInset, 0.00001, @"");
+    STAssertEqualsWithAccuracy(contentStretch.origin.y, expectedYInset, 0.00001, @"");
+    STAssertEqualsWithAccuracy(contentStretch.size.width, 1.0 - expectedXInset * 2, 0.00001, @"");
+    STAssertEqualsWithAccuracy(contentStretch.size.height, 1.0 - expectedYInset * 2, 0.00001, @"");
+}
+
+- (void)testEndCapInsetsReadsContentStretch {
+    NSImage *image = self.image;
+    VELImageView *imageView = [[VELImageView alloc] initWithImage:image.CGImage];
+
+    imageView.contentStretch = CGRectMake(0.2, 0.25, 0.6, 0.5);
+
+    // top, left, bottom, right
+    NSEdgeInsets expectedEndCapInsets = NSEdgeInsetsMake(
+        round(image.size.height * 0.25),
+        round(image.size.width * 0.2),
+        round(image.size.height * 0.25),
+        round(image.size.width * 0.2)
+    );
+    
+    STAssertTrue(NSEqualEdgeInsets(imageView.endCapInsets, expectedEndCapInsets), @"");
 }
 
 @end

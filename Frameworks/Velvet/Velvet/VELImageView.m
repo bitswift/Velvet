@@ -20,6 +20,36 @@
     self.layer.contents = (__bridge id)image;
 }
 
+- (NSEdgeInsets)endCapInsets {
+    size_t width = CGImageGetWidth(self.image);
+    size_t height = CGImageGetHeight(self.image);
+
+    CGRect contentStretch = self.contentStretch;
+
+    // top, left, bottom, right
+    return NSEdgeInsetsMake(
+        round(CGRectGetMinY(contentStretch) * height),
+        round(CGRectGetMinX(contentStretch) * width),
+        round(height - CGRectGetMaxY(contentStretch) * height),
+        round(width - CGRectGetMaxX(contentStretch) * width)
+    );
+}
+
+- (void)setEndCapInsets:(NSEdgeInsets)insets {
+    size_t width = CGImageGetWidth(self.image);
+    size_t height = CGImageGetHeight(self.image);
+
+    CGFloat xOrigin = insets.left / width;
+    CGFloat yOrigin = insets.top / height;
+    
+    self.contentStretch = CGRectMake(
+        xOrigin,
+        yOrigin,
+        1.0 - insets.right / width - xOrigin,
+        1.0 - insets.bottom / height - yOrigin
+    );
+}
+
 #pragma mark Lifecycle
 
 - (id)init {
@@ -28,7 +58,17 @@
         return nil;
 
     self.userInteractionEnabled = NO;
-    self.contentMode = VELViewContentModeScaleAspectFit;
+    self.contentMode = VELViewContentModeScaleToFill;
+    return self;
+}
+
+- (id)initWithImage:(CGImageRef)image; {
+    self = [self init];
+    if (!self)
+        return nil;
+
+    self.image = image;
+    self.bounds = CGRectMake(0, 0, CGImageGetWidth(image), CGImageGetHeight(image));
     return self;
 }
 

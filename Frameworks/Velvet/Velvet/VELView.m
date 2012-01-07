@@ -183,6 +183,7 @@ static IMP VELViewDrawRectIMP = NULL;
     [[self class] changeLayerProperties:^{
         self.layer.position = center;
     }];
+    [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
 }
 
 - (VELViewAutoresizingMask)autoresizingMask {

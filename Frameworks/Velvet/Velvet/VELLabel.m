@@ -41,10 +41,16 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 - (void)setParagraphStyle;
 
 /*
- * Returns a new array array conntaining all lines necessary to draw the full <formattedText>
- * within the width of the label's bounds. These lines may flow over the label's height.
+ * Returns a new array containing all `CTLineRef` objects necessary to draw the
+ * given string within the given width.
+ *
+ * These lines may flow over the label's height.
+ *
+ * @param string The string from which to create lines.
+ * @param maximumWidth A width to which to constrain the lines. Use
+ * `CGFLOAT_MAX` to indicate that there is no constraint upon the width.
  */
-- (NSMutableArray *)linesToDraw;
+- (NSMutableArray *)linesForAttributedString:(NSAttributedString *)string constrainedToWidth:(CGFloat)maximumWidth;
 
 @end
 
@@ -161,12 +167,13 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 
 #pragma mark Line Calculations
 
-- (NSMutableArray *)linesToDraw {
-    CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)self.formattedText);
+- (NSMutableArray *)linesForAttributedString:(NSAttributedString *)string constrainedToWidth:(CGFloat)maximumWidth; {
+    CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)string);
     @onExit {
         CFRelease(typesetter);
     };
-    CFIndex strLength = (CFIndex)self.formattedText.length;
+
+    CFIndex strLength = (CFIndex)string.length;
     CFIndex characterIndex = 0;
     NSMutableArray *lines = [NSMutableArray array];
     
@@ -175,18 +182,20 @@ static NSRange NSRangeFromCFRange(CFRange range) {
         
         switch (self.lineBreakMode) {
             case VELLineBreakModeCharacterWrap:
-                characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, self.bounds.size.width - VELLabelPadding * 2);
+                characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, maximumWidth - VELLabelPadding * 2);
                 break;
+
             case VELLineBreakModeClip:
                 characterCount = strLength;
                 break;
+
             case VELLineBreakModeWordWrap:
             // Truncation is treated similar to word wrap before we condense it down and add an elipsis
             case VELLineBreakModeHeadTruncation:
             case VELLineBreakModeLastLineMiddleTruncation:
             case VELLineBreakModeTailTruncation:
             default:
-                characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, self.bounds.size.width - VELLabelPadding * 2);
+                characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, maximumWidth - VELLabelPadding * 2);
                 break;
         }
         
@@ -221,7 +230,7 @@ static NSRange NSRangeFromCFRange(CFRange range) {
     CGFloat drawableWidth = self.bounds.size.width - VELLabelPadding * 2;
     CGFloat drawableHeight = self.bounds.size.height - VELLabelPadding * 2;
 
-    NSMutableArray *lines = [self linesToDraw];
+    NSMutableArray *lines = [self linesForAttributedString:attributedString constrainedToWidth:drawableWidth];
 
     NSUInteger numberOfLinesToDraw = lines.count;
     BOOL shouldTruncate = (self.lineBreakMode == VELLineBreakModeHeadTruncation || self.lineBreakMode == VELLineBreakModeLastLineMiddleTruncation || self.lineBreakMode == VELLineBreakModeTailTruncation);
@@ -368,74 +377,49 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 }
 
 - (CGSize)sizeThatFits:(CGSize)constraint {
-    if (!self.formattedText)
+    NSAttributedString *string = self.formattedText;
+    if (!string)
         return CGSizeZero;
-    
-    NSUInteger maximumLines = self.numberOfLines;
-
-    // if one line, don't constrain the width (the text should be as wide as necessary)
-    if (maximumLines == 1 || constraint.width == 0)
-        constraint.width = CGFLOAT_MAX;
-    
-    // if not one line, don't constrain the height (the text block should be as tall as necessary)
-    if (maximumLines != 1 || constraint.height == 0)
-        constraint.height = CGFLOAT_MAX;
     
     // subtract our padding here, we'll add it back in at the end after we figure out the text size
     constraint.width -= VELLabelPadding * 2;
     constraint.height -= VELLabelPadding * 2;
 
-    NSMutableAttributedString *string = [self.formattedText mutableCopy];
+    NSArray *lines;
 
-    // remove all paragraph styles (such as line break mode and alignment) so
-    // that the size returned is as much space as the full, left-aligned text
-    // would take -- and then can be reduced from there when rendered
-    [string removeAttribute:NSParagraphStyleAttributeName range:NSMakeRange(0, [string length])];
+    // if one line, don't constrain the width (the text should be as wide as
+    // necessary)
+    NSUInteger maximumLines = self.numberOfLines;
+    if (maximumLines == 1) {
+        CTTypesetterRef typesetter = CTTypesetterCreateWithAttributedString((__bridge CFAttributedStringRef)string);
+        @onExit {
+            CFRelease(typesetter);
+        };
 
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)string);
-    @onExit {
-        CFRelease(framesetter);
-    };
-    
-    CFRange entireRange = CFRangeMake(0, 0);
-    
-    // the range of text that we will actually display
-    CFRange desiredRange;
-    
-    if (maximumLines == 0) {
-        desiredRange = entireRange;
-    } else {
-        CGMutablePathRef path = CGPathCreateMutable();
-        @onExit {
-            CGPathRelease(path);
-        };
-        
-        CGPathAddRect(path, NULL, CGRectMake(0, 0, constraint.width, constraint.height));
-        
-        CTFrameRef frame = CTFramesetterCreateFrame(framesetter, entireRange, path, NULL);
-        @onExit {
-            CFRelease(frame);
-        };
-        
-        NSArray *lines = (__bridge NSArray *)CTFrameGetLines(frame);
-        NSUInteger count = [lines count];
-        if (!count) {
-            return CGSizeZero;
-        }
-        
-        NSUInteger lastIndex = count - 1;
-        if (maximumLines && (lastIndex >= maximumLines))
-            lastIndex = maximumLines - 1;
-        
-        CTLineRef lastLine = (__bridge CTLineRef)[lines objectAtIndex:lastIndex];
-        CFRange lastLineRange = CTLineGetStringRange(lastLine);
-        desiredRange = CFRangeMake(0, lastLineRange.location + lastLineRange.length);
+        CTLineRef fullTextLine = CTTypesetterCreateLine(typesetter, CFRangeMake(0, [string length]));
+        lines = [NSArray arrayWithObject:(__bridge_transfer id)fullTextLine];
+    } else { 
+        lines = [self linesForAttributedString:string constrainedToWidth:constraint.width];
     }
     
-    CGSize textSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, desiredRange, NULL, constraint, NULL);
-    
-    // round to integral points
-    return CGSizeMake(ceil(textSize.width + VELLabelPadding * 2), ceil(textSize.height + VELLabelPadding * 2));
+    CGFloat height = 0.0f;
+    CGFloat width = 0.0f;
+
+    for (NSUInteger i = 0; i < lines.count; i++) {
+        if (maximumLines > 0 && i >= maximumLines)
+            break;
+
+        CTLineRef aLine = (__bridge CTLineRef)[lines objectAtIndex:i];
+        
+        CGFloat ascent;
+        CGFloat descent;
+        CGFloat leading;
+        width = fmax(width, CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading));
+        
+        height += ceil(ascent + descent + leading);
+    }
+
+    return CGSizeMake(ceil(width + VELLabelPadding * 2), ceil(height + VELLabelPadding * 2));
 }
 
 #pragma mark Formatting

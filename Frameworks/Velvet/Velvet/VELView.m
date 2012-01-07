@@ -153,6 +153,8 @@ static IMP VELViewDrawRectIMP = NULL;
     if (!CGSizeEqualToSize(originalSize, newSize)) {
         [self.layer setNeedsLayout];
         [self.layer layoutIfNeeded];
+    } else {
+        [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
     }
 }
 

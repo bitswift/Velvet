@@ -81,6 +81,11 @@
     return [self convertRect:self.bounds toView:self.hostView.rootView];
 }
 
+- (void)setCenter:(CGPoint)center {
+    [super setCenter:center];
+    [self synchronizeNSViewGeometry];
+}
+
 - (void)setSubviews:(NSArray *)subviews {
     NSAssert2(![subviews count], @"%@ must be a leaf in the Velvet hierarchy, cannot add subviews: %@", self, subviews);
 

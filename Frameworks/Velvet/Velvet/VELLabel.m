@@ -278,19 +278,19 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             NSAttributedString *firstLineAttrStr = [attributedString attributedSubstringFromRange:firstLineRange];
             
             CTLineRef firstLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)firstLineAttrStr);
-            @onExit {
+            CTLineRef lineToDraw = CTLineCreateTruncatedLine(firstLine, drawableWidth, kCTLineTruncationStart, ellipsisLine);
+
+            if (!lineToDraw)
+                lineToDraw = firstLine;
+            else
                 CFRelease(firstLine);
-            };
-            
-            firstLine = CTLineCreateTruncatedLine(firstLine, drawableWidth, kCTLineTruncationStart, ellipsisLine);
-            @onExit {
-                CFRelease(firstLine);
-            };
             
             // Remove extra lines that we won't be drawing
             [lines removeObjectsInRange:NSMakeRange(0, lines.count - numberOfLinesToDraw)];
-            // Replace the first line with our truncated version
-            [lines replaceObjectAtIndex:0 withObject:(__bridge id)firstLine];
+
+            // Replace the first line with our truncated version (transferring
+            // its ownership to ARC in the same step)
+            [lines replaceObjectAtIndex:0 withObject:(__bridge_transfer id)lineToDraw];
         } else {
             // Calculate the truncated last line if we have more lines than will be drawn
             //   and the label has truncation affecting the last line
@@ -299,11 +299,6 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             lastLineRange.length = attributedString.length - lastLineRange.location;
             
             NSAttributedString *lastLineAttrStr = [attributedString attributedSubstringFromRange:lastLineRange];
-            
-            CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
-            @onExit {
-                CFRelease(lastLine);
-            };
             
             CTLineTruncationType truncationType;
             switch (self.lineBreakMode) {
@@ -316,15 +311,20 @@ static NSRange NSRangeFromCFRange(CFRange range) {
                     break;
             }
             
-            lastLine = CTLineCreateTruncatedLine(lastLine, drawableWidth, truncationType, ellipsisLine);
-            @onExit {
+            CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
+            CTLineRef lineToDraw = CTLineCreateTruncatedLine(lastLine, drawableWidth, truncationType, ellipsisLine);
+
+            if (!lineToDraw)
+                lineToDraw = lastLine;
+            else
                 CFRelease(lastLine);
-            };
             
             // Remove extra lines that we won't be drawing
             [lines removeObjectsInRange:NSMakeRange(numberOfLinesToDraw, lines.count - numberOfLinesToDraw)];
-            // Replace the last line with our truncated version
-            [lines replaceObjectAtIndex:numberOfLinesToDraw - 1 withObject:(__bridge id)lastLine];
+
+            // Replace the last line with our truncated version (transferring
+            // its ownership to ARC in the same step)
+            [lines replaceObjectAtIndex:numberOfLinesToDraw - 1 withObject:(__bridge_transfer id)lineToDraw];
         }
     }
     

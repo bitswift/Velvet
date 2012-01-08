@@ -225,10 +225,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         VELNSView *hostView = view.hostView;
         if (hostView) {
             CGRect bounds = hostView.layer.bounds;
-            CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
+            CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:self.layer];
             
-            CGPoint subviewPoint = [view convertPoint:point fromView:self];
-            if (!CGRectContainsPoint(clippedBounds, subviewPoint)) {
+            if (!CGRectContainsPoint(clippedBounds, point)) {
                 // skip this view
                 return;
             }

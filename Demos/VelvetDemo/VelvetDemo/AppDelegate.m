@@ -147,7 +147,7 @@
     VELView *rootSquareView = [[SquareView alloc] init];
     rootSquareView.frame = CGRectMake(60, 60, 70, 70);
     rootSquareView.layer.opacity = 0.8f;
-    [self.scrollView addSubview:rootSquareView];
+    self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:rootSquareView];
 
     VELNSView *textFieldHost = [[VELNSView alloc] initWithNSView:textField];
     imageView.subviews = [imageView.subviews arrayByAddingObject:textFieldHost];

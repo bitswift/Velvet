@@ -20,6 +20,7 @@
 @property (nonatomic, unsafe_unretained) VELWindow *oldWindow;
 @property (nonatomic, unsafe_unretained) VELWindow *nextWindow;
 @property (nonatomic, assign) CGRect drawRectRegion;
+@property (nonatomic, assign) BOOL layoutSubviewsInvoked;
 
 - (void)reset;
 @end
@@ -277,6 +278,26 @@
     STAssertTrue(CGRectEqualToRect(view.drawRectRegion, invalidatedRegion), @"");
 }
 
+- (void)testSettingFrameDoesCallLayoutSubviews {
+    TestView *view = [[TestView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+
+    // Even if layoutSubviews is called on init, we clear side effects here.
+    [view reset];
+    
+    view.frame = CGRectMake(10, 10, 25, 25);
+    STAssertTrue(view.layoutSubviewsInvoked, @"");
+}
+
+- (void)testSettingBoundsDoesCallLayoutSubviews {
+    TestView *view = [[TestView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    
+    // Even if layoutSubviews is called on init, we clear side effects here.
+    [view reset];
+    
+    view.bounds = CGRectMake(0, 0, 25, 25);
+    STAssertTrue(view.layoutSubviewsInvoked, @"");
+}
+
 @end
 
 @implementation TestView
@@ -289,6 +310,7 @@
 @synthesize nextSuperview;
 @synthesize nextWindow;
 @synthesize drawRectRegion = m_drawRectRegion;
+@synthesize layoutSubviewsInvoked = m_layoutSubviewsInvoked;
 
 - (void)willMoveToSuperview:(VELView *)superview {
     [super willMoveToSuperview:superview];
@@ -342,6 +364,11 @@
     self.didMoveFromWindowInvoked = YES;
 }
 
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    self.layoutSubviewsInvoked = YES;
+}
+
 - (void)drawRect:(CGRect)rect {
     self.drawRectRegion = rect;
 }
@@ -356,6 +383,7 @@
     self.nextSuperview = nil;
     self.nextWindow = nil;
     self.drawRectRegion = CGRectNull;
+    self.layoutSubviewsInvoked = NO;
 }
 
 @end

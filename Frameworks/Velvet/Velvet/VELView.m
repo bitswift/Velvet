@@ -143,9 +143,19 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)setFrame:(CGRect)frame {
+    CGSize originalSize = self.layer.frame.size;
+    CGSize newSize = frame.size;
+    
     [[self class] changeLayerProperties:^{
         self.layer.frame = frame;
     }];
+    
+    if (!CGSizeEqualToSize(originalSize, newSize)) {
+        [self.layer setNeedsLayout];
+        [self.layer layoutIfNeeded];
+    } else {
+        [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
+    }
 }
 
 - (CGRect)bounds {
@@ -153,9 +163,16 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)setBounds:(CGRect)bounds {
+    BOOL needsLayout = !CGRectEqualToRect(bounds, self.layer.bounds);
+    
     [[self class] changeLayerProperties:^{
         self.layer.bounds = bounds;
     }];
+    
+    if (needsLayout) {
+        [self.layer setNeedsLayout];
+        [self.layer layoutIfNeeded];
+    }
 }
 
 - (CGPoint)center {
@@ -166,6 +183,7 @@ static IMP VELViewDrawRectIMP = NULL;
     [[self class] changeLayerProperties:^{
         self.layer.position = center;
     }];
+    [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
 }
 
 - (VELViewAutoresizingMask)autoresizingMask {

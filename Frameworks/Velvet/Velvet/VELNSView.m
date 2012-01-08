@@ -11,8 +11,8 @@
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSVelvetViewPrivate.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
-#import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
@@ -29,12 +29,6 @@
  */
 @property (nonatomic, strong) VELFocusRingLayer *focusRingLayer;
 
-/*
- * The delegate for the layer of the contained <NSView>. This object is
- * responsible for rendering it while taking into account any clipping paths.
- */
-@property (nonatomic, strong) NSViewClipRenderer *clipRenderer;
-
 - (void)synchronizeNSViewGeometry;
 @end
 
@@ -43,7 +37,6 @@
 #pragma mark Properties
 
 @synthesize NSView = m_NSView;
-@synthesize clipRenderer = m_clipRenderer;
 @synthesize rendersContainedView = m_rendersContainedView;
 @synthesize focusRingLayer = m_focusRingLayer;
 
@@ -55,7 +48,6 @@
     m_NSView.hostView = nil;
 
     self.focusRingLayer = nil;
-    self.clipRenderer = nil;
 
     m_NSView = view;
 
@@ -65,13 +57,13 @@
         [m_NSView setWantsLayer:YES];
         [m_NSView setNeedsDisplay:YES];
 
-        [self.hostView addSubview:m_NSView];
+        [self.hostView.appKitHostView addSubview:m_NSView];
         m_NSView.hostView = self;
 
         m_NSView.nextResponder = self;
-
-        self.clipRenderer = [[NSViewClipRenderer alloc] initWithClippedView:self layer:view.layer];
     }
+
+    [self.hostView recalculateNSViewClipping];
 }
 
 - (CGRect)NSViewFrame; {
@@ -142,9 +134,7 @@
         [self.focusRingLayer displayIfNeeded];
     }];
 
-    // if the frame has changed, we'll need to go through our clipRenderer's
-    // -drawLayer:inContext: logic again with the new location and size
-    [self.clipRenderer clip];
+    [self.hostView recalculateNSViewClipping];
 }
 
 #pragma mark View hierarchy
@@ -180,7 +170,7 @@
 
     // this must only be added after we've completely moved to the host view,
     // because it'll do some ancestor checks for NSView ordering
-    [self.hostView addSubview:self.NSView];
+    [self.hostView.appKitHostView addSubview:self.NSView];
     [self synchronizeNSViewGeometry];
 
     self.NSView.nextResponder = self;

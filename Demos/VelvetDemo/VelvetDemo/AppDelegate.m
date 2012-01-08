@@ -129,7 +129,7 @@
     scrollableSquareView.frame = CGRectMake(20, 200, 800, 800);
 
     VELImageView *imageView = [[VELImageView alloc] init];
-    imageView.frame = CGRectMake(0, 0, 200, 200);
+    imageView.frame = CGRectMake(0, 0, 600, 600);
     imageView.image = [image CGImageForProposedRect:NULL context:nil hints:nil];
 
     // 44px on every corner should not scale, while the rest of the image should

@@ -99,8 +99,8 @@
     [supersuperview addSubview:superview];
     [superview addSubview:view];
 
-    // Modifying the top level frame should cascade synchronizations down the chain.
-    supersuperview.frame = CGRectMake(1, 1, 100, 100);
+    // Modifying both size and origin of the top level frame should cascade synchronizations down the chain.
+    supersuperview.frame = CGRectMake(1, 20, 600, 100);
 
     // If the hosted frame's origin is the same, the frame change is synchronized.
     CGPoint absoluteViewOrigin = [view convertToWindowPoint:CGPointMake(0, 0)];

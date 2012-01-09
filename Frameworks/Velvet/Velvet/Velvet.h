@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
+#import <Velvet/AppKit+GeometryAdditions.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>

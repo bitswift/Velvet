@@ -40,6 +40,15 @@ static NSUInteger VELViewAnimationBlockDepth = 0;
  */
 static IMP VELViewDrawRectIMP = NULL;
 
+/*
+ * Whether the <VELView> hierarchy is currently performing a "deep" layout, in
+ * which all views will be laid out if they need to be.
+ *
+ * In other words, this is `YES` if the current layout operation was triggered
+ * by the layer tree.
+ */
+static BOOL VELViewPerformingDeepLayout = NO;
+
 @interface VELView () {
     struct {
         unsigned userInteractionEnabled:1;
@@ -143,9 +152,19 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)setFrame:(CGRect)frame {
+    CGSize originalSize = self.layer.frame.size;
+    CGSize newSize = frame.size;
+    
     [[self class] changeLayerProperties:^{
         self.layer.frame = frame;
     }];
+    
+    if (!CGSizeEqualToSize(originalSize, newSize)) {
+        [self.layer setNeedsLayout];
+        [self.layer layoutIfNeeded];
+    } else {
+        [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
+    }
 }
 
 - (CGRect)bounds {
@@ -153,9 +172,16 @@ static IMP VELViewDrawRectIMP = NULL;
 }
 
 - (void)setBounds:(CGRect)bounds {
+    BOOL needsLayout = !CGRectEqualToRect(bounds, self.layer.bounds);
+    
     [[self class] changeLayerProperties:^{
         self.layer.bounds = bounds;
     }];
+    
+    if (needsLayout) {
+        [self.layer setNeedsLayout];
+        [self.layer layoutIfNeeded];
+    }
 }
 
 - (CGPoint)center {
@@ -166,6 +192,7 @@ static IMP VELViewDrawRectIMP = NULL;
     [[self class] changeLayerProperties:^{
         self.layer.position = center;
     }];
+    [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
 }
 
 - (VELViewAutoresizingMask)autoresizingMask {
@@ -886,13 +913,26 @@ static IMP VELViewDrawRectIMP = NULL;
 #pragma mark CALayoutManager
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
+    // we need to make sure to reset VELViewPerformingDeepLayout when exiting
+    // this method, so it's simplest to just save its initial value
+    BOOL wasDeepLayout = VELViewPerformingDeepLayout;
+
+    VELViewPerformingDeepLayout = YES;
+
     [CATransaction performWithDisabledActions:^{
         [self layoutSubviews];
 
-        [self.subviews enumerateObjectsUsingBlock:^(VELView *subview, NSUInteger i, BOOL *stop){
-            [subview ancestorDidLayout];
-        }];
+        // only one view needs to inform all descendants of a layout at the top,
+        // so we start from the view which received the initial call to this
+        // method
+        if (!wasDeepLayout) {
+            [self.subviews enumerateObjectsUsingBlock:^(VELView *subview, NSUInteger i, BOOL *stop){
+                [subview ancestorDidLayout];
+            }];
+        }
     }];
+
+    VELViewPerformingDeepLayout = wasDeepLayout;
 }
 
 - (CGSize)preferredSizeOfLayer:(CALayer *)layer {

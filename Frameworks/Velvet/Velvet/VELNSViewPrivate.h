@@ -8,7 +8,6 @@
 
 #import <Velvet/VELNSView.h>
 
-@class NSViewClipRenderer;
 @class VELFocusRingLayer;
 
 /*

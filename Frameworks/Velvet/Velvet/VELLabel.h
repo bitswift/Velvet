@@ -150,12 +150,8 @@ typedef enum {
  * How the the text of the label should wrap or truncate, if it is too large for
  * the label's bounds.
  *
- * Setting this property will apply a paragraph style to the whole
- * <formattedText> string. Any existing paragraph style(s) will be replaced with
- * one constructed from the values of this property and <textAlignment>.
- *
- * When reading this property, if <formattedText> contains multiple paragraph
- * styles, this will return the line break mode of the first one.
+ * @warning **Important:** The line break mode is not applied to
+ * <formattedText>.
  */
 @property (nonatomic, assign) VELLineBreakMode lineBreakMode;
 

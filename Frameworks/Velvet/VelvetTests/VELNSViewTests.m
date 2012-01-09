@@ -55,7 +55,110 @@
     NSVelvetView *hostView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
     [hostView.rootView addSubview:view];
 
-    STAssertEquals(contained.superview, hostView, @"");
+    STAssertTrue([contained.superview isDescendantOf:hostView], @"");
+}
+
+// INTERNAL-380
+- (void)testNSViewFrameSynchronizesWithVELNSViewFrameChanges {
+    // create a container window
+    VELWindow *window = [self newWindow];
+
+    NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
+    VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
+
+    [window.rootView addSubview:view];
+
+    view.frame = CGRectMake(20, 30, 40, 50);
+    STAssertTrue(CGRectEqualToRect(view.frame, hosted.frame), @"");
+}
+
+// INTERNAL-380
+- (void)testNSViewFrameSynchronizesWithVELNSViewCenterChanges {
+    // create a container window
+    VELWindow *window = [self newWindow];
+
+    NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
+    VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
+
+    [window.rootView addSubview:view];
+
+    // Change the center and make sure the hosted view's center changes too.
+    view.center = CGPointMake(20, 30);
+    STAssertTrue(CGRectEqualToRect(view.frame, hosted.frame), @"");
+}
+
+- (void)testNSViewFrameOriginSynchronizesWithAncestorFrameChanges {
+    VELWindow *window = [self newWindow];
+    VELView *supersuperview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
+    VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
+    NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
+    VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
+    
+    // Create a hierarchy deeper than one level to better test cascade effect.
+    [window.rootView addSubview:supersuperview];
+    [supersuperview addSubview:superview];
+    [superview addSubview:view];
+
+    // Modifying both size and origin of the top level frame should cascade synchronizations down the chain.
+    supersuperview.frame = CGRectMake(1, 20, 600, 100);
+
+    // If the hosted frame's origin is the same, the frame change is synchronized.
+    CGPoint absoluteViewOrigin = [view convertToWindowPoint:CGPointMake(0, 0)];
+    STAssertTrue(CGPointEqualToPoint(hosted.frame.origin, absoluteViewOrigin), @"");
+}
+
+- (void)testNSViewFrameOriginSynchronizesWithAncestorFrameOriginChanges {
+    VELWindow *window = [self newWindow];
+    VELView *supersuperview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
+    VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
+    NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
+    VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
+    
+    // Create a hierarchy deeper than one level to better test cascade effect.
+    [window.rootView addSubview:supersuperview];
+    [supersuperview addSubview:superview];
+    [superview addSubview:view];
+    
+    // Remember the hosting NSVelView's origin
+    CGPoint originalViewOrigin = view.frame.origin;
+
+    // Trigger a change in the frame way up high.
+    supersuperview.frame = CGRectMake(1, 1, 100, 100);
+    
+    // If the hosted frame's origin is the same as the window's notion of it's origin,
+    // then the frame change is correctly synchronized.
+    CGPoint absoluteViewOrigin = [view convertToWindowPoint:CGPointMake(0, 0)];
+    STAssertTrue(CGPointEqualToPoint(hosted.frame.origin, absoluteViewOrigin), @"");
+    
+    // Ensure that the hosting view's frame origin hasn't moved.
+    STAssertTrue(CGPointEqualToPoint(view.frame.origin, originalViewOrigin), @"");
+}
+
+- (void)testNSViewFrameCenterSynchronizesWithAncestorFrameCenterChanges {
+    VELWindow *window = [self newWindow];
+    VELView *supersuperview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
+    VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
+    NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
+    VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
+    
+    // Create a hierarchy deeper than one level to better test cascade effect.
+    [window.rootView addSubview:supersuperview];
+    [supersuperview addSubview:superview];
+    [superview addSubview:view];
+    
+    // Remember the hosting NSVelView's origin
+    CGPoint originalViewOrigin = view.frame.origin;
+    
+    // Trigger a change to the center high in hierarchy.
+    supersuperview.center = CGPointMake(42, 42);
+    
+    // If the hosted frame's origin is the same as the window's notion of it's origin,
+    // then the frame change is correctly synchronized.
+    CGPoint absoluteViewOrigin = [view convertToWindowPoint:CGPointMake(0, 0)];
+    STAssertTrue(CGPointEqualToPoint(hosted.frame.origin, absoluteViewOrigin), @"");
+    
+    // Ensure that the hosting view's frame origin hasn't moved.
+    STAssertTrue(CGPointEqualToPoint(view.frame.origin, originalViewOrigin), @"");
 }
 
 @end

@@ -129,8 +129,11 @@
     scrollableSquareView.frame = CGRectMake(20, 200, 800, 800);
 
     VELImageView *imageView = [[VELImageView alloc] init];
-    imageView.frame = imageRect;
+    imageView.frame = CGRectMake(0, 0, 600, 600);
     imageView.image = [image CGImageForProposedRect:NULL context:nil hints:nil];
+
+    // 44px on every corner should not scale, while the rest of the image should
+    imageView.endCapInsets = NSEdgeInsetsMake(44, 44, 44, 44);
 
     self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:scrollableSquareView];
     self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:imageView];
@@ -142,9 +145,9 @@
     [textField setDrawsBackground:YES];
 
     VELView *rootSquareView = [[SquareView alloc] init];
-    rootSquareView.frame = CGRectMake(20, 20, 300, 300);
+    rootSquareView.frame = CGRectMake(60, 60, 70, 70);
     rootSquareView.layer.opacity = 0.8f;
-    imageView.subviews = [NSArray arrayWithObject:rootSquareView];
+    [self.scrollView addSubview:rootSquareView];
 
     VELNSView *textFieldHost = [[VELNSView alloc] initWithNSView:textField];
     imageView.subviews = [imageView.subviews arrayByAddingObject:textFieldHost];

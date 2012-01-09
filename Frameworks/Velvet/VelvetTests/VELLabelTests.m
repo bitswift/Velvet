@@ -66,16 +66,6 @@
     label.lineBreakMode = lineBreakMode;
 
     STAssertEquals(label.lineBreakMode, lineBreakMode, @"");
-
-    NSDictionary *attributes = [label.formattedText attributesAtIndex:0 effectiveRange:NULL];
-    STAssertNotNil(attributes, @"");
-
-    CTParagraphStyleRef style = (__bridge CTParagraphStyleRef)[attributes objectForKey:NSParagraphStyleAttributeName];
-
-    CTLineBreakMode styleBreakMode;
-    STAssertTrue(CTParagraphStyleGetValueForSpecifier(style, kCTParagraphStyleSpecifierLineBreakMode, sizeof(styleBreakMode), &styleBreakMode), @"");
-
-    STAssertTrue(styleBreakMode == kCTLineBreakByClipping, @"");
 }
 
 - (void)testTextAlignment {

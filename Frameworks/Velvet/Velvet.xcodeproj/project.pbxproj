@@ -12,8 +12,6 @@
 		0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DEDDD3D147B5D5C0087037C /* VELWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DEDDD3E147B5D5C0087037C /* VELWindow.m */; };
 		1A5FCCFA1496B61A00BB49F3 /* VELNSViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A5FCCF91496B61A00BB49F3 /* VELNSViewTests.m */; };
-		1E1790EC1481CC6C00177DC0 /* NSViewClipRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E1790EA1481CC6C00177DC0 /* NSViewClipRenderer.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1E1790ED1481CC6C00177DC0 /* NSViewClipRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E1790EB1481CC6C00177DC0 /* NSViewClipRenderer.m */; };
 		1E2819481481EAEF006A747C /* VELCAAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819451481EAEF006A747C /* VELCAAction.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1E2819491481EAEF006A747C /* VELCAAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2819461481EAEF006A747C /* VELCAAction.m */; };
 		1E28194A1481EAEF006A747C /* VELNSViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819471481EAEF006A747C /* VELNSViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -133,8 +131,6 @@
 		0DEDDD3E147B5D5C0087037C /* VELWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELWindow.m; sourceTree = "<group>"; };
 		1A5FCCF81496B61A00BB49F3 /* VELNSViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSViewTests.h; sourceTree = "<group>"; };
 		1A5FCCF91496B61A00BB49F3 /* VELNSViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewTests.m; sourceTree = "<group>"; };
-		1E1790EA1481CC6C00177DC0 /* NSViewClipRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewClipRenderer.h; sourceTree = "<group>"; };
-		1E1790EB1481CC6C00177DC0 /* NSViewClipRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewClipRenderer.m; sourceTree = "<group>"; };
 		1E2819451481EAEF006A747C /* VELCAAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELCAAction.h; sourceTree = "<group>"; };
 		1E2819461481EAEF006A747C /* VELCAAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELCAAction.m; sourceTree = "<group>"; };
 		1E2819471481EAEF006A747C /* VELNSViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSViewPrivate.h; sourceTree = "<group>"; };
@@ -290,8 +286,6 @@
 				D0D8C39D1478582C00FC9015 /* NSVelvetView.h */,
 				D0D8C39E1478582C00FC9015 /* NSVelvetView.m */,
 				D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */,
-				1E1790EA1481CC6C00177DC0 /* NSViewClipRenderer.h */,
-				1E1790EB1481CC6C00177DC0 /* NSViewClipRenderer.m */,
 				1E2819451481EAEF006A747C /* VELCAAction.h */,
 				1E2819461481EAEF006A747C /* VELCAAction.m */,
 				D06EF03914B39CFA0035E239 /* VELEventManager.h */,
@@ -551,7 +545,6 @@
 				D0CACD35147C86C0008C42B2 /* VELBridgedView.h in Headers */,
 				D0911B1D147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h in Headers */,
 				0DCD37C6147DB86200A9D6E4 /* NSVelvetHostView.h in Headers */,
-				1E1790EC1481CC6C00177DC0 /* NSViewClipRenderer.h in Headers */,
 				1E2819481481EAEF006A747C /* VELCAAction.h in Headers */,
 				1E28194A1481EAEF006A747C /* VELNSViewPrivate.h in Headers */,
 				1E2819521481EB14006A747C /* CALayer+GeometryAdditions.h in Headers */,
@@ -727,7 +720,6 @@
 				0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */,
 				D0911B1E147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m in Sources */,
 				0DCD37C7147DB86200A9D6E4 /* NSVelvetHostView.m in Sources */,
-				1E1790ED1481CC6C00177DC0 /* NSViewClipRenderer.m in Sources */,
 				1E2819491481EAEF006A747C /* VELCAAction.m in Sources */,
 				1E2819531481EB14006A747C /* CALayer+GeometryAdditions.m in Sources */,
 				1E2819551481EB14006A747C /* CATransaction+BlockAdditions.m in Sources */,

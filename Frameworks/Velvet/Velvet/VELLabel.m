@@ -107,23 +107,6 @@ static NSRange NSRangeFromCFRange(CFRange range) {
     [self setAttribute:NSForegroundColorAttributeName value:color];
 }
 
-- (VELLineBreakMode)lineBreakMode {
-    CTParagraphStyleRef paragraphStyle = (__bridge CTParagraphStyleRef)[self.formattedText attribute:NSParagraphStyleAttributeName atIndex:0 effectiveRange:NULL];
-
-    CTLineBreakMode lineBreakMode = 0;
-
-    if (paragraphStyle) {
-        CTParagraphStyleGetValueForSpecifier(paragraphStyle, kCTParagraphStyleSpecifierLineBreakMode, sizeof(lineBreakMode), &lineBreakMode);
-    }
-
-    return lineBreakMode;
-}
-
-- (void)setLineBreakMode:(VELLineBreakMode)mode {
-    m_lineBreakMode = mode;
-    [self setParagraphStyle];
-}
-
 - (void)setNumberOfLines:(NSUInteger)numberOfLines {
     m_numberOfLines = numberOfLines;
     [self setNeedsDisplay];
@@ -441,15 +424,9 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 }
 
 - (void)setParagraphStyle {
-    CTLineBreakMode lineBreakMode = m_lineBreakMode;
     CTTextAlignment textAlignment = m_textAlignment;
     
     CTParagraphStyleSetting settings[] = {
-        {
-            .spec = kCTParagraphStyleSpecifierLineBreakMode,
-            .valueSize = sizeof(lineBreakMode),
-            .value = &lineBreakMode
-        },
         {
             .spec = kCTParagraphStyleSpecifierAlignment,
             .valueSize = sizeof(textAlignment),

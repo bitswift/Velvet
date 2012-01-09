@@ -10,8 +10,8 @@
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/NSVelvetHostView.h>
+#import <Velvet/NSVelvetViewPrivate.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
-#import <Velvet/NSViewClipRenderer.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSView.h>
@@ -64,6 +64,8 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 @interface NSVelvetView ()
+@property (nonatomic, readonly, strong) NSView *appKitHostView;
+
 /*
  * Documented in <NSVelvetViewPrivate>.
  */
@@ -71,9 +73,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 /*
  * The layer-hosted view which actually holds the Velvet hierarchy.
- *
- * <NSVelvetHostView> exists to avoid having to make this view layer-hosted. It
- * is layer-backed instead, for compatible with `NSView`.
  */
 @property (nonatomic, readonly, strong) NSVelvetHostView *velvetHostView;
 
@@ -91,6 +90,15 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
  * with <draggingEnded:> when the session ends.
  */
 @property (nonatomic, strong) NSMutableSet *allDraggingDestinations;
+
+/*
+ * A layer used to mask the rendering of `NSView`-owned layers added to the
+ * receiver.
+ *
+ * This masking will keep the rendering of a given `NSView` consistent with the
+ * clipping its <VELNSView> would have in the Velvet hierarchy.
+ */
+@property (nonatomic, strong) CAShapeLayer *maskLayer;
 
 /*
  * Replaces a focus ring layer provided by AppKit with one of our own to
@@ -124,9 +132,11 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 @synthesize rootView = m_rootView;
 @synthesize velvetHostView = m_velvetHostView;
+@synthesize appKitHostView = m_appKitHostView;
 @synthesize userInteractionEnabled = m_userInteractionEnabled;
 @synthesize lastDraggingDestination = m_lastDraggingDestination;
 @synthesize allDraggingDestinations = m_allDraggingDestinations;
+@synthesize maskLayer = m_maskLayer;
 
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
@@ -165,16 +175,28 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)setUp; {
     self.userInteractionEnabled = YES;
 
+    m_maskLayer = [[CAShapeLayer alloc] init];
+
     // enable layer-backing for this view
     [self setWantsLayer:YES];
-    self.layer.layoutManager = self;
 
     m_velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
     m_velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self addSubview:m_velvetHostView];
 
+    m_appKitHostView = [[NSView alloc] initWithFrame:self.bounds];
+    m_appKitHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    [m_appKitHostView setWantsLayer:YES];
+    [self addSubview:m_appKitHostView];
+
+    // set up masking on the AppKit host view, and make ourselves the layout
+    // manager, so that we'll know when new sublayers are added
+    self.appKitHostView.layer.mask = self.maskLayer;
+    self.appKitHostView.layer.layoutManager = self;
+
     self.rootView = [[VELView alloc] init];
 
+    [self recalculateNSViewClipping];
     [self registerForDraggedTypes:[NSArray arrayWithObjects:NSColorPboardType, NSFilenamesPboardType, NSPasteboardTypePDF, nil]];
 }
 
@@ -199,14 +221,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     
     // we need to avoid hitting any NSViews that are clipped by their
     // corresponding Velvet views
-    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView *view, NSUInteger index, BOOL *stop){
+    [self.appKitHostView.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView *view, NSUInteger index, BOOL *stop){
         VELNSView *hostView = view.hostView;
         if (hostView) {
             CGRect bounds = hostView.layer.bounds;
-            CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:view.layer];
+            CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:self.layer];
             
-            CGPoint subviewPoint = [view convertPoint:point fromView:self];
-            if (!CGRectContainsPoint(clippedBounds, subviewPoint)) {
+            if (!CGRectContainsPoint(clippedBounds, point)) {
                 // skip this view
                 return;
             }
@@ -225,27 +246,23 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 #pragma mark NSView hierarchy
 
-- (void)didAddSubview:(NSView *)subview {
-    [self sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
-}
-
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
     if (!CGRectContainsPoint(self.bounds, point))
         return nil;
+
     return [self.rootView descendantViewAtPoint:point] ?: self;
 }
+
 #pragma mark CALayer delegate
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
-    if ([[NSVelvetView superclass] instancesRespondToSelector:_cmd]) {
-        [super performSelector:@selector(layoutSublayersOfLayer:) withObject:layer];
-    }
+    [self.appKitHostView sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
 
     NSArray *existingSublayers = [layer.sublayers copy];
 
     [CATransaction performWithDisabledActions:^{
         for (CALayer *sublayer in existingSublayers) {
-            if (sublayer.delegate || sublayer == self.velvetHostView.layer) {
+            if (sublayer.delegate) {
                 // this is ours
                 continue;
             } else if ([sublayer isKindOfClass:[VELFocusRingLayer class]]) {
@@ -268,7 +285,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)replaceFocusRingLayer:(CALayer *)layer; {
-    for (NSView *view in self.subviews) {
+    for (NSView *view in self.appKitHostView.subviews) {
         // if the focus ring layer wraps around this view, it's probably the
         // ring for this view
         // TODO: match the tightest rectangle around views?
@@ -288,10 +305,36 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [hostView.focusRingLayer removeFromSuperlayer];
 
     VELFocusRingLayer *focusRingLayer = [[VELFocusRingLayer alloc] initWithOriginalLayer:layer hostView:hostView];
+
+    // keep the focus ring at the top level (i.e., not in the appKitHostView),
+    // so that it doesn't get masked normally
     [self.layer addSublayer:focusRingLayer];
 
     focusRingLayer.frame = layer.frame;
     hostView.focusRingLayer = focusRingLayer;
+}
+
+#pragma mark Masking
+
+- (void)recalculateNSViewClipping; {
+    CGMutablePathRef path = CGPathCreateMutable();
+
+    for (NSView *view in self.appKitHostView.subviews) {
+        VELNSView *hostView = view.hostView;
+        if (!hostView)
+            continue;
+
+        // clip the frame of each NSView using the Velvet hierarchy
+        CGRect rect = [hostView.layer convertAndClipRect:hostView.bounds toLayer:self.layer];
+        if (CGRectIsNull(rect) || CGRectIsInfinite(rect))
+            continue;
+
+        CGPathAddRect(path, NULL, rect);
+    }
+
+    // mask them all at once (so fast!)
+    self.maskLayer.path = path;
+    CGPathRelease(path);
 }
 
 #pragma mark Dragging

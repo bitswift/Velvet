@@ -24,4 +24,15 @@
  * The default value is `YES`.
  */
 @property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
+
+/*
+ * The layer-backed view which actually holds the AppKit hierarchy.
+ */
+@property (nonatomic, readonly, strong) NSView *appKitHostView;
+
+/*
+ * Informs the receiver that the clipping of a <VELNSView> it is hosting has
+ * changed, and asks it to update clipping paths accordingly.
+ */
+- (void)recalculateNSViewClipping;
 @end

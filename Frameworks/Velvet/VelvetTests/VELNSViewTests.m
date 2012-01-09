@@ -55,7 +55,7 @@
     NSVelvetView *hostView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
     [hostView.rootView addSubview:view];
 
-    STAssertEquals(contained.superview, hostView, @"");
+    STAssertTrue([contained.superview isDescendantOf:hostView], @"");
 }
 
 // INTERNAL-380

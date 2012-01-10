@@ -181,11 +181,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [self setWantsLayer:YES];
 
     m_velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
-    m_velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self addSubview:m_velvetHostView];
 
     m_appKitHostView = [[NSView alloc] initWithFrame:self.bounds];
-    m_appKitHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    m_appKitHostView.autoresizesSubviews = NO;
     [m_appKitHostView setWantsLayer:YES];
     [self addSubview:m_appKitHostView];
 
@@ -205,20 +204,23 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize; {
     // always resize the root view to fill this view
     [CATransaction performWithDisabledActions:^{
-        self.rootView.layer.frame = self.velvetHostView.layer.frame = self.bounds;
+        self.velvetHostView.frame = self.bounds;
+        self.appKitHostView.frame = self.bounds;
+
+        self.rootView.layer.frame = self.bounds;
     }];
 }
 
 - (NSView *)hitTest:(NSPoint)point {
     if (!self.userInteractionEnabled)
         return nil;
-    
+
     // convert point into our coordinate system, so it's ready to go for all
     // subviews (which expect it in their superview's coordinate system)
     point = [self convertPoint:point fromView:self.superview];
-    
+
     __block NSView *result = self;
-    
+
     // we need to avoid hitting any NSViews that are clipped by their
     // corresponding Velvet views
     [self.appKitHostView.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView *view, NSUInteger index, BOOL *stop){
@@ -226,20 +228,20 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         if (hostView) {
             CGRect bounds = hostView.layer.bounds;
             CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:self.layer];
-            
+
             if (!CGRectContainsPoint(clippedBounds, point)) {
                 // skip this view
                 return;
             }
         }
-        
+
         NSView *hitTestedView = [view hitTest:point];
         if (hitTestedView) {
             result = hitTestedView;
             *stop = YES;
         }
     }];
-    
+
     return result;
 }
 
@@ -256,6 +258,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 #pragma mark CALayer delegate
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
+    // TODO: factor this out into a separate class, so that the layout managers
+    // for the NSVelvetView and the appKitHostView are not confused
+    if (layer == self.layer) {
+        return;
+    }
+
     [self.appKitHostView sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
 
     NSArray *existingSublayers = [layer.sublayers copy];

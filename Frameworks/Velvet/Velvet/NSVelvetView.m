@@ -399,7 +399,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         return nil;
 
     BOOL (^viewSupportsDrag)(id) = ^(id testView){
-        if (![view conformsToProtocol:@protocol(VELDraggingDestination)])
+        if (![testView conformsToProtocol:@protocol(VELDraggingDestination)])
             return NO;
 
         for (NSString *supportedType in [testView supportedDragTypes]) {

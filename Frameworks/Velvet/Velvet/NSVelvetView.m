@@ -81,7 +81,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
  *
  * @param lastDraggingDestination The receiver of the last propogated dragging event.
  */
-@property (nonatomic, weak) id<VELBridgedView> lastDraggingDestination;
+@property (nonatomic, weak) id<VELDraggingDestination> lastDraggingDestination;
 
 /*
  * Collects all of the views messaged during the current dragging session. For consistency
@@ -90,6 +90,11 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
  * with <draggingEnded:> when the session ends.
  */
 @property (nonatomic, strong) NSMutableSet *allDraggingDestinations;
+
+/*
+ * A counted set of the UTIs registered for drag-and-drop by Velvet views.
+ */
+@property (nonatomic, strong) NSCountedSet *velvetRegisteredDragTypes;
 
 /*
  * A layer used to mask the rendering of `NSView`-owned layers added to the
@@ -124,6 +129,20 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
  * an initializer because \c NSView has no true designated initializer.
  */
 - (void)setUp;
+
+/*
+ * If a <VELView> exists at the location of the given drag-and-drop operation
+ * and supports any of the types provided on the drag-and-drop pasteboard, this
+ * returns that <VELView>.
+ *
+ * If the most descendant view does not support the drag-and-drop, all of its
+ * superviews are checked as well, and the first superview that does support it
+ * (if any) is returned.
+ *
+ * @param draggingInfo Information about the drag-and-drop operation in
+ * progress.
+ */
+- (VELView<VELDraggingDestination> *)deepestViewSupportingDraggingInfo:(id<NSDraggingInfo>)draggingInfo;
 @end
 
 @implementation NSVelvetView
@@ -137,6 +156,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize lastDraggingDestination = m_lastDraggingDestination;
 @synthesize allDraggingDestinations = m_allDraggingDestinations;
 @synthesize maskLayer = m_maskLayer;
+@synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
 
 - (void)setRootView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
@@ -196,7 +216,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     self.rootView = [[VELView alloc] init];
 
     [self recalculateNSViewClipping];
-    [self registerForDraggedTypes:[NSArray arrayWithObjects:NSColorPboardType, NSFilenamesPboardType, NSPasteboardTypePDF, nil]];
 }
 
 #pragma mark Layout
@@ -347,40 +366,95 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 #pragma mark Dragging
 
-- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
-    CGPoint draggedPoint = [self convertFromWindowPoint:[sender draggingLocation]];
-    id<VELBridgedView> view = [self descendantViewAtPoint:draggedPoint];
+- (void)registerDraggingDestination:(id<VELDraggingDestination>)destination; {
+    if (!self.velvetRegisteredDragTypes)
+        self.velvetRegisteredDragTypes = [[NSCountedSet alloc] init];
 
-    if (view == self)
+    [self.velvetRegisteredDragTypes addObjectsFromArray:[destination supportedDragTypes]];
+
+    [self unregisterDraggedTypes];
+    [self registerForDraggedTypes:[self.velvetRegisteredDragTypes allObjects]];
+}
+
+- (void)unregisterDraggingDestination:(id<VELDraggingDestination>)destination; {
+    for (NSString *type in [destination supportedDragTypes]) {
+        [self.velvetRegisteredDragTypes removeObject:type];
+    }
+
+    [self unregisterDraggedTypes];
+
+    if ([self.velvetRegisteredDragTypes count]) {
+        [self registerForDraggedTypes:[self.velvetRegisteredDragTypes allObjects]];
+    } else {
+        self.velvetRegisteredDragTypes = nil;
+    }
+}
+
+- (VELView<VELDraggingDestination> *)deepestViewSupportingDraggingInfo:(id<NSDraggingInfo>)draggingInfo; {
+    CGPoint draggedPoint = [self convertFromWindowPoint:[draggingInfo draggingLocation]];
+    NSArray *draggedTypes = [[draggingInfo draggingPasteboard] types];
+
+    id view = [self descendantViewAtPoint:draggedPoint];
+    if (![view isKindOfClass:[VELView class]])
+        return nil;
+
+    BOOL (^viewSupportsDrag)(id) = ^(id testView){
+        if (![testView conformsToProtocol:@protocol(VELDraggingDestination)])
+            return NO;
+
+        for (NSString *supportedType in [testView supportedDragTypes]) {
+            if ([draggedTypes containsObject:supportedType])
+                return YES;
+        }
+
+        return NO;
+    };
+
+    // find the first superview that supports drag-and-drop (or use this view if
+    // it does)
+    while (!viewSupportsDrag(view)) {
+        view = [view superview];
+
+        if (!view)
+            return nil;
+    }
+
+    return view;
+}
+
+- (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
+    id<VELDraggingDestination> view = [self deepestViewSupportingDraggingInfo:sender];
+    if (!view)
         return NSDragOperationNone;
 
     self.lastDraggingDestination = view;
 
-    if ([view respondsToSelector:@selector(draggingEntered:)]) {
-        return [view draggingEntered:sender];
-    }
-
     if (!self.allDraggingDestinations)
         self.allDraggingDestinations = [NSMutableSet set];
-    if (view)
+
+    if (view) {
         [self.allDraggingDestinations addObject:view];
 
-    return NSDragOperationNone;
+        if ([view respondsToSelector:@selector(draggingEntered:)]) {
+            return [view draggingEntered:sender];
+        }
+    }
 
+    return NSDragOperationNone;
 }
 
 - (NSDragOperation)draggingUpdated:(id<NSDraggingInfo>)sender {
-    CGPoint draggedPoint = [self convertFromWindowPoint:[sender draggingLocation]];
-    id<VELBridgedView> view = [self descendantViewAtPoint:draggedPoint];
+    id<VELDraggingDestination> view = [self deepestViewSupportingDraggingInfo:sender];
 
     if (self.lastDraggingDestination != view) {
         if ([self.lastDraggingDestination respondsToSelector:@selector(draggingExited:)]) {
             [self.lastDraggingDestination draggingExited:sender];
         }
 
-        if (view && view != self) {
+        if (view) {
             self.lastDraggingDestination = view;
             [self.allDraggingDestinations addObject:view];
+
             if ([view respondsToSelector:@selector(draggingEntered:)]) {
                 return [view draggingEntered:sender];
             }
@@ -391,7 +465,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         return [view draggingUpdated:sender];
     }
 
-    return NSDragOperationNone;
+    return [super draggingUpdated:sender];
 }
 
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {
@@ -406,7 +480,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)draggingExited:(id<NSDraggingInfo>)sender {
-    id<VELBridgedView> view = self.lastDraggingDestination;
+    id<VELDraggingDestination> view = self.lastDraggingDestination;
 
     if ([view respondsToSelector:@selector(draggingExited:)])
         [view draggingExited:sender];
@@ -415,7 +489,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {
-    id<VELBridgedView> view = self.lastDraggingDestination;
+    id<VELDraggingDestination> view = self.lastDraggingDestination;
 
     if ([view respondsToSelector:@selector(prepareForDragOperation:)]) {
         return [view prepareForDragOperation:sender];
@@ -425,7 +499,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
-    id<VELBridgedView> view = self.lastDraggingDestination;
+    id<VELDraggingDestination> view = self.lastDraggingDestination;
 
     if ([view respondsToSelector:@selector(performDragOperation:)]) {
         return [view performDragOperation:sender];
@@ -435,7 +509,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)concludeDragOperation:(id<NSDraggingInfo>)sender {
-    id<VELBridgedView> view = self.lastDraggingDestination;
+    id<VELDraggingDestination> view = self.lastDraggingDestination;
 
     if ([view respondsToSelector:@selector(concludeDragOperation:)]) {
         [view concludeDragOperation:sender];
@@ -443,7 +517,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)updateDraggingItemsForDrag:(id<NSDraggingInfo>)sender {
-    id<VELBridgedView> view = self.lastDraggingDestination;
+    id<VELDraggingDestination> view = self.lastDraggingDestination;
 
     if ([view respondsToSelector:@selector(updateDraggingItemsForDrag:)]) {
         [view updateDraggingItemsForDrag:sender];

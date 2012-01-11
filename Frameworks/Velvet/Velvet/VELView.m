@@ -13,10 +13,12 @@
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/NSVelvetViewPrivate.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/VELCAAction.h>
+#import <Velvet/VELDraggingDestination.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELScrollView.h>
 #import <Velvet/VELViewController.h>
@@ -567,6 +569,11 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)didMoveFromHostView:(NSVelvetView *)oldHostView {
     [self updateViewAndViewControllerNextResponders];
+
+    if ([self respondsToSelector:@selector(supportedDragTypes)]) {
+        [self.hostView registerDraggingDestination:(id)self];
+    }
+
     [self.subviews makeObjectsPerformSelector:_cmd withObject:oldHostView];
 }
 
@@ -629,6 +636,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)willMoveToHostView:(NSVelvetView *)hostView; {
+    if ([self respondsToSelector:@selector(supportedDragTypes)]) {
+        [self.hostView unregisterDraggingDestination:(id)self];
+    }
+
     for (VELView *subview in self.subviews)
         [subview willMoveToHostView:hostView];
 }

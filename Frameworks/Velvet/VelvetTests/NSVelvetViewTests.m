@@ -3,7 +3,7 @@
 //  Velvet
 //
 //  Created by Josh Vera on 1/6/12.
-//  Copyright (c) 2012 Emerald Lark. All rights reserved.
+//  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
 #import "NSVelvetViewTests.h"

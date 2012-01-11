@@ -3,7 +3,7 @@
 //  Velvet
 //
 //  Created by Justin Spahr-Summers on 10.01.12.
-//  Copyright (c) 2012 Emerald Lark. All rights reserved.
+//  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
 #import <AppKit/AppKit.h>

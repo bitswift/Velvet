@@ -375,7 +375,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = "Emerald Lark";
+				ORGANIZATIONNAME = "Bitswift";
 			};
 			buildConfigurationList = D07A67C01486F3F10051C961 /* Build configuration list for PBXProject "TransitionTest" */;
 			compatibilityVersion = "Xcode 3.2";

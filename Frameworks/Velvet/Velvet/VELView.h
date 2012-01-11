@@ -49,7 +49,29 @@ typedef enum {
     /**
      * The bottom margin between the view and its superview is flexible.
      */
-    VELViewAutoresizingFlexibleBottomMargin = kCALayerMinYMargin
+    VELViewAutoresizingFlexibleBottomMargin = kCALayerMinYMargin,
+
+    /**
+     * The view's width and height are flexible.
+     */
+    VELViewAutoresizingFlexibleSize = VELViewAutoresizingFlexibleWidth | VELViewAutoresizingFlexibleHeight,
+
+    /**
+     * The top and bottom margins between the view and its superview are
+     * flexible.
+     */
+    VELViewAutoresizingFlexibleVerticalMargins = VELViewAutoresizingFlexibleTopMargin | VELViewAutoresizingFlexibleBottomMargin,
+
+    /**
+     * The left and right margins between the view and its superview are
+     * flexible.
+     */
+    VELViewAutoresizingFlexibleHorizontalMargins = VELViewAutoresizingFlexibleLeftMargin | VELViewAutoresizingFlexibleRightMargin,
+
+    /**
+     * All of the margins between the view and its superview are flexible.
+     */
+    VELViewAutoresizingFlexibleMargins = VELViewAutoresizingFlexibleVerticalMargins | VELViewAutoresizingFlexibleHorizontalMargins
 } VELViewAutoresizingMask;
 
 /**

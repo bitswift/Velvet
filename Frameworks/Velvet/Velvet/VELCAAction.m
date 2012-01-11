@@ -22,6 +22,12 @@
 @property (nonatomic, strong, readonly) id <CAAction> innerAction;
 
 /*
+ * The first responder when the animation began, to be restored when the
+ * animation completes.
+ */
+@property (nonatomic, weak) NSResponder *originalFirstResponder;
+
+/*
  * Invoked whenever the geometry property `key` of `layer` has changed.
  */
 - (void)geometryChangedForKey:(NSString *)key layer:(CALayer *)layer;
@@ -74,6 +80,7 @@
 #pragma mark Properties
 
 @synthesize innerAction = m_innerAction;
+@synthesize originalFirstResponder = m_originalFirstResponder;
 
 #pragma mark Lifecycle
 
@@ -106,9 +113,31 @@
     // Resign first responder on an animating NSView
     // to disable focus ring.
     id responder = view.window.firstResponder;
-    if ([responder isKindOfClass:[NSView class]]) {
-        if ([responder isDescendantOf:view.NSView])
-            [view.window makeFirstResponder:nil];
+    if ([responder isKindOfClass:[NSView class]] && [responder isDescendantOf:view.NSView]) {
+        // find the next responder which is not in this NSView hierarchy, and
+        // make that the first responder for the duration of the animation
+        id nextResponder = [responder nextResponder];
+
+        BOOL (^validResponder)(id) = ^(id obj){
+            if (!obj)
+                return YES;
+
+            if ([obj isKindOfClass:[NSView class]] && [responder isDescendantOf:view.NSView])
+                return NO;
+
+            if (![obj acceptsFirstResponder])
+                return NO;
+
+            return YES;
+        };
+
+        while (!validResponder(nextResponder)) {
+            nextResponder = [nextResponder nextResponder];
+        }
+
+        if ([view.window makeFirstResponder:nextResponder]) {
+            self.originalFirstResponder = responder;
+        }
     }
 
     view.rendersContainedView = YES;
@@ -120,6 +149,9 @@
     [view synchronizeNSViewGeometry];
 
     view.NSView.alphaValue = 1.0;
+    if (self.originalFirstResponder) {
+        [view.window makeFirstResponder:self.originalFirstResponder];
+    }
 }
 
 #pragma mark Action interception

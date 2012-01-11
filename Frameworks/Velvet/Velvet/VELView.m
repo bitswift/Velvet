@@ -241,27 +241,23 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }];
 }
 
-- (void)setSubviews:(NSArray *)subviews {
+- (void)setSubviews:(NSArray *)newSubviews {
     NSMutableArray *oldSubviews = [m_subviews mutableCopy];
 
-    if ([subviews count]) {
-        // preserve any subviews we already had, and order the new array to match
-        // the input
-        NSMutableArray *newSubviews = [[NSMutableArray alloc] initWithCapacity:subviews.count];
+    if ([newSubviews count]) {
+        m_subviews = [[NSMutableArray alloc] initWithCapacity:[newSubviews count]];
 
-        for (VELView *view in subviews) {
-            [newSubviews addObject:view];
-
+        // preserve any subviews we already had, but order them to match the input
+        [newSubviews enumerateObjectsUsingBlock:^(VELView *view, NSUInteger newIndex, BOOL *stop){
             NSUInteger existingIndex = [oldSubviews indexOfObjectIdenticalTo:view];
 
             if (!oldSubviews || existingIndex == NSNotFound) {
                 [self addSubview:view];
             } else {
                 [oldSubviews removeObjectAtIndex:existingIndex];
+                [m_subviews addObject:view];
             }
-        }
-
-        m_subviews = newSubviews;
+        }];
     } else {
         m_subviews = nil;
     }

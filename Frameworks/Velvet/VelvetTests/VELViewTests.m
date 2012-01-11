@@ -99,7 +99,7 @@
 
     STAssertEqualObjects(view.subviews, subviews, @"");
 
-    [subviews removeLastObject];
+    [subviews exchangeObjectAtIndex:0 withObjectAtIndex:2];
 
     // calling -setSubviews: with a new array should replace the old one
     view.subviews = subviews;

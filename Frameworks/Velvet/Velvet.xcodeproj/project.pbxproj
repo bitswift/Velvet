@@ -629,7 +629,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = "Bitswift";
+				ORGANIZATIONNAME = Bitswift;
 			};
 			buildConfigurationList = D0EFFBFA147851A80095AB35 /* Build configuration list for PBXProject "Velvet" */;
 			compatibilityVersion = "Xcode 3.2";

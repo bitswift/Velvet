@@ -242,17 +242,34 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setSubviews:(NSArray *)subviews {
-    NSArray *oldSubviews = [m_subviews copy];
-    m_subviews = nil;
+    NSMutableArray *oldSubviews = [m_subviews mutableCopy];
 
-    // TODO: this could determine the intersection between the two arrays and
-    // avoid removing/re-adding the ones that exist in both
-    for (VELView *view in oldSubviews) {
-        [view removeFromSuperview];
+    if ([subviews count]) {
+        // preserve any subviews we already had, and order the new array to match
+        // the input
+        NSMutableArray *newSubviews = [[NSMutableArray alloc] initWithCapacity:subviews.count];
+
+        for (VELView *view in subviews) {
+            [newSubviews addObject:view];
+
+            NSUInteger existingIndex = [oldSubviews indexOfObjectIdenticalTo:view];
+
+            if (!oldSubviews || existingIndex == NSNotFound) {
+                [self addSubview:view];
+            } else {
+                [oldSubviews removeObjectAtIndex:existingIndex];
+            }
+        }
+
+        m_subviews = newSubviews;
+    } else {
+        m_subviews = nil;
     }
 
-    for (VELView *view in subviews) {
-        [self addSubview:view];
+    // at this point, 'oldSubviews' should only contain subviews which no longer
+    // exist
+    for (VELView *view in oldSubviews) {
+        [view removeFromSuperview];
     }
 }
 

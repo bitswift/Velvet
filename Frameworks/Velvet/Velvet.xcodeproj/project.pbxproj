@@ -39,6 +39,7 @@
 		D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */; };
+		D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D06EF03B14B39CFA0035E239 /* VELEventManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D06EF03914B39CFA0035E239 /* VELEventManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D06EF03C14B39CFA0035E239 /* VELEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D06EF03A14B39CFA0035E239 /* VELEventManager.m */; };
 		D06EF03F14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -159,6 +160,7 @@
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
 		D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+ScrollViewAdditions.h"; sourceTree = "<group>"; };
 		D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+ScrollViewAdditions.m"; sourceTree = "<group>"; };
+		D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDraggingDestination.h; sourceTree = "<group>"; };
 		D06EF03914B39CFA0035E239 /* VELEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELEventManager.h; sourceTree = "<group>"; };
 		D06EF03A14B39CFA0035E239 /* VELEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELEventManager.m; sourceTree = "<group>"; };
 		D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+EventHandlingAdditions.h"; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 			isa = PBXGroup;
 			children = (
 				D0CACD34147C86C0008C42B2 /* VELBridgedView.h */,
+				D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -564,6 +567,7 @@
 				D06EF03B14B39CFA0035E239 /* VELEventManager.h in Headers */,
 				D06EF03F14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h in Headers */,
 				D0A96C0514B7AE8B00A64F6F /* AppKit+GeometryAdditions.h in Headers */,
+				D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

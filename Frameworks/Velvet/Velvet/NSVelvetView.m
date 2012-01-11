@@ -464,7 +464,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         return [view draggingUpdated:sender];
     }
 
-    return NSDragOperationNone;
+    return [super draggingUpdated:sender];
 }
 
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {

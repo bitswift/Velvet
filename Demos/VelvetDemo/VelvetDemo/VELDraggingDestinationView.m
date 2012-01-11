@@ -35,6 +35,10 @@
     CGContextStrokeRect(context, self.bounds);
 }
 
+- (NSArray *)supportedDragTypes {
+    return [NSArray arrayWithObject:NSFilenamesPboardType];
+}
+
 - (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
     NSLog(@"[%@ %@]", self.name ?: NSStringFromClass([self class]), NSStringFromSelector(_cmd));
     return NSDragOperationEvery;

@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/NSVelvetView.h>
+#import <Velvet/VELDraggingDestination.h>
 
 /*
  * Private functionality of <NSVelvetView> that needs to be exposed to other parts of
@@ -29,6 +30,31 @@
  * The layer-backed view which actually holds the AppKit hierarchy.
  */
 @property (nonatomic, readonly, strong) NSView *appKitHostView;
+
+/*
+ * Registers the given object to receive drag-and-drop events from the receiver.
+ *
+ * Drag-and-drop events may not be propagated to <VELView> instances unless they
+ * are registered using this method.
+ *
+ * To later unregister the given object, use <unregisterDraggingDestination:>.
+ *
+ * @param destination The object which should receive drag-and-drop events. This
+ * argument should be `nil`.
+ */
+- (void)registerDraggingDestination:(id<VELDraggingDestination>)destination;
+
+/*
+ * Unregisters a dragging destination previously added with
+ * <registerDraggingDestination:>.
+ *
+ * Calls to this method must be balanced with calls that were made to
+ * <registerDraggingDestination:>.
+ *
+ * @param destination An object previously passed to
+ * <registerDraggingDestination:>.
+ */
+- (void)unregisterDraggingDestination:(id<VELDraggingDestination>)destination;
 
 /*
  * Informs the receiver that the clipping of a <VELNSView> it is hosting has

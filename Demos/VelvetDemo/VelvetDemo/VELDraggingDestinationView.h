@@ -6,10 +6,10 @@
 //  Copyright (c) 2011 Emerald Lark. All rights reserved.
 //
 
-#import <Velvet/VELView.h>
+#import <Velvet/Velvet.h>
 #import <AppKit/NSDragging.h>
 
-@interface VELDraggingDestinationView : VELView <NSDraggingDestination>
+@interface VELDraggingDestinationView : VELView <VELDraggingDestination>
 
 @property (nonatomic, strong) NSString *name;
 

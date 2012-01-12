@@ -7,15 +7,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
-
-@class VELContext;
-@class VELView;
+#import <Velvet/VELHostView.h>
+#import <Velvet/VELView.h>
 
 /**
  * A layer-hosted `NSView` that is used to host a <VELView> hierarchy. You must
  * use this class to present a <VELView> and allow it to respond to events.
  */
-@interface NSVelvetView : NSView
+@interface NSVelvetView : NSView <VELHostView>
 
 /**
  * @name View Hierarchy
@@ -26,5 +25,5 @@
  * The value of this property is a plain <VELView> by default, but can be replaced
  * with another instance of <VELView> or any subclass.
  */
-@property (nonatomic, strong) VELView *rootView;
+@property (nonatomic, strong) VELView *guestView;
 @end

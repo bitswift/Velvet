@@ -21,30 +21,30 @@
 #import <objc/runtime.h>
 
 static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, void *context) {
-    VELView *velvetA = viewA.hostView;
-    VELView *velvetB = viewB.hostView;
+    VELNSView *hostA = viewA.hostView;
+    VELNSView *hostB = viewB.hostView;
 
-    // Velvet-hosted NSViews should be on top of everything else
-    if (!velvetA) {
-        if (!velvetB) {
+    // hosted NSViews should be on top of everything else
+    if (!hostA) {
+        if (!hostB) {
             return NSOrderedSame;
         } else {
             return NSOrderedAscending;
         }
-    } else if (!velvetB) {
+    } else if (!hostB) {
         return NSOrderedDescending;
     }
 
-    VELView *ancestor = [velvetA ancestorSharedWithView:velvetB];
+    VELView *ancestor = [hostA ancestorSharedWithView:(VELView *)hostB];
     NSCAssert2(ancestor, @"Velvet-hosted NSViews in the same NSVelvetView should share a Velvet ancestor: %@, %@", viewA, viewB);
 
     __block NSInteger orderA = -1;
     __block NSInteger orderB = -1;
 
     [ancestor.subviews enumerateObjectsUsingBlock:^(VELView *subview, NSUInteger index, BOOL *stop){
-        if ([velvetA isDescendantOfView:subview]) {
+        if ([hostA isDescendantOfView:subview]) {
             orderA = (NSInteger)index;
-        } else if ([velvetB isDescendantOfView:subview]) {
+        } else if ([hostB isDescendantOfView:subview]) {
             orderB = (NSInteger)index;
         }
 
@@ -148,7 +148,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 #pragma mark Properties
 
-@synthesize rootView = m_rootView;
+// implemented by NSView
+@dynamic layer;
+
+// TODO: implement proper getter
+@synthesize hostView = m_hostView;
+
+@synthesize guestView = m_guestView;
 @synthesize velvetHostView = m_velvetHostView;
 @synthesize appKitHostView = m_appKitHostView;
 @synthesize userInteractionEnabled = m_userInteractionEnabled;
@@ -157,19 +163,19 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
 
-- (void)setRootView:(VELView *)view; {
+- (void)setGuestView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out
     [CATransaction performWithDisabledActions:^{
+        m_guestView.hostView = nil;
+        [m_guestView.layer removeFromSuperlayer];
 
-        // we need to set the frame of the view before it is added as a sublayer to the velvetHostView's layer
-        view.frame = self.bounds;
+        if ((m_guestView = view)) {
+            // we need to set the frame of the view before it is added as a sublayer to the velvetHostView's layer
+            m_guestView.frame = self.bounds;
 
-        [m_rootView.layer removeFromSuperlayer];
-        [self.velvetHostView.layer addSublayer:view.layer];
-
-        m_rootView.hostView = nil;
-        m_rootView = view;
-        view.hostView = self;
+            [self.velvetHostView.layer addSublayer:m_guestView.layer];
+            m_guestView.hostView = self;
+        }
     }];
 }
 
@@ -214,7 +220,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     self.appKitHostView.layer.mask = self.maskLayer;
     self.appKitHostView.layer.layoutManager = self;
 
-    self.rootView = [[VELView alloc] init];
+    self.guestView = [[VELView alloc] init];
 
     [self recalculateNSViewClipping];
 }
@@ -227,7 +233,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         self.velvetHostView.frame = self.bounds;
         self.appKitHostView.frame = self.bounds;
 
-        self.rootView.layer.frame = self.bounds;
+        self.guestView.layer.frame = self.bounds;
     }];
 }
 
@@ -244,7 +250,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     // we need to avoid hitting any NSViews that are clipped by their
     // corresponding Velvet views
     [self.appKitHostView.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(NSView *view, NSUInteger index, BOOL *stop){
-        VELNSView *hostView = view.hostView;
+        id<VELBridgedView> hostView = view.hostView;
         if (hostView) {
             CGRect bounds = hostView.layer.bounds;
             CGRect clippedBounds = [hostView.layer convertAndClipRect:bounds toLayer:self.layer];
@@ -265,15 +271,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     return result;
 }
 
-
-#pragma mark NSView hierarchy
-
-- (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
-    if (!CGRectContainsPoint(self.bounds, point))
-        return nil;
-
-    return [self.rootView descendantViewAtPoint:point] ?: self;
-}
 
 #pragma mark CALayer delegate
 
@@ -348,12 +345,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     CGMutablePathRef path = CGPathCreateMutable();
 
     for (NSView *view in self.appKitHostView.subviews) {
-        VELNSView *hostView = view.hostView;
+        id<VELBridgedView> hostView = view.hostView;
         if (!hostView)
             continue;
 
         // clip the frame of each NSView using the Velvet hierarchy
-        CGRect rect = [hostView.layer convertAndClipRect:hostView.bounds toLayer:self.layer];
+        CGRect rect = [hostView.layer convertAndClipRect:hostView.layer.bounds toLayer:self.layer];
         if (CGRectIsNull(rect) || CGRectIsInfinite(rect))
             continue;
 
@@ -524,4 +521,18 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         [view updateDraggingItemsForDrag:sender];
     }
 }
+
+#pragma mark VELHostView
+
+- (NSVelvetView *)ancestorNSVelvetView {
+    return self;
+}
+
+- (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
+    if (!CGRectContainsPoint(self.bounds, point))
+        return nil;
+
+    return [self.guestView descendantViewAtPoint:point] ?: self;
+}
+
 @end

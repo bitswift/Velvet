@@ -21,8 +21,6 @@
 		1E2819551481EB14006A747C /* CATransaction+BlockAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */; };
 		1E2819561481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E2819571481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */; };
-		1E2819721481EE7B006A747C /* NSView+VELNSViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819701481EE7B006A747C /* NSView+VELNSViewAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		1E2819731481EE7B006A747C /* NSView+VELNSViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2819711481EE7B006A747C /* NSView+VELNSViewAdditions.m */; };
 		1E71313614B7B79800D6D7DF /* NSVelvetViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */; };
 		1E7BBD40147B157C0010375D /* VELLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E7BBD3E147B157B0010375D /* VELLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E7BBD41147B157C0010375D /* VELLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7BBD3F147B157B0010375D /* VELLabel.m */; };
@@ -144,8 +142,6 @@
 		1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CATransaction+BlockAdditions.m"; sourceTree = "<group>"; };
 		1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGBitmapContext+PixelFormatAdditions.h"; sourceTree = "<group>"; };
 		1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGBitmapContext+PixelFormatAdditions.m"; sourceTree = "<group>"; };
-		1E2819701481EE7B006A747C /* NSView+VELNSViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+VELNSViewAdditions.h"; sourceTree = "<group>"; };
-		1E2819711481EE7B006A747C /* NSView+VELNSViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELNSViewAdditions.m"; sourceTree = "<group>"; };
 		1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewTests.h; sourceTree = "<group>"; };
 		1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetViewTests.m; sourceTree = "<group>"; };
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
@@ -280,8 +276,6 @@
 				D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */,
 				D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */,
 				D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */,
-				1E2819701481EE7B006A747C /* NSView+VELNSViewAdditions.h */,
-				1E2819711481EE7B006A747C /* NSView+VELNSViewAdditions.m */,
 				D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */,
 				D06EF03E14B3A0590035E239 /* NSWindow+EventHandlingAdditions.m */,
 			);
@@ -566,7 +560,6 @@
 				1E2819521481EB14006A747C /* CALayer+GeometryAdditions.h in Headers */,
 				1E2819541481EB14006A747C /* CATransaction+BlockAdditions.h in Headers */,
 				1E2819561481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h in Headers */,
-				1E2819721481EE7B006A747C /* NSView+VELNSViewAdditions.h in Headers */,
 				D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */,
 				D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */,
 				D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */,
@@ -742,7 +735,6 @@
 				1E2819531481EB14006A747C /* CALayer+GeometryAdditions.m in Sources */,
 				1E2819551481EB14006A747C /* CATransaction+BlockAdditions.m in Sources */,
 				1E2819571481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m in Sources */,
-				1E2819731481EE7B006A747C /* NSView+VELNSViewAdditions.m in Sources */,
 				D03E642414823DC200E99AA2 /* VELScrollView.m in Sources */,
 				D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */,
 				D0E8B35514831419003980B4 /* VELImageView.m in Sources */,

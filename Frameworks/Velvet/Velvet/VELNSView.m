@@ -9,10 +9,9 @@
 #import <Velvet/VELNSView.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
-#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSVelvetViewPrivate.h>
-#import <Velvet/NSView+VELNSViewAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewProtected.h>

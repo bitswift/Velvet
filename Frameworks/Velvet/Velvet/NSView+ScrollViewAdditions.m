@@ -8,7 +8,7 @@
 
 #import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/NSVelvetView.h>
-#import <Velvet/NSView+VELNSViewAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELNSView.h>
 #import <Proton/EXTSafeCategory.h>
 

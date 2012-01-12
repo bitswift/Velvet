@@ -8,6 +8,7 @@
 
 #import <Velvet/VELView.h>
 #import <Velvet/VELHostView.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 
 /**
  * A view that is responsible for displaying and handling an `NSView` within the

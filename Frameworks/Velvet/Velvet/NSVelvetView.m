@@ -11,7 +11,6 @@
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/NSVelvetHostView.h>
 #import <Velvet/NSVelvetViewPrivate.h>
-#import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSView.h>

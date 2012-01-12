@@ -16,7 +16,6 @@
 #import <Velvet/NSVelvetViewPrivate.h>
 #import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/NSView+VELNSViewAdditions.h>
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELDraggingDestination.h>
 #import <Velvet/VELNSViewPrivate.h>

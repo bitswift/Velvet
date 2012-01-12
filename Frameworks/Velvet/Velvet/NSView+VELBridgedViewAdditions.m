@@ -6,14 +6,25 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <AppKit/AppKit.h>
-#import <Velvet/VELNSView.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
+#import <Proton/Proton.h>
 #import <Velvet/NSVelvetView.h>
-#import <Velvet/NSView+VELNSViewAdditions.h>
-#import <Velvet/CALayer+GeometryAdditions.h>
-#import <Proton/EXTSafeCategory.h>
+#import <objc/runtime.h>
 
-@safecategory (NSView, VELBridgeViewAdditions)
+@safecategory (NSView, VELBridgedViewAdditions)
+
+#pragma mark Properties
+
+- (VELNSView *)hostView {
+    return objc_getAssociatedObject(self, @selector(hostView));
+}
+
+- (void)setHostView:(VELNSView *)hostView {
+    objc_setAssociatedObject(self, @selector(hostView), hostView, OBJC_ASSOCIATION_ASSIGN);
+}
+
+#pragma mark Geometry
+
 - (CGPoint)convertFromWindowPoint:(CGPoint)point; {
     NSPoint windowPoint = NSPointFromCGPoint(point);
     NSPoint selfPoint = [self convertPoint:windowPoint fromView:nil];
@@ -37,6 +48,8 @@
     NSRect selfRect = [self convertRect:windowRect toView:nil];
     return NSRectToCGRect(selfRect);
 }
+
+#pragma mark Hit testing
 
 - (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
     NSPoint superviewPoint = [self convertPoint:point toView:self.superview];

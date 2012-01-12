@@ -13,6 +13,11 @@
 
 @interface VELEventManager ()
 /*
+ * Any Velvet-hosted responder currently handling a continuous gesture event.
+ */
+@property (nonatomic, strong) id currentGestureResponder;
+
+/*
  * Turns an event into an `NSResponder` message, and sends it to
  * a responder.
  *
@@ -33,6 +38,10 @@
 @end
 
 @implementation VELEventManager
+
+#pragma mark Properties
+
+@synthesize currentGestureResponder = m_currentGestureResponder;
 
 #pragma mark Lifecycle
 
@@ -112,6 +121,26 @@
             [responder scrollWheel:event];
             break;
 
+        case NSEventTypeMagnify:
+            [responder magnifyWithEvent:event];
+            break;
+
+        case NSEventTypeSwipe:
+            [responder swipeWithEvent:event];
+            break;
+
+        case NSEventTypeRotate:
+            [responder rotateWithEvent:event];
+            break;
+
+        case NSEventTypeBeginGesture:
+            [responder beginGestureWithEvent:event];
+            break;
+
+        case NSEventTypeEndGesture:
+            [responder endGestureWithEvent:event];
+            break;
+
         default:
             DDLogError(@"Unrecognized event: %@", event);
     }
@@ -146,7 +175,18 @@
             break;
 
         case NSScrollWheel:
+        case NSEventTypeMagnify:
+        case NSEventTypeSwipe:
+        case NSEventTypeRotate:
             respondingView = [theEvent.window bridgedViewForScrollEvent:theEvent];
+            break;
+
+        case NSEventTypeBeginGesture:
+            self.currentGestureResponder = respondingView = [theEvent.window bridgedViewForScrollEvent:theEvent];
+            break;
+
+        case NSEventTypeEndGesture:
+            respondingView = self.currentGestureResponder;
             break;
 
         case NSLeftMouseUp:

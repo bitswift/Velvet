@@ -192,8 +192,7 @@
     TestView *testView = [[TestView alloc] init];
 
     testView.nextWindow = self.window;
-
-    [(id)self.window.contentView setRootView:testView];
+    self.window.contentView.guestView = testView;
 
     STAssertFalse(testView.willMoveToSuperviewInvoked, @"");
     STAssertFalse(testView.didMoveFromSuperviewInvoked, @"");
@@ -222,7 +221,7 @@
     VELView *view = [[VELView alloc] init];
 
     NSVelvetView *hostView = self.window.contentView;
-    hostView.rootView = view;
+    hostView.guestView = view;
 
     // the view's next responder should be the host view
     STAssertEquals(view.nextResponder, hostView, @"");

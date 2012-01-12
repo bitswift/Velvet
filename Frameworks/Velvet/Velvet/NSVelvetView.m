@@ -471,7 +471,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {
-    for (id<VELBridgedView> view in self.allDraggingDestinations) {
+    for (id<VELDraggingDestination> view in self.allDraggingDestinations) {
         if ([view respondsToSelector:@selector(draggingEnded:)]) {
             [view draggingEnded:sender];
         }

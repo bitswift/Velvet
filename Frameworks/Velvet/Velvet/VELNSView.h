@@ -43,7 +43,7 @@
  */
 
 /**
- * Initializes the receiver, setting its `NSView` property to `view`.
+ * Initializes the receiver, setting its <guestView> to the given view.
  *
  * The designated initializer for this class is <[VELView init]>.
  *
@@ -52,7 +52,7 @@
 - (id)initWithNSView:(NSView *)view;
 
 /**
- * @name NSView Hierarchy
+ * @name Guest View
  */
 
 /**
@@ -60,5 +60,5 @@
  *
  * This property is not thread-safe. It must be set from the main thread.
  */
-@property (nonatomic, strong) NSView *NSView;
+@property (nonatomic, strong) NSView *guestView;
 @end

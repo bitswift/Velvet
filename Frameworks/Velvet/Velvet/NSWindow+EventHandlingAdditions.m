@@ -16,7 +16,7 @@
 #import <Proton/Proton.h>
 
 @safecategory (NSWindow, EventHandlingAdditions)
-- (VELView *)bridgedHitTest:(CGPoint)windowPoint; {
+- (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint; {
     NSView *nsView = self.contentView;
 
     while (nsView) {
@@ -37,6 +37,7 @@
         viewPoint = [velvetView convertFromWindowPoint:windowPoint];
         testView = [velvetView descendantViewAtPoint:viewPoint];
 
+        // TODO: make this more general, to support all bridged views
         if ([testView isKindOfClass:[VELView class]]) {
             while (testView && ![testView isUserInteractionEnabled]) {
                 testView = [testView superview];
@@ -53,7 +54,7 @@
     return nil;
 }
 
-- (VELView *)velvetViewForMouseDownEvent:(NSEvent *)event {
+- (id<VELBridgedView>)bridgedViewForMouseDownEvent:(NSEvent *)event {
     id contentView = self.contentView;
     
     // we currently do not support any click-through events when the window is
@@ -66,7 +67,7 @@
         }
         
         id hitView = [self bridgedHitTest:windowPoint];
-        if ([hitView isKindOfClass:[VELView class]]) {
+        if (![hitView isKindOfClass:[NSView class]]) {
             return hitView;
         }
     }
@@ -74,12 +75,12 @@
     return nil;
 }
 
-- (VELView *)velvetViewForScrollEvent:(NSEvent *)event; {
+- (id<VELBridgedView>)bridgedViewForScrollEvent:(NSEvent *)event; {
     CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
     id hitView = [self bridgedHitTest:windowPoint];
 
     id scrollView = [hitView ancestorScrollView];
-    if ([scrollView isKindOfClass:[VELView class]]) {
+    if (![scrollView isKindOfClass:[NSView class]]) {
         return scrollView;
     } else {
         return nil;

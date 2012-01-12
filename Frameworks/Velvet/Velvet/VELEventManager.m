@@ -13,6 +13,11 @@
 
 @interface VELEventManager ()
 /*
+ * Any Velvet-hosted responder currently handling a continuous gesture event.
+ */
+@property (nonatomic, strong) id currentGestureResponder;
+
+/*
  * Turns an event into an `NSResponder` message, and sends it to
  * a responder.
  *
@@ -33,6 +38,10 @@
 @end
 
 @implementation VELEventManager
+
+#pragma mark Properties
+
+@synthesize currentGestureResponder = m_currentGestureResponder;
 
 #pragma mark Lifecycle
 
@@ -112,30 +121,74 @@
             [responder scrollWheel:event];
             break;
 
+        case NSEventTypeMagnify:
+            [responder magnifyWithEvent:event];
+            break;
+
+        case NSEventTypeSwipe:
+            [responder swipeWithEvent:event];
+            break;
+
+        case NSEventTypeRotate:
+            [responder rotateWithEvent:event];
+            break;
+
+        case NSEventTypeBeginGesture:
+            [responder beginGestureWithEvent:event];
+            break;
+
+        case NSEventTypeEndGesture:
+            [responder endGestureWithEvent:event];
+            break;
+
         default:
             DDLogError(@"Unrecognized event: %@", event);
     }
 }
 
 - (BOOL)handleVelvetEvent:(NSEvent *)theEvent; {
-    VELView *respondingView = nil;
+    id respondingView = nil;
 
     switch ([theEvent type]) {
         case NSLeftMouseDown:
         case NSRightMouseDown:
         case NSOtherMouseDown:
-            respondingView = [theEvent.window velvetViewForMouseDownEvent:theEvent];
+            respondingView = [theEvent.window bridgedViewForMouseDownEvent:theEvent];
             
             if (respondingView) {
-                // make the view that received the click the first responder for
-                // that window
-                [theEvent.window makeFirstResponder:respondingView];
+                BOOL (^isNextResponderOfExistingResponder)(void) = ^ BOOL {
+                    NSResponder *responder = [theEvent.window firstResponder];
+                    
+                    while (responder && responder != respondingView)
+                        responder = responder.nextResponder;
+
+                    return responder != nil;
+                };
+
+                if (!isNextResponderOfExistingResponder()) {
+                    // make the view that received the click the first responder for
+                    // that window
+                    [theEvent.window makeFirstResponder:respondingView];
+                }
             }
 
             break;
 
         case NSScrollWheel:
-            respondingView = [theEvent.window velvetViewForScrollEvent:theEvent];
+        case NSEventTypeMagnify:
+        case NSEventTypeSwipe:
+        case NSEventTypeRotate:
+            respondingView = [theEvent.window bridgedViewForScrollEvent:theEvent];
+            break;
+
+        case NSEventTypeBeginGesture:
+            self.currentGestureResponder = respondingView = [theEvent.window bridgedViewForScrollEvent:theEvent];
+            break;
+
+        case NSEventTypeEndGesture:
+            respondingView = self.currentGestureResponder;
+            self.currentGestureResponder = nil;
+
             break;
 
         case NSLeftMouseUp:
@@ -148,7 +201,7 @@
         case NSOtherMouseUp:
         case NSOtherMouseDragged: {
             id responder = [theEvent.window firstResponder];
-            if ([responder isKindOfClass:[VELView class]]) {
+            if (![responder isKindOfClass:[NSView class]]) {
                 [self dispatchEvent:theEvent toResponder:responder];
             }
 

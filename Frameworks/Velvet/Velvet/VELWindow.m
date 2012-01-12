@@ -26,6 +26,13 @@
     return contentView.guestView;
 }
 
+- (void)setRootView:(VELView *)view {
+    NSVelvetView *contentView = self.contentView;
+    NSAssert([contentView isKindOfClass:[NSVelvetView class]], @"Window %@ does not have an NSVelvetView as its content view", self);
+
+    contentView.guestView = view;
+}
+
 #pragma mark Lifecycle
 
 - (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)windowStyle backing:(NSBackingStoreType)bufferingType defer:(BOOL)deferCreation screen:(NSScreen *)screen {

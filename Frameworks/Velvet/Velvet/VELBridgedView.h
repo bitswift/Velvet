@@ -9,14 +9,12 @@
 #import <AppKit/AppKit.h>
 
 /**
- * Represents an object that can convert geometry to and from its window
- * coordinates.
- *
- * This must be implemented by any view class that wishes to be compatible with
- * the geometry methods of <VELView>.
+ * Represents a view that can be bridged by Velvet, allowing interoperation with
+ * other UI frameworks.
  */
 @protocol VELBridgedView <NSObject>
 @required
+
 /**
  * Converts a point from the coordinate system of the window to that of the
  * receiver.

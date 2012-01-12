@@ -80,6 +80,7 @@
 		D0EFFC1C147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
 		D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC01147851A80095AB35 /* Velvet.framework */; };
 		D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC23147851A80095AB35 /* InfoPlist.strings */; };
+		D0F5BFCA14BF6BE000C66839 /* VELHostView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F5BFC914BF6BE000C66839 /* VELHostView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -232,6 +233,7 @@
 		D0EFFC43147851E70095AB35 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
 		D0EFFC44147851E70095AB35 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D0EFFC45147851E70095AB35 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		D0F5BFC914BF6BE000C66839 /* VELHostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELHostView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -389,6 +391,7 @@
 			children = (
 				D0CACD34147C86C0008C42B2 /* VELBridgedView.h */,
 				D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */,
+				D0F5BFC914BF6BE000C66839 /* VELHostView.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -578,6 +581,7 @@
 				D06EF03F14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h in Headers */,
 				D0A96C0514B7AE8B00A64F6F /* AppKit+GeometryAdditions.h in Headers */,
 				D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */,
+				D0F5BFCA14BF6BE000C66839 /* VELHostView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

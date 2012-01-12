@@ -18,6 +18,7 @@
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELDraggingDestination.h>
+#import <Velvet/VELHostView.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELScrollView.h>
 #import <Velvet/VELViewController.h>
@@ -61,7 +62,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 @property (nonatomic, readwrite, weak) VELView *superview;
-@property (nonatomic, readwrite, weak) NSVelvetView *hostView;
 @property (nonatomic, weak) VELViewController *viewController;
 
 /*
@@ -268,28 +268,30 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 }
 
-- (NSVelvetView *)hostView {
+- (id<VELHostView>)hostView {
     if (m_hostView)
         return m_hostView;
     else
         return self.superview.hostView;
 }
 
-- (void)setHostView:(NSVelvetView *)view {
+- (void)setHostView:(id<VELHostView>)view {
     if (view == m_hostView)
         return;
 
     NSWindow *oldWindow = self.window;
-    NSVelvetView *oldHostView = m_hostView;
+    NSWindow *newWindow = view.ancestorNSVelvetView.window;
 
-    if (oldWindow != view.window)
-        [self willMoveToWindow:view.window];
+    id<VELHostView> oldHostView = m_hostView;
+
+    if (oldWindow != newWindow)
+        [self willMoveToWindow:newWindow];
 
     [self willMoveToHostView:view];
     m_hostView = view;
     [self didMoveFromHostView:oldHostView];
 
-    if (oldWindow != view.window)
+    if (oldWindow != newWindow)
         [self didMoveFromWindow:oldWindow];
 }
 
@@ -428,7 +430,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (NSWindow *)window {
-    return self.hostView.window;
+    return self.ancestorNSVelvetView.window;
 }
 
 + (BOOL)doesCustomDrawing {
@@ -520,17 +522,21 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
     [CATransaction performWithDisabledActions:^{
         VELView *oldSuperview = view.superview;
-        NSVelvetView *oldHostView = view.hostView;
-        NSWindow *oldWindow = view.window;
 
-        BOOL needsHostViewUpdate = (oldHostView != self.hostView);
-        BOOL needsWindowUpdate = (oldWindow != self.window);
+        id<VELHostView> oldHostView = view.hostView;
+        id<VELHostView> newHostView = self.hostView;
+
+        NSWindow *oldWindow = view.window;
+        NSWindow *newWindow = self.window;
+
+        BOOL needsHostViewUpdate = (oldHostView != newHostView);
+        BOOL needsWindowUpdate = (oldWindow != newWindow);
 
         if (needsWindowUpdate)
-            [view willMoveToWindow:self.window];
+            [view willMoveToWindow:newWindow];
 
         if (needsHostViewUpdate)
-            [view willMoveToHostView:self.hostView];
+            [view willMoveToHostView:newHostView];
 
         [view willMoveToSuperview:self];
 
@@ -583,18 +589,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self updateViewAndViewControllerNextResponders];
 
     if ([self respondsToSelector:@selector(supportedDragTypes)]) {
-        [self.hostView registerDraggingDestination:(id)self];
+        [self.ancestorNSVelvetView registerDraggingDestination:(id)self];
     }
 
     [self.subviews makeObjectsPerformSelector:_cmd withObject:oldHostView];
-}
-
-- (id)ancestorScrollView; {
-    VELView *superview = self.superview;
-    if (superview)
-        return superview.ancestorScrollView;
-
-    return [self.hostView ancestorScrollView];
 }
 
 - (BOOL)isDescendantOfView:(VELView *)view; {
@@ -621,7 +619,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self willMoveToSuperview:nil];
 
     VELView *superview = self.superview;
-    NSVelvetView *hostView = self.hostView;
+    id<VELHostView> hostView = self.hostView;
     NSWindow *window = self.window;
 
     [superview removeSubview:self];
@@ -633,10 +631,12 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)removeSubview:(VELView *)subview; {
     [CATransaction performWithDisabledActions:^{
-        id responder = [self.window firstResponder];
+        NSWindow *window = self.window;
+
+        id responder = [window firstResponder];
         if ([responder isKindOfClass:[VELView class]]) {
             if ([responder isDescendantOfView:subview]) {
-                [self.window makeFirstResponder:self];
+                [window makeFirstResponder:self];
             }
         }
 
@@ -649,7 +649,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)willMoveToHostView:(id<VELHostView>)hostView; {
     if ([self respondsToSelector:@selector(supportedDragTypes)]) {
-        [self.hostView unregisterDraggingDestination:(id)self];
+        [self.ancestorNSVelvetView unregisterDraggingDestination:(id)self];
     }
 
     for (VELView *subview in self.subviews)
@@ -697,7 +697,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     if (self.superview)
         responderAfterViewController = self.superview;
     else if (self.hostView)
-        responderAfterViewController = self.hostView;
+        responderAfterViewController = (id)self.hostView;
     else
         responderAfterViewController = nil;
 
@@ -734,10 +734,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
     NSAssert(self.window, @"%@ window is nil!",self);
     
-    NSVelvetView *hostView = self.hostView;
-
-    VELView *rootView = hostView.rootView;
-    CGPoint hostPoint = [self.layer convertPoint:point toLayer:rootView.layer];
+    NSVelvetView *hostView = self.ancestorNSVelvetView;
+    CGPoint hostPoint = [self.layer convertPoint:point toLayer:hostView.layer];
 
     return [hostView convertToWindowPoint:hostPoint];
 }
@@ -745,20 +743,17 @@ static BOOL VELViewPerformingDeepLayout = NO;
 - (CGPoint)convertFromWindowPoint:(CGPoint)point {
     NSAssert(self.window, @"%@ window is nil!",self);
     
-    NSVelvetView *hostView = self.hostView;
+    NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGPoint hostPoint = [hostView convertFromWindowPoint:point];
 
-    VELView *rootView = hostView.rootView;
-    return [self.layer convertPoint:hostPoint fromLayer:rootView.layer];
+    return [self.layer convertPoint:hostPoint fromLayer:hostView.layer];
 }
 
 - (CGRect)convertToWindowRect:(CGRect)rect {
     NSAssert(self.window, @"%@ window is nil!",self);
     
-    NSVelvetView *hostView = self.hostView;
-
-    VELView *rootView = hostView.rootView;
-    CGRect hostRect = [self.layer convertRect:rect toLayer:rootView.layer];
+    NSVelvetView *hostView = self.ancestorNSVelvetView;
+    CGRect hostRect = [self.layer convertRect:rect toLayer:hostView.layer];
 
     return [hostView convertToWindowRect:hostRect];
 }
@@ -766,11 +761,27 @@ static BOOL VELViewPerformingDeepLayout = NO;
 - (CGRect)convertFromWindowRect:(CGRect)rect {
     NSAssert(self.window, @"%@ window is nil!",self);
     
-    NSVelvetView *hostView = self.hostView;
+    NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGRect hostRect = [hostView convertFromWindowRect:rect];
 
-    VELView *rootView = hostView.rootView;
-    return [self.layer convertRect:hostRect fromLayer:rootView.layer];
+    return [self.layer convertRect:hostRect fromLayer:hostView.layer];
+}
+
+- (NSVelvetView *)ancestorNSVelvetView {
+    id<VELHostView> hostView = self.hostView;
+
+    if ([hostView isKindOfClass:[NSVelvetView class]])
+        return (id)hostView;
+
+    return hostView.ancestorNSVelvetView;
+}
+
+- (id)ancestorScrollView; {
+    VELView *superview = self.superview;
+    if (superview)
+        return superview.ancestorScrollView;
+
+    return [self.hostView ancestorScrollView];
 }
 
 #pragma mark Layout

@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <Velvet/VELView.h>
 
-@class NSVelvetView;
 @class VELViewController;
 
 /*
@@ -17,8 +16,6 @@
  * the framework.
  */
 @interface VELView (VELViewPrivate)
-@property (nonatomic, readwrite, weak) NSVelvetView *hostView;
-
 /*
  * A reference to the view controller which is managing the receiver.
  */

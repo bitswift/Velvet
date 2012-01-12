@@ -113,7 +113,7 @@
     // Resign first responder on an animating NSView
     // to disable focus ring.
     id responder = view.window.firstResponder;
-    if ([responder isKindOfClass:[NSView class]] && [responder isDescendantOf:view.NSView]) {
+    if ([responder isKindOfClass:[NSView class]] && [responder isDescendantOf:view.guestView]) {
         // find the next responder which is not in this NSView hierarchy, and
         // make that the first responder for the duration of the animation
         id nextResponder = [responder nextResponder];
@@ -122,7 +122,7 @@
             if (!obj)
                 return YES;
 
-            if ([obj isKindOfClass:[NSView class]] && [responder isDescendantOf:view.NSView])
+            if ([obj isKindOfClass:[NSView class]] && [responder isDescendantOf:view.guestView])
                 return NO;
 
             if (![obj acceptsFirstResponder])
@@ -141,14 +141,14 @@
     }
 
     view.rendersContainedView = YES;
-    view.NSView.alphaValue = 0.0;
+    view.guestView.alphaValue = 0.0;
 }
 
 - (void)endRenderingNSViewOfView:(VELNSView *)view; {
     view.rendersContainedView = NO;
     [view synchronizeNSViewGeometry];
 
-    view.NSView.alphaValue = 1.0;
+    view.guestView.alphaValue = 1.0;
     if (self.originalFirstResponder) {
         [view.window makeFirstResponder:self.originalFirstResponder];
     }

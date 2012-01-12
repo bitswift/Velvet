@@ -118,13 +118,13 @@
 }
 
 - (BOOL)handleVelvetEvent:(NSEvent *)theEvent; {
-    VELView *respondingView = nil;
+    id respondingView = nil;
 
     switch ([theEvent type]) {
         case NSLeftMouseDown:
         case NSRightMouseDown:
         case NSOtherMouseDown:
-            respondingView = [theEvent.window velvetViewForMouseDownEvent:theEvent];
+            respondingView = [theEvent.window bridgedViewForMouseDownEvent:theEvent];
             
             if (respondingView) {
                 // make the view that received the click the first responder for
@@ -135,7 +135,7 @@
             break;
 
         case NSScrollWheel:
-            respondingView = [theEvent.window velvetViewForScrollEvent:theEvent];
+            respondingView = [theEvent.window bridgedViewForScrollEvent:theEvent];
             break;
 
         case NSLeftMouseUp:
@@ -148,7 +148,7 @@
         case NSOtherMouseUp:
         case NSOtherMouseDragged: {
             id responder = [theEvent.window firstResponder];
-            if ([responder isKindOfClass:[VELView class]]) {
+            if (![responder isKindOfClass:[NSView class]] && [responder conformsToProtocol:@protocol(VELBridgedView)]) {
                 [self dispatchEvent:theEvent toResponder:responder];
             }
 

@@ -8,7 +8,7 @@
 
 #import <AppKit/AppKit.h>
 
-@class VELView;
+@protocol VELBridgedView;
 
 /*
  * Extensions to `NSWindow` to support dispatching events to Velvet.
@@ -20,28 +20,34 @@
  */
 
 /*
- * Returns the <VELView> which is occupying the given point in the window, or
+ * Returns the bridged view which is occupying the given point in the window, or
  * `nil` if there is no such view.
+ *
+ * This method will never return an `NSView`.
  *
  * @param windowPoint A point, specified in the coordinate system of the window,
  * at which to look for a view.
  */
-- (VELView *)bridgedHitTest:(CGPoint)windowPoint;
+- (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint;
 
 /*
- * Hit tests for a <VELView> in the region identified by the given event,
- * returning any <VELView> that is found, or `nil` if no Velvet view is found.
+ * Hit tests for a bridged view in the region identified by the given event,
+ * returning any non-AppKit view that is found.
+ *
+ * This method will never return an `NSView`.
  *
  * @param event The mouse-related event which occurred.
  */
-- (VELView *)velvetViewForMouseDownEvent:(NSEvent *)event;
+- (id<VELBridgedView>)bridgedViewForMouseDownEvent:(NSEvent *)event;
 
 /*
- * Returns the most descendant Velvet scroll view in the region identified by
- * the given event, or `nil` if no Velvet scroll view exists at the event's
+ * Returns the most descendant non-AppKit scroll view in the region identified
+ * by the given event, or `nil` if no such scroll view exists at the event's
  * location.
+ *
+ * This method will never return an `NSView`.
  *
  * @param event The scroll wheel event which occurred.
  */
-- (VELView *)velvetViewForScrollEvent:(NSEvent *)event;
+- (id<VELBridgedView>)bridgedViewForScrollEvent:(NSEvent *)event;
 @end

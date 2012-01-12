@@ -187,6 +187,8 @@
 
         case NSEventTypeEndGesture:
             respondingView = self.currentGestureResponder;
+            self.currentGestureResponder = nil;
+
             break;
 
         case NSLeftMouseUp:

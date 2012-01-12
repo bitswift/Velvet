@@ -127,9 +127,20 @@
             respondingView = [theEvent.window bridgedViewForMouseDownEvent:theEvent];
             
             if (respondingView) {
-                // make the view that received the click the first responder for
-                // that window
-                [theEvent.window makeFirstResponder:respondingView];
+                BOOL (^isNextResponderOfExistingResponder)(void) = ^ BOOL {
+                    NSResponder *responder = [theEvent.window firstResponder];
+                    
+                    while (responder && responder != respondingView)
+                        responder = responder.nextResponder;
+
+                    return responder != nil;
+                };
+
+                if (!isNextResponderOfExistingResponder()) {
+                    // make the view that received the click the first responder for
+                    // that window
+                    [theEvent.window makeFirstResponder:respondingView];
+                }
             }
 
             break;

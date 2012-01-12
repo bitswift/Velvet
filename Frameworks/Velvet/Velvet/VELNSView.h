@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/VELView.h>
+#import <Velvet/VELHostView.h>
 
 /**
  * A view that is responsible for displaying and handling an `NSView` within the
@@ -34,7 +35,7 @@
  * - *You should not subclass `VELNSView`.* If you need additional features,
  * create a new view class which contains a `VELNSView` instead.
  */
-@interface VELNSView : VELView
+@interface VELNSView : VELView <VELHostView>
 
 /**
  * @name Initialization

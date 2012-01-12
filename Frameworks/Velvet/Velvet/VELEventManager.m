@@ -199,7 +199,7 @@
         case NSOtherMouseUp:
         case NSOtherMouseDragged: {
             id responder = [theEvent.window firstResponder];
-            if (![responder isKindOfClass:[NSView class]] && [responder respondsToSelector:@selector(descendantViewAtPoint:)]) {
+            if (![responder isKindOfClass:[NSView class]]) {
                 [self dispatchEvent:theEvent toResponder:responder];
             }
 

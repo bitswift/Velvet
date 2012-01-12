@@ -151,9 +151,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 // implemented by NSView
 @dynamic layer;
 
-// TODO: implement proper getter
-@synthesize hostView = m_hostView;
-
 @synthesize guestView = m_guestView;
 @synthesize velvetHostView = m_velvetHostView;
 @synthesize appKitHostView = m_appKitHostView;
@@ -523,10 +520,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 #pragma mark VELHostView
-
-- (NSVelvetView *)ancestorNSVelvetView {
-    return self;
-}
 
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
     if (!CGRectContainsPoint(self.bounds, point))

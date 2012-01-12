@@ -13,14 +13,31 @@
 
 @safecategory (NSView, VELBridgedViewAdditions)
 
-#pragma mark Properties
+#pragma mark View hierarchy
 
-- (VELNSView *)hostView {
-    return objc_getAssociatedObject(self, @selector(hostView));
+- (id<VELHostView>)hostView {
+    id<VELHostView> hostView = objc_getAssociatedObject(self, @selector(hostView));
+    if (hostView)
+        return hostView;
+    else
+        return self.superview.hostView;
 }
 
-- (void)setHostView:(VELNSView *)hostView {
+- (void)setHostView:(id<VELHostView>)hostView {
     objc_setAssociatedObject(self, @selector(hostView), hostView, OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (NSVelvetView *)ancestorNSVelvetView; {
+    NSView *view = self;
+
+    do {
+        if ([view isKindOfClass:[NSVelvetView class]])
+            return (id)view;
+
+        view = view.superview;
+    } while (view);
+    
+    return nil;
 }
 
 #pragma mark Geometry

@@ -105,10 +105,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 #pragma mark Properties
 
+@synthesize hostView = m_hostView;
 @synthesize layer = m_layer;
 @synthesize subviews = m_subviews;
 @synthesize superview = m_superview;
-@synthesize hostView = m_hostView;
 @synthesize viewController = m_viewController;
 
 - (BOOL)isRecursingActionForLayer {
@@ -765,15 +765,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
     CGRect hostRect = [hostView convertFromWindowRect:rect];
 
     return [self.layer convertRect:hostRect fromLayer:hostView.layer];
-}
-
-- (NSVelvetView *)ancestorNSVelvetView {
-    id<VELHostView> hostView = self.hostView;
-
-    if ([hostView isKindOfClass:[NSVelvetView class]])
-        return (id)hostView;
-
-    return hostView.ancestorNSVelvetView;
 }
 
 - (id)ancestorScrollView; {

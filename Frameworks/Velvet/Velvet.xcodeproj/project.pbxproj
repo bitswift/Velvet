@@ -79,6 +79,7 @@
 		D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC01147851A80095AB35 /* Velvet.framework */; };
 		D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC23147851A80095AB35 /* InfoPlist.strings */; };
 		D0F5BFCA14BF6BE000C66839 /* VELHostView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F5BFC914BF6BE000C66839 /* VELHostView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0F5C03C14BF8E4100C66839 /* VELBridgedView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F5C03B14BF8E4100C66839 /* VELBridgedView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -230,6 +231,7 @@
 		D0EFFC44147851E70095AB35 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D0EFFC45147851E70095AB35 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		D0F5BFC914BF6BE000C66839 /* VELHostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELHostView.h; sourceTree = "<group>"; };
+		D0F5C03B14BF8E4100C66839 /* VELBridgedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELBridgedView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -384,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				D0CACD34147C86C0008C42B2 /* VELBridgedView.h */,
+				D0F5C03B14BF8E4100C66839 /* VELBridgedView.m */,
 				D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */,
 				D0F5BFC914BF6BE000C66839 /* VELHostView.h */,
 			);
@@ -746,6 +749,7 @@
 				D06EF03C14B39CFA0035E239 /* VELEventManager.m in Sources */,
 				D06EF04014B3A0590035E239 /* NSWindow+EventHandlingAdditions.m in Sources */,
 				D0A96C0614B7AE8B00A64F6F /* AppKit+GeometryAdditions.m in Sources */,
+				D0F5C03C14BF8E4100C66839 /* VELBridgedView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

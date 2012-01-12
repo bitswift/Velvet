@@ -775,6 +775,15 @@ static BOOL VELViewPerformingDeepLayout = NO;
     return [self.hostView ancestorScrollView];
 }
 
+- (NSVelvetView *)ancestorNSVelvetView; {
+    id<VELHostView> hostView = self.hostView;
+
+    if ([hostView isKindOfClass:[NSVelvetView class]])
+        return (id)hostView;
+
+    return hostView.ancestorNSVelvetView;
+}
+
 #pragma mark Layout
 
 - (void)layoutSubviews; {

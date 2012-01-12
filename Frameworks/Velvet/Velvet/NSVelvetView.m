@@ -151,6 +151,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 // implemented by NSView
 @dynamic layer;
 
+@synthesize hostView = m_hostView;
 @synthesize guestView = m_guestView;
 @synthesize velvetHostView = m_velvetHostView;
 @synthesize appKitHostView = m_appKitHostView;
@@ -159,6 +160,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize allDraggingDestinations = m_allDraggingDestinations;
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
+
+- (id<VELHostView>)hostView {
+    if (m_hostView)
+        return m_hostView;
+    else
+        return self.superview.hostView;
+}
 
 - (void)setGuestView:(VELView *)view; {
     // disable implicit animations, or the layers will fade in and out

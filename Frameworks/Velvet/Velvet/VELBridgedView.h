@@ -8,12 +8,19 @@
 
 #import <AppKit/AppKit.h>
 
+@class NSVelvetView;
+@protocol VELHostView;
+
 /**
  * Represents a view that can be bridged by Velvet, allowing interoperation with
  * other UI frameworks.
  */
 @protocol VELBridgedView <NSObject>
 @required
+
+/**
+ * @name Geometry Conversion
+ */
 
 /**
  * Converts a point from the coordinate system of the window to that of the
@@ -46,8 +53,63 @@
 - (CGRect)convertToWindowRect:(CGRect)rect;
 
 /**
- * Returns the <VELBridgedView> which is occupying the given point, or
- * `nil` if there is no such view.
+ * @name View Hierarchy
+ */
+
+/**
+ * The view directly or indirectly hosting the receiver, or `nil` if the
+ * receiver is not part of a hosted view hierarchy.
+ *
+ * The receiver or one of its ancestors will be the <[VELHostView guestView]> of
+ * this view.
+ *
+ * Implementing classes may require that this property be of a more specific
+ * type.
+ *
+ * @warning **Important:** This property should not be set except by the
+ * <VELHostView> itself.
+ */
+@property (nonatomic, unsafe_unretained) id<VELHostView> hostView;
+
+/**
+ * Returns the nearest <NSVelvetView> that is an ancestor of the receiver, or of
+ * a view hosting the receiver.
+ *
+ * Returns `nil` if the receiver is not part of a Velvet-hosted view hierarchy.
+ */
+- (NSVelvetView *)ancestorNSVelvetView;
+
+/**
+ * Walks up the receiver's ancestor views, returning the nearest view that is
+ * considered to be a scroll view.
+ *
+ * Returns `nil` if no scroll view is an ancestor of the receiver.
+ *
+ * @warning The definition of a "scroll view" may vary across UI frameworks.
+ */
+- (id<VELBridgedView>)ancestorScrollView;
+
+/**
+ * @name Layer
+ */
+
+/**
+ * The layer backing the receiver.
+ *
+ * This property must never be `nil`.
+ */
+@property (nonatomic, strong, readonly) CALayer *layer;
+
+/**
+ * @name Hit Testing
+ */
+
+/**
+ * Hit tests the receiver's view hierarchy, returning the <VELBridgedView> which
+ * is occupying the given point, or `nil` if there is no such view.
+ *
+ * This method should only traverse views which are visible and allow user
+ * interaction.
  *
  * @param point A point, specified in the coordinate system of the receiver,
  * at which to look for a view.

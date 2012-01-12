@@ -579,7 +579,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     return nil;
 }
 
-- (void)didMoveFromHostView:(NSVelvetView *)oldHostView {
+- (void)didMoveFromHostView:(id<VELHostView>)oldHostView {
     [self updateViewAndViewControllerNextResponders];
 
     if ([self respondsToSelector:@selector(supportedDragTypes)]) {
@@ -647,7 +647,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }];
 }
 
-- (void)willMoveToHostView:(NSVelvetView *)hostView; {
+- (void)willMoveToHostView:(id<VELHostView>)hostView; {
     if ([self respondsToSelector:@selector(supportedDragTypes)]) {
         [self.hostView unregisterDraggingDestination:(id)self];
     }

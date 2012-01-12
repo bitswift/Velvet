@@ -143,7 +143,7 @@
     [super ancestorDidLayout];
 }
 
-- (void)willMoveToHostView:(NSVelvetView *)hostView {
+- (void)willMoveToHostView:(id<VELHostView>)hostView {
     [super willMoveToHostView:hostView];
 
     [self.guestView removeFromSuperview];
@@ -151,7 +151,7 @@
     self.focusRingLayer = nil;
 }
 
-- (void)didMoveFromHostView:(NSVelvetView *)oldHostView {
+- (void)didMoveFromHostView:(id<VELHostView>)oldHostView {
     [super didMoveFromHostView:oldHostView];
 
     if (!self.ancestorNSVelvetView) {

@@ -338,14 +338,11 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 #pragma mark Masking
 
+- (void)recalculateNSViewOrdering; {
+    [self.appKitHostView sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
+}
+
 - (void)recalculateNSViewClipping; {
-    // don't mess around with view ordering while live resizing -- shit goes
-    // crazy
-    if (![self.window inLiveResize]) {
-        // resort hosted NSViews to match the layering in Velvet
-        [self.appKitHostView sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
-    }
-    
     CGMutablePathRef path = CGPathCreateMutable();
 
     for (NSView *view in self.appKitHostView.subviews) {

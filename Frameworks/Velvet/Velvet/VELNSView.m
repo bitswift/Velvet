@@ -15,6 +15,7 @@
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
+#import <Proton/Proton.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface VELNSView ()
@@ -139,6 +140,8 @@
 - (void)willMoveToNSVelvetView:(NSVelvetView *)view; {
     [super willMoveToNSVelvetView:view];
 
+    [self.guestView willMoveToNSVelvetView:view];
+
     [self.guestView removeFromSuperview];
     [self.focusRingLayer removeFromSuperlayer];
     self.focusRingLayer = nil;
@@ -146,6 +149,10 @@
 
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {
     [super didMoveFromNSVelvetView:view];
+
+    @onExit {
+        [self.guestView didMoveFromNSVelvetView:view];
+    };
 
     NSVelvetView *newView = self.ancestorNSVelvetView;
     if (!newView) {

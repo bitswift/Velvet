@@ -177,6 +177,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         if ((m_guestView = view)) {
             // we need to set the frame of the view before it is added as a sublayer to the velvetHostView's layer
             m_guestView.frame = self.bounds;
+            m_guestView.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
 
             [self.velvetHostView.layer addSublayer:m_guestView.layer];
             m_guestView.hostView = self;
@@ -213,10 +214,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [self setWantsLayer:YES];
 
     m_velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
+    m_velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self addSubview:m_velvetHostView];
 
     m_appKitHostView = [[NSView alloc] initWithFrame:self.bounds];
     m_appKitHostView.autoresizesSubviews = NO;
+    m_appKitHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [m_appKitHostView setWantsLayer:YES];
     [self addSubview:m_appKitHostView];
 
@@ -231,16 +234,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 #pragma mark Layout
-
-- (void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize; {
-    // always resize the root view to fill this view
-    [CATransaction performWithDisabledActions:^{
-        self.velvetHostView.frame = self.bounds;
-        self.appKitHostView.frame = self.bounds;
-
-        self.guestView.layer.frame = self.bounds;
-    }];
-}
 
 - (NSView *)hitTest:(NSPoint)point {
     if (!self.userInteractionEnabled)
@@ -280,13 +273,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 #pragma mark CALayer delegate
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
-    // TODO: factor this out into a separate class, so that the layout managers
-    // for the NSVelvetView and the appKitHostView are not confused
     if (layer == self.layer) {
+        // NSVelvetView.layer is being laid out
         return;
     }
-
-    [self.appKitHostView sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
+    
+    // appKitHostView.layer is being laid out
 
     NSArray *existingSublayers = [layer.sublayers copy];
 
@@ -345,6 +337,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 #pragma mark Masking
+
+- (void)recalculateNSViewOrdering; {
+    [self.appKitHostView sortSubviewsUsingFunction:&compareNSViewOrdering context:NULL];
+}
 
 - (void)recalculateNSViewClipping; {
     CGMutablePathRef path = CGPathCreateMutable();

@@ -44,19 +44,23 @@
 
     m_guestView = view;
 
+    NSVelvetView *velvetView = self.ancestorNSVelvetView;
+
     // and set up our new view
     if (m_guestView) {
         // set up layer-backing on the view
         [m_guestView setWantsLayer:YES];
         [m_guestView setNeedsDisplay:YES];
 
-        [self.ancestorNSVelvetView.appKitHostView addSubview:m_guestView];
+        [velvetView.appKitHostView addSubview:m_guestView];
         m_guestView.hostView = self;
+
+        [velvetView recalculateNSViewOrdering];
 
         m_guestView.nextResponder = self;
     }
 
-    [self.ancestorNSVelvetView recalculateNSViewClipping];
+    [velvetView recalculateNSViewClipping];
 }
 
 - (CGRect)NSViewFrame; {
@@ -176,6 +180,8 @@
     // this must only be added after we've completely moved to the host view,
     // because it'll do some ancestor checks for NSView ordering
     [newView.appKitHostView addSubview:self.guestView];
+
+    [newView recalculateNSViewOrdering];
     [self synchronizeNSViewGeometry];
 
     self.guestView.nextResponder = self;

@@ -61,4 +61,10 @@
  * changed, and asks it to update clipping paths accordingly.
  */
 - (void)recalculateNSViewClipping;
+
+/*
+ * Informs the receiver that the ordering of a <VELNSView> it is hosting has
+ * changed, and asks it to reorder its subviews to match Velvet.
+ */
+- (void)recalculateNSViewOrdering;
 @end

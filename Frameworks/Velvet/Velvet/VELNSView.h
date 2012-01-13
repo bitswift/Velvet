@@ -45,6 +45,9 @@
 /**
  * Initializes the receiver, setting its <guestView> to the given view.
  *
+ * The <[VELView frame]> of the receiver will automatically be set to that of
+ * `view`.
+ *
  * The designated initializer for this class is <[VELView init]>.
  *
  * @param view The view to display in the receiver.

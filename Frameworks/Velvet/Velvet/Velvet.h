@@ -13,7 +13,6 @@
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSImage+CoreGraphicsAdditions.h>
 #import <Velvet/NSVelvetView.h>
-#import <Velvet/NSView+ScrollViewAdditions.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELBridgedView.h>
 #import <Velvet/VELControl.h>

@@ -34,10 +34,8 @@
 		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
 		D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E642114823DC200E99AA2 /* VELScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D03E642414823DC200E99AA2 /* VELScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E642214823DC200E99AA2 /* VELScrollView.m */; };
-		D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E6426148243E800E99AA2 /* VELViewProtected.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E6426148243E800E99AA2 /* VELViewProtected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */; };
 		D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D05DC49B14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */; };
 		D06EF03B14B39CFA0035E239 /* VELEventManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D06EF03914B39CFA0035E239 /* VELEventManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -159,8 +157,6 @@
 		D03E642214823DC200E99AA2 /* VELScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELScrollView.m; sourceTree = "<group>"; };
 		D03E6426148243E800E99AA2 /* VELViewProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewProtected.h; sourceTree = "<group>"; };
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
-		D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+ScrollViewAdditions.h"; sourceTree = "<group>"; };
-		D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+ScrollViewAdditions.m"; sourceTree = "<group>"; };
 		D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDraggingDestination.h; sourceTree = "<group>"; };
 		D05DC49914BD0AA500A0D6C8 /* VELViewDragAndDropTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewDragAndDropTests.h; sourceTree = "<group>"; };
 		D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewDragAndDropTests.m; sourceTree = "<group>"; };
@@ -272,8 +268,6 @@
 				D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */,
 				D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */,
 				D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */,
-				D03E64771482A29000E99AA2 /* NSView+ScrollViewAdditions.h */,
-				D03E64781482A29000E99AA2 /* NSView+ScrollViewAdditions.m */,
 				D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */,
 				D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */,
 				D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */,
@@ -563,7 +557,6 @@
 				D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */,
 				D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */,
 				D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */,
-				D03E64791482A29000E99AA2 /* NSView+ScrollViewAdditions.h in Headers */,
 				D0E8B35414831419003980B4 /* VELImageView.h in Headers */,
 				D0CE3D461485506B005CAE53 /* VELFocusRingLayer.h in Headers */,
 				D0305D7A1486FC960081D6EA /* VELControl.h in Headers */,
@@ -736,7 +729,6 @@
 				1E2819551481EB14006A747C /* CATransaction+BlockAdditions.m in Sources */,
 				1E2819571481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m in Sources */,
 				D03E642414823DC200E99AA2 /* VELScrollView.m in Sources */,
-				D03E647A1482A29000E99AA2 /* NSView+ScrollViewAdditions.m in Sources */,
 				D0E8B35514831419003980B4 /* VELImageView.m in Sources */,
 				D0CE3D471485506B005CAE53 /* VELFocusRingLayer.m in Sources */,
 				D0305D7B1486FC960081D6EA /* VELControl.m in Sources */,

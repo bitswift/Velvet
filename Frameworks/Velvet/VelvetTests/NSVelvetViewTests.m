@@ -38,8 +38,8 @@
 
 @implementation TestVELView
 
-- (void)didMoveFromHostView:(id<VELHostView>)oldHostView {
-    [super didMoveFromHostView:oldHostView];
+- (void)didMoveFromNSVelvetView:(NSVelvetView *)view {
+    [super didMoveFromNSVelvetView:view];
     
     // The NSVelvetView's guestView should be self.
     NSAssert(self.ancestorNSVelvetView.guestView == self, @"");

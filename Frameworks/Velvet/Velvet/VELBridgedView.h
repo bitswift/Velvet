@@ -102,6 +102,28 @@
 - (id<VELBridgedView>)ancestorScrollView;
 
 /**
+ * Invoked when the receiver is moving to a new <ancestorNSVelvetView>.
+ *
+ * @param view The new <NSVelvetView> that will host the receiver, or `nil` if
+ * the receiver is being detached from its current <ancestorNSVelvetView>.
+ *
+ * @warning **Important:** The receiver _must_ forward this message to all of
+ * its subviews.
+ */
+- (void)willMoveToNSVelvetView:(NSVelvetView *)view;
+
+/**
+ * Invoked when the receiver has moved to a new <ancestorNSVelvetView>.
+ *
+ * @param view The <NSVelvetView> that was previously hosting the receiver, or
+ * `nil` if the receiver was not hosted.
+ *
+ * @warning **Important:** The receiver _must_ forward this message to all of
+ * its subviews.
+ */
+- (void)didMoveFromNSVelvetView:(NSVelvetView *)view;
+
+/**
  * @name Hit Testing
  */
 

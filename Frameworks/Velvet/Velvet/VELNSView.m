@@ -15,17 +15,11 @@
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
+#import <Proton/Proton.h>
 #import <QuartzCore/QuartzCore.h>
 
 @interface VELNSView ()
-/*
- * Documented in <VELNSViewPrivate>.
- */
 @property (nonatomic, assign) BOOL rendersContainedView;
-
-/*
- * Documented in <VELNSViewPrivate>.
- */
 @property (nonatomic, strong) VELFocusRingLayer *focusRingLayer;
 
 - (void)synchronizeNSViewGeometry;
@@ -143,18 +137,25 @@
     [super ancestorDidLayout];
 }
 
-- (void)willMoveToHostView:(id<VELHostView>)hostView {
-    [super willMoveToHostView:hostView];
+- (void)willMoveToNSVelvetView:(NSVelvetView *)view; {
+    [super willMoveToNSVelvetView:view];
+
+    [self.guestView willMoveToNSVelvetView:view];
 
     [self.guestView removeFromSuperview];
     [self.focusRingLayer removeFromSuperlayer];
     self.focusRingLayer = nil;
 }
 
-- (void)didMoveFromHostView:(id<VELHostView>)oldHostView {
-    [super didMoveFromHostView:oldHostView];
+- (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {
+    [super didMoveFromNSVelvetView:view];
 
-    if (!self.ancestorNSVelvetView) {
+    @onExit {
+        [self.guestView didMoveFromNSVelvetView:view];
+    };
+
+    NSVelvetView *newView = self.ancestorNSVelvetView;
+    if (!newView) {
         return;
     }
 
@@ -174,7 +175,7 @@
 
     // this must only be added after we've completely moved to the host view,
     // because it'll do some ancestor checks for NSView ordering
-    [self.ancestorNSVelvetView.appKitHostView addSubview:self.guestView];
+    [newView.appKitHostView addSubview:self.guestView];
     [self synchronizeNSViewGeometry];
 
     self.guestView.nextResponder = self;

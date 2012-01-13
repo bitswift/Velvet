@@ -84,4 +84,14 @@
     return [self hitTest:point] ? YES : NO;
 }
 
+#pragma mark View hierarchy
+
+- (void)willMoveToNSVelvetView:(NSVelvetView *)view; {
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:view];
+}
+
+- (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:view];
+}
+
 @end

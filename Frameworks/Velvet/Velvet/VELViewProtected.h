@@ -38,27 +38,6 @@
 - (void)ancestorDidLayout;
 
 /*
- * Invoked when the receiver's view hierarchy is being moved to a new host.
- *
- * This method is invoked on every view in the hierarchy. The default
- * implementation forwards the message to the receiver's subviews.
- *
- * @param hostView The view which will now host the receiver's hierarchy.
- */
-- (void)willMoveToHostView:(id<VELHostView>)hostView;
-
-/*
- * Invoked when the receiver's view hierarchy has moved to a new host.
- *
- * This method is invoked on every view in the hierarchy. The default
- * implementation forwards the message to the receiver's subviews.
- *
- * @param oldHostView The view which previously hosted the receiver's
- * hierarchy.
- */
-- (void)didMoveFromHostView:(id<VELHostView>)oldHostView;
-
-/*
  * Runs a block to change properties on one or more layers, taking into account
  * whether <VELView> animations are currently enabled.
  *

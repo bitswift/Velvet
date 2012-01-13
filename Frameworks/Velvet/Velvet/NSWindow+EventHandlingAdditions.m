@@ -28,7 +28,7 @@
         }
 
         NSVelvetView *hostView = testView;
-        VELView *velvetView = hostView.rootView;
+        VELView *velvetView = hostView.guestView;
 
         if (![velvetView isUserInteractionEnabled]) {
             break;
@@ -44,11 +44,11 @@
             }
         }
 
-        if (![testView isKindOfClass:[VELNSView class]]) {
+        if ([testView isKindOfClass:[VELNSView class]]) {
+            nsView = [(VELNSView *)testView guestView];
+        } else {
             return testView;
         }
-
-        nsView = [testView NSView];
     }
 
     return nil;

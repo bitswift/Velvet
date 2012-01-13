@@ -18,6 +18,7 @@
 #import <Velvet/VELBridgedView.h>
 #import <Velvet/VELControl.h>
 #import <Velvet/VELDraggingDestination.h>
+#import <Velvet/VELHostView.h>
 #import <Velvet/VELImageView.h>
 #import <Velvet/VELLabel.h>
 #import <Velvet/VELNSView.h>

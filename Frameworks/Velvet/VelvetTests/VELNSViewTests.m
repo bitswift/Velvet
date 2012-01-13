@@ -50,10 +50,10 @@
     NSView *contained = [[NSView alloc] initWithFrame:CGRectZero];
 
     VELNSView *view = [[VELNSView alloc] init];
-    view.NSView = contained;
+    view.guestView = contained;
 
     NSVelvetView *hostView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
-    [hostView.rootView addSubview:view];
+    [hostView.guestView addSubview:view];
 
     STAssertTrue([contained.superview isDescendantOf:hostView], @"");
 }

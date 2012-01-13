@@ -9,10 +9,9 @@
 #import <Velvet/VELNSView.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
-#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSVelvetViewPrivate.h>
-#import <Velvet/NSView+VELNSViewAdditions.h>
+#import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
@@ -36,41 +35,41 @@
 
 #pragma mark Properties
 
-@synthesize NSView = m_NSView;
+@synthesize guestView = m_guestView;
 @synthesize rendersContainedView = m_rendersContainedView;
 @synthesize focusRingLayer = m_focusRingLayer;
 
-- (void)setNSView:(NSView *)view {
+- (void)setGuestView:(NSView *)view {
     NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
 
-    // remove any existing NSView
-    [m_NSView removeFromSuperview];
-    m_NSView.hostView = nil;
+    // remove any existing guest view
+    [m_guestView removeFromSuperview];
+    m_guestView.hostView = nil;
 
     self.focusRingLayer = nil;
 
-    m_NSView = view;
+    m_guestView = view;
 
     // and set up our new view
-    if (m_NSView) {
+    if (m_guestView) {
         // set up layer-backing on the view
-        [m_NSView setWantsLayer:YES];
-        [m_NSView setNeedsDisplay:YES];
+        [m_guestView setWantsLayer:YES];
+        [m_guestView setNeedsDisplay:YES];
 
-        [self.hostView.appKitHostView addSubview:m_NSView];
-        m_NSView.hostView = self;
+        [self.ancestorNSVelvetView.appKitHostView addSubview:m_guestView];
+        m_guestView.hostView = self;
 
-        m_NSView.nextResponder = self;
+        m_guestView.nextResponder = self;
     }
 
-    [self.hostView recalculateNSViewClipping];
+    [self.ancestorNSVelvetView recalculateNSViewClipping];
 }
 
 - (CGRect)NSViewFrame; {
     // we use 'self' and 'bounds' here instead of the superview and frame
     // because the superview may be a VELScrollView, and accessing it directly
     // will skip over the CAScrollLayer that's in the hierarchy
-    return [self convertRect:self.bounds toView:self.hostView.rootView];
+    return [self convertRect:self.bounds toView:self.ancestorNSVelvetView.guestView];
 }
 
 - (void)setCenter:(CGPoint)center {
@@ -104,13 +103,13 @@
     if (!self)
         return nil;
 
-    self.NSView = view;
+    self.guestView = view;
     self.frame = view.frame;
     return self;
 }
 
 - (void)dealloc {
-    self.NSView.hostView = nil;
+    self.guestView.hostView = nil;
 }
 
 #pragma mark Geometry
@@ -123,10 +122,10 @@
         return;
     }
 
-    NSAssert(self.hostView, @"%@ should have a hostView if it has a window", self);
+    NSAssert(self.ancestorNSVelvetView, @"%@ should be in an NSVelvetView if it has a window", self);
 
     CGRect frame = self.NSViewFrame;
-    self.NSView.frame = frame;
+    self.guestView.frame = frame;
 
     [CATransaction performWithDisabledActions:^{
         self.focusRingLayer.position = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
@@ -134,7 +133,7 @@
         [self.focusRingLayer displayIfNeeded];
     }];
 
-    [self.hostView recalculateNSViewClipping];
+    [self.ancestorNSVelvetView recalculateNSViewClipping];
 }
 
 #pragma mark View hierarchy
@@ -144,15 +143,20 @@
     [super ancestorDidLayout];
 }
 
-- (void)willMoveToHostView:(NSVelvetView *)hostView {
+- (void)willMoveToHostView:(id<VELHostView>)hostView {
     [super willMoveToHostView:hostView];
-    [self.NSView removeFromSuperview];
+
+    [self.guestView removeFromSuperview];
     [self.focusRingLayer removeFromSuperlayer];
     self.focusRingLayer = nil;
 }
 
-- (void)didMoveFromHostView:(NSVelvetView *)oldHostView {
+- (void)didMoveFromHostView:(id<VELHostView>)oldHostView {
     [super didMoveFromHostView:oldHostView];
+
+    if (!self.ancestorNSVelvetView) {
+        return;
+    }
 
     // verify that VELNSViews are on top of other subviews
     #if DEBUG
@@ -170,18 +174,18 @@
 
     // this must only be added after we've completely moved to the host view,
     // because it'll do some ancestor checks for NSView ordering
-    [self.hostView.appKitHostView addSubview:self.NSView];
+    [self.ancestorNSVelvetView.appKitHostView addSubview:self.guestView];
     [self synchronizeNSViewGeometry];
 
-    self.NSView.nextResponder = self;
+    self.guestView.nextResponder = self;
 }
 
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
     if (![self pointInside:point])
         return nil;
 
-    CGPoint NSViewPoint = [self.NSView convertFromWindowPoint:[self convertToWindowPoint:point]];
-    return [self.NSView descendantViewAtPoint:NSViewPoint] ?: [super descendantViewAtPoint:point];
+    CGPoint NSViewPoint = [self.guestView convertFromWindowPoint:[self convertToWindowPoint:point]];
+    return [self.guestView descendantViewAtPoint:NSViewPoint] ?: [super descendantViewAtPoint:point];
 }
 
 #pragma mark Layout
@@ -194,7 +198,7 @@
 - (CGSize)sizeThatFits:(CGSize)constraint {
     NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
 
-    id view = self.NSView;
+    id view = self.guestView;
     NSSize cellSize = NSMakeSize(10000, 10000);
 
     NSCell *cell = nil;
@@ -218,7 +222,7 @@
 #pragma mark NSObject overrides
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> frame = %@, NSView = %@ %@", [self class], self, NSStringFromRect(self.frame), self.NSView, NSStringFromRect(self.NSView.frame)];
+    return [NSString stringWithFormat:@"<%@ %p> frame = %@, NSView = %@ %@", [self class], self, NSStringFromRect(self.frame), self.guestView, NSStringFromRect(self.guestView.frame)];
 }
 
 #pragma mark CALayer delegate
@@ -226,7 +230,7 @@
 - (void)renderContainedViewInLayer:(CALayer *)layer {
     CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size, YES);
 
-    [self.NSView.layer renderInContext:context];
+    [self.guestView.layer renderInContext:context];
 
     CGImageRef image = CGBitmapContextCreateImage(context);
     layer.contents = (__bridge_transfer id)image;

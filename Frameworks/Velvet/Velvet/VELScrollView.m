@@ -62,11 +62,11 @@ static const NSTimeInterval VELScrollViewScrollersVisibleDuration = 0.65;
 @synthesize scrollersVisible = m_scrollersVisible;
 
 - (NSScroller *)horizontalScroller {
-    return (id)self.horizontalScrollerHost.NSView;
+    return (id)self.horizontalScrollerHost.guestView;
 }
 
 - (NSScroller *)verticalScroller {
-    return (id)self.verticalScrollerHost.NSView;
+    return (id)self.verticalScrollerHost.guestView;
 }
 
 - (CGSize)contentSize {

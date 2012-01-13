@@ -13,10 +13,7 @@
 #import "VELDraggingDestinationView.h"
 
 @interface AppDelegate ()
-@property (strong) IBOutlet NSWindow *window;
-@property (weak) IBOutlet NSVelvetView *hostView;
-
-@property (strong) VELView *rootView;
+@property (strong) IBOutlet VELWindow *window;
 @property (strong) VELScrollView *scrollView;
 @property (strong) SquareView *nestedSquareView;
 @property (strong) VELNSView *buttonHost;
@@ -33,8 +30,6 @@
 
 @implementation AppDelegate
 @synthesize window = m_window;
-@synthesize hostView = m_hostView;
-@synthesize rootView = m_rootView;
 @synthesize scrollView = m_scrollView;
 @synthesize nestedSquareView = m_nestedSquareView;
 @synthesize buttonHost = m_buttonHost;
@@ -65,12 +60,12 @@
     CGColorRelease(redColor);
 
 
-    [self.hostView.rootView addSubview:containerView];
+    [self.window.rootView addSubview:containerView];
     [containerView addSubview:backgroundView];
 
 
     NSTextField *scalingView = [[NSTextField alloc] init];
-    [backgroundView setNSView:scalingView];
+    backgroundView.guestView = scalingView;
     [scalingView setBezelStyle:NSTextFieldSquareBezel];
 
 
@@ -111,7 +106,7 @@
 
     [view1 addSubview:view2];
 
-    [self.hostView.rootView addSubview:view1];
+    [self.window.rootView addSubview:view1];
     [view1 addSubview:backgroundVELView];
 }
 
@@ -165,7 +160,7 @@
     label.backgroundColor = [NSColor whiteColor];
     label.opaque = YES;
 
-    self.hostView.rootView.subviews = [NSArray arrayWithObjects:label, self.scrollView, nil];
+    self.window.rootView.subviews = [NSArray arrayWithObjects:label, self.scrollView, nil];
 
     self.nestedSquareView = [[SquareView alloc] init];
     self.nestedSquareView.layer.opacity = 1;
@@ -232,7 +227,7 @@
         [views addObject:v];
     }
 
-    self.hostView.rootView.subviews = views;
+    self.window.rootView.subviews = views;
     self.views = views;
 }
 

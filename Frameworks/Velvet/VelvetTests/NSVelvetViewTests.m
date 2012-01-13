@@ -18,7 +18,7 @@
 
 @implementation NSVelvetViewTests
 
-- (void)testSettingTheRootViewOnNSVelvetView {
+- (void)testSettingGuestViewOnNSVelvetView {
     VELWindow *window = [[VELWindow alloc]
         initWithContentRect:CGRectMake(100, 100, 500, 500)
         styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
@@ -27,14 +27,10 @@
         screen:nil
     ];
 
-    NSVelvetView *contentView = [[NSVelvetView alloc] init];
-    window.contentView = contentView;
-
     TestVELView *containerView = [[TestVELView alloc] init];
+    window.contentView.guestView = containerView;
 
-    contentView.rootView = containerView;
-
-    STAssertEqualObjects(contentView.rootView, containerView, @"");
+    STAssertEqualObjects(window.contentView.guestView, containerView, @"");
 }
 
 @end
@@ -42,11 +38,11 @@
 
 @implementation TestVELView
 
-- (void)didMoveFromHostView:(NSVelvetView *)oldHostView {
+- (void)didMoveFromHostView:(id<VELHostView>)oldHostView {
     [super didMoveFromHostView:oldHostView];
     
-    // The hostView's rootView should be self.
-    NSAssert(self.hostView.rootView == self, @"");
+    // The NSVelvetView's guestView should be self.
+    NSAssert(self.ancestorNSVelvetView.guestView == self, @"");
 }
 
 @end

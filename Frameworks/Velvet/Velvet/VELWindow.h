@@ -30,5 +30,5 @@
 /**
  * The root of the Velvet hierarchy in the receiver.
  */
-@property (nonatomic, readonly) VELView *rootView;
+@property (nonatomic, strong) VELView *rootView;
 @end

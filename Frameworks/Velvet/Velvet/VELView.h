@@ -9,8 +9,6 @@
 #import <AppKit/AppKit.h>
 #import <Velvet/VELBridgedView.h>
 
-@class NSVelvetView;
-
 /**
  * Defines how a <VELView> automatically resizes. These flags can be bitwise
  * ORed together to combine behaviors.
@@ -284,16 +282,8 @@ typedef enum {
 /**
  * The immediate superview of the receiver, or `nil` if the receiver is a root
  * view.
- *
- * To obtain the <NSVelvetView> that the receiver is hosted in, you must use
- * <hostView> instead.
  */
 @property (nonatomic, readonly, weak) VELView *superview;
-
-/**
- * The <NSVelvetView> that is hosting the furthest ancestor of the receiver.
- */
-@property (nonatomic, readonly, weak) NSVelvetView *hostView;
 
 /**
  * The window in which the receiver is displayed.
@@ -316,15 +306,6 @@ typedef enum {
  * @param view The view to find a common ancestor of, along with the receiver.
  */
 - (VELView *)ancestorSharedWithView:(VELView *)view;
-
-/**
- * Returns the closest ancestor scroll view containing the receiver (including
- * the receiver itself), or `nil` if there is no such view.
- *
- * This may return an `NSScrollView`, a <VELScrollView>, or a custom class. This
- * method will search both Velvet and AppKit hierarchies.
- */
-- (id)ancestorScrollView;
 
 /**
  * Returns whether the receiver is `view` or a descendant thereof.

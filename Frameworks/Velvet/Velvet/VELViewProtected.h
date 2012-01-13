@@ -8,7 +8,7 @@
 
 #import <Velvet/VELView.h>
 
-@class NSVelvetView;
+@protocol VELHostView;
 
 /*
  * Protected functionality of <VELView> exposed for subclasses.
@@ -45,7 +45,7 @@
  *
  * @param hostView The view which will now host the receiver's hierarchy.
  */
-- (void)willMoveToHostView:(NSVelvetView *)hostView;
+- (void)willMoveToHostView:(id<VELHostView>)hostView;
 
 /*
  * Invoked when the receiver's view hierarchy has moved to a new host.
@@ -56,7 +56,7 @@
  * @param oldHostView The view which previously hosted the receiver's
  * hierarchy.
  */
-- (void)didMoveFromHostView:(NSVelvetView *)oldHostView;
+- (void)didMoveFromHostView:(id<VELHostView>)oldHostView;
 
 /*
  * Runs a block to change properties on one or more layers, taking into account

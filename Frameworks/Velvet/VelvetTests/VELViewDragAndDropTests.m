@@ -20,7 +20,7 @@
     STAssertEquals([hostView.registeredDraggedTypes count], (NSUInteger)0, @"");
 
     DragDestinationView *dragDestination = [[DragDestinationView alloc] init];
-    [hostView.rootView addSubview:dragDestination];
+    [hostView.guestView addSubview:dragDestination];
 
     STAssertEqualObjects(hostView.registeredDraggedTypes, dragDestination.supportedDragTypes, @"");
 

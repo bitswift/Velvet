@@ -10,6 +10,7 @@
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
+#import <Velvet/VELBridgedView.h>
 #import <Velvet/VELView.h>
 
 @interface VELFocusRingLayer ()
@@ -49,10 +50,10 @@
     if (!self.originalLayer || !hostSuperlayer)
         return;
 
-    VELView *clippingView = [self.hostView ancestorScrollView];
+    id<VELBridgedView> clippingView = [self.hostView ancestorScrollView];
     
-    // only clip to scroll views of our creation
-    if (![clippingView isKindOfClass:[VELView class]])
+    // only clip to non-AppKit scroll views
+    if ([clippingView isKindOfClass:[NSView class]])
         clippingView = nil;
 
     CGContextSaveGState(context);

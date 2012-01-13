@@ -179,7 +179,7 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     VELViewController *vc = [[VELViewController alloc] init];
 
     NSVelvetView *hostView = self.window.contentView;
-    hostView.rootView = vc.view;
+    hostView.guestView = vc.view;
 
     // verify that our view's next responder is still correct
     STAssertEquals(vc.view.nextResponder, vc, @"");

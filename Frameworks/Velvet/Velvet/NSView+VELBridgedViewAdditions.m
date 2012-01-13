@@ -27,6 +27,17 @@
     objc_setAssociatedObject(self, @selector(hostView), hostView, OBJC_ASSOCIATION_ASSIGN);
 }
 
+- (id<VELBridgedView>)ancestorScrollView {
+    if ([self isKindOfClass:[NSScrollView class]])
+        return self;
+
+    id<VELHostView> immediateHostView = objc_getAssociatedObject(self, @selector(hostView));
+    if (immediateHostView)
+        return immediateHostView.ancestorScrollView;
+
+    return self.superview.ancestorScrollView;
+}
+
 - (NSVelvetView *)ancestorNSVelvetView; {
     NSView *view = self;
 

@@ -219,7 +219,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
     m_appKitHostView = [[NSView alloc] initWithFrame:self.bounds];
     m_appKitHostView.autoresizesSubviews = NO;
-    m_appKitHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [m_appKitHostView setWantsLayer:YES];
     [self addSubview:m_appKitHostView];
 
@@ -234,6 +233,14 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 #pragma mark Layout
+
+- (void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize; {
+    [CATransaction performWithDisabledActions:^{
+        [super resizeSubviewsWithOldSize:oldBoundsSize];
+
+        self.appKitHostView.frame = self.bounds;
+    }];
+}
 
 - (NSView *)hitTest:(NSPoint)point {
     if (!self.userInteractionEnabled)

@@ -48,6 +48,21 @@
     ];
 }
 
+- (void)testInitialization {
+    VELView *view = [[VELView alloc] init];
+    STAssertNotNil(view, @"");
+
+    STAssertTrue(view.alignsToIntegralPoints, @"");
+    STAssertTrue(view.clearsContextBeforeDrawing, @"");
+    STAssertEquals(view.contentMode, VELViewContentModeScaleToFill, @"");
+    STAssertFalse(view.hidden, @"");
+    STAssertNil(view.hostView, @"");
+    STAssertNotNil(view.layer, @"");
+    STAssertFalse(view.opaque, @"");
+    STAssertNil(view.superview, @"");
+    STAssertTrue(view.userInteractionEnabled, @"");
+}
+
 - (void)testSizeThatFits {
     VELView *view = [[VELView alloc] init];
     STAssertNotNil(view, @"");

@@ -12,7 +12,6 @@
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSVelvetViewPrivate.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
 #import <Proton/Proton.h>
@@ -20,7 +19,6 @@
 
 @interface VELNSView ()
 @property (nonatomic, assign) BOOL rendersContainedView;
-@property (nonatomic, strong) VELFocusRingLayer *focusRingLayer;
 
 - (void)synchronizeNSViewGeometry;
 @end
@@ -31,7 +29,6 @@
 
 @synthesize guestView = m_guestView;
 @synthesize rendersContainedView = m_rendersContainedView;
-@synthesize focusRingLayer = m_focusRingLayer;
 
 - (void)setGuestView:(NSView *)view {
     NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
@@ -39,8 +36,6 @@
     // remove any existing guest view
     [m_guestView removeFromSuperview];
     m_guestView.hostView = nil;
-
-    self.focusRingLayer = nil;
 
     m_guestView = view;
 
@@ -125,12 +120,6 @@
     CGRect frame = self.NSViewFrame;
     self.guestView.frame = frame;
 
-    [CATransaction performWithDisabledActions:^{
-        self.focusRingLayer.position = CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame));
-        [self.focusRingLayer setNeedsDisplay];
-        [self.focusRingLayer displayIfNeeded];
-    }];
-
     [self.ancestorNSVelvetView recalculateNSViewClipping];
 }
 
@@ -145,10 +134,7 @@
     [super willMoveToNSVelvetView:view];
 
     [self.guestView willMoveToNSVelvetView:view];
-
     [self.guestView removeFromSuperview];
-    [self.focusRingLayer removeFromSuperlayer];
-    self.focusRingLayer = nil;
 }
 
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {

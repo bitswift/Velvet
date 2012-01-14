@@ -863,6 +863,13 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {
+    if (self.alignsToIntegralPixels) {
+        // this NSVelvetView might be on a different window or a different screen,
+        // and thus have a different pixel density, so we should re-align our
+        // frame to integral pixels
+        self.frame = self.layer.frame;
+    }
+
     [self updateViewAndViewControllerNextResponders];
 
     if ([self respondsToSelector:@selector(supportedDragTypes)]) {

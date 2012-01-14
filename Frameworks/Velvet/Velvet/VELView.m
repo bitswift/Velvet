@@ -501,6 +501,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
     return self;
 }
 
+- (void)dealloc {
+    m_layer.delegate = nil;
+}
+
 #pragma mark Rendering
 
 - (void)drawRect:(CGRect)rect; {

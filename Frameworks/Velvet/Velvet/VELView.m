@@ -21,6 +21,7 @@
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELScrollView.h>
 #import <Velvet/VELViewController.h>
+#import <Velvet/VELViewLayer.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
 #import <objc/runtime.h>
@@ -499,7 +500,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 #pragma mark Layer handling
 
 + (Class)layerClass; {
-    return [CALayer class];
+    return [VELViewLayer class];
 }
 
 #pragma mark Lifecycle

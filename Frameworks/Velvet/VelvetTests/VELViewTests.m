@@ -9,6 +9,7 @@
 #import "VELViewTests.h"
 #import <Cocoa/Cocoa.h>
 #import <Velvet/Velvet.h>
+#import <Proton/Proton.h>
 
 @interface TestView : VELView
 @property (nonatomic, assign) BOOL willMoveToSuperviewInvoked;
@@ -295,6 +296,156 @@
     
     view.bounds = CGRectMake(0, 0, 25, 25);
     STAssertTrue(view.layoutSubviewsInvoked, @"");
+}
+
+- (void)testSuperviewKVO {
+    VELView *subview = [[VELView alloc] init];
+
+    @autoreleasepool {
+        __block BOOL notificationReceived = NO;
+
+        PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
+            initWithTarget:subview
+            keyPath:PROKeyForObject(subview, superview)
+            options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+            block:^(NSDictionary *changes){
+                id newValue = [changes objectForKey:NSKeyValueChangeNewKey];
+                if ([newValue isEqual:[NSNull null]])
+                    newValue = nil;
+
+                STAssertEquals(newValue, subview.superview, @"");
+
+                id oldValue = [changes objectForKey:NSKeyValueChangeOldKey];
+                if ([oldValue isEqual:[NSNull null]])
+                    oldValue = nil;
+
+                STAssertTrue(oldValue != subview.superview, @"");
+
+                notificationReceived = YES;
+            }
+        ];
+
+        // Clang, shut up
+        [observer self];
+
+        [[[VELView alloc] init] addSubview:subview];
+
+        STAssertTrue(notificationReceived, @"");
+        notificationReceived = NO;
+
+        [subview removeFromSuperview];
+
+        STAssertTrue(notificationReceived, @"");
+    }
+}
+
+- (void)testSubviewsReplacementKVO {
+    VELView *superview = [[VELView alloc] init];
+
+    @autoreleasepool {
+        __block BOOL notificationReceived = NO;
+
+        PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
+            initWithTarget:superview
+            keyPath:PROKeyForObject(superview, subviews)
+            options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+            block:^(NSDictionary *changes){
+                STAssertTrue(NSKeyValueChangeSetting == [[changes objectForKey:NSKeyValueChangeKindKey] unsignedIntegerValue], @"");
+
+                id newValue = [changes objectForKey:NSKeyValueChangeNewKey];
+                if ([newValue isEqual:[NSNull null]])
+                    newValue = nil;
+
+                STAssertEqualObjects(newValue, superview.subviews, @"");
+
+                id oldValue = [changes objectForKey:NSKeyValueChangeOldKey];
+                if ([oldValue isEqual:[NSNull null]])
+                    oldValue = nil;
+
+                STAssertFalse([oldValue isEqualToArray:superview.subviews], @"");
+
+                notificationReceived = YES;
+            }
+        ];
+
+        // Clang, shut up
+        [observer self];
+
+        superview.subviews = [NSArray arrayWithObjects:[[VELView alloc] init], [[VELView alloc] init], nil];
+
+        STAssertTrue(notificationReceived, @"");
+        notificationReceived = NO;
+
+        superview.subviews = nil;
+
+        STAssertTrue(notificationReceived, @"");
+    }
+}
+
+- (void)testSubviewsInsertionKVO {
+    VELView *superview = [[VELView alloc] init];
+
+    @autoreleasepool {
+        __block BOOL notificationReceived = NO;
+
+        PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
+            initWithTarget:superview
+            keyPath:PROKeyForObject(superview, subviews)
+            options:NSKeyValueObservingOptionNew
+            block:^(NSDictionary *changes){
+                STAssertTrue(NSKeyValueChangeInsertion == [[changes objectForKey:NSKeyValueChangeKindKey] unsignedIntegerValue], @"");
+
+                NSArray *values = [changes objectForKey:NSKeyValueChangeNewKey];
+                NSIndexSet *indexes = [changes objectForKey:NSKeyValueChangeIndexesKey];
+                STAssertEqualObjects([superview.subviews objectsAtIndexes:indexes], values, @"");
+
+                notificationReceived = YES;
+            }
+        ];
+
+        // Clang, shut up
+        [observer self];
+
+        [superview addSubview:[[VELView alloc] init]];
+
+        STAssertTrue(notificationReceived, @"");
+    }
+}
+
+- (void)testSubviewsRemovalKVO {
+    VELView *superview = [[VELView alloc] init];
+
+    VELView *subview = [[VELView alloc] init];
+    [superview addSubview:subview];
+
+    @autoreleasepool {
+        __block BOOL notificationReceived = NO;
+
+        PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
+            initWithTarget:superview
+            keyPath:PROKeyForObject(superview, subviews)
+            options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionPrior
+            block:^(NSDictionary *changes){
+                STAssertTrue(NSKeyValueChangeRemoval == [[changes objectForKey:NSKeyValueChangeKindKey] unsignedIntegerValue], @"");
+
+                if (![[changes objectForKey:NSKeyValueChangeNotificationIsPriorKey] boolValue])
+                    return;
+
+                NSArray *values = [changes objectForKey:NSKeyValueChangeOldKey];
+                NSIndexSet *indexes = [changes objectForKey:NSKeyValueChangeIndexesKey];
+                STAssertEqualObjects([superview.subviews objectsAtIndexes:indexes], values, @"");
+
+                notificationReceived = YES;
+            }
+        ];
+
+        // Clang, shut up
+        [observer self];
+
+        [subview removeFromSuperview];
+
+        STAssertTrue(notificationReceived, @"");
+    }
 }
 
 @end

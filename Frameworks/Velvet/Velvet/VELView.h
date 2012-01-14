@@ -239,6 +239,19 @@ typedef enum {
 @property (nonatomic, assign) CGAffineTransform transform;
 
 /**
+ * Aligns the given rectangle to the integral pixels in the window. Returns
+ * a rectangle in the receiver's coordinate system.
+ *
+ * This will round down fractional X origins (moving leftward on screen), round
+ * up fractional Y origins (moving upward on screen), and round down fractional
+ * sizes, such that the "real" size of the rectangle will never increase just
+ * from use of this method.
+ *
+ * @param rect A rectangle in the receiver's coordinate system.
+ */
+- (CGRect)backingAlignedRect:(CGRect)rect;
+
+/**
  * Transforms a point from the coordinate system of another view to that of the
  * receiver.
  *

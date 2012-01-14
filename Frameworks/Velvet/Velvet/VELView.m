@@ -758,6 +758,50 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 #pragma mark Geometry
 
+- (CGRect)backingAlignedRect:(CGRect)rect; {
+    NSAlignmentOptions alignmentOptions = 
+        // floor(originX)
+        NSAlignMinXOutward |
+
+        // ceil(originY)
+        NSAlignMinYInward |
+
+        // floor(width)
+        NSAlignWidthInward |
+        
+        // floor(height)
+        NSAlignHeightInward;
+
+    NSVelvetView *velvetView = self.ancestorNSVelvetView;
+    NSWindow *window = velvetView.window;
+
+    if (!window) {
+        // try to align to the main screen's scale factor
+        //
+        // note that this may yield incorrect results if the view is actually
+        // displayed on a different screen
+        CGFloat scaleFactor = [[NSScreen mainScreen] backingScaleFactor];
+
+        // convert to device space
+        CGAffineTransform transformToBacking = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
+        CGRect backingRect = CGRectApplyAffineTransform(rect, transformToBacking);
+
+        // align the rectangle on pixels
+        backingRect = NSIntegralRectWithOptions(backingRect, alignmentOptions);
+
+        // convert back to user space
+        return CGRectApplyAffineTransform(backingRect, CGAffineTransformInvert(transformToBacking));
+    }
+
+    CGRect windowRect = [self convertToWindowRect:rect];
+
+    // the documentation says that the input rect is in view coordinates, but
+    // it's actually window coordinates
+    windowRect = [velvetView backingAlignedRect:windowRect options:alignmentOptions];
+
+    return [self convertFromWindowRect:windowRect];
+}
+
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {
     return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
 }

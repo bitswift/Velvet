@@ -52,7 +52,7 @@
     VELView *view = [[VELView alloc] init];
     STAssertNotNil(view, @"");
 
-    STAssertTrue(view.alignsToIntegralPoints, @"");
+    STAssertTrue(view.alignsToIntegralPixels, @"");
     STAssertTrue(view.clearsContextBeforeDrawing, @"");
     STAssertEquals(view.contentMode, VELViewContentModeScaleToFill, @"");
     STAssertFalse(view.hidden, @"");

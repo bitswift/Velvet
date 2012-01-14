@@ -97,17 +97,12 @@
 
     CGRect newFrame;
 
-    if (self.view.alignsToIntegralPoints) {
+    if (self.view.alignsToIntegralPixels) {
         /*
-         * Floor all coordinates and save the difference, so that we can
+         * Align the rectangle and save the difference, so that we can
          * compensate for it in later autoresizing.
          */
-        newFrame = CGRectMake(
-            floor(frame.origin.x),
-            ceil(frame.origin.y),
-            floor(frame.size.width),
-            floor(frame.size.height)
-        );
+        newFrame = [self.view backingAlignedRect:frame];
 
         self.roundoffErrorX = CGRectGetMaxX(frame) - CGRectGetMaxX(newFrame);
         self.roundoffErrorY = CGRectGetMaxY(frame) - CGRectGetMaxY(newFrame);

@@ -55,6 +55,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         unsigned userInteractionEnabled:1;
         unsigned recursingActionForLayer:1;
         unsigned clearsContextBeforeDrawing:1;
+        unsigned alignsToIntegralPoints:1;
     } m_flags;
 
     NSMutableArray *m_subviews;
@@ -134,6 +135,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
     m_flags.clearsContextBeforeDrawing = clearsContext;
 }
 
+- (BOOL)alignsToIntegralPoints {
+    return m_flags.alignsToIntegralPoints;
+}
+
+- (void)setAlignsToIntegralPoints:(BOOL)aligns {
+    m_flags.alignsToIntegralPoints = aligns;
+}
+
 - (BOOL)clipsToBounds {
     return self.layer.masksToBounds;
 }
@@ -152,6 +161,16 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setFrame:(CGRect)frame {
+    if (self.alignsToIntegralPoints) {
+        // do not use CGRectIntegral(), as it rounds up the size
+        frame = CGRectMake(
+            floor(frame.origin.x),
+            floor(frame.origin.y),
+            floor(frame.size.width),
+            floor(frame.size.height)
+        );
+    }
+
     CGSize originalSize = self.layer.frame.size;
     CGSize newSize = frame.size;
     
@@ -172,6 +191,16 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setBounds:(CGRect)bounds {
+    if (self.alignsToIntegralPoints) {
+        // do not use CGRectIntegral(), as it rounds up the size
+        bounds = CGRectMake(
+            floor(bounds.origin.x),
+            floor(bounds.origin.y),
+            floor(bounds.size.width),
+            floor(bounds.size.height)
+        );
+    }
+
     BOOL needsLayout = !CGRectEqualToRect(bounds, self.layer.bounds);
     
     [[self class] changeLayerProperties:^{
@@ -189,9 +218,26 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setCenter:(CGPoint)center {
+    if (self.alignsToIntegralPoints) {
+        CGSize size = self.bounds.size;
+
+        // do not use CGRectIntegral(), as it rounds up the size
+        CGRect integralFrame = CGRectMake(
+            floor(center.x - size.width / 2),
+            floor(center.y - size.height / 2),
+            floor(size.width),
+            floor(size.height)
+        );
+
+        // this point may have fractional coordinates in it, but it'll result in
+        // a frame which lands on whole points
+        center = CGPointMake(CGRectGetMidX(integralFrame), CGRectGetMidY(integralFrame));
+    }
+
     [[self class] changeLayerProperties:^{
         self.layer.position = center;
     }];
+
     [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
 }
 
@@ -483,6 +529,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     // more correct rendering) in favor of performance should be explicit
     self.opaque = NO;
     self.clearsContextBeforeDrawing = YES;
+    self.alignsToIntegralPoints = YES;
 
     if ([[self class] doesCustomDrawing])
         self.contentMode = VELViewContentModeRedraw;

@@ -304,7 +304,7 @@
     @autoreleasepool {
         __block BOOL notificationReceived = NO;
 
-        __autoreleasing PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
+        PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
             initWithTarget:subview
             keyPath:PROKeyForObject(subview, superview)
             options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
@@ -325,6 +325,9 @@
             }
         ];
 
+        // Clang, shut up
+        [observer self];
+
         [[[VELView alloc] init] addSubview:subview];
 
         STAssertTrue(notificationReceived, @"");
@@ -342,7 +345,7 @@
     @autoreleasepool {
         __block BOOL notificationReceived = NO;
 
-        __autoreleasing PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
+        PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
             initWithTarget:superview
             keyPath:PROKeyForObject(superview, subviews)
             options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
@@ -365,6 +368,9 @@
             }
         ];
 
+        // Clang, shut up
+        [observer self];
+
         superview.subviews = [NSArray arrayWithObjects:[[VELView alloc] init], [[VELView alloc] init], nil];
 
         STAssertTrue(notificationReceived, @"");
@@ -382,7 +388,7 @@
     @autoreleasepool {
         __block BOOL notificationReceived = NO;
 
-        __autoreleasing PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
+        PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
             initWithTarget:superview
             keyPath:PROKeyForObject(superview, subviews)
             options:NSKeyValueObservingOptionNew
@@ -396,6 +402,9 @@
                 notificationReceived = YES;
             }
         ];
+
+        // Clang, shut up
+        [observer self];
 
         [superview addSubview:[[VELView alloc] init]];
 
@@ -412,7 +421,7 @@
     @autoreleasepool {
         __block BOOL notificationReceived = NO;
 
-        __autoreleasing PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
+        PROKeyValueObserver *observer = [[PROKeyValueObserver alloc]
             initWithTarget:superview
             keyPath:PROKeyForObject(superview, subviews)
             options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionPrior
@@ -429,6 +438,9 @@
                 notificationReceived = YES;
             }
         ];
+
+        // Clang, shut up
+        [observer self];
 
         [subview removeFromSuperview];
 

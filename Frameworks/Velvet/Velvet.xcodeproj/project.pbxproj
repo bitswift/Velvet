@@ -366,6 +366,8 @@
 			children = (
 				1EA3D70814B37F3B0007E4C4 /* NSVelvetHostViewTests.h */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
+				1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */,
+				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
 				D0A96C0B14B7AF1F00A64F6F /* VELAppKitAdditionsTests.h */,
 				D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */,
 				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
@@ -382,8 +384,6 @@
 				D0B75C6E14918EB9005C81D5 /* VELViewTests.m */,
 				D0CE950E14B3842F003581C8 /* VELWindowTests.h */,
 				D0CE950F14B3842F003581C8 /* VELWindowTests.m */,
-				1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */,
-				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";

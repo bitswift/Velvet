@@ -317,7 +317,7 @@
 
     view.frame = CGRectMake(10.25, 11.5, 12.75, 13.01); 
 
-    CGRect expectedFrame = CGRectMake(10, 11, 12, 13);
+    CGRect expectedFrame = CGRectMake(10, 12, 12, 13);
     STAssertTrue(CGRectEqualToRect(view.frame, expectedFrame), @"frame %@ does not match expected %@", NSStringFromRect(view.frame), NSStringFromRect(expectedFrame));
 }
 
@@ -333,9 +333,9 @@
 - (void)testAlignsToIntegralPointsSettingMisalignedCenter {
     VELView *view = [[VELView alloc] init];
 
-    view.center = CGPointMake(13.3, 14.9); 
+    view.center = CGPointMake(13.7, 14.3);
 
-    CGPoint expectedCenter = CGPointMake(13, 14);
+    CGPoint expectedCenter = CGPointMake(13, 15);
     STAssertTrue(CGPointEqualToPoint(view.center, expectedCenter), @"");
 }
 
@@ -344,7 +344,7 @@
 
     view.center = CGPointMake(15, 15); 
 
-    CGRect expectedFrame = CGRectMake(12, 12, 5, 5);
+    CGRect expectedFrame = CGRectMake(12, 13, 5, 5);
     STAssertTrue(CGRectEqualToRect(view.frame, expectedFrame), @"");
 }
 
@@ -357,7 +357,7 @@
 
     superview.frame = CGRectMake(0, 0, 25, 25);
 
-    CGRect expectedSubviewFrame = CGRectMake(2, 2, 20, 20);
+    CGRect expectedSubviewFrame = CGRectMake(2, 3, 20, 20);
     STAssertTrue(CGRectEqualToRect(subview.frame, expectedSubviewFrame), @"subview frame %@ does not match expected %@", NSStringFromRect(subview.frame), NSStringFromRect(expectedSubviewFrame));
 }
 

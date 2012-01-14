@@ -11,7 +11,15 @@
 
 @safecategory (NSImage, CoreGraphicsAdditions)
 - (CGImageRef)CGImage; {
-    return [self CGImageForProposedRect:NULL context:nil hints:nil];
+    NSGraphicsContext *graphicsContext = [NSGraphicsContext currentContext];
+    if (!graphicsContext) {
+        NSArray *windows = [NSApp windows];
+        if ([windows count]) {
+            graphicsContext = [[windows objectAtIndex:0] graphicsContext];
+        }
+    }
+
+    return [self CGImageForProposedRect:NULL context:graphicsContext hints:nil];
 }
 
 - (id)initWithCGImage:(CGImageRef)image; {

@@ -19,7 +19,6 @@
 #import <Velvet/VELDraggingDestination.h>
 #import <Velvet/VELHostView.h>
 #import <Velvet/VELNSViewPrivate.h>
-#import <Velvet/VELScrollView.h>
 #import <Velvet/VELViewController.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>

@@ -698,6 +698,15 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)didMoveFromWindow:(NSWindow *)window; {
+    CGFloat newScaleFactor = self.window.backingScaleFactor;
+
+    if (newScaleFactor > 0 && fabs(newScaleFactor - self.layer.contentsScale) > 0.01) {
+        // we just moved to a window that has a different pixel density, so
+        // redisplay our layer at that scale factor
+        self.layer.contentsScale = newScaleFactor;
+        [self setNeedsDisplay];
+    }
+
     [self updateViewAndViewControllerNextResponders];
 
     if (self.window)
@@ -938,6 +947,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
     if (self.clearsContextBeforeDrawing)
         CGContextClearRect(context, drawingRegion);
+
+    // scale the context so that 1 point = layer.contentsScale pixels (like iOS)
+    CGAffineTransform pointsToPixels = CGAffineTransformMakeScale(layer.contentsScale, layer.contentsScale);
+
+    CGContextConcatCTM(context, pointsToPixels);
+
+    // convert drawingRegion from _pixels_ to _points_
+    drawingRegion = CGRectApplyAffineTransform(drawingRegion, CGAffineTransformInvert(pointsToPixels));
 
     // enable sub-pixel antialiasing (if drawing onto anything opaque)
     CGContextSetShouldAntialias(context, YES);

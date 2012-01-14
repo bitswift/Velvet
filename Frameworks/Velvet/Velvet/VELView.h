@@ -212,8 +212,10 @@ typedef enum {
  * Whether the view automatically keeps its <frame> aligned with integral
  * points, to avoid blurriness from accidentally landing on partial points.
  *
- * Unlike `CGRectIntegral()`, this will always round down _both_ the origin and
- * size of the view when it lands on partial points.
+ * This will round down fractional X origins (moving leftward on screen), round
+ * up fractional Y origins (moving upward on screen), and round down fractional
+ * sizes, such that the size of the view will never change just from use of this
+ * property.
  *
  * The default value for this property is `YES`.
  *

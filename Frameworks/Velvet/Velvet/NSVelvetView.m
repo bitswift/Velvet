@@ -7,6 +7,8 @@
 //
 
 #import <Velvet/NSVelvetView.h>
+#import <Proton/Proton.h>
+#import <QuartzCore/QuartzCore.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/NSVelvetHostView.h>
@@ -17,7 +19,6 @@
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELViewPrivate.h>
-#import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 
 static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, void *context) {
@@ -105,23 +106,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, strong) CAShapeLayer *maskLayer;
 
 /*
- * Replaces a focus ring layer provided by AppKit with one of our own to
- * properly handle clipping.
- *
- * @param layer The focus ring layer installed by AppKit.
+ * Returns any existing AppKit-created focus ring layer for the given view, or
+ * `nil` if one could not be found.
  */
-- (void)replaceFocusRingLayer:(CALayer *)layer;
-
-/*
- * Attaches a focus ring to a given <VELNSView>, synchronizing their geometry.
- *
- * The focus ring will clip to the superview of `hostView`.
- *
- * @param hostView The view which has focus.
- * @param layer The AppKit-installed layer which is currently rendering a focus
- * ring.
- */
-- (void)attachFocusRingLayerToView:(VELNSView *)hostView replacingLayer:(CALayer *)layer;
+- (CALayer *)focusRingLayerForView:(NSView *)view;
 
 /*
  * Configures all the necessary properties on the receiver. This is outside of
@@ -208,7 +196,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)setUp; {
     self.userInteractionEnabled = YES;
 
-    m_maskLayer = [[CAShapeLayer alloc] init];
+    m_maskLayer = [CAShapeLayer layer];
 
     // enable layer-backing for this view
     [self setWantsLayer:YES];
@@ -269,7 +257,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     return result;
 }
 
-
 #pragma mark CALayer delegate
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
@@ -279,61 +266,34 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     }
     
     // appKitHostView.layer is being laid out
+    //
+    // this often happens in response to AppKit adding a focus ring layer, so
+    // recalculate our clipping paths to take it into account
+    [self recalculateNSViewClipping];
+}
 
-    NSArray *existingSublayers = [layer.sublayers copy];
+#pragma mark Focus Ring
 
-    [CATransaction performWithDisabledActions:^{
-        for (CALayer *sublayer in existingSublayers) {
-            if (sublayer.delegate) {
-                // this is ours
-                continue;
-            } else if ([sublayer isKindOfClass:[VELFocusRingLayer class]]) {
-                VELFocusRingLayer *focusRingLayer = (id)sublayer;
-
-                // if the original focus ring was removed...
-                if ([existingSublayers indexOfObjectIdenticalTo:focusRingLayer.originalLayer] == NSNotFound) {
-                    // remove ours as well
-                    [focusRingLayer removeFromSuperlayer];
-                }
-
-                continue;
-            }
-
-            // this is probably a focus ring -- try to find the view that it
-            // belongs to so we can clip it
-            [self replaceFocusRingLayer:sublayer];
+- (CALayer *)focusRingLayerForView:(NSView *)view; {
+    return [self.appKitHostView.layer.sublayers foldLeftWithValue:nil usingBlock:^(CALayer *resultSoFar, CALayer *layer){
+        // don't return the layer of the view itself
+        if (layer == view.layer) {
+            return resultSoFar;
         }
+
+        // if the layer doesn't wrap around this view, it's not the focus ring
+        if (!CGRectContainsRect(layer.frame, view.frame)) {
+            return resultSoFar;
+        }
+
+        // if resultSoFar matched more tightly than this layer, consider the
+        // former to be the focus ring
+        if (resultSoFar && !CGRectContainsRect(resultSoFar.frame, layer.frame)) {
+            return resultSoFar;
+        }
+
+        return layer;
     }];
-}
-
-- (void)replaceFocusRingLayer:(CALayer *)layer; {
-    for (NSView *view in self.appKitHostView.subviews) {
-        // if the focus ring layer wraps around this view, it's probably the
-        // ring for this view
-        // TODO: match the tightest rectangle around views?
-        if (CGRectContainsRect(layer.frame, view.frame)) {
-            VELNSView *hostView = view.hostView;
-            if (hostView) {
-                [self attachFocusRingLayerToView:hostView replacingLayer:layer];
-                break;
-            }
-        }
-    }
-}
-
-- (void)attachFocusRingLayerToView:(VELNSView *)hostView replacingLayer:(CALayer *)layer; {
-    NSAssert1(hostView.superview, @"%@ should have a superview if its NSView is in the NSVelvetView", hostView);
-
-    [hostView.focusRingLayer removeFromSuperlayer];
-
-    VELFocusRingLayer *focusRingLayer = [[VELFocusRingLayer alloc] initWithOriginalLayer:layer hostView:hostView];
-
-    // keep the focus ring at the top level (i.e., not in the appKitHostView),
-    // so that it doesn't get masked normally
-    [self.layer addSublayer:focusRingLayer];
-
-    focusRingLayer.frame = layer.frame;
-    hostView.focusRingLayer = focusRingLayer;
 }
 
 #pragma mark Masking
@@ -349,6 +309,39 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         id<VELBridgedView> hostView = view.hostView;
         if (!hostView)
             continue;
+
+        CALayer *focusRingLayer = [self focusRingLayerForView:view];
+        if (focusRingLayer) {
+            id<VELBridgedView> clippingView = [hostView ancestorScrollView];
+
+            if (clippingView) {
+                // set up a mask on the focus ring that clips to any ancestor scroll views
+                CAShapeLayer *maskLayer = (id)focusRingLayer.mask;
+                if (![maskLayer isKindOfClass:[CAShapeLayer class]]) {
+                    maskLayer = [CAShapeLayer layer];
+
+                    focusRingLayer.mask = maskLayer;
+                }
+
+                CGRect rect = [clippingView.layer convertAndClipRect:clippingView.layer.bounds toLayer:focusRingLayer];
+                if (CGRectIsNull(rect) || CGRectIsInfinite(rect)) {
+                    rect = CGRectZero;
+                }
+
+                CGPathRef focusRingPath = CGPathCreateWithRect(rect, NULL);
+                @onExit {
+                    CGPathRelease(focusRingPath);
+                };
+
+                maskLayer.path = focusRingPath;
+
+                CGPathAddRect(path, NULL, [focusRingLayer convertAndClipRect:rect toLayer:self.layer]);
+            } else {
+                focusRingLayer.mask = nil;
+
+                CGPathAddRect(path, NULL, [focusRingLayer convertAndClipRect:focusRingLayer.bounds toLayer:self.layer]);
+            }
+        }
 
         // clip the frame of each NSView using the Velvet hierarchy
         CGRect rect = [hostView.layer convertAndClipRect:hostView.layer.bounds toLayer:self.layer];

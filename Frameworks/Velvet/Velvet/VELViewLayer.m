@@ -104,7 +104,7 @@
          */
         newFrame = CGRectMake(
             floor(frame.origin.x),
-            floor(frame.origin.y),
+            ceil(frame.origin.y),
             floor(frame.size.width),
             floor(frame.size.height)
         );

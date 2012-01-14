@@ -166,7 +166,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         // do not use CGRectIntegral(), as it rounds up the size
         frame = CGRectMake(
             floor(frame.origin.x),
-            floor(frame.origin.y),
+            ceil(frame.origin.y),
             floor(frame.size.width),
             floor(frame.size.height)
         );
@@ -225,7 +225,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         // do not use CGRectIntegral(), as it rounds up the size
         CGRect integralFrame = CGRectMake(
             floor(center.x - size.width / 2),
-            floor(center.y - size.height / 2),
+            ceil(center.y - size.height / 2),
             floor(size.width),
             floor(size.height)
         );

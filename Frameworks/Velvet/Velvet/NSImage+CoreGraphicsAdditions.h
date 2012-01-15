@@ -19,6 +19,12 @@
 
 /**
  * The `CGImage` corresponding to the receiver.
+ *
+ * The image returned will be scaled to the pixel density of the current
+ * `NSGraphicsContext`. If there is no current `NSGraphicsContext`, the scale
+ * factor of the first application window is used. If there are no application
+ * windows, the pixel density is assumed to be one pixel per point, and no
+ * scaling is done.
  */
 @property (nonatomic, readonly) CGImageRef CGImage;
 

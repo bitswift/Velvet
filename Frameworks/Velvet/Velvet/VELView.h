@@ -210,21 +210,17 @@ typedef enum {
 
 /**
  * Whether the view automatically keeps its <frame> aligned with integral
- * points, to avoid blurriness from accidentally landing on partial points.
+ * pixels, to avoid blurriness from accidentally landing on partial pixels.
  *
- * This will round down fractional X origins (moving leftward on screen), round
- * up fractional Y origins (moving upward on screen), and round down fractional
- * sizes, such that the size of the view will never change just from use of this
- * property.
+ * This will align the receiver's <frame> according to the semantics of
+ * <backingAlignedRect:>.
  *
  * The default value for this property is `YES`.
  *
- * @warning **Important:** This property is only guaranteed to work with the
- * default <layerClass>.
- *
- * Transforms are not taken into account.
+ * @warning **Important:** This property may not work with a custom
+ * <layerClass>.
  */
-@property (nonatomic, assign) BOOL alignsToIntegralPoints;
+@property (nonatomic, assign) BOOL alignsToIntegralPixels;
 
 /**
  * A transform applied to the receiver, relative to the center of its <bounds>.
@@ -237,6 +233,19 @@ typedef enum {
  * `CGAffineTransformIdentity` is returned.
  */
 @property (nonatomic, assign) CGAffineTransform transform;
+
+/**
+ * Aligns the given rectangle to the integral pixels in the window. Returns
+ * a rectangle in the receiver's coordinate system.
+ *
+ * This will round down fractional X origins (moving leftward on screen), round
+ * up fractional Y origins (moving upward on screen), and round down fractional
+ * sizes, such that the "real" size of the rectangle will never increase just
+ * from use of this method.
+ *
+ * @param rect A rectangle in the receiver's coordinate system.
+ */
+- (CGRect)backingAlignedRect:(CGRect)rect;
 
 /**
  * Transforms a point from the coordinate system of another view to that of the

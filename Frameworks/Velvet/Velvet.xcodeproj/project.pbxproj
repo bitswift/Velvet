@@ -27,6 +27,7 @@
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
 		1EA3D71014B37F4A0007E4C4 /* NSVelvetHostViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D01B953514C1778D00CBDD8E /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
 		D01E23C61492F15B00219D40 /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
@@ -80,6 +81,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D01B952F14C1778A00CBDD8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D0DB5CC31492DDD5005955FB;
+			remoteInfo = "Proton Mac";
+		};
 		D01E23BB1492F14E00219D40 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
@@ -244,6 +252,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D01B953514C1778D00CBDD8E /* Proton.framework in Frameworks */,
 				D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */,
 				D0EFFC1C147851A80095AB35 /* Cocoa.framework in Frameworks */,
 				D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */,
@@ -605,6 +614,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D01B953014C1778A00CBDD8E /* PBXTargetDependency */,
 				D0EFFC1E147851A80095AB35 /* PBXTargetDependency */,
 			);
 			name = VelvetTests;
@@ -761,6 +771,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D01B953014C1778A00CBDD8E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Proton Mac";
+			targetProxy = D01B952F14C1778A00CBDD8E /* PBXContainerItemProxy */;
+		};
 		D01E23C51492F15800219D40 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Proton Mac";

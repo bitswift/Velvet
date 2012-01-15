@@ -276,12 +276,16 @@ typedef enum {
  * The subviews of the receiver, with the first object being the back-most view.
  * This array can be replaced to completely change the subviews displayed by the
  * receiver.
+ *
+ * This property is KVO-compliant.
  */
 @property (nonatomic, copy) NSArray *subviews;
 
 /**
  * The immediate superview of the receiver, or `nil` if the receiver is a root
  * view.
+ *
+ * This property is KVO-compliant.
  */
 @property (nonatomic, readonly, weak) VELView *superview;
 

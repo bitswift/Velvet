@@ -209,12 +209,30 @@ typedef enum {
 @property (nonatomic, assign) CGPoint center;
 
 /**
+ * Whether the view automatically keeps its <frame> aligned with integral
+ * points, to avoid blurriness from accidentally landing on partial points.
+ *
+ * This will round down fractional X origins (moving leftward on screen), round
+ * up fractional Y origins (moving upward on screen), and round down fractional
+ * sizes, such that the size of the view will never change just from use of this
+ * property.
+ *
+ * The default value for this property is `YES`.
+ *
+ * @warning **Important:** This property is only guaranteed to work with the
+ * default <layerClass>.
+ *
+ * Transforms are not taken into account.
+ */
+@property (nonatomic, assign) BOOL alignsToIntegralPoints;
+
+/**
  * A transform applied to the receiver, relative to the center of its <bounds>.
  *
  * This will get and set the underlying `CATransform3D` of the receiver's
  * <layer>.
  *
- * @warning *Important:* When reading the property, if the layer has an existing
+ * @warning **Important:** When reading the property, if the layer has an existing
  * 3D transform that cannot be represented as an affine transform,
  * `CGAffineTransformIdentity` is returned.
  */
@@ -227,7 +245,7 @@ typedef enum {
  * @param point The point to transform into the receiver's coordinate system.
  * @param view The view whose coordinate system `point` is represented in.
  *
- * @warning *Important:* The receiver and `view` must be rooted at the same
+ * @warning **Important:** The receiver and `view` must be rooted at the same
  * window.
  */
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view;
@@ -239,7 +257,7 @@ typedef enum {
  * @param point The point in the receiver's coordinate system.
  * @param view The view whose coordinate system `point` should be represented in.
  *
- * @warning *Important:* The receiver and `view` must be rooted at the same
+ * @warning **Important:** The receiver and `view` must be rooted at the same
  * window.
  */
 - (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view;
@@ -251,7 +269,7 @@ typedef enum {
  * @param rect The rectangle to transform into the receiver's coordinate system.
  * @param view The view whose coordinate system `rect` is represented in.
  *
- * @warning *Important:* The receiver and `view` must be rooted at the same
+ * @warning **Important:** The receiver and `view` must be rooted at the same
  * window.
  */
 - (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view;
@@ -263,7 +281,7 @@ typedef enum {
  * @param rect The rectangle in the receiver's coordinate system.
  * @param view The view whose coordinate system `rect` should be represented in.
  *
- * @warning *Important:* The receiver and `view` must be rooted at the same
+ * @warning **Important:** The receiver and `view` must be rooted at the same
  * window.
  */
 - (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view;

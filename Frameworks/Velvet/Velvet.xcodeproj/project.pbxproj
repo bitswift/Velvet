@@ -33,6 +33,9 @@
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
 		D01E23C61492F15B00219D40 /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
+		D020F49314C3959500C466E1 /* NSWindow+InitializationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D020F49114C3959500C466E1 /* NSWindow+InitializationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D020F49414C3959500C466E1 /* NSWindow+InitializationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D020F49214C3959500C466E1 /* NSWindow+InitializationAdditions.m */; };
+		D020F49714C3972E00C466E1 /* NSWindowAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */; };
 		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
 		D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -158,6 +161,10 @@
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
 		D01E23B11492F14D00219D40 /* Proton.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proton.xcodeproj; path = ../Proton/Frameworks/Proton/Proton.xcodeproj; sourceTree = "<group>"; };
+		D020F49114C3959500C466E1 /* NSWindow+InitializationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+InitializationAdditions.h"; sourceTree = "<group>"; };
+		D020F49214C3959500C466E1 /* NSWindow+InitializationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+InitializationAdditions.m"; sourceTree = "<group>"; };
+		D020F49514C3972E00C466E1 /* NSWindowAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSWindowAdditionsTests.h; sourceTree = "<group>"; };
+		D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSWindowAdditionsTests.m; sourceTree = "<group>"; };
 		D0305D781486FC960081D6EA /* VELControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELControl.h; sourceTree = "<group>"; };
 		D0305D791486FC960081D6EA /* VELControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELControl.m; sourceTree = "<group>"; };
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
@@ -275,6 +282,8 @@
 				D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */,
 				D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */,
 				D06EF03E14B3A0590035E239 /* NSWindow+EventHandlingAdditions.m */,
+				D020F49114C3959500C466E1 /* NSWindow+InitializationAdditions.h */,
+				D020F49214C3959500C466E1 /* NSWindow+InitializationAdditions.m */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -362,6 +371,8 @@
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
 				1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */,
 				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
+				D020F49514C3972E00C466E1 /* NSWindowAdditionsTests.h */,
+				D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */,
 				D0A96C0B14B7AF1F00A64F6F /* VELAppKitAdditionsTests.h */,
 				D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */,
 				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
@@ -574,6 +585,7 @@
 				D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */,
 				D0F5BFCA14BF6BE000C66839 /* VELHostView.h in Headers */,
 				D01B962E14C1956100CBDD8E /* VELViewLayer.h in Headers */,
+				D020F49314C3959500C466E1 /* NSWindow+InitializationAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -744,6 +756,7 @@
 				D06EF04014B3A0590035E239 /* NSWindow+EventHandlingAdditions.m in Sources */,
 				D0A96C0614B7AE8B00A64F6F /* AppKit+GeometryAdditions.m in Sources */,
 				D01B962F14C1956100CBDD8E /* VELViewLayer.m in Sources */,
+				D020F49414C3959500C466E1 /* NSWindow+InitializationAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -761,6 +774,7 @@
 				1E71313614B7B79800D6D7DF /* NSVelvetViewTests.m in Sources */,
 				D0A96C0D14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m in Sources */,
 				D05DC49B14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m in Sources */,
+				D020F49714C3972E00C466E1 /* NSWindowAdditionsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

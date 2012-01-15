@@ -14,8 +14,9 @@
 
 @interface AppDelegate ()
 @property (strong) IBOutlet VELWindow *window;
-@property (strong) VELScrollView *scrollView;
-@property (strong) SquareView *nestedSquareView;
+@property (strong) VELView *scrollView;
+@property (strong) VELImageView *imageView;
+@property (strong) SquareView *control;
 @property (strong) VELNSView *buttonHost;
 
 @property (nonatomic, strong) NSArray *views;
@@ -31,18 +32,20 @@
 @implementation AppDelegate
 @synthesize window = m_window;
 @synthesize scrollView = m_scrollView;
-@synthesize nestedSquareView = m_nestedSquareView;
+@synthesize imageView = m_imageView;
+@synthesize control = m_control;
 @synthesize buttonHost = m_buttonHost;
 @synthesize views = m_views;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification; {
+// TODO: move each test into its own window
 #if 0
     [self createViews];
     [self performSelector:@selector(animateViews) withObject:nil afterDelay:2.0];
 #else
-    [self draggingTests];
+//    [self draggingTests];
 //    [self scalingTests];
-//    [self hierarchyTests];
+    [self hierarchyTests];
 #endif
 }
 
@@ -111,86 +114,94 @@
 }
 
 - (void)hierarchyTests {
-    NSURL *imageURL = [[NSBundle mainBundle] URLForResource:@"iceberg" withExtension:@"jpg"];
-    NSImage *image = [[NSImage alloc] initWithContentsOfURL:imageURL];
-    NSRect imageRect = NSMakeRect(0, 0, image.size.width, image.size.height);
+    // NSScrollView
+    {
+        NSScrollView *nsScrollView = [[NSScrollView alloc] initWithFrame:CGRectMake(20, 20, 300, 300)];
+        nsScrollView.hasHorizontalScroller = YES;
+        nsScrollView.hasVerticalScroller = YES;
+        nsScrollView.usesPredominantAxisScrolling = NO;
 
-    self.scrollView = [[VELScrollView alloc] init];
-    self.scrollView.layer.backgroundColor = CGColorGetConstantColor(kCGColorBlack);
-    self.scrollView.contentSize = imageRect.size;
-    self.scrollView.frame = CGRectMake(20, 20, 300, 300);
+        nsScrollView.backgroundColor = [NSColor whiteColor];
+        nsScrollView.drawsBackground = YES;
 
-    VELView *scrollableSquareView = [[SquareView alloc] init];
-    scrollableSquareView.frame = CGRectMake(20, 200, 800, 800);
+        VELNSView *scrollViewHost = [[VELNSView alloc] initWithNSView:nsScrollView];
+        scrollViewHost.backgroundColor = [NSColor yellowColor];
 
-    VELImageView *imageView = [[VELImageView alloc] init];
-    imageView.frame = CGRectMake(0, 0, 600, 600);
-    imageView.image = [image CGImageForProposedRect:NULL context:nil hints:nil];
+        [self.window.rootView addSubview:scrollViewHost];
 
-    // 44px on every corner should not scale, while the rest of the image should
-    imageView.endCapInsets = NSEdgeInsetsMake(44, 44, 44, 44);
+        NSVelvetView *velvetView = [[NSVelvetView alloc] initWithFrame:CGRectMake(0, 0, 700, 700)];
+        [nsScrollView setDocumentView:velvetView];
 
-    self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:scrollableSquareView];
-    self.scrollView.subviews = [self.scrollView.subviews arrayByAddingObject:imageView];
+        self.scrollView = velvetView.guestView;
+    }
 
-    NSTextField *textField = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 150, 91, 22)];
-    [textField.cell setUsesSingleLineMode:YES];
-    [textField.cell setScrollable:YES];
-    [textField setBackgroundColor:[NSColor whiteColor]];
-    [textField setDrawsBackground:YES];
+    // VELImageView
+    {
+        NSImage *image = [NSImage imageNamed:@"iceberg.jpg"];
 
-    VELView *rootSquareView = [[SquareView alloc] init];
-    rootSquareView.frame = CGRectMake(60, 60, 70, 70);
-    rootSquareView.layer.opacity = 0.8f;
-    [self.scrollView addSubview:rootSquareView];
+        self.imageView = [[VELImageView alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
+        self.imageView.image = image.CGImage;
 
-    VELNSView *textFieldHost = [[VELNSView alloc] initWithNSView:textField];
-    imageView.subviews = [imageView.subviews arrayByAddingObject:textFieldHost];
+        // 44px on every corner should not scale, while the rest of the image should
+        self.imageView.endCapInsets = NSEdgeInsetsMake(44, 44, 44, 44);
 
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                (__bridge_transfer id)CGColorCreateGenericGray(0, 1), (__bridge id)kCTForegroundColorAttributeName,
-                                (__bridge_transfer id)CTFontCreateUIFontForLanguage(kCTFontSystemFontType, 16, NULL), (__bridge id)kCTFontAttributeName,
-                                nil
-                                ];
+        [self.scrollView addSubview:self.imageView];
+    }
 
-    VELLabel *label = [[VELLabel alloc] init];
-    label.formattedText = [[NSAttributedString alloc] initWithString:@"Justified text!" attributes:attributes];
-    label.frame = CGRectMake(0, 400, 100, 60);
-    label.textAlignment = VELTextAlignmentJustified;
-    label.backgroundColor = [NSColor whiteColor];
-    label.opaque = YES;
+    // NSTextField
+    {
+        NSTextField *textField = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 180, 91, 22)];
+        [textField.cell setUsesSingleLineMode:YES];
+        [textField.cell setScrollable:YES];
 
-    self.window.rootView.subviews = [NSArray arrayWithObjects:label, self.scrollView, nil];
+        VELNSView *textFieldHost = [[VELNSView alloc] initWithNSView:textField];
+        textFieldHost.backgroundColor = [NSColor greenColor];
+        [self.scrollView addSubview:textFieldHost];
+    }
 
-    self.nestedSquareView = [[SquareView alloc] init];
-    self.nestedSquareView.layer.opacity = 1;
-    self.nestedSquareView.clipsToBounds = YES;
-    self.nestedSquareView.frame = CGRectMake(0, 0, 40, 80);
+    // VELLabel
+    {
+        VELLabel *label = [[VELLabel alloc] initWithFrame:CGRectMake(0, 400, 100, 60)];
+        label.backgroundColor = [NSColor whiteColor];
+        label.opaque = YES;
 
-    [self.nestedSquareView addActionForControlEvents:VELControlEventClicked usingBlock:^{
-        NSLog(@"Square view click action!");
-    }];
+        label.text = @"Justified text!";
+        label.textColor = [NSColor blackColor];
+        label.font = [NSFont systemFontOfSize:16];
+        label.textAlignment = VELTextAlignmentJustified;
 
-    [self.nestedSquareView addActionForControlEvents:VELControlEventDoubleClicked usingBlock:^{
-        NSLog(@"Square view double-click action!");
-    }];
+        [self.window.rootView addSubview:label];
+    }
 
-    NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(0, 0, 80, 28)];
-    [button setButtonType:NSMomentaryPushInButton];
-    [button setBezelStyle:NSRoundedBezelStyle];
-    [button setTitle:@"Test Button"];
-    [button setTarget:self];
-    [button setAction:@selector(testButtonPushed:)];
+    // VELControl subclass
+    {
+        self.control = [[SquareView alloc] initWithFrame:CGRectMake(60, 60, 100, 100)];
+        self.control.clipsToBounds = YES;
 
-    self.buttonHost = [[VELNSView alloc] initWithNSView:button];
-    self.buttonHost.layer.backgroundColor = CGColorGetConstantColor(kCGColorWhite);
+        [self.control addActionForControlEvents:VELControlEventClicked usingBlock:^{
+            NSLog(@"Square view click action!");
+        }];
 
-    rootSquareView.subviews = [NSArray arrayWithObject:self.nestedSquareView];
-    self.nestedSquareView.subviews = [NSArray arrayWithObject:self.buttonHost];
-}
+        [self.control addActionForControlEvents:VELControlEventDoubleClicked usingBlock:^{
+            NSLog(@"Square view double-click action!");
+        }];
 
-- (void)updateScrollers {
-    self.scrollView.horizontalScroller.doubleValue = 0.2;
+        [self.scrollView addSubview:self.control];
+    }
+
+    // NSButton
+    {
+        NSButton *button = [[NSButton alloc] initWithFrame:NSMakeRect(10, 10, 80, 28)];
+        [button setButtonType:NSMomentaryPushInButton];
+        [button setBezelStyle:NSRoundedBezelStyle];
+        [button setTitle:@"Test Button"];
+        [button setTarget:self];
+        [button setAction:@selector(testButtonPushed:)];
+
+        self.buttonHost = [[VELNSView alloc] initWithNSView:button];
+        self.buttonHost.backgroundColor = [NSColor blueColor];
+        [self.control addSubview:self.buttonHost];
+    }
 }
 
 - (void)testButtonPushed:(id)sender {

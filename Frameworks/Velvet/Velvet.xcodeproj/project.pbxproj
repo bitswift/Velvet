@@ -29,13 +29,12 @@
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D01B962E14C1956100CBDD8E /* VELViewLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D01B962C14C1956100CBDD8E /* VELViewLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D01B962F14C1956100CBDD8E /* VELViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D01B962D14C1956100CBDD8E /* VELViewLayer.m */; };
+		D01B953514C1778D00CBDD8E /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
 		D01E23C61492F15B00219D40 /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
 		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
-		D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E642114823DC200E99AA2 /* VELScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D03E642414823DC200E99AA2 /* VELScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D03E642214823DC200E99AA2 /* VELScrollView.m */; };
 		D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E6426148243E800E99AA2 /* VELViewProtected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -56,8 +55,6 @@
 		D0B75C68149188FD005C81D5 /* testimage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0B75C67149188FD005C81D5 /* testimage.jpg */; };
 		D0B75C6F14918EB9005C81D5 /* VELViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B75C6E14918EB9005C81D5 /* VELViewTests.m */; };
 		D0CACD35147C86C0008C42B2 /* VELBridgedView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELBridgedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D0CE3D461485506B005CAE53 /* VELFocusRingLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CE3D441485506B005CAE53 /* VELFocusRingLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D0CE3D471485506B005CAE53 /* VELFocusRingLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */; };
 		D0CE951014B3842F003581C8 /* VELWindowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE950F14B3842F003581C8 /* VELWindowTests.m */; };
 		D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -82,6 +79,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D01B952F14C1778A00CBDD8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D0DB5CC31492DDD5005955FB;
+			remoteInfo = "Proton Mac";
+		};
 		D01E23BB1492F14E00219D40 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D01E23B11492F14D00219D40 /* Proton.xcodeproj */;
@@ -157,8 +161,6 @@
 		D01E23B11492F14D00219D40 /* Proton.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proton.xcodeproj; path = ../Proton/Frameworks/Proton/Proton.xcodeproj; sourceTree = "<group>"; };
 		D0305D781486FC960081D6EA /* VELControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELControl.h; sourceTree = "<group>"; };
 		D0305D791486FC960081D6EA /* VELControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELControl.m; sourceTree = "<group>"; };
-		D03E642114823DC200E99AA2 /* VELScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELScrollView.h; sourceTree = "<group>"; };
-		D03E642214823DC200E99AA2 /* VELScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELScrollView.m; sourceTree = "<group>"; };
 		D03E6426148243E800E99AA2 /* VELViewProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewProtected.h; sourceTree = "<group>"; };
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
 		D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDraggingDestination.h; sourceTree = "<group>"; };
@@ -184,8 +186,6 @@
 		D0B75C6D14918EB9005C81D5 /* VELViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewTests.h; sourceTree = "<group>"; };
 		D0B75C6E14918EB9005C81D5 /* VELViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewTests.m; sourceTree = "<group>"; };
 		D0CACD34147C86C0008C42B2 /* VELBridgedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELBridgedView.h; sourceTree = "<group>"; };
-		D0CE3D441485506B005CAE53 /* VELFocusRingLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELFocusRingLayer.h; sourceTree = "<group>"; };
-		D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELFocusRingLayer.m; sourceTree = "<group>"; };
 		D0CE950E14B3842F003581C8 /* VELWindowTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELWindowTests.h; sourceTree = "<group>"; };
 		D0CE950F14B3842F003581C8 /* VELWindowTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELWindowTests.m; sourceTree = "<group>"; };
 		D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+CoreGraphicsAdditions.h"; sourceTree = "<group>"; };
@@ -248,6 +248,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D01B953514C1778D00CBDD8E /* Proton.framework in Frameworks */,
 				D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */,
 				D0EFFC1C147851A80095AB35 /* Cocoa.framework in Frameworks */,
 				D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */,
@@ -301,8 +302,6 @@
 				1E2819461481EAEF006A747C /* VELCAAction.m */,
 				D06EF03914B39CFA0035E239 /* VELEventManager.h */,
 				D06EF03A14B39CFA0035E239 /* VELEventManager.m */,
-				D0CE3D441485506B005CAE53 /* VELFocusRingLayer.h */,
-				D0CE3D451485506B005CAE53 /* VELFocusRingLayer.m */,
 				D01CF3D21479B18400C88D2B /* VELNSView.h */,
 				D01CF3D31479B18400C88D2B /* VELNSView.m */,
 				1E2819471481EAEF006A747C /* VELNSViewPrivate.h */,
@@ -340,8 +339,6 @@
 				D0E8B35314831419003980B4 /* VELImageView.m */,
 				1E7BBD3E147B157B0010375D /* VELLabel.h */,
 				1E7BBD3F147B157B0010375D /* VELLabel.m */,
-				D03E642114823DC200E99AA2 /* VELScrollView.h */,
-				D03E642214823DC200E99AA2 /* VELScrollView.m */,
 				D0D8C3A814785A1300FC9015 /* VELView.h */,
 				D0D8C3A914785A1300FC9015 /* VELView.m */,
 				D0150FE914790A1700126F09 /* VELViewPrivate.h */,
@@ -570,9 +567,7 @@
 				1E2819561481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h in Headers */,
 				D03E6428148243E800E99AA2 /* VELViewProtected.h in Headers */,
 				D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */,
-				D03E642314823DC200E99AA2 /* VELScrollView.h in Headers */,
 				D0E8B35414831419003980B4 /* VELImageView.h in Headers */,
-				D0CE3D461485506B005CAE53 /* VELFocusRingLayer.h in Headers */,
 				D0305D7A1486FC960081D6EA /* VELControl.h in Headers */,
 				D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */,
 				D0D51D0A14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h in Headers */,
@@ -620,6 +615,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D01B953014C1778A00CBDD8E /* PBXTargetDependency */,
 				D0EFFC1E147851A80095AB35 /* PBXTargetDependency */,
 			);
 			name = VelvetTests;
@@ -743,9 +739,7 @@
 				1E2819531481EB14006A747C /* CALayer+GeometryAdditions.m in Sources */,
 				1E2819551481EB14006A747C /* CATransaction+BlockAdditions.m in Sources */,
 				1E2819571481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m in Sources */,
-				D03E642414823DC200E99AA2 /* VELScrollView.m in Sources */,
 				D0E8B35514831419003980B4 /* VELImageView.m in Sources */,
-				D0CE3D471485506B005CAE53 /* VELFocusRingLayer.m in Sources */,
 				D0305D7B1486FC960081D6EA /* VELControl.m in Sources */,
 				D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */,
 				D0D51D0B14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m in Sources */,
@@ -777,6 +771,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D01B953014C1778A00CBDD8E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Proton Mac";
+			targetProxy = D01B952F14C1778A00CBDD8E /* PBXContainerItemProxy */;
+		};
 		D01E23C51492F15800219D40 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Proton Mac";

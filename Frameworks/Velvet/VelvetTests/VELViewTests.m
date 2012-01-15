@@ -49,6 +49,21 @@
     ];
 }
 
+- (void)testInitialization {
+    VELView *view = [[VELView alloc] init];
+    STAssertNotNil(view, @"");
+
+    STAssertTrue(view.alignsToIntegralPixels, @"");
+    STAssertTrue(view.clearsContextBeforeDrawing, @"");
+    STAssertEquals(view.contentMode, VELViewContentModeScaleToFill, @"");
+    STAssertFalse(view.hidden, @"");
+    STAssertNil(view.hostView, @"");
+    STAssertNotNil(view.layer, @"");
+    STAssertFalse(view.opaque, @"");
+    STAssertNil(view.superview, @"");
+    STAssertTrue(view.userInteractionEnabled, @"");
+}
+
 - (void)testSizeThatFits {
     VELView *view = [[VELView alloc] init];
     STAssertNotNil(view, @"");
@@ -296,6 +311,55 @@
     
     view.bounds = CGRectMake(0, 0, 25, 25);
     STAssertTrue(view.layoutSubviewsInvoked, @"");
+}
+
+- (void)testAlignsToIntegralPointsSettingFrame {
+    VELView *view = [[VELView alloc] init];
+
+    view.frame = CGRectMake(10.25, 11.5, 12.75, 13.01);
+
+    CGRect expectedFrame = CGRectMake(10, 12, 12, 13);
+    STAssertTrue(CGRectEqualToRect(view.frame, expectedFrame), @"frame %@ does not match expected %@", NSStringFromRect(view.frame), NSStringFromRect(expectedFrame));
+}
+
+- (void)testAlignsToIntegralPointsSettingBounds {
+    VELView *view = [[VELView alloc] init];
+
+    view.bounds = CGRectMake(0, 0, 12.75, 13.01);
+
+    CGRect expectedBounds = CGRectMake(0, 0, 12, 13);
+    STAssertTrue(CGRectEqualToRect(view.bounds, expectedBounds), @"");
+}
+
+- (void)testAlignsToIntegralPointsSettingMisalignedCenter {
+    VELView *view = [[VELView alloc] init];
+
+    view.center = CGPointMake(13.7, 14.3);
+
+    CGPoint expectedCenter = CGPointMake(13, 15);
+    STAssertTrue(CGPointEqualToPoint(view.center, expectedCenter), @"");
+}
+
+- (void)testAlignsToIntegralPointsSettingCenterResultingInMisalignedFrame {
+    VELView *view = [[VELView alloc] initWithFrame:CGRectMake(0, 0, 5, 5)];
+
+    view.center = CGPointMake(15, 15);
+
+    CGRect expectedFrame = CGRectMake(12, 13, 5, 5);
+    STAssertTrue(CGRectEqualToRect(view.frame, expectedFrame), @"");
+}
+
+- (void)testAlignsToIntegralPointsWhenAutoresizing {
+    VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+
+    VELView *subview = [[VELView alloc] initWithFrame:CGRectMake(5, 5, 20, 20)];
+    subview.autoresizingMask = VELViewAutoresizingFlexibleMargins;
+    [superview addSubview:subview];
+
+    superview.frame = CGRectMake(0, 0, 25, 25);
+
+    CGRect expectedSubviewFrame = CGRectMake(2, 3, 20, 20);
+    STAssertTrue(CGRectEqualToRect(subview.frame, expectedSubviewFrame), @"subview frame %@ does not match expected %@", NSStringFromRect(subview.frame), NSStringFromRect(expectedSubviewFrame));
 }
 
 - (void)testSuperviewKVO {

@@ -20,6 +20,7 @@
 #import <Velvet/VELHostView.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELViewController.h>
+#import <Velvet/VELViewLayer.h>
 #import <Velvet/VELViewPrivate.h>
 #import <Velvet/VELViewProtected.h>
 #import <objc/runtime.h>
@@ -54,6 +55,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         unsigned userInteractionEnabled:1;
         unsigned recursingActionForLayer:1;
         unsigned clearsContextBeforeDrawing:1;
+        unsigned alignsToIntegralPixels:1;
         unsigned replacingSubviews:1;
     } m_flags;
 
@@ -160,6 +162,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
     m_flags.clearsContextBeforeDrawing = clearsContext;
 }
 
+- (BOOL)alignsToIntegralPixels {
+    return m_flags.alignsToIntegralPixels;
+}
+
+- (void)setAlignsToIntegralPixels:(BOOL)aligns {
+    m_flags.alignsToIntegralPixels = aligns;
+}
+
 - (BOOL)isReplacingSubviews {
     return m_flags.replacingSubviews;
 }
@@ -186,6 +196,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setFrame:(CGRect)frame {
+    if (self.alignsToIntegralPixels) {
+        frame = [self backingAlignedRect:frame];
+    }
+
     CGSize originalSize = self.layer.frame.size;
     CGSize newSize = frame.size;
     
@@ -206,6 +220,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setBounds:(CGRect)bounds {
+    if (self.alignsToIntegralPixels) {
+        bounds = [self backingAlignedRect:bounds];
+    }
+
     BOOL needsLayout = !CGRectEqualToRect(bounds, self.layer.bounds);
     
     [[self class] changeLayerProperties:^{
@@ -223,9 +241,27 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setCenter:(CGPoint)center {
+    if (self.alignsToIntegralPixels) {
+        CGSize size = self.bounds.size;
+
+        CGRect resultingFrame = CGRectMake(
+            center.x - size.width / 2,
+            center.y - size.height / 2,
+            size.width,
+            size.height
+        );
+
+        CGRect integralFrame = [self backingAlignedRect:resultingFrame];
+
+        // this point may have fractional coordinates in it, but it'll result in
+        // a frame which lands on whole pixels
+        center = CGPointMake(CGRectGetMidX(integralFrame), CGRectGetMidY(integralFrame));
+    }
+
     [[self class] changeLayerProperties:^{
         self.layer.position = center;
     }];
+
     [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
 }
 
@@ -495,7 +531,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 #pragma mark Layer handling
 
 + (Class)layerClass; {
-    return [CALayer class];
+    return [VELViewLayer class];
 }
 
 #pragma mark Lifecycle
@@ -525,6 +561,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     // more correct rendering) in favor of performance should be explicit
     self.opaque = NO;
     self.clearsContextBeforeDrawing = YES;
+    self.alignsToIntegralPixels = YES;
 
     if ([[self class] doesCustomDrawing])
         self.contentMode = VELViewContentModeRedraw;
@@ -541,6 +578,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
     self.frame = frame;
     return self;
+}
+
+- (void)dealloc {
+    m_layer.delegate = nil;
 }
 
 #pragma mark Rendering
@@ -722,6 +763,15 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)didMoveFromWindow:(NSWindow *)window; {
+    CGFloat newScaleFactor = self.window.backingScaleFactor;
+
+    if (newScaleFactor > 0 && fabs(newScaleFactor - self.layer.contentsScale) > 0.01) {
+        // we just moved to a window that has a different pixel density, so
+        // redisplay our layer at that scale factor
+        self.layer.contentsScale = newScaleFactor;
+        [self setNeedsDisplay];
+    }
+
     [self updateViewAndViewControllerNextResponders];
 
     if (self.window)
@@ -772,6 +822,50 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 #pragma mark Geometry
+
+- (CGRect)backingAlignedRect:(CGRect)rect; {
+    NSAlignmentOptions alignmentOptions =
+        // floor(originX)
+        NSAlignMinXOutward |
+
+        // ceil(originY)
+        NSAlignMinYInward |
+
+        // floor(width)
+        NSAlignWidthInward |
+
+        // floor(height)
+        NSAlignHeightInward;
+
+    NSVelvetView *velvetView = self.ancestorNSVelvetView;
+    NSWindow *window = velvetView.window;
+
+    if (!window) {
+        // try to align to the main screen's scale factor
+        //
+        // note that this may yield incorrect results if the view is actually
+        // displayed on a different screen
+        CGFloat scaleFactor = [[NSScreen mainScreen] backingScaleFactor];
+
+        // convert to device space
+        CGAffineTransform transformToBacking = CGAffineTransformMakeScale(scaleFactor, scaleFactor);
+        CGRect backingRect = CGRectApplyAffineTransform(rect, transformToBacking);
+
+        // align the rectangle on pixels
+        backingRect = NSIntegralRectWithOptions(backingRect, alignmentOptions);
+
+        // convert back to user space
+        return CGRectApplyAffineTransform(backingRect, CGAffineTransformInvert(transformToBacking));
+    }
+
+    CGRect windowRect = [self convertToWindowRect:rect];
+
+    // the documentation says that the input rect is in view coordinates, but
+    // it's actually window coordinates
+    windowRect = [velvetView backingAlignedRect:windowRect options:alignmentOptions];
+
+    return [self convertFromWindowRect:windowRect];
+}
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {
     return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
@@ -845,6 +939,13 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {
+    if (self.alignsToIntegralPixels) {
+        // this NSVelvetView might be on a different window or a different screen,
+        // and thus have a different pixel density, so we should re-align our
+        // frame to integral pixels
+        self.frame = self.layer.frame;
+    }
+
     [self updateViewAndViewControllerNextResponders];
 
     if ([self respondsToSelector:@selector(supportedDragTypes)]) {
@@ -963,7 +1064,20 @@ static BOOL VELViewPerformingDeepLayout = NO;
     if (self.clearsContextBeforeDrawing)
         CGContextClearRect(context, drawingRegion);
 
+    // scale the context so that 1 point = layer.contentsScale pixels (like iOS)
+    CGAffineTransform pointsToPixels = CGAffineTransformMakeScale(layer.contentsScale, layer.contentsScale);
+
+    CGContextConcatCTM(context, pointsToPixels);
+
+    // convert drawingRegion from _pixels_ to _points_
+    drawingRegion = CGRectApplyAffineTransform(drawingRegion, CGAffineTransformInvert(pointsToPixels));
+
     // enable sub-pixel antialiasing (if drawing onto anything opaque)
+    CGContextSetAllowsAntialiasing(context, YES);
+    CGContextSetAllowsFontSmoothing(context, YES);
+    CGContextSetAllowsFontSubpixelPositioning(context, YES);
+    CGContextSetAllowsFontSubpixelQuantization(context, YES);
+
     CGContextSetShouldAntialias(context, YES);
     CGContextSetShouldSmoothFonts(context, YES);
     CGContextSetShouldSubpixelPositionFonts(context, YES);

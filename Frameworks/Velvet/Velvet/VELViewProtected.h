@@ -36,16 +36,4 @@
  * The default implementation forwards the message to all subviews.
  */
 - (void)ancestorDidLayout;
-
-/*
- * Runs a block to change properties on one or more layers, taking into account
- * whether <VELView> animations are currently enabled.
- *
- * If this is run from inside an animation block, the changes are animated as
- * part of the animation. Otherwise, the changes take effect immediately,
- * without animation.
- *
- * @param changesBlock A block containing changes to make to layers.
- */
-+ (void)changeLayerProperties:(void (^)(void))changesBlock;
 @end

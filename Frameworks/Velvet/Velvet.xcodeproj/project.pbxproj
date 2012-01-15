@@ -27,9 +27,9 @@
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
 		1EA3D71014B37F4A0007E4C4 /* NSVelvetHostViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D01B953514C1778D00CBDD8E /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
 		D01B962E14C1956100CBDD8E /* VELViewLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D01B962C14C1956100CBDD8E /* VELViewLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D01B962F14C1956100CBDD8E /* VELViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D01B962D14C1956100CBDD8E /* VELViewLayer.m */; };
-		D01B953514C1778D00CBDD8E /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
 		D01E23C61492F15B00219D40 /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };

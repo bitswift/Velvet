@@ -9,7 +9,6 @@
 #import <Velvet/VELCAAction.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELNSViewPrivate.h>
-#import <Velvet/VELFocusRingLayer.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Proton/Proton.h>
 #import <objc/runtime.h>
@@ -185,12 +184,6 @@
     // hierarchy we're animating.
     NSMutableArray *cachedViews = [NSMutableArray array];
     [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
-        if (view.focusRingLayer) {
-            [CATransaction performWithDisabledActions:^{
-                view.focusRingLayer.opacity = 0.0f;
-            }];
-        }
-        
         [self startRenderingNSViewOfView:view];
         [cachedViews addObject:view];
     }];
@@ -203,7 +196,6 @@
     [self runWhenAnimationCompletes:^{
         [cachedViews enumerateObjectsUsingBlock:^(VELNSView *view, NSUInteger idx, BOOL *stop) {
             [self endRenderingNSViewOfView:view];
-            view.focusRingLayer.opacity = 1.0f;
         }];
     }];
 }
@@ -215,7 +207,6 @@
         // return NSViews to rendering themselves after this animation completes
         [self runWhenAnimationCompletes:^{
             [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
-                view.focusRingLayer.opacity = 1;
                 [self endRenderingNSViewOfView:view];
             }];
         }];
@@ -224,7 +215,6 @@
         // and hide the NSView. Now the visual element is part of the layer
         // hierarchy we're animating.
         [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
-            view.focusRingLayer.opacity = newOpacity;
             [self startRenderingNSViewOfView:view];
         }];
     }

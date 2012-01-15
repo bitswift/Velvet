@@ -27,15 +27,8 @@
     objc_setAssociatedObject(self, @selector(hostView), hostView, OBJC_ASSOCIATION_ASSIGN);
 }
 
-- (id<VELBridgedView>)ancestorScrollView {
-    if ([self isKindOfClass:[NSScrollView class]])
-        return self;
-
-    id<VELHostView> immediateHostView = objc_getAssociatedObject(self, @selector(hostView));
-    if (immediateHostView)
-        return immediateHostView.ancestorScrollView;
-
-    return self.superview.ancestorScrollView;
+- (void)ancestorDidLayout; {
+    [self.subviews makeObjectsPerformSelector:_cmd];
 }
 
 - (NSVelvetView *)ancestorNSVelvetView; {
@@ -49,6 +42,17 @@
     } while (view);
     
     return nil;
+}
+
+- (id<VELBridgedView>)ancestorScrollView {
+    if ([self isKindOfClass:[NSScrollView class]])
+        return self;
+
+    id<VELHostView> immediateHostView = objc_getAssociatedObject(self, @selector(hostView));
+    if (immediateHostView)
+        return immediateHostView.ancestorScrollView;
+
+    return self.superview.ancestorScrollView;
 }
 
 #pragma mark Geometry

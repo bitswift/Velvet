@@ -33,12 +33,14 @@
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
 		D01E23C61492F15B00219D40 /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
+		D020F48C14C3923400C466E1 /* NSViewAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D020F48B14C3923400C466E1 /* NSViewAdditionsTests.m */; };
 		D020F49314C3959500C466E1 /* NSWindow+InitializationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D020F49114C3959500C466E1 /* NSWindow+InitializationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D020F49414C3959500C466E1 /* NSWindow+InitializationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D020F49214C3959500C466E1 /* NSWindow+InitializationAdditions.m */; };
 		D020F49714C3972E00C466E1 /* NSWindowAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */; };
 		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
 		D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D03FD8A614C39D760062B7A3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
 		D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D05DC49B14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */; };
 		D06EF03B14B39CFA0035E239 /* VELEventManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D06EF03914B39CFA0035E239 /* VELEventManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -161,6 +163,8 @@
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
 		D01E23B11492F14D00219D40 /* Proton.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proton.xcodeproj; path = ../Proton/Frameworks/Proton/Proton.xcodeproj; sourceTree = "<group>"; };
+		D020F48A14C3923400C466E1 /* NSViewAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewAdditionsTests.h; sourceTree = "<group>"; };
+		D020F48B14C3923400C466E1 /* NSViewAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewAdditionsTests.m; sourceTree = "<group>"; };
 		D020F49114C3959500C466E1 /* NSWindow+InitializationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+InitializationAdditions.h"; sourceTree = "<group>"; };
 		D020F49214C3959500C466E1 /* NSWindow+InitializationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+InitializationAdditions.m"; sourceTree = "<group>"; };
 		D020F49514C3972E00C466E1 /* NSWindowAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSWindowAdditionsTests.h; sourceTree = "<group>"; };
@@ -253,6 +257,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03FD8A614C39D760062B7A3 /* QuartzCore.framework in Frameworks */,
 				D01B953514C1778D00CBDD8E /* Proton.framework in Frameworks */,
 				D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */,
 				D0EFFC1C147851A80095AB35 /* Cocoa.framework in Frameworks */,

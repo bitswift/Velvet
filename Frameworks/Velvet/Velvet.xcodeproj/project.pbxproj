@@ -27,6 +27,8 @@
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
 		1EA3D71014B37F4A0007E4C4 /* NSVelvetHostViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */; };
 		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D01B962E14C1956100CBDD8E /* VELViewLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D01B962C14C1956100CBDD8E /* VELViewLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D01B962F14C1956100CBDD8E /* VELViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D01B962D14C1956100CBDD8E /* VELViewLayer.m */; };
 		D01B953514C1778D00CBDD8E /* Proton.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D01E23BC1492F14E00219D40 /* Proton.framework */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
@@ -152,6 +154,8 @@
 		1EA3D70814B37F3B0007E4C4 /* NSVelvetHostViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetHostViewTests.h; sourceTree = "<group>"; };
 		1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetHostViewTests.m; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
+		D01B962C14C1956100CBDD8E /* VELViewLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewLayer.h; sourceTree = "<group>"; };
+		D01B962D14C1956100CBDD8E /* VELViewLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewLayer.m; sourceTree = "<group>"; };
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
 		D01E23B11492F14D00219D40 /* Proton.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Proton.xcodeproj; path = ../Proton/Frameworks/Proton/Proton.xcodeproj; sourceTree = "<group>"; };
@@ -277,6 +281,15 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
+		D01B962B14C1955400CBDD8E /* Layers */ = {
+			isa = PBXGroup;
+			children = (
+				D01B962C14C1956100CBDD8E /* VELViewLayer.h */,
+				D01B962D14C1956100CBDD8E /* VELViewLayer.m */,
+			);
+			name = Layers;
+			sourceTree = "<group>";
+		};
 		D01CF3AD1479A6A100C88D2B /* AppKit Bridging */ = {
 			isa = PBXGroup;
 			children = (
@@ -299,6 +312,7 @@
 		D01CF3AF1479A6BD00C88D2B /* Native */ = {
 			isa = PBXGroup;
 			children = (
+				D01B962B14C1955400CBDD8E /* Layers */,
 				D08719DE14A30A5400F304BC /* Views */,
 				D08719E314A30A5900F304BC /* View Controllers */,
 			);
@@ -349,6 +363,8 @@
 			children = (
 				1EA3D70814B37F3B0007E4C4 /* NSVelvetHostViewTests.h */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
+				1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */,
+				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
 				D0A96C0B14B7AF1F00A64F6F /* VELAppKitAdditionsTests.h */,
 				D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */,
 				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
@@ -365,8 +381,6 @@
 				D0B75C6E14918EB9005C81D5 /* VELViewTests.m */,
 				D0CE950E14B3842F003581C8 /* VELWindowTests.h */,
 				D0CE950F14B3842F003581C8 /* VELWindowTests.m */,
-				1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */,
-				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -563,6 +577,7 @@
 				D0A96C0514B7AE8B00A64F6F /* AppKit+GeometryAdditions.h in Headers */,
 				D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */,
 				D0F5BFCA14BF6BE000C66839 /* VELHostView.h in Headers */,
+				D01B962E14C1956100CBDD8E /* VELViewLayer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,6 +747,7 @@
 				D06EF03C14B39CFA0035E239 /* VELEventManager.m in Sources */,
 				D06EF04014B3A0590035E239 /* NSWindow+EventHandlingAdditions.m in Sources */,
 				D0A96C0614B7AE8B00A64F6F /* AppKit+GeometryAdditions.m in Sources */,
+				D01B962F14C1956100CBDD8E /* VELViewLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

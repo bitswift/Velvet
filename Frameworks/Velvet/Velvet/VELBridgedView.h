@@ -89,7 +89,7 @@
  * views.
  *
  * @warning **Important:** The receiver _must_ forward this message to all of
- * its subviews.
+ * its subviews and any <[VELHostView guestView]>.
  */
 - (void)ancestorDidLayout;
 
@@ -118,7 +118,7 @@
  * the receiver is being detached from its current <ancestorNSVelvetView>.
  *
  * @warning **Important:** The receiver _must_ forward this message to all of
- * its subviews.
+ * its subviews and any <[VELHostView guestView]>.
  */
 - (void)willMoveToNSVelvetView:(NSVelvetView *)view;
 
@@ -129,7 +129,7 @@
  * `nil` if the receiver was not hosted.
  *
  * @warning **Important:** The receiver _must_ forward this message to all of
- * its subviews.
+ * its subviews and any <[VELHostView guestView]>.
  */
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view;
 

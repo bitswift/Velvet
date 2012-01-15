@@ -56,8 +56,16 @@ static BOOL VELViewPerformingDeepLayout = NO;
         unsigned recursingActionForLayer:1;
         unsigned clearsContextBeforeDrawing:1;
         unsigned alignsToIntegralPixels:1;
+        unsigned replacingSubviews:1;
     } m_flags;
 
+    /*
+     * A mutable array backing the immutable <subviews> property.
+     *
+     * We expose this array as immutable to prevent callers from reordering or
+     * directly modifying the subviews array, instead requiring the use of the
+     * specific interface methods for doing so.
+     */
     NSMutableArray *m_subviews;
 }
 
@@ -70,6 +78,16 @@ static BOOL VELViewPerformingDeepLayout = NO;
  * without entering an infinite loop.
  */
 @property (nonatomic, assign, getter = isRecursingActionForLayer) BOOL recursingActionForLayer;
+
+/*
+ * Whether the receiver is currently in the process of replacing all its
+ * subviews.
+ *
+ * This should be used to stifle KVO notifications from adding/removing
+ * individual subviews (since only the KVO notification for the whole
+ * replacement should be sent).
+ */
+@property (nonatomic, assign, getter = isReplacingSubviews) BOOL replacingSubviews;
 
 /*
  * Whether this view class does its own drawing, as determined by the
@@ -111,6 +129,15 @@ static BOOL VELViewPerformingDeepLayout = NO;
 @synthesize superview = m_superview;
 @synthesize viewController = m_viewController;
 
++ (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key {
+    if ([key isEqualToString:PROKeyForClass(VELView, subviews)]) {
+        // KVO compliance for self.subviews is implemented manually
+        return NO;
+    }
+
+    return [super automaticallyNotifiesObserversForKey:key];
+}
+
 - (BOOL)isRecursingActionForLayer {
     return m_flags.recursingActionForLayer;
 }
@@ -141,6 +168,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setAlignsToIntegralPixels:(BOOL)aligns {
     m_flags.alignsToIntegralPixels = aligns;
+}
+
+- (BOOL)isReplacingSubviews {
+    return m_flags.replacingSubviews;
+}
+
+- (void)setReplacingSubviews:(BOOL)replacing {
+    m_flags.replacingSubviews = replacing;
 }
 
 - (BOOL)clipsToBounds {
@@ -275,6 +310,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setSubviews:(NSArray *)newSubviews {
+    self.replacingSubviews = YES;
+    [self willChangeValueForKey:PROKeyForObject(self, subviews)];
+
+    @onExit {
+        [self didChangeValueForKey:PROKeyForObject(self, subviews)];
+        self.replacingSubviews = NO;
+    };
+
     NSMutableArray *oldSubviews = [m_subviews mutableCopy];
 
     if ([newSubviews count]) {
@@ -564,6 +607,21 @@ static BOOL VELViewPerformingDeepLayout = NO;
     if (view.superview == self)
         return;
 
+    NSUInteger index = [m_subviews count];
+    NSIndexSet *indexSet = nil;
+
+    if (!self.replacingSubviews) {
+        indexSet = [NSIndexSet indexSetWithIndex:index];
+
+        [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:PROKeyForObject(self, subviews)];
+    }
+
+    @onExit {
+        if (!self.replacingSubviews) {
+            [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:PROKeyForObject(self, subviews)];
+        }
+    };
+
     [CATransaction performWithDisabledActions:^{
         VELView *oldSuperview = view.superview;
 
@@ -664,6 +722,24 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)removeSubview:(VELView *)subview; {
+    NSUInteger index = [m_subviews indexOfObjectIdenticalTo:subview];
+    if (index == NSNotFound)
+        return;
+
+    NSIndexSet *indexSet = nil;
+
+    if (!self.replacingSubviews) {
+        indexSet = [NSIndexSet indexSetWithIndex:index];
+
+        [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:PROKeyForObject(self, subviews)];
+    }
+
+    @onExit {
+        if (!self.replacingSubviews) {
+            [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:PROKeyForObject(self, subviews)];
+        }
+    };
+
     [CATransaction performWithDisabledActions:^{
         NSWindow *window = self.window;
 
@@ -677,7 +753,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         [subview.layer removeFromSuperlayer];
 
         subview.superview = nil;
-        [m_subviews removeObjectIdenticalTo:subview];
+        [m_subviews removeObjectAtIndex:index];
     }];
 }
 

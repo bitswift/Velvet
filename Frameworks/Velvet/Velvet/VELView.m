@@ -964,6 +964,11 @@ static BOOL VELViewPerformingDeepLayout = NO;
         CGContextClearRect(context, drawingRegion);
 
     // enable sub-pixel antialiasing (if drawing onto anything opaque)
+    CGContextSetAllowsAntialiasing(context, YES);
+    CGContextSetAllowsFontSmoothing(context, YES);
+    CGContextSetAllowsFontSubpixelPositioning(context, YES);
+    CGContextSetAllowsFontSubpixelQuantization(context, YES);
+
     CGContextSetShouldAntialias(context, YES);
     CGContextSetShouldSmoothFonts(context, YES);
     CGContextSetShouldSubpixelPositionFonts(context, YES);

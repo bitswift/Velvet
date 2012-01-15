@@ -22,7 +22,6 @@
 #import <Velvet/VELViewController.h>
 #import <Velvet/VELViewLayer.h>
 #import <Velvet/VELViewPrivate.h>
-#import <Velvet/VELViewProtected.h>
 #import <objc/runtime.h>
 
 /*
@@ -664,7 +663,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         [m_subviews addObject:view];
 
         view.superview = self;
-        [self addSubviewToLayer:view];
+        [self.layer addSublayer:view.layer];
 
         [view didMoveFromSuperview:oldSuperview];
 
@@ -674,10 +673,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
         if (needsWindowUpdate)
             [view didMoveFromWindow:oldWindow];
     }];
-}
-
-- (void)addSubviewToLayer:(VELView *)view; {
-    [self.layer addSublayer:view.layer];
 }
 
 - (void)ancestorDidLayout; {

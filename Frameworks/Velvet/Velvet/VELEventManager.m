@@ -184,20 +184,9 @@
             respondingView = [event.window bridgedHitTest:[event locationInWindow]];
             
             if (respondingView) {
-                BOOL (^isNextResponderOfExistingResponder)(void) = ^ BOOL {
-                    NSResponder *responder = [event.window firstResponder];
-                    
-                    while (responder && responder != respondingView)
-                        responder = responder.nextResponder;
-
-                    return responder != nil;
-                };
-
-                if (!isNextResponderOfExistingResponder()) {
-                    // make the view that received the click the first responder for
-                    // that window
-                    [event.window makeFirstResponder:respondingView];
-                }
+                // make the view that received the click the first responder for
+                // that window
+                [event.window makeFirstResponder:respondingView];
             }
 
             break;

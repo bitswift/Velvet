@@ -385,6 +385,9 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
         m_hostView = view;
 
+        // the hostView may need to become our nextResponder
+        [self updateViewAndViewControllerNextResponders];
+
         if (oldVelvetView != newVelvetView)
             [self didMoveFromNSVelvetView:oldVelvetView];
 
@@ -782,8 +785,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
         [self setNeedsDisplay];
     }
 
-    [self updateViewAndViewControllerNextResponders];
-
     if (self.window)
         [self.viewController viewDidAppear];
     else
@@ -955,8 +956,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
         // frame to integral pixels
         self.frame = self.layer.frame;
     }
-
-    [self updateViewAndViewControllerNextResponders];
 
     if ([self respondsToSelector:@selector(supportedDragTypes)]) {
         [self.ancestorNSVelvetView registerDraggingDestination:(id)self];

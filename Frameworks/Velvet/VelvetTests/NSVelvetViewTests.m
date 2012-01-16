@@ -35,6 +35,16 @@
     STAssertEqualObjects(self.window.contentView.guestView, containerView, @"");
 }
 
+- (void)testResponderChain {
+    STAssertEquals(self.window.rootView.nextResponder, self.window.contentView, @"");
+
+    VELView *view = [[VELView alloc] init];
+    self.window.rootView = view;
+
+    STAssertEquals(view.nextResponder, self.window.contentView, @"");
+    STAssertEquals(self.window.contentView.nextResponder, self.window, @"");
+}
+
 - (void)testConformsToVELBridgedView {
     STAssertTrue([NSVelvetView conformsToProtocol:@protocol(VELBridgedView)], @"");
 

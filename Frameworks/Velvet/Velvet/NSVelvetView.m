@@ -15,6 +15,7 @@
 #import <Velvet/NSVelvetViewPrivate.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELNSView.h>
+#import <Velvet/VELNSViewLayerDelegateProxy.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELViewPrivate.h>
@@ -105,6 +106,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, strong) CAShapeLayer *maskLayer;
 
 /*
+ * The <VELNSViewLayerDelegateProxy> that is the delegate of the receiver's
+ * layer.
+ */
+@property (nonatomic, strong, readonly) VELNSViewLayerDelegateProxy *selfLayerDelegateProxy;
+
+/*
  * Returns any existing AppKit-created focus ring layer for the given view, or
  * `nil` if one could not be found.
  */
@@ -147,6 +154,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize allDraggingDestinations = m_allDraggingDestinations;
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
+@synthesize selfLayerDelegateProxy = m_selfLayerDelegateProxy;
 
 - (id<VELHostView>)hostView {
     if (m_hostView)
@@ -214,6 +222,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     // manager, so that we'll know when new sublayers are added
     self.appKitHostView.layer.mask = self.maskLayer;
     self.appKitHostView.layer.layoutManager = self;
+
+    // setting this up should create a proxy for self.appKitHostView as well
+    m_selfLayerDelegateProxy = [VELNSViewLayerDelegateProxy layerDelegateProxyWithLayer:self.layer];
 
     self.guestView = [[VELView alloc] init];
 

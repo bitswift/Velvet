@@ -7,17 +7,24 @@
 //
 
 #import <Velvet/VELNSView.h>
+#import <Proton/Proton.h>
+#import <QuartzCore/QuartzCore.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSVelvetViewPrivate.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
+#import <Velvet/VELNSViewLayerDelegateProxy.h>
 #import <Velvet/VELNSViewPrivate.h>
-#import <Proton/Proton.h>
-#import <QuartzCore/QuartzCore.h>
 
 @interface VELNSView ()
 @property (nonatomic, assign) BOOL rendersContainedView;
+
+/*
+ * An object for proxying the layer delegate of the `NSView` (typically the
+ * `NSView` itself), used to disable implicit animations.
+ */
+@property (nonatomic, strong) VELNSViewLayerDelegateProxy *layerDelegateProxy;
 
 - (void)synchronizeNSViewGeometry;
 @end
@@ -27,6 +34,7 @@
 #pragma mark Properties
 
 @synthesize guestView = m_guestView;
+@synthesize layerDelegateProxy = m_layerDelegateProxy;
 @synthesize rendersContainedView = m_rendersContainedView;
 
 - (void)setGuestView:(NSView *)view {
@@ -46,12 +54,16 @@
         [m_guestView setWantsLayer:YES];
         [m_guestView setNeedsDisplay:YES];
 
+        self.layerDelegateProxy = [VELNSViewLayerDelegateProxy layerDelegateProxyWithLayer:m_guestView.layer];
+
         [velvetView.appKitHostView addSubview:m_guestView];
         m_guestView.hostView = self;
 
         [velvetView recalculateNSViewOrdering];
 
         m_guestView.nextResponder = self;
+    } else {
+        self.layerDelegateProxy = nil;
     }
 
     [velvetView recalculateNSViewClipping];

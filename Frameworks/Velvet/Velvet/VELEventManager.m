@@ -18,23 +18,33 @@
 @property (nonatomic, strong) id currentGestureResponder;
 
 /*
- * Turns an event into an `NSResponder` message, and sends it to
- * a responder.
+ * Whether an event is currently in the process of being handled in
+ * <handleVelvetEvent:>.
+ *
+ * This is used to avoid infinite recursion, as apparently some `NSResponder`
+ * messages eventually jump back up to event monitors.
+ */
+@property (nonatomic, assign, getter = isHandlingEvent) BOOL handlingEvent;
+
+/*
+ * Turns an event into an `NSResponder` message, and attempts to send it to the
+ * given responder. If neither `responder` nor the rest of its responder chain
+ * implement the corresponding action, `NO` is returned.
  *
  * @param event The event to dispatch.
  * @param responder The `NSResponder` which should receive the message
  * corresponding to `event`.
  */
-- (void)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
+- (BOOL)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
 
 /**
  * Attempts to dispatch the given event to Velvet via the appropriate window.
  * Returns whether the event was handled by Velvet (and thus should be
  * disregarded by AppKit).
  *
- * @param theEvent The event that occurred.
+ * @param event The event that occurred.
  */
-- (BOOL)handleVelvetEvent:(NSEvent *)theEvent;
+- (BOOL)handleVelvetEvent:(NSEvent *)event;
 @end
 
 @implementation VELEventManager
@@ -42,6 +52,7 @@
 #pragma mark Properties
 
 @synthesize currentGestureResponder = m_currentGestureResponder;
+@synthesize handlingEvent = m_handlingEvent;
 
 #pragma mark Lifecycle
 
@@ -67,97 +78,114 @@
 
 #pragma mark Event handling
 
-- (void)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder; {
+- (BOOL)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder; {
+    SEL action = NULL;
+
     switch ([event type]) {
         case NSLeftMouseDown:
-            [responder mouseDown:event];
+            action = @selector(mouseDown:);
             break;
 
         case NSLeftMouseUp:
-            [responder mouseUp:event];
+            action = @selector(mouseUp:);
             break;
 
         case NSRightMouseDown:
-            [responder rightMouseDown:event];
+            action = @selector(rightMouseDown:);
             break;
 
         case NSRightMouseUp:
-            [responder rightMouseUp:event];
+            action = @selector(rightMouseUp:);
             break;
 
         case NSMouseMoved:
-            [responder mouseMoved:event];
+            action = @selector(mouseMoved:);
             break;
 
         case NSLeftMouseDragged:
-            [responder mouseDragged:event];
+            action = @selector(mouseDragged:);
             break;
 
         case NSRightMouseDragged:
-            [responder rightMouseDragged:event];
+            action = @selector(rightMouseDragged:);
             break;
 
         case NSMouseEntered:
-            [responder mouseEntered:event];
+            action = @selector(mouseEntered:);
             break;
 
         case NSMouseExited:
-            [responder mouseExited:event];
+            action = @selector(mouseExited:);
             break;
 
         case NSOtherMouseDown:
-            [responder otherMouseDown:event];
+            action = @selector(otherMouseDown:);
             break;
 
         case NSOtherMouseUp:
-            [responder otherMouseUp:event];
+            action = @selector(otherMouseUp:);
             break;
 
         case NSOtherMouseDragged:
-            [responder otherMouseDragged:event];
+            action = @selector(otherMouseDragged:);
             break;
         
         case NSScrollWheel:
-            [responder scrollWheel:event];
+            action = @selector(scrollWheel:);
             break;
 
         case NSEventTypeMagnify:
-            [responder magnifyWithEvent:event];
+            action = @selector(magnifyWithEvent:);
             break;
 
         case NSEventTypeSwipe:
-            [responder swipeWithEvent:event];
+            action = @selector(swipeWithEvent:);
             break;
 
         case NSEventTypeRotate:
-            [responder rotateWithEvent:event];
+            action = @selector(rotateWithEvent:);
             break;
 
         case NSEventTypeBeginGesture:
-            [responder beginGestureWithEvent:event];
+            action = @selector(beginGestureWithEvent:);
             break;
 
         case NSEventTypeEndGesture:
-            [responder endGestureWithEvent:event];
+            action = @selector(endGestureWithEvent:);
             break;
 
         default:
             DDLogError(@"Unrecognized event: %@", event);
     }
+
+    if (action)
+        return [responder tryToPerform:action with:event];
+    else
+        return NO;
 }
 
-- (BOOL)handleVelvetEvent:(NSEvent *)theEvent; {
+- (BOOL)handleVelvetEvent:(NSEvent *)event; {
+    if (self.handlingEvent) {
+        // don't recurse -- see the description for this property
+        return NO;
+    }
+
+    self.handlingEvent = YES;
+    @onExit {
+        self.handlingEvent = NO;
+    };
+
     id respondingView = nil;
 
-    switch ([theEvent type]) {
+    switch ([event type]) {
         case NSLeftMouseDown:
         case NSRightMouseDown:
         case NSOtherMouseDown:
-            respondingView = [theEvent.window bridgedViewForMouseDownEvent:theEvent];
+            respondingView = [event.window bridgedHitTest:[event locationInWindow]];
             
             if (respondingView) {
                 BOOL (^isNextResponderOfExistingResponder)(void) = ^ BOOL {
-                    NSResponder *responder = [theEvent.window firstResponder];
+                    NSResponder *responder = [event.window firstResponder];
                     
                     while (responder && responder != respondingView)
                         responder = responder.nextResponder;
@@ -168,7 +196,7 @@
                 if (!isNextResponderOfExistingResponder()) {
                     // make the view that received the click the first responder for
                     // that window
-                    [theEvent.window makeFirstResponder:respondingView];
+                    [event.window makeFirstResponder:respondingView];
                 }
             }
 
@@ -178,11 +206,11 @@
         case NSEventTypeMagnify:
         case NSEventTypeSwipe:
         case NSEventTypeRotate:
-            respondingView = [theEvent.window bridgedViewForScrollEvent:theEvent];
+            respondingView = [event.window bridgedHitTest:[event locationInWindow]];
             break;
 
         case NSEventTypeBeginGesture:
-            self.currentGestureResponder = respondingView = [theEvent.window bridgedViewForScrollEvent:theEvent];
+            self.currentGestureResponder = respondingView = [event.window bridgedHitTest:[event locationInWindow]];
             break;
 
         case NSEventTypeEndGesture:
@@ -200,9 +228,9 @@
         case NSMouseExited:
         case NSOtherMouseUp:
         case NSOtherMouseDragged: {
-            id responder = [theEvent.window firstResponder];
+            id responder = [event.window firstResponder];
             if (![responder isKindOfClass:[NSView class]]) {
-                [self dispatchEvent:theEvent toResponder:responder];
+                [self dispatchEvent:event toResponder:responder];
             }
 
             // we always want to pass on these kinds of mouse events to the
@@ -216,8 +244,7 @@
     }
 
     if (respondingView) {
-        [self dispatchEvent:theEvent toResponder:respondingView];
-        return YES;
+        return [self dispatchEvent:event toResponder:respondingView];
     } else {
         return NO;
     }

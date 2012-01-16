@@ -220,6 +220,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [self recalculateNSViewClipping];
 }
 
+- (void)dealloc {
+    self.guestView.hostView = nil;
+}
+
 #pragma mark Layout
 
 - (NSView *)hitTest:(NSPoint)point {

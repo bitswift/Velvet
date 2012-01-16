@@ -29,25 +29,4 @@
  * at which to look for a view.
  */
 - (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint;
-
-/*
- * Hit tests for a bridged view in the region identified by the given event,
- * returning any non-AppKit view that is found.
- *
- * This method will never return an `NSView`.
- *
- * @param event The mouse-related event which occurred.
- */
-- (id<VELBridgedView>)bridgedViewForMouseDownEvent:(NSEvent *)event;
-
-/*
- * Returns the most descendant non-AppKit scroll view in the region identified
- * by the given event, or `nil` if no such scroll view exists at the event's
- * location.
- *
- * This method will never return an `NSView`.
- *
- * @param event The scroll wheel event which occurred.
- */
-- (id<VELBridgedView>)bridgedViewForScrollEvent:(NSEvent *)event;
 @end

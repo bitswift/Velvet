@@ -18,6 +18,15 @@
 @property (nonatomic, strong) id currentGestureResponder;
 
 /*
+ * Whether an event is currently in the process of being handled in
+ * <handleVelvetEvent:>.
+ *
+ * This is used to avoid infinite recursion, as apparently some `NSResponder`
+ * messages eventually jump back up to event monitors.
+ */
+@property (nonatomic, assign, getter = isHandlingEvent) BOOL handlingEvent;
+
+/*
  * Turns an event into an `NSResponder` message, and attempts to send it to the
  * given responder. If neither `responder` nor the rest of its responder chain
  * implement the corresponding action, `NO` is returned.
@@ -33,9 +42,9 @@
  * Returns whether the event was handled by Velvet (and thus should be
  * disregarded by AppKit).
  *
- * @param theEvent The event that occurred.
+ * @param event The event that occurred.
  */
-- (BOOL)handleVelvetEvent:(NSEvent *)theEvent;
+- (BOOL)handleVelvetEvent:(NSEvent *)event;
 @end
 
 @implementation VELEventManager
@@ -43,6 +52,7 @@
 #pragma mark Properties
 
 @synthesize currentGestureResponder = m_currentGestureResponder;
+@synthesize handlingEvent = m_handlingEvent;
 
 #pragma mark Lifecycle
 
@@ -154,18 +164,28 @@
         return NO;
 }
 
-- (BOOL)handleVelvetEvent:(NSEvent *)theEvent; {
+- (BOOL)handleVelvetEvent:(NSEvent *)event; {
+    if (self.handlingEvent) {
+        // don't recurse -- see the description for this property
+        return NO;
+    }
+
+    self.handlingEvent = YES;
+    @onExit {
+        self.handlingEvent = NO;
+    };
+
     id respondingView = nil;
 
-    switch ([theEvent type]) {
+    switch ([event type]) {
         case NSLeftMouseDown:
         case NSRightMouseDown:
         case NSOtherMouseDown:
-            respondingView = [theEvent.window bridgedViewForMouseDownEvent:theEvent];
+            respondingView = [event.window bridgedHitTest:[event locationInWindow]];
             
             if (respondingView) {
                 BOOL (^isNextResponderOfExistingResponder)(void) = ^ BOOL {
-                    NSResponder *responder = [theEvent.window firstResponder];
+                    NSResponder *responder = [event.window firstResponder];
                     
                     while (responder && responder != respondingView)
                         responder = responder.nextResponder;
@@ -176,7 +196,7 @@
                 if (!isNextResponderOfExistingResponder()) {
                     // make the view that received the click the first responder for
                     // that window
-                    [theEvent.window makeFirstResponder:respondingView];
+                    [event.window makeFirstResponder:respondingView];
                 }
             }
 
@@ -186,11 +206,11 @@
         case NSEventTypeMagnify:
         case NSEventTypeSwipe:
         case NSEventTypeRotate:
-            respondingView = [theEvent.window bridgedViewForScrollEvent:theEvent];
+            respondingView = [event.window bridgedHitTest:[event locationInWindow]];
             break;
 
         case NSEventTypeBeginGesture:
-            self.currentGestureResponder = respondingView = [theEvent.window bridgedViewForScrollEvent:theEvent];
+            self.currentGestureResponder = respondingView = [event.window bridgedHitTest:[event locationInWindow]];
             break;
 
         case NSEventTypeEndGesture:
@@ -208,9 +228,9 @@
         case NSMouseExited:
         case NSOtherMouseUp:
         case NSOtherMouseDragged: {
-            id responder = [theEvent.window firstResponder];
+            id responder = [event.window firstResponder];
             if (![responder isKindOfClass:[NSView class]]) {
-                [self dispatchEvent:theEvent toResponder:responder];
+                [self dispatchEvent:event toResponder:responder];
             }
 
             // we always want to pass on these kinds of mouse events to the
@@ -224,7 +244,7 @@
     }
 
     if (respondingView) {
-        return [self dispatchEvent:theEvent toResponder:respondingView];
+        return [self dispatchEvent:event toResponder:respondingView];
     } else {
         return NO;
     }

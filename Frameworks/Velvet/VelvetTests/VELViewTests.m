@@ -512,6 +512,114 @@
     }
 }
 
+- (void)testConformsToVELBridgedView {
+    STAssertTrue([VELView conformsToProtocol:@protocol(VELBridgedView)], @"");
+
+    VELView *view = [[VELView alloc] init];
+    STAssertTrue([view conformsToProtocol:@protocol(VELBridgedView)], @"");
+}
+
+- (void)testConvertFromWindowPoint {
+    VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 100, 100, 200)];
+    [self.window.rootView addSubview:view];
+
+    CGPoint windowPoint = CGPointMake(175, 355);
+    CGPoint viewPoint = CGPointMake(125, 255);
+
+    STAssertTrue(CGPointEqualToPoint([view convertFromWindowPoint:windowPoint], viewPoint), @"");
+}
+
+- (void)testConvertToWindowPoint {
+    VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 100, 100, 200)];
+    [self.window.rootView addSubview:view];
+
+    CGPoint windowPoint = CGPointMake(175, 355);
+    CGPoint viewPoint = CGPointMake(125, 255);
+
+    STAssertTrue(CGPointEqualToPoint([view convertToWindowPoint:viewPoint], windowPoint), @"");
+}
+
+- (void)testConvertFromWindowRect {
+    VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 100, 100, 200)];
+    [self.window.rootView addSubview:view];
+
+    CGRect windowRect = CGRectMake(175, 355, 100, 100);
+    CGRect viewRect = CGRectMake(125, 255, 100, 100);
+
+    STAssertTrue(CGRectEqualToRect([view convertFromWindowRect:windowRect], viewRect), @"");
+}
+
+- (void)testConvertToWindowRect {
+    VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 100, 100, 200)];
+    [self.window.rootView addSubview:view];
+
+    CGRect windowRect = CGRectMake(175, 355, 100, 100);
+    CGRect viewRect = CGRectMake(125, 255, 100, 100);
+
+    STAssertTrue(CGRectEqualToRect([view convertToWindowRect:viewRect], windowRect), @"");
+}
+
+- (void)testLayer {
+    VELView *view = [[VELView alloc] init];
+    STAssertNotNil(view.layer, @"");
+}
+
+- (void)testHostView {
+    VELView *view = [[VELView alloc] init];
+    STAssertNil(view.hostView, @"");
+
+    self.window.rootView = view;
+    STAssertEquals(view.hostView, self.window.contentView, @"");
+}
+
+- (void)testAncestorDidLayout {
+    VELView *view = [[VELView alloc] init];
+    STAssertNoThrow([view ancestorDidLayout], @"");
+}
+
+- (void)testAncestorNSVelvetView {
+    VELView *view = [[VELView alloc] init];
+    [self.window.rootView addSubview:view];
+
+    STAssertEquals(view.ancestorNSVelvetView, self.window.contentView, @"");
+}
+
+- (void)testAncestorScrollView {
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:CGRectZero];
+
+    NSVelvetView *velvetView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
+    [scrollView setDocumentView:velvetView];
+
+    STAssertEquals(velvetView.guestView.ancestorScrollView, scrollView, @"");
+}
+
+- (void)testWillMoveToNSVelvetView {
+    VELView *view = [[VELView alloc] init];
+    STAssertNoThrow([view willMoveToNSVelvetView:nil], @"");
+}
+
+- (void)testDidMoveFromNSVelvetView {
+    VELView *view = [[VELView alloc] init];
+    STAssertNoThrow([view didMoveFromNSVelvetView:nil], @"");
+}
+
+- (void)testDescendantViewAtPoint {
+    VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(20, 20, 80, 80)];
+    [self.window.rootView addSubview:superview];
+
+    VELView *subview = [[VELView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
+    [superview addSubview:subview];
+
+    CGPoint subviewPoint = CGPointMake(51, 31);
+    STAssertEquals([superview descendantViewAtPoint:subviewPoint], subview, @"");
+
+    CGPoint superviewPoint = CGPointMake(49, 29);
+    STAssertEquals([superview descendantViewAtPoint:superviewPoint], superview, @"");
+
+    CGPoint outsidePoint = CGPointMake(49, 200);
+    STAssertNil([superview descendantViewAtPoint:outsidePoint], @"");
+}
+
 @end
 
 @implementation TestView

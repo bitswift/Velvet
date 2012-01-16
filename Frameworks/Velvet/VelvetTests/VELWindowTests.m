@@ -22,12 +22,24 @@
         styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
         backing:NSBackingStoreBuffered
         defer:NO
-        screen:nil
     ];
 }
 
 - (void)testInitialization {
     VELWindow *window = [self newWindow];
+
+    STAssertNotNil(window, @"");
+}
+
+- (void)testInitializationWithScreen {
+    VELWindow *window = [[VELWindow alloc]
+        initWithContentRect:CGRectMake(100, 100, 500, 500)
+        styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
+        backing:NSBackingStoreBuffered
+        defer:NO
+        screen:nil
+    ];
+
     STAssertNotNil(window, @"");
 }
 

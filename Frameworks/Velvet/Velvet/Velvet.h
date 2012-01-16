@@ -14,6 +14,7 @@
 #import <Velvet/NSImage+CoreGraphicsAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
+#import <Velvet/NSWindow+InitializationAdditions.h>
 #import <Velvet/VELBridgedView.h>
 #import <Velvet/VELControl.h>
 #import <Velvet/VELDraggingDestination.h>

@@ -98,7 +98,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
  *
  * @param changesBlock A block containing changes to make to layers.
  */
-+ (void)changeLayerProperties:(void (^)(void))changesBlock;
+- (void)changeLayerProperties:(void (^)(void))changesBlock;
 
 /*
  * Whether this view class does its own drawing, as determined by the
@@ -194,7 +194,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setClipsToBounds:(BOOL)clipsToBounds {
-    [[self class] changeLayerProperties:^{
+    [self changeLayerProperties:^{
         self.layer.masksToBounds = clipsToBounds;
     }];
 }
@@ -214,7 +214,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     CGSize originalSize = self.layer.frame.size;
     CGSize newSize = frame.size;
     
-    [[self class] changeLayerProperties:^{
+    [self changeLayerProperties:^{
         self.layer.frame = frame;
     }];
     
@@ -237,7 +237,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
     BOOL needsLayout = !CGRectEqualToRect(bounds, self.layer.bounds);
     
-    [[self class] changeLayerProperties:^{
+    [self changeLayerProperties:^{
         self.layer.bounds = bounds;
     }];
     
@@ -269,7 +269,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         center = CGPointMake(CGRectGetMidX(integralFrame), CGRectGetMidY(integralFrame));
     }
 
-    [[self class] changeLayerProperties:^{
+    [self changeLayerProperties:^{
         self.layer.position = center;
     }];
 
@@ -281,9 +281,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setAutoresizingMask:(VELViewAutoresizingMask)autoresizingMask {
-    [[self class] changeLayerProperties:^{
-        self.layer.autoresizingMask = autoresizingMask;
-    }];
+    self.layer.autoresizingMask = autoresizingMask;
 }
 
 - (CGAffineTransform)transform {
@@ -295,7 +293,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setTransform:(CGAffineTransform)transform {
-    [[self class] changeLayerProperties:^{
+    [self changeLayerProperties:^{
         self.layer.transform = CATransform3DMakeAffineTransform(transform);
     }];
 }
@@ -305,7 +303,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setAlpha:(CGFloat)alpha {
-    [[self class] changeLayerProperties:^{
+    [self changeLayerProperties:^{
         self.layer.opacity = (float)alpha;
     }];
 }
@@ -315,7 +313,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setHidden:(BOOL)hidden {
-    [[self class] changeLayerProperties:^{
+    [self changeLayerProperties:^{
         self.layer.hidden = hidden;
     }];
 }
@@ -398,7 +396,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setBackgroundColor:(NSColor *)color {
-    [[self class] changeLayerProperties:^{
+    [self changeLayerProperties:^{
         self.layer.backgroundColor = color.CGColor;
     }];
 }
@@ -408,9 +406,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setOpaque:(BOOL)opaque {
-    [[self class] changeLayerProperties:^{
-        self.layer.opaque = opaque;
-    }];
+    self.layer.opaque = opaque;
 }
 
 - (VELViewContentMode)contentMode {
@@ -522,7 +518,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setContentStretch:(CGRect)stretch {
-    [[self class] changeLayerProperties:^{
+    [self changeLayerProperties:^{
         self.layer.contentsCenter = stretch;
     }];
 }
@@ -1047,8 +1043,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [CATransaction commit];
 }
 
-+ (void)changeLayerProperties:(void (^)(void))changesBlock; {
-    if ([self isAnimating]) {
+- (void)changeLayerProperties:(void (^)(void))changesBlock; {
+    if ([[self class] isAnimating]) {
         changesBlock();
     } else {
         [CATransaction performWithDisabledActions:changesBlock];

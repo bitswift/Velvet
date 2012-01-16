@@ -68,82 +68,87 @@
 #pragma mark Event handling
 
 - (void)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder; {
+    SEL action;
+
     switch ([event type]) {
         case NSLeftMouseDown:
-            [responder mouseDown:event];
+            action = @selector(mouseDown:);
             break;
 
         case NSLeftMouseUp:
-            [responder mouseUp:event];
+            action = @selector(mouseUp:);
             break;
 
         case NSRightMouseDown:
-            [responder rightMouseDown:event];
+            action = @selector(rightMouseDown:);
             break;
 
         case NSRightMouseUp:
-            [responder rightMouseUp:event];
+            action = @selector(rightMouseUp:);
             break;
 
         case NSMouseMoved:
-            [responder mouseMoved:event];
+            action = @selector(mouseMoved:);
             break;
 
         case NSLeftMouseDragged:
-            [responder mouseDragged:event];
+            action = @selector(mouseDragged:);
             break;
 
         case NSRightMouseDragged:
-            [responder rightMouseDragged:event];
+            action = @selector(rightMouseDragged:);
             break;
 
         case NSMouseEntered:
-            [responder mouseEntered:event];
+            action = @selector(mouseEntered:);
             break;
 
         case NSMouseExited:
-            [responder mouseExited:event];
+            action = @selector(mouseExited:);
             break;
 
         case NSOtherMouseDown:
-            [responder otherMouseDown:event];
+            action = @selector(otherMouseDown:);
             break;
 
         case NSOtherMouseUp:
-            [responder otherMouseUp:event];
+            action = @selector(otherMouseUp:);
             break;
 
         case NSOtherMouseDragged:
-            [responder otherMouseDragged:event];
+            action = @selector(otherMouseDragged:);
             break;
         
         case NSScrollWheel:
-            [responder scrollWheel:event];
+            action = @selector(scrollWheel:);
             break;
 
         case NSEventTypeMagnify:
-            [responder magnifyWithEvent:event];
+            action = @selector(magnifyWithEvent:);
             break;
 
         case NSEventTypeSwipe:
-            [responder swipeWithEvent:event];
+            action = @selector(swipeWithEvent:);
             break;
 
         case NSEventTypeRotate:
-            [responder rotateWithEvent:event];
+            action = @selector(rotateWithEvent:);
             break;
 
         case NSEventTypeBeginGesture:
-            [responder beginGestureWithEvent:event];
+            action = @selector(beginGestureWithEvent:);
             break;
 
         case NSEventTypeEndGesture:
-            [responder endGestureWithEvent:event];
+            action = @selector(endGestureWithEvent:);
             break;
 
         default:
             DDLogError(@"Unrecognized event: %@", event);
+            return;
     }
+
+    [responder doCommandBySelector:action];
 }
 
 - (BOOL)handleVelvetEvent:(NSEvent *)theEvent; {

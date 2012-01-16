@@ -367,25 +367,30 @@ static BOOL VELViewPerformingDeepLayout = NO;
     if (view == m_hostView)
         return;
 
-    NSVelvetView *oldVelvetView = self.ancestorNSVelvetView;
-    NSVelvetView *newVelvetView = view.ancestorNSVelvetView;
+    // this autorelease pool seems to be necessary to avoid keeping something
+    // (don't know what) alive for too long after the host view has been
+    // destroyed
+    @autoreleasepool {
+        NSVelvetView *oldVelvetView = self.ancestorNSVelvetView;
+        NSVelvetView *newVelvetView = view.ancestorNSVelvetView;
 
-    NSWindow *oldWindow = oldVelvetView.window;
-    NSWindow *newWindow = newVelvetView.window;
+        NSWindow *oldWindow = oldVelvetView.window;
+        NSWindow *newWindow = newVelvetView.window;
 
-    if (oldWindow != newWindow)
-        [self willMoveToWindow:newWindow];
-    
-    if (oldVelvetView != newVelvetView)
-        [self willMoveToNSVelvetView:newVelvetView];
+        if (oldWindow != newWindow)
+            [self willMoveToWindow:newWindow];
+        
+        if (oldVelvetView != newVelvetView)
+            [self willMoveToNSVelvetView:newVelvetView];
 
-    m_hostView = view;
+        m_hostView = view;
 
-    if (oldVelvetView != newVelvetView)
-        [self didMoveFromNSVelvetView:oldVelvetView];
+        if (oldVelvetView != newVelvetView)
+            [self didMoveFromNSVelvetView:oldVelvetView];
 
-    if (oldWindow != newWindow)
-        [self didMoveFromWindow:oldWindow];
+        if (oldWindow != newWindow)
+            [self didMoveFromWindow:oldWindow];
+    }
 }
 
 - (NSColor *)backgroundColor {

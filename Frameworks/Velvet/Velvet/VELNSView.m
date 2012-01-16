@@ -179,7 +179,10 @@
         return nil;
 
     CGPoint NSViewPoint = [self.guestView convertFromWindowPoint:[self convertToWindowPoint:point]];
-    return [self.guestView descendantViewAtPoint:NSViewPoint] ?: [super descendantViewAtPoint:point];
+
+    // never return 'self', since we don't want to catch clicks that didn't
+    // directly hit the NSView
+    return [self.guestView descendantViewAtPoint:NSViewPoint];
 }
 
 #pragma mark Layout

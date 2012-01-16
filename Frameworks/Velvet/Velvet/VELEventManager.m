@@ -18,14 +18,15 @@
 @property (nonatomic, strong) id currentGestureResponder;
 
 /*
- * Turns an event into an `NSResponder` message, and sends it to
- * a responder.
+ * Turns an event into an `NSResponder` message, and attempts to send it to the
+ * given responder. If neither `responder` nor the rest of its responder chain
+ * implement the corresponding action, `NO` is returned.
  *
  * @param event The event to dispatch.
  * @param responder The `NSResponder` which should receive the message
  * corresponding to `event`.
  */
-- (void)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
+- (BOOL)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
 
 /**
  * Attempts to dispatch the given event to Velvet via the appropriate window.
@@ -67,8 +68,8 @@
 
 #pragma mark Event handling
 
-- (void)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder; {
-    SEL action;
+- (BOOL)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder; {
+    SEL action = NULL;
 
     switch ([event type]) {
         case NSLeftMouseDown:
@@ -145,10 +146,12 @@
 
         default:
             DDLogError(@"Unrecognized event: %@", event);
-            return;
     }
 
-    [responder doCommandBySelector:action];
+    if (action)
+        return [responder tryToPerform:action with:event];
+    else
+        return NO;
 }
 
 - (BOOL)handleVelvetEvent:(NSEvent *)theEvent; {
@@ -221,8 +224,7 @@
     }
 
     if (respondingView) {
-        [self dispatchEvent:theEvent toResponder:respondingView];
-        return YES;
+        return [self dispatchEvent:theEvent toResponder:respondingView];
     } else {
         return NO;
     }

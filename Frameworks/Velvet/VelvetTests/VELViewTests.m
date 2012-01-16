@@ -252,6 +252,29 @@
     STAssertEquals(view.nextResponder, self.window.rootView, @"");
 }
 
+- (void)testResponderChainMovingBetweenHostViews {
+    NSVelvetView *firstHostView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
+    NSVelvetView *secondHostView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
+    VELView *view = [[VELView alloc] init];
+
+    firstHostView.guestView = view;
+    STAssertEquals(view.nextResponder, firstHostView, @"");
+
+    secondHostView.guestView = view;
+    STAssertEquals(view.nextResponder, secondHostView, @"");
+}
+
+- (void)testResponderChainWithHostViewNotAnNSVelvetView {
+    id<VELHostView> hostView = [[VELNSView alloc] init];
+    VELView *view = [[VELView alloc] init];
+
+    // obviously a VELNSView should never host a VELView, but this use case
+    // mirrors that of our TwUI bridge, and previously a exposed a flaw in how
+    // responder chain updates were triggered
+    view.hostView = hostView;
+    STAssertEquals(view.nextResponder, hostView, @"");
+}
+
 - (void)testPointInside {
     VELView *view = [[VELView alloc] init];
     view.frame = CGRectMake(0, 0, 50, 50);

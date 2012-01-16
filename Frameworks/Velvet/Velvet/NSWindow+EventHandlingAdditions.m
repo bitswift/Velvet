@@ -18,6 +18,18 @@
 - (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint; {
     NSView *nsView = self.contentView;
 
+    if (![self isKeyWindow]) {
+        // we currently do not support any click-through events when the window is
+        // not already key
+        return nil;
+    }
+
+    NSView *frameHitTestedView = [[nsView superview] hitTest:windowPoint];
+    if ([frameHitTestedView isKindOfClass:NSClassFromString(@"NSThemeFrame")]) {
+        // ignore clicks on the frame that should trigger window resizing/moving
+        return nil;
+    }
+
     while (nsView) {
         CGPoint viewPoint = [[nsView superview] convertFromWindowPoint:windowPoint];
         id testView = [nsView hitTest:viewPoint];
@@ -53,36 +65,4 @@
     return nil;
 }
 
-- (id<VELBridgedView>)bridgedViewForMouseDownEvent:(NSEvent *)event {
-    id contentView = self.contentView;
-    
-    // we currently do not support any click-through events when the window is
-    // not already key
-    if ([self isKeyWindow]) {
-        CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
-        
-        if ([[[contentView superview] hitTest:windowPoint] isKindOfClass:NSClassFromString(@"NSThemeFrame")]) {
-            return nil;
-        }
-        
-        id hitView = [self bridgedHitTest:windowPoint];
-        if (![hitView isKindOfClass:[NSView class]]) {
-            return hitView;
-        }
-    }
-
-    return nil;
-}
-
-- (id<VELBridgedView>)bridgedViewForScrollEvent:(NSEvent *)event; {
-    CGPoint windowPoint = NSPointToCGPoint([event locationInWindow]);
-    id hitView = [self bridgedHitTest:windowPoint];
-
-    id scrollView = [hitView ancestorScrollView];
-    if (![scrollView isKindOfClass:[NSView class]]) {
-        return scrollView;
-    } else {
-        return nil;
-    }
-}
 @end

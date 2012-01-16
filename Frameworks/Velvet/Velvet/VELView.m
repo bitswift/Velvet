@@ -383,6 +383,9 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
         m_hostView = view;
 
+        // the hostView may need to become our nextResponder
+        [self updateViewAndViewControllerNextResponders];
+
         if (oldVelvetView != newVelvetView)
             [self didMoveFromNSVelvetView:oldVelvetView];
 
@@ -722,7 +725,19 @@ static BOOL VELViewPerformingDeepLayout = NO;
     NSVelvetView *velvetView = self.ancestorNSVelvetView;
     NSWindow *window = self.window;
 
+    id responder = [window firstResponder];
+    if ([responder isKindOfClass:[VELView class]]) {
+        if ([responder isDescendantOfView:self]) {
+            [window makeFirstResponder:self.nextResponder];
+        }
+    }
+
+    [CATransaction performWithDisabledActions:^{
+        [self.layer removeFromSuperlayer];
+    }];
+
     [superview removeSubview:self];
+    self.superview = nil;
 
     [self didMoveFromSuperview:superview];
     [self didMoveFromNSVelvetView:velvetView];
@@ -748,21 +763,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         }
     };
 
-    [CATransaction performWithDisabledActions:^{
-        NSWindow *window = self.window;
-
-        id responder = [window firstResponder];
-        if ([responder isKindOfClass:[VELView class]]) {
-            if ([responder isDescendantOfView:subview]) {
-                [window makeFirstResponder:self];
-            }
-        }
-
-        [subview.layer removeFromSuperlayer];
-
-        subview.superview = nil;
-        [m_subviews removeObjectAtIndex:index];
-    }];
+    [m_subviews removeObjectAtIndex:index];
 }
 
 - (void)didMoveFromSuperview:(VELView *)superview; {
@@ -779,8 +780,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
         self.layer.contentsScale = newScaleFactor;
         [self setNeedsDisplay];
     }
-
-    [self updateViewAndViewControllerNextResponders];
 
     if (self.window)
         [self.viewController viewDidAppear];
@@ -953,8 +952,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
         // frame to integral pixels
         self.frame = self.layer.frame;
     }
-
-    [self updateViewAndViewControllerNextResponders];
 
     if ([self respondsToSelector:@selector(supportedDragTypes)]) {
         [self.ancestorNSVelvetView registerDraggingDestination:(id)self];

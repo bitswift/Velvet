@@ -24,7 +24,7 @@
  * The first responder when the animation began, to be restored when the
  * animation completes.
  */
-@property (nonatomic, weak) NSResponder *originalFirstResponder;
+@property (nonatomic, strong) NSResponder *originalFirstResponder;
 
 /*
  * Invoked whenever the geometry property `key` of `layer` has changed.
@@ -148,8 +148,10 @@
     [view synchronizeNSViewGeometry];
 
     view.guestView.alphaValue = 1.0;
+
     if (self.originalFirstResponder) {
         [view.window makeFirstResponder:self.originalFirstResponder];
+        self.originalFirstResponder = nil;
     }
 }
 

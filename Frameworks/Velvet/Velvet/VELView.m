@@ -22,7 +22,6 @@
 #import <Velvet/VELViewController.h>
 #import <Velvet/VELViewLayer.h>
 #import <Velvet/VELViewPrivate.h>
-#import <Velvet/VELViewProtected.h>
 #import <objc/runtime.h>
 
 /*
@@ -88,6 +87,18 @@ static BOOL VELViewPerformingDeepLayout = NO;
  * replacement should be sent).
  */
 @property (nonatomic, assign, getter = isReplacingSubviews) BOOL replacingSubviews;
+
+/*
+ * Runs a block to change properties on one or more layers, taking into account
+ * whether <VELView> animations are currently enabled.
+ *
+ * If this is run from inside an animation block, the changes are animated as
+ * part of the animation. Otherwise, the changes take effect immediately,
+ * without animation.
+ *
+ * @param changesBlock A block containing changes to make to layers.
+ */
++ (void)changeLayerProperties:(void (^)(void))changesBlock;
 
 /*
  * Whether this view class does its own drawing, as determined by the
@@ -652,7 +663,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         [m_subviews addObject:view];
 
         view.superview = self;
-        [self addSubviewToLayer:view];
+        [self.layer addSublayer:view.layer];
 
         [view didMoveFromSuperview:oldSuperview];
 
@@ -662,10 +673,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
         if (needsWindowUpdate)
             [view didMoveFromWindow:oldWindow];
     }];
-}
-
-- (void)addSubviewToLayer:(VELView *)view; {
-    [self.layer addSublayer:view.layer];
 }
 
 - (void)ancestorDidLayout; {

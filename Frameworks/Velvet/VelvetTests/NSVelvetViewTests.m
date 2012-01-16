@@ -10,8 +10,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Velvet/Velvet.h>
-#import <Velvet/VELViewProtected.h>
-
 
 @interface TestVELView : VELView
 @end

@@ -517,11 +517,30 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 #pragma mark VELHostView
 
+- (void)ancestorDidLayout; {
+    [super ancestorDidLayout];
+    [self.guestView ancestorDidLayout];
+}
+
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {
     if (!CGRectContainsPoint(self.bounds, point))
         return nil;
 
     return [self.guestView descendantViewAtPoint:point] ?: self;
+}
+
+- (void)willMoveToNSVelvetView:(NSVelvetView *)view; {
+    // despite the <VELBridgedView> contract that says we should forward this
+    // message onto all subviews and our guestView, doing so could result in
+    // crazy behavior, since the NSVelvetView of those views is and will remain
+    // 'self' by definition
+}
+
+- (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {
+    // despite the <VELBridgedView> contract that says we should forward this
+    // message onto all subviews and our guestView, doing so could result in
+    // crazy behavior, since the NSVelvetView of those views is and will remain
+    // 'self' by definition
 }
 
 @end

@@ -84,6 +84,16 @@
 @property (nonatomic, unsafe_unretained) id<VELHostView> hostView;
 
 /**
+ * Invoked any time an ancestor of the receiver has relaid itself out,
+ * potentially moving or clipping the receiver relative to one of its ancestor
+ * views.
+ *
+ * @warning **Important:** The receiver _must_ forward this message to all of
+ * its subviews and any <[VELHostView guestView]>.
+ */
+- (void)ancestorDidLayout;
+
+/**
  * Returns the nearest <NSVelvetView> that is an ancestor of the receiver, or of
  * a view hosting the receiver.
  *
@@ -108,7 +118,7 @@
  * the receiver is being detached from its current <ancestorNSVelvetView>.
  *
  * @warning **Important:** The receiver _must_ forward this message to all of
- * its subviews.
+ * its subviews and any <[VELHostView guestView]>.
  */
 - (void)willMoveToNSVelvetView:(NSVelvetView *)view;
 
@@ -119,7 +129,7 @@
  * `nil` if the receiver was not hosted.
  *
  * @warning **Important:** The receiver _must_ forward this message to all of
- * its subviews.
+ * its subviews and any <[VELHostView guestView]>.
  */
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view;
 

@@ -13,7 +13,6 @@
 #import <Velvet/NSVelvetViewPrivate.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELNSViewPrivate.h>
-#import <Velvet/VELViewProtected.h>
 #import <Proton/Proton.h>
 #import <QuartzCore/QuartzCore.h>
 

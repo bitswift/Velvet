@@ -52,9 +52,11 @@
         [velvetView recalculateNSViewOrdering];
 
         m_guestView.nextResponder = self;
+        [self synchronizeNSViewGeometry];
+    } else {
+        // remove the old view from the NSVelvetView's clipping path
+        [velvetView recalculateNSViewClipping];
     }
-
-    [velvetView recalculateNSViewClipping];
 }
 
 - (CGRect)NSViewFrame; {

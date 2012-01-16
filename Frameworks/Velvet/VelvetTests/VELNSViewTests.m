@@ -11,25 +11,22 @@
 #import <Velvet/Velvet.h>
 
 @interface VELNSViewTests ()
-- (VELWindow *)newWindow;
+@property (nonatomic, strong) VELWindow *window;
 @end
 
-
 @implementation VELNSViewTests
+@synthesize window = m_window;
 
-- (VELWindow *)newWindow {
-    return [[VELWindow alloc]
-        initWithContentRect:CGRectMake(100, 100, 500, 500)
-        styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
-        backing:NSBackingStoreBuffered
-        defer:NO
-        screen:nil
-    ];
+- (void)setUp {
+    self.window = [[VELWindow alloc] initWithContentRect:CGRectMake(100, 100, 500, 500)];
+}
+
+- (void)tearDown {
+    self.window = nil;
 }
 
 - (void)testResponderChain {
-    // create a container window
-    VELWindow *window = [self newWindow];
+    VELWindow *window = self.window;
     
     // Set up a VELNSView
     NSView *contained = [[NSView alloc] initWithFrame:CGRectZero];
@@ -60,8 +57,7 @@
 
 // INTERNAL-380
 - (void)testNSViewFrameSynchronizesWithVELNSViewFrameChanges {
-    // create a container window
-    VELWindow *window = [self newWindow];
+    VELWindow *window = self.window;
 
     NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
     VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
@@ -74,8 +70,7 @@
 
 // INTERNAL-380
 - (void)testNSViewFrameSynchronizesWithVELNSViewCenterChanges {
-    // create a container window
-    VELWindow *window = [self newWindow];
+    VELWindow *window = self.window;
 
     NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
     VELNSView *view = [[VELNSView alloc] initWithNSView:hosted];
@@ -88,7 +83,7 @@
 }
 
 - (void)testNSViewFrameOriginSynchronizesWithAncestorFrameChanges {
-    VELWindow *window = [self newWindow];
+    VELWindow *window = self.window;
     VELView *supersuperview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
     VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
     NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
@@ -108,7 +103,7 @@
 }
 
 - (void)testNSViewFrameOriginSynchronizesWithAncestorFrameOriginChanges {
-    VELWindow *window = [self newWindow];
+    VELWindow *window = self.window;
     VELView *supersuperview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
     VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
     NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
@@ -135,7 +130,7 @@
 }
 
 - (void)testNSViewFrameCenterSynchronizesWithAncestorFrameCenterChanges {
-    VELWindow *window = [self newWindow];
+    VELWindow *window = self.window;
     VELView *supersuperview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
     VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(20, 30, 100, 100)];
     NSView *hosted = [[NSView alloc] initWithFrame:CGRectZero];
@@ -159,6 +154,55 @@
     
     // Ensure that the hosting view's frame origin hasn't moved.
     STAssertTrue(CGPointEqualToPoint(view.frame.origin, originalViewOrigin), @"");
+}
+
+- (void)testConformsToVELBridgedView {
+    STAssertTrue([VELNSView conformsToProtocol:@protocol(VELBridgedView)], @"");
+
+    VELNSView *view = [[VELNSView alloc] init];
+    STAssertTrue([view conformsToProtocol:@protocol(VELBridgedView)], @"");
+}
+
+- (void)testConformsToVELHostView {
+    STAssertTrue([VELNSView conformsToProtocol:@protocol(VELHostView)], @"");
+
+    VELNSView *view = [[VELNSView alloc] init];
+    STAssertTrue([view conformsToProtocol:@protocol(VELHostView)], @"");
+}
+
+- (void)testAncestorNSVelvetView {
+    VELNSView *view = [[VELNSView alloc] initWithFrame:CGRectZero];
+    [self.window.rootView addSubview:view];
+
+    STAssertEquals(view.ancestorNSVelvetView, self.window.contentView, @"");
+}
+
+- (void)testDescendantViewAtPoint {
+    VELNSView *hostView = [[VELNSView alloc] init];
+    self.window.rootView = hostView;
+
+    hostView.guestView = [[NSView alloc] init];
+
+    NSView *view = [[NSView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
+    [hostView.guestView addSubview:view];
+
+    CGPoint guestSubviewPoint = CGPointMake(51, 31);
+    STAssertEquals([hostView descendantViewAtPoint:guestSubviewPoint], view, @"");
+
+    CGPoint guestViewPoint = CGPointMake(49, 29);
+    STAssertEquals([hostView descendantViewAtPoint:guestViewPoint], hostView.guestView, @"");
+
+    CGPoint outsidePoint = CGPointMake(49, 1000);
+    STAssertNil([hostView descendantViewAtPoint:outsidePoint], @"");
+}
+
+- (void)testGuestView {
+    VELNSView *hostView = [[VELNSView alloc] init];
+
+    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:CGRectZero];
+    hostView.guestView = scrollView;
+
+    STAssertEquals(hostView.guestView, scrollView, @"");
 }
 
 @end

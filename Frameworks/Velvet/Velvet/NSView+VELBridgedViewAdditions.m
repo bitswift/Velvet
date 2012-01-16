@@ -13,6 +13,12 @@
 
 @safecategory (NSView, VELBridgedViewAdditions)
 
+#pragma mark Category loading
+
++ (void)load {
+    class_addProtocol([NSView class], @protocol(VELBridgedView));
+}
+
 #pragma mark View hierarchy
 
 - (id<VELHostView>)hostView {

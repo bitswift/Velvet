@@ -85,21 +85,6 @@
 		D07A67DD1486F3F10051C961 /* Document.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
 		D07A67E01486F3F10051C961 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/Document.xib; sourceTree = "<group>"; };
 		D07A67E31486F3F10051C961 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		D07A67EC1486F4140051C961 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
-		D07A67EE1486F4140051C961 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		D07A67EF1486F4140051C961 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Profile.xcconfig; sourceTree = "<group>"; };
-		D07A67F01486F4140051C961 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
-		D07A67F21486F4140051C961 /* Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
-		D07A67F31486F4140051C961 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
-		D07A67F51486F4140051C961 /* iOS-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Application.xcconfig"; sourceTree = "<group>"; };
-		D07A67F61486F4140051C961 /* iOS-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Base.xcconfig"; sourceTree = "<group>"; };
-		D07A67F71486F4140051C961 /* iOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
-		D07A67F91486F4140051C961 /* Mac-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Application.xcconfig"; sourceTree = "<group>"; };
-		D07A67FA1486F4140051C961 /* Mac-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Base.xcconfig"; sourceTree = "<group>"; };
-		D07A67FB1486F4140051C961 /* Mac-DynamicLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-DynamicLibrary.xcconfig"; sourceTree = "<group>"; };
-		D07A67FC1486F4140051C961 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
-		D07A67FD1486F4140051C961 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
-		D07A67FE1486F4140051C961 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		D07A68161486F4580051C961 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0D51CF41488076600F15DA9 /* TreeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreeView.h; sourceTree = "<group>"; };
 		D0D51CF51488076600F15DA9 /* TreeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TreeView.m; sourceTree = "<group>"; };
@@ -111,6 +96,21 @@
 		D0D51D59148840DA00F15DA9 /* device.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = device.png; sourceTree = "<group>"; };
 		D0D51D5A148840DA00F15DA9 /* pattern.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pattern.png; sourceTree = "<group>"; };
 		D0D51D5B148840DA00F15DA9 /* screen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screen.png; sourceTree = "<group>"; };
+		D0F3C00E14C56C7F0024E959 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
+		D0F3C01014C56C7F0024E959 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		D0F3C01114C56C7F0024E959 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Profile.xcconfig; sourceTree = "<group>"; };
+		D0F3C01214C56C7F0024E959 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		D0F3C01414C56C7F0024E959 /* Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		D0F3C01514C56C7F0024E959 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		D0F3C01714C56C7F0024E959 /* iOS-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Application.xcconfig"; sourceTree = "<group>"; };
+		D0F3C01814C56C7F0024E959 /* iOS-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Base.xcconfig"; sourceTree = "<group>"; };
+		D0F3C01914C56C7F0024E959 /* iOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
+		D0F3C01B14C56C7F0024E959 /* Mac-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Application.xcconfig"; sourceTree = "<group>"; };
+		D0F3C01C14C56C7F0024E959 /* Mac-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Base.xcconfig"; sourceTree = "<group>"; };
+		D0F3C01D14C56C7F0024E959 /* Mac-DynamicLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-DynamicLibrary.xcconfig"; sourceTree = "<group>"; };
+		D0F3C01E14C56C7F0024E959 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
+		D0F3C01F14C56C7F0024E959 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
+		D0F3C02014C56C7F0024E959 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		D0FBE213149303BF00588996 /* Velvet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Velvet.xcodeproj; path = ../../Frameworks/Velvet/Velvet.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,7 +153,7 @@
 			children = (
 				D07A67D01486F3F10051C961 /* TransitionTest */,
 				D07A67C91486F3F10051C961 /* Frameworks */,
-				D07A67EA1486F4140051C961 /* Configuration */,
+				D0F3C00C14C56C7F0024E959 /* Configuration */,
 				D07A67C71486F3F10051C961 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -210,69 +210,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D07A67EA1486F4140051C961 /* Configuration */ = {
-			isa = PBXGroup;
-			children = (
-				D07A67EB1486F4140051C961 /* Base */,
-				D07A67F41486F4140051C961 /* iOS */,
-				D07A67F81486F4140051C961 /* Mac OS X */,
-				D07A67FE1486F4140051C961 /* README.md */,
-			);
-			name = Configuration;
-			path = ../../Frameworks/Proton/Frameworks/libextobjc/Configuration;
-			sourceTree = "<group>";
-		};
-		D07A67EB1486F4140051C961 /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				D07A67EC1486F4140051C961 /* Common.xcconfig */,
-				D07A67ED1486F4140051C961 /* Configurations */,
-				D07A67F11486F4140051C961 /* Targets */,
-			);
-			path = Base;
-			sourceTree = "<group>";
-		};
-		D07A67ED1486F4140051C961 /* Configurations */ = {
-			isa = PBXGroup;
-			children = (
-				D07A67EE1486F4140051C961 /* Debug.xcconfig */,
-				D07A67EF1486F4140051C961 /* Profile.xcconfig */,
-				D07A67F01486F4140051C961 /* Release.xcconfig */,
-			);
-			path = Configurations;
-			sourceTree = "<group>";
-		};
-		D07A67F11486F4140051C961 /* Targets */ = {
-			isa = PBXGroup;
-			children = (
-				D07A67F21486F4140051C961 /* Application.xcconfig */,
-				D07A67F31486F4140051C961 /* StaticLibrary.xcconfig */,
-			);
-			path = Targets;
-			sourceTree = "<group>";
-		};
-		D07A67F41486F4140051C961 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				D07A67F51486F4140051C961 /* iOS-Application.xcconfig */,
-				D07A67F61486F4140051C961 /* iOS-Base.xcconfig */,
-				D07A67F71486F4140051C961 /* iOS-StaticLibrary.xcconfig */,
-			);
-			path = iOS;
-			sourceTree = "<group>";
-		};
-		D07A67F81486F4140051C961 /* Mac OS X */ = {
-			isa = PBXGroup;
-			children = (
-				D07A67F91486F4140051C961 /* Mac-Application.xcconfig */,
-				D07A67FA1486F4140051C961 /* Mac-Base.xcconfig */,
-				D07A67FB1486F4140051C961 /* Mac-DynamicLibrary.xcconfig */,
-				D07A67FC1486F4140051C961 /* Mac-Framework.xcconfig */,
-				D07A67FD1486F4140051C961 /* Mac-StaticLibrary.xcconfig */,
-			);
-			path = "Mac OS X";
-			sourceTree = "<group>";
-		};
 		D0D51D57148840DA00F15DA9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,6 +219,69 @@
 				D0D51D5B148840DA00F15DA9 /* screen.png */,
 			);
 			path = Images;
+			sourceTree = "<group>";
+		};
+		D0F3C00C14C56C7F0024E959 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3C00D14C56C7F0024E959 /* Base */,
+				D0F3C01614C56C7F0024E959 /* iOS */,
+				D0F3C01A14C56C7F0024E959 /* Mac OS X */,
+				D0F3C02014C56C7F0024E959 /* README.md */,
+			);
+			name = Configuration;
+			path = ../../Libraries/libextobjc/Configuration;
+			sourceTree = "<group>";
+		};
+		D0F3C00D14C56C7F0024E959 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3C00E14C56C7F0024E959 /* Common.xcconfig */,
+				D0F3C00F14C56C7F0024E959 /* Configurations */,
+				D0F3C01314C56C7F0024E959 /* Targets */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		D0F3C00F14C56C7F0024E959 /* Configurations */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3C01014C56C7F0024E959 /* Debug.xcconfig */,
+				D0F3C01114C56C7F0024E959 /* Profile.xcconfig */,
+				D0F3C01214C56C7F0024E959 /* Release.xcconfig */,
+			);
+			path = Configurations;
+			sourceTree = "<group>";
+		};
+		D0F3C01314C56C7F0024E959 /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3C01414C56C7F0024E959 /* Application.xcconfig */,
+				D0F3C01514C56C7F0024E959 /* StaticLibrary.xcconfig */,
+			);
+			path = Targets;
+			sourceTree = "<group>";
+		};
+		D0F3C01614C56C7F0024E959 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3C01714C56C7F0024E959 /* iOS-Application.xcconfig */,
+				D0F3C01814C56C7F0024E959 /* iOS-Base.xcconfig */,
+				D0F3C01914C56C7F0024E959 /* iOS-StaticLibrary.xcconfig */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		D0F3C01A14C56C7F0024E959 /* Mac OS X */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3C01B14C56C7F0024E959 /* Mac-Application.xcconfig */,
+				D0F3C01C14C56C7F0024E959 /* Mac-Base.xcconfig */,
+				D0F3C01D14C56C7F0024E959 /* Mac-DynamicLibrary.xcconfig */,
+				D0F3C01E14C56C7F0024E959 /* Mac-Framework.xcconfig */,
+				D0F3C01F14C56C7F0024E959 /* Mac-StaticLibrary.xcconfig */,
+			);
+			path = "Mac OS X";
 			sourceTree = "<group>";
 		};
 		D0FBE214149303BF00588996 /* Products */ = {
@@ -445,7 +445,7 @@
 /* Begin XCBuildConfiguration section */
 		D07A67E51486F3F10051C961 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A67EE1486F4140051C961 /* Debug.xcconfig */;
+			baseConfigurationReference = D0F3C01014C56C7F0024E959 /* Debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -458,7 +458,7 @@
 		};
 		D07A67E61486F3F10051C961 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A67F01486F4140051C961 /* Release.xcconfig */;
+			baseConfigurationReference = D0F3C01214C56C7F0024E959 /* Release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -471,7 +471,7 @@
 		};
 		D07A67E81486F3F10051C961 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A67F91486F4140051C961 /* Mac-Application.xcconfig */;
+			baseConfigurationReference = D0F3C01B14C56C7F0024E959 /* Mac-Application.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransitionTest/TransitionTest-Prefix.pch";
@@ -483,7 +483,7 @@
 		};
 		D07A67E91486F3F10051C961 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A67F91486F4140051C961 /* Mac-Application.xcconfig */;
+			baseConfigurationReference = D0F3C01B14C56C7F0024E959 /* Mac-Application.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransitionTest/TransitionTest-Prefix.pch";
@@ -495,7 +495,7 @@
 		};
 		D0EEC5FF1489F5B1002F8441 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A67EF1486F4140051C961 /* Profile.xcconfig */;
+			baseConfigurationReference = D0F3C01114C56C7F0024E959 /* Profile.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -508,7 +508,7 @@
 		};
 		D0EEC6001489F5B1002F8441 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A67F91486F4140051C961 /* Mac-Application.xcconfig */;
+			baseConfigurationReference = D0F3C01B14C56C7F0024E959 /* Mac-Application.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TransitionTest/TransitionTest-Prefix.pch";

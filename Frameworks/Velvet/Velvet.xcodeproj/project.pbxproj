@@ -79,6 +79,16 @@
 		D0EFFC1C147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
 		D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC01147851A80095AB35 /* Velvet.framework */; };
 		D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC23147851A80095AB35 /* InfoPlist.strings */; };
+		D0F3C04414C56D000024E959 /* metamacros.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F3C03514C56D000024E959 /* metamacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D0F3C04514C56D000024E959 /* EXTRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F3C03714C56D000024E959 /* EXTRuntimeExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D0F3C04614C56D000024E959 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F3C03814C56D000024E959 /* EXTRuntimeExtensions.m */; };
+		D0F3C04714C56D000024E959 /* EXTSafeCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F3C03914C56D000024E959 /* EXTSafeCategory.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D0F3C04814C56D000024E959 /* EXTSafeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F3C03A14C56D000024E959 /* EXTSafeCategory.m */; };
+		D0F3C04914C56D000024E959 /* EXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F3C03B14C56D000024E959 /* EXTScope.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		D0F3C04A14C56D000024E959 /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F3C03C14C56D000024E959 /* EXTScope.m */; };
+		D0F3C05214C56D0B0024E959 /* EXTRuntimeExtensionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F3C03F14C56D000024E959 /* EXTRuntimeExtensionsTest.m */; };
+		D0F3C05314C56D110024E959 /* EXTSafeCategoryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F3C04114C56D000024E959 /* EXTSafeCategoryTest.m */; };
+		D0F3C05414C56D160024E959 /* EXTScopeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F3C04314C56D000024E959 /* EXTScopeTest.m */; };
 		D0F5BFCA14BF6BE000C66839 /* VELHostView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F5BFC914BF6BE000C66839 /* VELHostView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -197,6 +207,19 @@
 		D0F3BFDC14C56C150024E959 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
 		D0F3BFDD14C56C150024E959 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D0F3BFDE14C56C150024E959 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		D0F3C03514C56D000024E959 /* metamacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = metamacros.h; sourceTree = "<group>"; };
+		D0F3C03714C56D000024E959 /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTRuntimeExtensions.h; sourceTree = "<group>"; };
+		D0F3C03814C56D000024E959 /* EXTRuntimeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTRuntimeExtensions.m; sourceTree = "<group>"; };
+		D0F3C03914C56D000024E959 /* EXTSafeCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTSafeCategory.h; sourceTree = "<group>"; };
+		D0F3C03A14C56D000024E959 /* EXTSafeCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTSafeCategory.m; sourceTree = "<group>"; };
+		D0F3C03B14C56D000024E959 /* EXTScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTScope.h; sourceTree = "<group>"; };
+		D0F3C03C14C56D000024E959 /* EXTScope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTScope.m; sourceTree = "<group>"; };
+		D0F3C03E14C56D000024E959 /* EXTRuntimeExtensionsTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTRuntimeExtensionsTest.h; sourceTree = "<group>"; };
+		D0F3C03F14C56D000024E959 /* EXTRuntimeExtensionsTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTRuntimeExtensionsTest.m; sourceTree = "<group>"; };
+		D0F3C04014C56D000024E959 /* EXTSafeCategoryTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTSafeCategoryTest.h; sourceTree = "<group>"; };
+		D0F3C04114C56D000024E959 /* EXTSafeCategoryTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTSafeCategoryTest.m; sourceTree = "<group>"; };
+		D0F3C04214C56D000024E959 /* EXTScopeTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTScopeTest.h; sourceTree = "<group>"; };
+		D0F3C04314C56D000024E959 /* EXTScopeTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EXTScopeTest.m; sourceTree = "<group>"; };
 		D0F5BFC914BF6BE000C66839 /* VELHostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELHostView.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -390,6 +413,7 @@
 		D0EFFC03147851A80095AB35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D0F3C03414C56D000024E959 /* extobjc */,
 				D0EFFC07147851A80095AB35 /* AppKit.framework */,
 				1E7BBD4B147B17400010375D /* ApplicationServices.framework */,
 				D0EFFC04147851A80095AB35 /* Cocoa.framework */,
@@ -505,6 +529,43 @@
 			path = "Mac OS X";
 			sourceTree = "<group>";
 		};
+		D0F3C03414C56D000024E959 /* extobjc */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3C03514C56D000024E959 /* metamacros.h */,
+				D0F3C03614C56D000024E959 /* Modules */,
+				D0F3C03D14C56D000024E959 /* Tests */,
+			);
+			name = extobjc;
+			path = ../../Libraries/libextobjc/extobjc;
+			sourceTree = "<group>";
+		};
+		D0F3C03614C56D000024E959 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3C03714C56D000024E959 /* EXTRuntimeExtensions.h */,
+				D0F3C03814C56D000024E959 /* EXTRuntimeExtensions.m */,
+				D0F3C03914C56D000024E959 /* EXTSafeCategory.h */,
+				D0F3C03A14C56D000024E959 /* EXTSafeCategory.m */,
+				D0F3C03B14C56D000024E959 /* EXTScope.h */,
+				D0F3C03C14C56D000024E959 /* EXTScope.m */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		D0F3C03D14C56D000024E959 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D0F3C03E14C56D000024E959 /* EXTRuntimeExtensionsTest.h */,
+				D0F3C03F14C56D000024E959 /* EXTRuntimeExtensionsTest.m */,
+				D0F3C04014C56D000024E959 /* EXTSafeCategoryTest.h */,
+				D0F3C04114C56D000024E959 /* EXTSafeCategoryTest.m */,
+				D0F3C04214C56D000024E959 /* EXTScopeTest.h */,
+				D0F3C04314C56D000024E959 /* EXTScopeTest.m */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -541,6 +602,10 @@
 				D01B962E14C1956100CBDD8E /* VELViewLayer.h in Headers */,
 				D0B2E4F414C41A4600812B76 /* VELNSViewLayerDelegateProxy.h in Headers */,
 				D020F49314C3959500C466E1 /* NSWindow+InitializationAdditions.h in Headers */,
+				D0F3C04414C56D000024E959 /* metamacros.h in Headers */,
+				D0F3C04514C56D000024E959 /* EXTRuntimeExtensions.h in Headers */,
+				D0F3C04714C56D000024E959 /* EXTSafeCategory.h in Headers */,
+				D0F3C04914C56D000024E959 /* EXTScope.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,6 +739,9 @@
 				D01B962F14C1956100CBDD8E /* VELViewLayer.m in Sources */,
 				D0B2E4F514C41A4600812B76 /* VELNSViewLayerDelegateProxy.m in Sources */,
 				D020F49414C3959500C466E1 /* NSWindow+InitializationAdditions.m in Sources */,
+				D0F3C04614C56D000024E959 /* EXTRuntimeExtensions.m in Sources */,
+				D0F3C04814C56D000024E959 /* EXTSafeCategory.m in Sources */,
+				D0F3C04A14C56D000024E959 /* EXTScope.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -693,6 +761,9 @@
 				D05DC49B14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m in Sources */,
 				D020F49714C3972E00C466E1 /* NSWindowAdditionsTests.m in Sources */,
 				D020F48C14C3923400C466E1 /* NSViewAdditionsTests.m in Sources */,
+				D0F3C05214C56D0B0024E959 /* EXTRuntimeExtensionsTest.m in Sources */,
+				D0F3C05314C56D110024E959 /* EXTSafeCategoryTest.m in Sources */,
+				D0F3C05414C56D160024E959 /* EXTScopeTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

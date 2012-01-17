@@ -155,7 +155,7 @@
             break;
 
         default:
-            DDLogError(@"Unrecognized event: %@", event);
+            NSLog(@"*** Unrecognized event: %@", event);
     }
 
     if (action)

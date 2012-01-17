@@ -37,20 +37,6 @@ typedef enum {
     VELControlEventValueChanged = (1 << 2),
 
     /**
-     * The control was selected.
-     *
-     * This event occurs when <[VELControl selected]> is set to `YES`.
-     */
-    VELControlEventSelected = (1 << 3),
-
-    /**
-     * The control was deselected.
-     *
-     * This event occurs when <[VELControl selected]> is set to `NO`.
-     */
-    VELControlEventDeselected = (1 << 4),
-
-    /**
      * A range of event values available for application use.
      */
     VELControlEventApplicationReserved = 0xFF000000,

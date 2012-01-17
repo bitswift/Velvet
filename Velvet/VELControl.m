@@ -19,15 +19,6 @@ typedef void (^VELControlActionBlock)(NSEvent *);
  * for.
  */
 @property (nonatomic, strong, readonly) NSMutableDictionary *actions;
-
-/*
- * Updates the <selected> property, and sends the corresponding action messages
- * with `event` as the underlying event.
- *
- * @param selected The new value for <selected>.
- * @param event The event that triggered the change in selected state.
- */
-- (void)setSelected:(BOOL)selected event:(NSEvent *)event;
 @end
 
 @implementation VELControl
@@ -36,10 +27,6 @@ typedef void (^VELControlActionBlock)(NSEvent *);
 
 @synthesize actions = m_actions;
 @synthesize selected = m_selected;
-
-- (void)setSelected:(BOOL)selected {
-    [self setSelected:selected event:nil];
-}
 
 #pragma mark Lifecycle
 
@@ -123,16 +110,6 @@ typedef void (^VELControlActionBlock)(NSEvent *);
     if (theEvent.clickCount > 0 && (theEvent.clickCount % 2) == 0) {
         [self sendActionsForControlEvents:VELControlEventDoubleClicked event:theEvent];
     }
-}
-
-- (void)setSelected:(BOOL)selected event:(NSEvent *)event {
-    if (selected == m_selected)
-        return;
-
-    if ((m_selected = selected))
-        [self sendActionsForControlEvents:VELControlEventSelected];
-    else
-        [self sendActionsForControlEvents:VELControlEventDeselected];
 }
 
 @end

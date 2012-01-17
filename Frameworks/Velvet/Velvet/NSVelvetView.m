@@ -7,7 +7,6 @@
 //
 
 #import <Velvet/NSVelvetView.h>
-#import <Proton/Proton.h>
 #import <QuartzCore/QuartzCore.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
@@ -20,6 +19,7 @@
 #import <Velvet/VELView.h>
 #import <Velvet/VELViewPrivate.h>
 #import <objc/runtime.h>
+#import "EXTScope.h"
 
 static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, void *context) {
     VELNSView *hostA = viewA.hostView;

@@ -7,7 +7,6 @@
 //
 
 #import <AppKit/AppKit.h>
-#import <Proton/EXTConcreteProtocol.h>
 
 @class NSVelvetView;
 @protocol VELHostView;

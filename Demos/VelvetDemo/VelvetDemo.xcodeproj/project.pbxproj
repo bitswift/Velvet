@@ -10,8 +10,6 @@
 		1A0D066C14846766007558AE /* lolcats.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1A0D066B14846766007558AE /* lolcats.jpg */; };
 		1E23712F14858240005B222B /* VELDraggingDestinationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E23712E14858240005B222B /* VELDraggingDestinationView.m */; };
 		D0927BA51479C1E2008F04C4 /* iceberg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0927BA41479C1E2008F04C4 /* iceberg.jpg */; };
-		D0CE681F1492E41100C38D20 /* Velvet.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D0CE681A1492E3DF00C38D20 /* Velvet.framework */; };
-		D0CE68201492E43F00C38D20 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0CE681A1492E3DF00C38D20 /* Velvet.framework */; };
 		D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */; };
 		D0D8C3BC14786AFD00FC9015 /* SquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C3BB14786AFD00FC9015 /* SquareView.m */; };
 		D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCA4147852A70095AB35 /* Cocoa.framework */; };
@@ -24,36 +22,38 @@
 		D0EFFCC4147852A70095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFCA4147852A70095AB35 /* Cocoa.framework */; };
 		D0EFFCCC147852A70095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFCCA147852A70095AB35 /* InfoPlist.strings */; };
 		D0EFFCCF147852A70095AB35 /* VelvetDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EFFCCE147852A70095AB35 /* VelvetDemoTests.m */; };
+		D0F5CE0D14C57D8800966B2D /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0F5CDFF14C57D7A00966B2D /* Velvet.framework */; };
+		D0F5CE0E14C57D8F00966B2D /* Velvet.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = D0F5CDFF14C57D7A00966B2D /* Velvet.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D0CE68191492E3DF00C38D20 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D0EFFC01147851A80095AB35;
-			remoteInfo = Velvet;
-		};
-		D0CE681B1492E3DF00C38D20 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D0EFFC19147851A80095AB35;
-			remoteInfo = VelvetTests;
-		};
-		D0CE681D1492E40800C38D20 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = D0EFFC00147851A80095AB35;
-			remoteInfo = Velvet;
-		};
 		D0EFFCC5147852A70095AB35 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D0EFFC97147852A70095AB35 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D0EFFC9F147852A70095AB35;
 			remoteInfo = VelvetDemo;
+		};
+		D0F5CDFE14C57D7A00966B2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0F5CDF614C57D7A00966B2D /* Velvet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0EFFC01147851A80095AB35;
+			remoteInfo = Velvet;
+		};
+		D0F5CE0014C57D7A00966B2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0F5CDF614C57D7A00966B2D /* Velvet.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D0EFFC19147851A80095AB35;
+			remoteInfo = VelvetTests;
+		};
+		D0F5CE0B14C57D8400966B2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D0F5CDF614C57D7A00966B2D /* Velvet.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D0EFFC00147851A80095AB35;
+			remoteInfo = Velvet;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -64,7 +64,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D0CE681F1492E41100C38D20 /* Velvet.framework in Copy Frameworks */,
+				D0F5CE0E14C57D8F00966B2D /* Velvet.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -98,7 +98,6 @@
 		D0EFFCCB147852A70095AB35 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D0EFFCCD147852A70095AB35 /* VelvetDemoTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VelvetDemoTests.h; sourceTree = "<group>"; };
 		D0EFFCCE147852A70095AB35 /* VelvetDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VelvetDemoTests.m; sourceTree = "<group>"; };
-		D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Velvet.xcodeproj; path = ../../Frameworks/Velvet/Velvet.xcodeproj; sourceTree = "<group>"; };
 		D0F5CDB914C57D0F00966B2D /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		D0F5CDBB14C57D0F00966B2D /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		D0F5CDBC14C57D0F00966B2D /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Profile.xcconfig; sourceTree = "<group>"; };
@@ -114,6 +113,7 @@
 		D0F5CDC914C57D0F00966B2D /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
 		D0F5CDCA14C57D0F00966B2D /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
 		D0F5CDCB14C57D0F00966B2D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		D0F5CDF614C57D7A00966B2D /* Velvet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Velvet.xcodeproj; path = ../../Velvet.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,9 +121,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0F5CE0D14C57D8800966B2D /* Velvet.framework in Frameworks */,
 				D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */,
 				D0EFFCA5147852A70095AB35 /* Cocoa.framework in Frameworks */,
-				D0CE68201492E43F00C38D20 /* Velvet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -139,15 +139,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D0CE68151492E3DF00C38D20 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D0CE681A1492E3DF00C38D20 /* Velvet.framework */,
-				D0CE681C1492E3DF00C38D20 /* VelvetTests.octest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		D0D8C3BD14786B0100FC9015 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,7 +184,7 @@
 		D0EFFCA3147852A70095AB35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */,
+				D0F5CDF614C57D7A00966B2D /* Velvet.xcodeproj */,
 				D0EFFCA4147852A70095AB35 /* Cocoa.framework */,
 				D0EFFCC2147852A70095AB35 /* SenTestingKit.framework */,
 				D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */,
@@ -317,6 +308,15 @@
 			path = "Mac OS X";
 			sourceTree = "<group>";
 		};
+		D0F5CDF714C57D7A00966B2D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D0F5CDFF14C57D7A00966B2D /* Velvet.framework */,
+				D0F5CE0114C57D7A00966B2D /* VelvetTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -332,7 +332,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				D0CE681E1492E40800C38D20 /* PBXTargetDependency */,
+				D0F5CE0C14C57D8400966B2D /* PBXTargetDependency */,
 			);
 			name = VelvetDemo;
 			productName = VelvetDemo;
@@ -379,8 +379,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = D0CE68151492E3DF00C38D20 /* Products */;
-					ProjectRef = D0EFFCF1147853070095AB35 /* Velvet.xcodeproj */;
+					ProductGroup = D0F5CDF714C57D7A00966B2D /* Products */;
+					ProjectRef = D0F5CDF614C57D7A00966B2D /* Velvet.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -392,18 +392,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		D0CE681A1492E3DF00C38D20 /* Velvet.framework */ = {
+		D0F5CDFF14C57D7A00966B2D /* Velvet.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = Velvet.framework;
-			remoteRef = D0CE68191492E3DF00C38D20 /* PBXContainerItemProxy */;
+			remoteRef = D0F5CDFE14C57D7A00966B2D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D0CE681C1492E3DF00C38D20 /* VelvetTests.octest */ = {
+		D0F5CE0114C57D7A00966B2D /* VelvetTests.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = VelvetTests.octest;
-			remoteRef = D0CE681B1492E3DF00C38D20 /* PBXContainerItemProxy */;
+			remoteRef = D0F5CE0014C57D7A00966B2D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -470,15 +470,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		D0CE681E1492E40800C38D20 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Velvet;
-			targetProxy = D0CE681D1492E40800C38D20 /* PBXContainerItemProxy */;
-		};
 		D0EFFCC6147852A70095AB35 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D0EFFC9F147852A70095AB35 /* VelvetDemo */;
 			targetProxy = D0EFFCC5147852A70095AB35 /* PBXContainerItemProxy */;
+		};
+		D0F5CE0C14C57D8400966B2D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Velvet;
+			targetProxy = D0F5CE0B14C57D8400966B2D /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

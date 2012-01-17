@@ -1,3 +1,0 @@
-[submodule "Frameworks/Proton"]
-	path = Frameworks/Proton
-	url = git@github.com:bitswift/Proton.git

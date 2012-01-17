@@ -1,0 +1,3 @@
+[submodule "Libraries/libextobjc/Configuration"]
+	path = Libraries/libextobjc/Configuration
+	url = git://github.com/jspahrsummers/xcconfigs.git

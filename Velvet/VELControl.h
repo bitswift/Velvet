@@ -78,16 +78,6 @@ typedef enum {
 @property (nonatomic, assign, getter = isSelected) BOOL selected;
 
 /**
- * Whether the receiver automatically becomes <selected> when a mouse down event
- * is received.
- *
- * The default value for this property is `NO`.
- *
- * @warning This method does not implement any kind of automatic deselection.
- */
-@property (nonatomic, assign) BOOL becomesSelectedOnMouseDown;
-
-/**
  * @name Event Dispatch
  */
 

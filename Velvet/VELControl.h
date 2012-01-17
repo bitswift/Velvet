@@ -37,6 +37,11 @@ typedef enum {
     VELControlEventValueChanged = (1 << 2),
 
     /**
+     * The control received a mouse down event inside its frame.
+     */
+    VELControlEventMouseDown = (1 << 3),
+
+    /**
      * A range of event values available for application use.
      */
     VELControlEventApplicationReserved = 0xFF000000,

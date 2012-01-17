@@ -289,25 +289,29 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 #pragma mark Focus Ring
 
 - (CALayer *)focusRingLayerForView:(NSView *)view; {
-    return [self.appKitHostView.layer.sublayers foldLeftWithValue:nil usingBlock:^(CALayer *resultSoFar, CALayer *layer){
+    CALayer *resultSoFar = nil;
+
+    for (CALayer *layer in self.appKitHostView.layer.sublayers) {
         // don't return the layer of the view itself
         if (layer == view.layer) {
-            return resultSoFar;
+            continue;
         }
 
         // if the layer doesn't wrap around this view, it's not the focus ring
         if (!CGRectContainsRect(layer.frame, view.frame)) {
-            return resultSoFar;
+            continue;
         }
 
         // if resultSoFar matched more tightly than this layer, consider the
         // former to be the focus ring
         if (resultSoFar && !CGRectContainsRect(resultSoFar.frame, layer.frame)) {
-            return resultSoFar;
+            continue;
         }
 
-        return layer;
-    }];
+        resultSoFar = layer;
+    }
+
+    return resultSoFar;
 }
 
 #pragma mark Masking

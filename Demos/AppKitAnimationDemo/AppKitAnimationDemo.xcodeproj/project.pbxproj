@@ -34,21 +34,21 @@
 		1A0D066914845D10007558AE /* lolcats.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = lolcats.jpg; sourceTree = "<group>"; };
 		1E844BE21485B630001078C4 /* ADDraggingDestinationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADDraggingDestinationView.h; sourceTree = "<group>"; };
 		1E844BE31485B630001078C4 /* ADDraggingDestinationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADDraggingDestinationView.m; sourceTree = "<group>"; };
-		D07A68011486F4190051C961 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
-		D07A68031486F4190051C961 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
-		D07A68041486F4190051C961 /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Profile.xcconfig; sourceTree = "<group>"; };
-		D07A68051486F4190051C961 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
-		D07A68071486F4190051C961 /* Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
-		D07A68081486F4190051C961 /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
-		D07A680A1486F4190051C961 /* iOS-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Application.xcconfig"; sourceTree = "<group>"; };
-		D07A680B1486F4190051C961 /* iOS-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Base.xcconfig"; sourceTree = "<group>"; };
-		D07A680C1486F4190051C961 /* iOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
-		D07A680E1486F4190051C961 /* Mac-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Application.xcconfig"; sourceTree = "<group>"; };
-		D07A680F1486F4190051C961 /* Mac-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Base.xcconfig"; sourceTree = "<group>"; };
-		D07A68101486F4190051C961 /* Mac-DynamicLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-DynamicLibrary.xcconfig"; sourceTree = "<group>"; };
-		D07A68111486F4190051C961 /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
-		D07A68121486F4190051C961 /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
-		D07A68131486F4190051C961 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		D0F5CDE314C57D1F00966B2D /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
+		D0F5CDE514C57D1F00966B2D /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		D0F5CDE614C57D1F00966B2D /* Profile.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Profile.xcconfig; sourceTree = "<group>"; };
+		D0F5CDE714C57D1F00966B2D /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
+		D0F5CDE914C57D1F00966B2D /* Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Application.xcconfig; sourceTree = "<group>"; };
+		D0F5CDEA14C57D1F00966B2D /* StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = StaticLibrary.xcconfig; sourceTree = "<group>"; };
+		D0F5CDEC14C57D1F00966B2D /* iOS-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Application.xcconfig"; sourceTree = "<group>"; };
+		D0F5CDED14C57D1F00966B2D /* iOS-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Base.xcconfig"; sourceTree = "<group>"; };
+		D0F5CDEE14C57D1F00966B2D /* iOS-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
+		D0F5CDF014C57D1F00966B2D /* Mac-Application.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Application.xcconfig"; sourceTree = "<group>"; };
+		D0F5CDF114C57D1F00966B2D /* Mac-Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Base.xcconfig"; sourceTree = "<group>"; };
+		D0F5CDF214C57D1F00966B2D /* Mac-DynamicLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-DynamicLibrary.xcconfig"; sourceTree = "<group>"; };
+		D0F5CDF314C57D1F00966B2D /* Mac-Framework.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-Framework.xcconfig"; sourceTree = "<group>"; };
+		D0F5CDF414C57D1F00966B2D /* Mac-StaticLibrary.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Mac-StaticLibrary.xcconfig"; sourceTree = "<group>"; };
+		D0F5CDF514C57D1F00966B2D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +68,7 @@
 			children = (
 				1A0D06521484599B007558AE /* AppKitAnimationDemo */,
 				1A0D064B1484599B007558AE /* Frameworks */,
-				D07A67FF1486F4190051C961 /* Configuration */,
+				D0F5CDE114C57D1F00966B2D /* Configuration */,
 				1A0D06491484599B007558AE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -126,65 +126,65 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		D07A67FF1486F4190051C961 /* Configuration */ = {
+		D0F5CDE114C57D1F00966B2D /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				D07A68001486F4190051C961 /* Base */,
-				D07A68091486F4190051C961 /* iOS */,
-				D07A680D1486F4190051C961 /* Mac OS X */,
-				D07A68131486F4190051C961 /* README.md */,
+				D0F5CDE214C57D1F00966B2D /* Base */,
+				D0F5CDEB14C57D1F00966B2D /* iOS */,
+				D0F5CDEF14C57D1F00966B2D /* Mac OS X */,
+				D0F5CDF514C57D1F00966B2D /* README.md */,
 			);
 			name = Configuration;
-			path = ../../Frameworks/Proton/Frameworks/libextobjc/Configuration;
+			path = ../../Configuration;
 			sourceTree = "<group>";
 		};
-		D07A68001486F4190051C961 /* Base */ = {
+		D0F5CDE214C57D1F00966B2D /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				D07A68011486F4190051C961 /* Common.xcconfig */,
-				D07A68021486F4190051C961 /* Configurations */,
-				D07A68061486F4190051C961 /* Targets */,
+				D0F5CDE314C57D1F00966B2D /* Common.xcconfig */,
+				D0F5CDE414C57D1F00966B2D /* Configurations */,
+				D0F5CDE814C57D1F00966B2D /* Targets */,
 			);
 			path = Base;
 			sourceTree = "<group>";
 		};
-		D07A68021486F4190051C961 /* Configurations */ = {
+		D0F5CDE414C57D1F00966B2D /* Configurations */ = {
 			isa = PBXGroup;
 			children = (
-				D07A68031486F4190051C961 /* Debug.xcconfig */,
-				D07A68041486F4190051C961 /* Profile.xcconfig */,
-				D07A68051486F4190051C961 /* Release.xcconfig */,
+				D0F5CDE514C57D1F00966B2D /* Debug.xcconfig */,
+				D0F5CDE614C57D1F00966B2D /* Profile.xcconfig */,
+				D0F5CDE714C57D1F00966B2D /* Release.xcconfig */,
 			);
 			path = Configurations;
 			sourceTree = "<group>";
 		};
-		D07A68061486F4190051C961 /* Targets */ = {
+		D0F5CDE814C57D1F00966B2D /* Targets */ = {
 			isa = PBXGroup;
 			children = (
-				D07A68071486F4190051C961 /* Application.xcconfig */,
-				D07A68081486F4190051C961 /* StaticLibrary.xcconfig */,
+				D0F5CDE914C57D1F00966B2D /* Application.xcconfig */,
+				D0F5CDEA14C57D1F00966B2D /* StaticLibrary.xcconfig */,
 			);
 			path = Targets;
 			sourceTree = "<group>";
 		};
-		D07A68091486F4190051C961 /* iOS */ = {
+		D0F5CDEB14C57D1F00966B2D /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				D07A680A1486F4190051C961 /* iOS-Application.xcconfig */,
-				D07A680B1486F4190051C961 /* iOS-Base.xcconfig */,
-				D07A680C1486F4190051C961 /* iOS-StaticLibrary.xcconfig */,
+				D0F5CDEC14C57D1F00966B2D /* iOS-Application.xcconfig */,
+				D0F5CDED14C57D1F00966B2D /* iOS-Base.xcconfig */,
+				D0F5CDEE14C57D1F00966B2D /* iOS-StaticLibrary.xcconfig */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
 		};
-		D07A680D1486F4190051C961 /* Mac OS X */ = {
+		D0F5CDEF14C57D1F00966B2D /* Mac OS X */ = {
 			isa = PBXGroup;
 			children = (
-				D07A680E1486F4190051C961 /* Mac-Application.xcconfig */,
-				D07A680F1486F4190051C961 /* Mac-Base.xcconfig */,
-				D07A68101486F4190051C961 /* Mac-DynamicLibrary.xcconfig */,
-				D07A68111486F4190051C961 /* Mac-Framework.xcconfig */,
-				D07A68121486F4190051C961 /* Mac-StaticLibrary.xcconfig */,
+				D0F5CDF014C57D1F00966B2D /* Mac-Application.xcconfig */,
+				D0F5CDF114C57D1F00966B2D /* Mac-Base.xcconfig */,
+				D0F5CDF214C57D1F00966B2D /* Mac-DynamicLibrary.xcconfig */,
+				D0F5CDF314C57D1F00966B2D /* Mac-Framework.xcconfig */,
+				D0F5CDF414C57D1F00966B2D /* Mac-StaticLibrary.xcconfig */,
 			);
 			path = "Mac OS X";
 			sourceTree = "<group>";
@@ -216,7 +216,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
-				ORGANIZATIONNAME = "Bitswift";
+				ORGANIZATIONNAME = Bitswift;
 			};
 			buildConfigurationList = 1A0D06421484599B007558AE /* Build configuration list for PBXProject "AppKitAnimationDemo" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -292,7 +292,7 @@
 /* Begin XCBuildConfiguration section */
 		1A0D06641484599B007558AE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A68031486F4190051C961 /* Debug.xcconfig */;
+			baseConfigurationReference = D0F5CDE514C57D1F00966B2D /* Debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -305,7 +305,7 @@
 		};
 		1A0D06651484599B007558AE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A68031486F4190051C961 /* Debug.xcconfig */;
+			baseConfigurationReference = D0F5CDE714C57D1F00966B2D /* Release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -318,7 +318,7 @@
 		};
 		1A0D06671484599B007558AE /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A680E1486F4190051C961 /* Mac-Application.xcconfig */;
+			baseConfigurationReference = D0F5CDF014C57D1F00966B2D /* Mac-Application.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppKitAnimationDemo/AppKitAnimationDemo-Prefix.pch";
@@ -330,7 +330,7 @@
 		};
 		1A0D06681484599B007558AE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A680E1486F4190051C961 /* Mac-Application.xcconfig */;
+			baseConfigurationReference = D0F5CDF014C57D1F00966B2D /* Mac-Application.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppKitAnimationDemo/AppKitAnimationDemo-Prefix.pch";
@@ -342,7 +342,7 @@
 		};
 		D0EEC6021489F609002F8441 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A68041486F4190051C961 /* Profile.xcconfig */;
+			baseConfigurationReference = D0F5CDE614C57D1F00966B2D /* Profile.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -355,7 +355,7 @@
 		};
 		D0EEC6031489F609002F8441 /* Profile */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D07A680E1486F4190051C961 /* Mac-Application.xcconfig */;
+			baseConfigurationReference = D0F5CDF014C57D1F00966B2D /* Mac-Application.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppKitAnimationDemo/AppKitAnimationDemo-Prefix.pch";

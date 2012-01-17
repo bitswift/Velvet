@@ -7,7 +7,6 @@
 //
 
 #import <Velvet/VELView.h>
-#import <Proton/Proton.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
@@ -23,6 +22,7 @@
 #import <Velvet/VELViewLayer.h>
 #import <Velvet/VELViewPrivate.h>
 #import <objc/runtime.h>
+#import "EXTScope.h"
 
 /*
  * The number of animation blocks currently being run.

@@ -8,7 +8,6 @@
 
 #import <Velvet/VELViewLayer.h>
 #import <Velvet/VELView.h>
-#import <Proton/Proton.h>
 
 @interface VELViewLayer ()
 /*

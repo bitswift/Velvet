@@ -9,7 +9,7 @@
 #import <Velvet/VELEventManager.h>
 #import <Velvet/NSWindow+EventHandlingAdditions.h>
 #import <Velvet/VELView.h>
-#import <Proton/Proton.h>
+#import "EXTScope.h"
 
 @interface VELEventManager ()
 /*

@@ -9,7 +9,6 @@
 #import "VELViewTests.h"
 #import <Cocoa/Cocoa.h>
 #import <Velvet/Velvet.h>
-#import <Proton/Proton.h>
 
 @interface TestView : VELView
 @property (nonatomic, assign) BOOL willMoveToSuperviewInvoked;

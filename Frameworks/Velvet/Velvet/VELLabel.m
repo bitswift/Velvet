@@ -7,7 +7,7 @@
 //
 
 #import <Velvet/VELLabel.h>
-#import <Proton/EXTScope.h>
+#import "EXTScope.h"
 
 static const CGFloat VELLabelPadding = 2.0f;
 

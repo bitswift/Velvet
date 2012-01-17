@@ -45,6 +45,7 @@
 		D06EF03C14B39CFA0035E239 /* VELEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D06EF03A14B39CFA0035E239 /* VELEventManager.m */; };
 		D06EF03F14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D06EF04014B3A0590035E239 /* NSWindow+EventHandlingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D06EF03E14B3A0590035E239 /* NSWindow+EventHandlingAdditions.m */; };
+		D07B72A514C4FC5500AA19DD /* VELControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D07B72A414C4FC5500AA19DD /* VELControlTests.m */; };
 		D08719E614A30AA700F304BC /* VELViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D08719E414A30AA700F304BC /* VELViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D08719E714A30AA700F304BC /* VELViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08719E514A30AA700F304BC /* VELViewController.m */; };
 		D08719EB14A30B5F00F304BC /* VELViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */; };
@@ -146,6 +147,8 @@
 		D06EF03A14B39CFA0035E239 /* VELEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELEventManager.m; sourceTree = "<group>"; };
 		D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+EventHandlingAdditions.h"; sourceTree = "<group>"; };
 		D06EF03E14B3A0590035E239 /* NSWindow+EventHandlingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+EventHandlingAdditions.m"; sourceTree = "<group>"; };
+		D07B72A314C4FC5500AA19DD /* VELControlTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELControlTests.h; sourceTree = "<group>"; };
+		D07B72A414C4FC5500AA19DD /* VELControlTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELControlTests.m; sourceTree = "<group>"; };
 		D08719E414A30AA700F304BC /* VELViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewController.h; sourceTree = "<group>"; };
 		D08719E514A30AA700F304BC /* VELViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewController.m; sourceTree = "<group>"; };
 		D08719E914A30B5F00F304BC /* VELViewControllerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewControllerTests.h; sourceTree = "<group>"; };
@@ -347,12 +350,14 @@
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
 				1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */,
 				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
-				D020F49514C3972E00C466E1 /* NSWindowAdditionsTests.h */,
-				D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */,
 				D020F48A14C3923400C466E1 /* NSViewAdditionsTests.h */,
 				D020F48B14C3923400C466E1 /* NSViewAdditionsTests.m */,
+				D020F49514C3972E00C466E1 /* NSWindowAdditionsTests.h */,
+				D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */,
 				D0A96C0B14B7AF1F00A64F6F /* VELAppKitAdditionsTests.h */,
 				D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */,
+				D07B72A314C4FC5500AA19DD /* VELControlTests.h */,
+				D07B72A414C4FC5500AA19DD /* VELControlTests.m */,
 				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
 				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
 				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
@@ -763,6 +768,7 @@
 				D0F5CDA014C57C7E00966B2D /* EXTRuntimeExtensionsTest.m in Sources */,
 				D0F5CDA114C57C7E00966B2D /* EXTSafeCategoryTest.m in Sources */,
 				D0F5CDA214C57C7E00966B2D /* EXTScopeTest.m in Sources */,
+				D07B72A514C4FC5500AA19DD /* VELControlTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

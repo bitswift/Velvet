@@ -34,6 +34,20 @@ typedef enum {
     VELControlEventValueChanged = (1 << 2),
 
     /**
+     * The control was selected.
+     *
+     * This event occurs when <[VELControl selected]> is set to `YES`.
+     */
+    VELControlEventSelected = (1 << 3),
+
+    /**
+     * The control was deselected.
+     *
+     * This event occurs when <[VELControl selected]> is set to `NO`.
+     */
+    VELControlEventDeselected = (1 << 4),
+
+    /**
      * A range of event values available for application use.
      */
     VELControlEventApplicationReserved = 0xFF000000,
@@ -50,13 +64,25 @@ typedef enum {
 @interface VELControl : VELView
 
 /**
- * @name Setting and Getting Control States
+ * @name Control States
  */
 
 /**
- * A Boolean value that determines the receiver’s selected state.
+ * A boolean value that determines the receiver’s selected state.
+ *
+ * The default value for this property is `NO`.
  */
 @property (nonatomic, assign, getter = isSelected) BOOL selected;
+
+/**
+ * Whether the receiver automatically becomes <selected> when a mouse down event
+ * is received.
+ *
+ * The default value for this property is `NO`.
+ *
+ * @warning This method does not implement any kind of automatic deselection.
+ */
+@property (nonatomic, assign) BOOL becomesSelectedOnMouseDown;
 
 /**
  * @name Event Dispatch
@@ -70,9 +96,11 @@ typedef enum {
  * not need to be retained, and can be discarded if removal will not be needed.
  *
  * @param eventMask The events for which to trigger `actionBlock`.
- * @param actionBlock A block to invoke when any of the given events are triggered.
+ * @param actionBlock A block to invoke when any of the given events are
+ * triggered. The block should take a single `NSEvent` argument, which is the
+ * underlying system event that is triggering the action.
  */
-- (id)addActionForControlEvents:(VELControlEventMask)eventMask usingBlock:(void (^)(void))actionBlock;
+- (id)addActionForControlEvents:(VELControlEventMask)eventMask usingBlock:(void (^)(NSEvent *))actionBlock;
 
 /**
  * De-registers a block or blocks previously added with
@@ -90,9 +118,19 @@ typedef enum {
 - (void)removeAction:(id)action forControlEvents:(VELControlEventMask)eventMask;
 
 /**
- * Sends action messages for the given events.
+ * Sends action messages for the given event mask, passing a `nil` event to each
+ * action block.
  *
  * @param eventMask A bitmask specifying which events to send actions for.
  */
 - (void)sendActionsForControlEvents:(VELControlEventMask)eventMask;
+
+/**
+ * Sends action messages for the given event mask, passing the given event to
+ * each action block.
+ *
+ * @param eventMask A bitmask specifying which events to send actions for.
+ * @param event The underlying event that is causing actions to be invoked.
+ */
+- (void)sendActionsForControlEvents:(VELControlEventMask)eventMask event:(NSEvent *)event;
 @end

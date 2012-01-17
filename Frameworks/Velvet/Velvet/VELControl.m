@@ -28,6 +28,16 @@ typedef void (^VELControlActionBlock)(void);
 @synthesize actions = m_actions;
 @synthesize selected = m_selected;
 
+- (void)setSelected:(BOOL)selected {
+    if (selected == m_selected)
+        return;
+
+    if ((m_selected = selected))
+        [self sendActionsForControlEvents:VELControlEventSelected];
+    else
+        [self sendActionsForControlEvents:VELControlEventDeselected];
+}
+
 #pragma mark Lifecycle
 
 - (id)init {

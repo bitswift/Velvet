@@ -31,6 +31,14 @@
     }];
 }
 
+- (void)testSendActionsForControlEventsWithNilEvent {
+    VELControl *control = [[VELControl alloc] init];
+
+    [self verifyControl:control invokesActionForEvent:VELControlEventClicked usingBlock:^{
+        [control sendActionsForControlEvents:VELControlEventClicked event:nil];
+    }];
+}
+
 - (void)testSelectionEvents {
     VELControl *control = [[VELControl alloc] init];
 
@@ -50,7 +58,7 @@
 - (void)verifyControl:(VELControl *)control invokesActionForEvent:(VELControlEventMask)event usingBlock:(void (^)(void))block {
     __block BOOL handlerInvoked = NO;
     
-    id handler = [control addActionForControlEvents:event usingBlock:^{
+    id handler = [control addActionForControlEvents:event usingBlock:^(NSEvent *event){
         handlerInvoked = YES;
     }];
 

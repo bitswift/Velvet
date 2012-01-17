@@ -96,9 +96,11 @@ typedef enum {
  * not need to be retained, and can be discarded if removal will not be needed.
  *
  * @param eventMask The events for which to trigger `actionBlock`.
- * @param actionBlock A block to invoke when any of the given events are triggered.
+ * @param actionBlock A block to invoke when any of the given events are
+ * triggered. The block should take a single `NSEvent` argument, which is the
+ * underlying system event that is triggering the action.
  */
-- (id)addActionForControlEvents:(VELControlEventMask)eventMask usingBlock:(void (^)(void))actionBlock;
+- (id)addActionForControlEvents:(VELControlEventMask)eventMask usingBlock:(void (^)(NSEvent *))actionBlock;
 
 /**
  * De-registers a block or blocks previously added with
@@ -116,9 +118,19 @@ typedef enum {
 - (void)removeAction:(id)action forControlEvents:(VELControlEventMask)eventMask;
 
 /**
- * Sends action messages for the given events.
+ * Sends action messages for the given event mask, passing a `nil` event to each
+ * action block.
  *
  * @param eventMask A bitmask specifying which events to send actions for.
  */
 - (void)sendActionsForControlEvents:(VELControlEventMask)eventMask;
+
+/**
+ * Sends action messages for the given event mask, passing the given event to
+ * each action block.
+ *
+ * @param eventMask A bitmask specifying which events to send actions for.
+ * @param event The underlying event that is causing actions to be invoked.
+ */
+- (void)sendActionsForControlEvents:(VELControlEventMask)eventMask event:(NSEvent *)event;
 @end

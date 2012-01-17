@@ -7,7 +7,7 @@
 //
 
 #import <Velvet/NSWindow+InitializationAdditions.h>
-#import <Proton/Proton.h>
+#import "EXTSafeCategory.h"
 
 @safecategory (NSWindow, InitializationAdditions)
 

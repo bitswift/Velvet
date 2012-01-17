@@ -10,7 +10,6 @@
 #import <Velvet/VELView.h>
 #import <Velvet/VELNSViewPrivate.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
-#import <Proton/Proton.h>
 #import <objc/runtime.h>
 
 @interface VELCAAction ()

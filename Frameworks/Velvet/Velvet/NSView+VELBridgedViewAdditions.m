@@ -7,9 +7,9 @@
 //
 
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Proton/Proton.h>
 #import <Velvet/NSVelvetView.h>
 #import <objc/runtime.h>
+#import "EXTSafeCategory.h"
 
 @safecategory (NSView, VELBridgedViewAdditions)
 

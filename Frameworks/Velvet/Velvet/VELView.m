@@ -7,7 +7,6 @@
 //
 
 #import <Velvet/VELView.h>
-#import <Proton/Proton.h>
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
@@ -23,6 +22,7 @@
 #import <Velvet/VELViewLayer.h>
 #import <Velvet/VELViewPrivate.h>
 #import <objc/runtime.h>
+#import "EXTScope.h"
 
 /*
  * The number of animation blocks currently being run.
@@ -141,7 +141,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 @synthesize viewController = m_viewController;
 
 + (BOOL)automaticallyNotifiesObserversForKey:(NSString *)key {
-    if ([key isEqualToString:PROKeyForClass(VELView, subviews)]) {
+    if ([key isEqualToString:@"subviews"]) {
         // KVO compliance for self.subviews is implemented manually
         return NO;
     }
@@ -320,10 +320,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setSubviews:(NSArray *)newSubviews {
     self.replacingSubviews = YES;
-    [self willChangeValueForKey:PROKeyForObject(self, subviews)];
+    [self willChangeValueForKey:@"subviews"];
 
     @onExit {
-        [self didChangeValueForKey:PROKeyForObject(self, subviews)];
+        [self didChangeValueForKey:@"subviews"];
         self.replacingSubviews = NO;
     };
 
@@ -628,12 +628,12 @@ static BOOL VELViewPerformingDeepLayout = NO;
     if (!self.replacingSubviews) {
         indexSet = [NSIndexSet indexSetWithIndex:index];
 
-        [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:PROKeyForObject(self, subviews)];
+        [self willChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:@"subviews"];
     }
 
     @onExit {
         if (!self.replacingSubviews) {
-            [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:PROKeyForObject(self, subviews)];
+            [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:@"subviews"];
         }
     };
 
@@ -754,12 +754,12 @@ static BOOL VELViewPerformingDeepLayout = NO;
     if (!self.replacingSubviews) {
         indexSet = [NSIndexSet indexSetWithIndex:index];
 
-        [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:PROKeyForObject(self, subviews)];
+        [self willChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:@"subviews"];
     }
 
     @onExit {
         if (!self.replacingSubviews) {
-            [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:PROKeyForObject(self, subviews)];
+            [self didChange:NSKeyValueChangeRemoval valuesAtIndexes:indexSet forKey:@"subviews"];
         }
     };
 

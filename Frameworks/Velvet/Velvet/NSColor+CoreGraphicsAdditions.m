@@ -8,7 +8,7 @@
 
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSImage+CoreGraphicsAdditions.h>
-#import <Proton/EXTSafeCategory.h>
+#import "EXTSafeCategory.h"
 
 static void drawCGImagePattern (void *info, CGContextRef context) {
     CGImageRef image = info;

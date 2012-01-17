@@ -12,7 +12,7 @@
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELView.h>
-#import <Proton/Proton.h>
+#import "EXTSafeCategory.h"
 
 @safecategory (NSWindow, EventHandlingAdditions)
 - (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint; {

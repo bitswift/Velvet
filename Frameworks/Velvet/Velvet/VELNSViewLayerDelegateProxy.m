@@ -7,7 +7,6 @@
 //
 
 #import <Velvet/VELNSViewLayerDelegateProxy.h>
-#import <Proton/Proton.h>
 
 @interface VELNSViewLayerDelegateProxy () {
     /*
@@ -93,7 +92,7 @@
 #pragma mark CALayer delegate
 
 - (id<CAAction>)actionForLayer:(CALayer *)layer forKey:(NSString *)key {
-    BOOL mightBeChangingSublayers = [key isEqualToString:PROKeyForObject(layer, sublayers)] || [key isEqualToString:kCAOnOrderIn] || [key isEqualToString:kCAOnOrderOut] || [key isEqualToString:kCATransition];
+    BOOL mightBeChangingSublayers = [key isEqualToString:@"sublayers"] || [key isEqualToString:kCAOnOrderIn] || [key isEqualToString:kCAOnOrderOut] || [key isEqualToString:kCATransition];
 
     if (mightBeChangingSublayers) {
         [self updateSublayerDelegateProxiesWithLayer:layer];

@@ -8,7 +8,6 @@
 
 #import <Velvet/VELWindow.h>
 #import <Velvet/NSVelvetView.h>
-#import <Proton/Proton.h>
 
 @class NSVelvetHostView;
 

@@ -7,7 +7,7 @@
 //
 
 #import <Velvet/CALayer+GeometryAdditions.h>
-#import <Proton/EXTSafeCategory.h>
+#import "EXTSafeCategory.h"
 
 static CGRect convertAndClipRectFromSuperlayers (CGRect rect, CALayer *layer);
 

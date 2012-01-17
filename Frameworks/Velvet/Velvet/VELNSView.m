@@ -7,7 +7,6 @@
 //
 
 #import <Velvet/VELNSView.h>
-#import <Proton/Proton.h>
 #import <QuartzCore/QuartzCore.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
@@ -16,6 +15,7 @@
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/VELNSViewLayerDelegateProxy.h>
 #import <Velvet/VELNSViewPrivate.h>
+#import "EXTScope.h"
 
 @interface VELNSView ()
 @property (nonatomic, assign) BOOL rendersContainedView;

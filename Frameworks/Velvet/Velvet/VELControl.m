@@ -11,6 +11,13 @@
 typedef void (^VELControlActionBlock)(void);
 
 @interface VELControl ()
+/*
+ * All of the action handlers registered on the receiver.
+ *
+ * The keys in this dictionary will be the blocks, and the values will be
+ * `NSNumber` objects that represent the event mask each block is registered
+ * for.
+ */
 @property (nonatomic, strong, readonly) NSMutableDictionary *actions;
 @end
 

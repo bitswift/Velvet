@@ -27,6 +27,7 @@ typedef void (^VELControlActionBlock)(void);
 
 @synthesize actions = m_actions;
 @synthesize selected = m_selected;
+@synthesize becomesSelectedOnMouseDown = m_becomesSelectedOnMouseDown;
 
 - (void)setSelected:(BOOL)selected {
     if (selected == m_selected)
@@ -104,6 +105,11 @@ typedef void (^VELControlActionBlock)(void);
 
 - (BOOL)acceptsFirstResponder {
     return YES;
+}
+
+- (void)mouseDown:(NSEvent *)event {
+    if (self.becomesSelectedOnMouseDown)
+        self.selected = YES;
 }
 
 - (void)mouseUp:(NSEvent *)theEvent {

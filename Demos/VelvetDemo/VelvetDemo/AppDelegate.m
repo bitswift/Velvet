@@ -44,8 +44,8 @@
     [self performSelector:@selector(animateViews) withObject:nil afterDelay:2.0];
 #else
 //    [self draggingTests];
-    [self scalingTests];
-//    [self hierarchyTests];
+//    [self scalingTests];
+    [self hierarchyTests];
 #endif
 }
 
@@ -178,12 +178,12 @@
         self.control = [[SquareView alloc] initWithFrame:CGRectMake(60, 60, 100, 100)];
         self.control.clipsToBounds = YES;
 
-        [self.control addActionForControlEvents:VELControlEventClicked usingBlock:^{
-            NSLog(@"Square view click action!");
+        [self.control addActionForControlEvents:VELControlEventClicked usingBlock:^(NSEvent *event){
+            NSLog(@"Square view click action with event: %@", event);
         }];
 
-        [self.control addActionForControlEvents:VELControlEventDoubleClicked usingBlock:^{
-            NSLog(@"Square view double-click action!");
+        [self.control addActionForControlEvents:VELControlEventDoubleClicked usingBlock:^(NSEvent *event){
+            NSLog(@"Square view double click action with event: %@", event);
         }];
 
         [self.scrollView addSubview:self.control];

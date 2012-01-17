@@ -8,10 +8,26 @@
 
 #import <Velvet/VELControl.h>
 
-typedef void (^VELControlActionBlock)(void);
+typedef void (^VELControlActionBlock)(NSEvent *);
 
 @interface VELControl ()
+/*
+ * All of the action handlers registered on the receiver.
+ *
+ * The keys in this dictionary will be the blocks, and the values will be
+ * `NSNumber` objects that represent the event mask each block is registered
+ * for.
+ */
 @property (nonatomic, strong, readonly) NSMutableDictionary *actions;
+
+/*
+ * Updates the <selected> property, and sends the corresponding action messages
+ * with `event` as the underlying event.
+ *
+ * @param selected The new value for <selected>.
+ * @param event The event that triggered the change in selected state.
+ */
+- (void)setSelected:(BOOL)selected event:(NSEvent *)event;
 @end
 
 @implementation VELControl
@@ -20,6 +36,11 @@ typedef void (^VELControlActionBlock)(void);
 
 @synthesize actions = m_actions;
 @synthesize selected = m_selected;
+@synthesize becomesSelectedOnMouseDown = m_becomesSelectedOnMouseDown;
+
+- (void)setSelected:(BOOL)selected {
+    [self setSelected:selected event:nil];
+}
 
 #pragma mark Lifecycle
 
@@ -34,7 +55,7 @@ typedef void (^VELControlActionBlock)(void);
 
 #pragma mark Event Dispatch
 
-- (id)addActionForControlEvents:(VELControlEventMask)eventMask usingBlock:(void (^)(void))actionBlock; {
+- (id)addActionForControlEvents:(VELControlEventMask)eventMask usingBlock:(VELControlActionBlock)actionBlock; {
     id action = [actionBlock copy];
 
     NSNumber *actionEvents = [self.actions objectForKey:action];
@@ -74,11 +95,15 @@ typedef void (^VELControlActionBlock)(void);
 }
 
 - (void)sendActionsForControlEvents:(VELControlEventMask)eventMask; {
+    [self sendActionsForControlEvents:eventMask event:nil];
+}
+
+- (void)sendActionsForControlEvents:(VELControlEventMask)eventMask event:(NSEvent *)event; {
     // copy actions in case any handler wants to remove it
     for (VELControlActionBlock action in [self.actions copy]) {
         NSNumber *actionEvents = [self.actions objectForKey:action];
         if ([actionEvents unsignedIntegerValue] & eventMask) {
-            action();
+            action(event);
         }
     }
 }
@@ -89,16 +114,31 @@ typedef void (^VELControlActionBlock)(void);
     return YES;
 }
 
+- (void)mouseDown:(NSEvent *)event {
+    if (self.becomesSelectedOnMouseDown)
+        self.selected = YES;
+}
+
 - (void)mouseUp:(NSEvent *)theEvent {
     CGPoint point = [self convertFromWindowPoint:[theEvent locationInWindow]];
     if (![self pointInside:point])
         return;
 
-    [self sendActionsForControlEvents:VELControlEventClicked];
+    [self sendActionsForControlEvents:VELControlEventClicked event:theEvent];
 
     if (theEvent.clickCount > 0 && (theEvent.clickCount % 2) == 0) {
-        [self sendActionsForControlEvents:VELControlEventDoubleClicked];
+        [self sendActionsForControlEvents:VELControlEventDoubleClicked event:theEvent];
     }
+}
+
+- (void)setSelected:(BOOL)selected event:(NSEvent *)event {
+    if (selected == m_selected)
+        return;
+
+    if ((m_selected = selected))
+        [self sendActionsForControlEvents:VELControlEventSelected];
+    else
+        [self sendActionsForControlEvents:VELControlEventDeselected];
 }
 
 @end

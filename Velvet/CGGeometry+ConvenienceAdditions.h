@@ -9,6 +9,29 @@
 #import <AppKit/AppKit.h>
 
 /*
+ * Chops the given amount off of a rectangle's edge, returning the remainder.
+ *
+ * If `amount` is greater than or equal to the size of the rectangle along the
+ * axis being chopped, `CGRectZero` is returned.
+ *
+ * @param rect The rectangle to chop up.
+ * @param amount The amount of points to remove.
+ * @param edge The edge from which to chop.
+ */
+CGRect CGRectChop (CGRect rect, CGFloat amount, CGRectEdge edge);
+
+/*
+ * Adds the given amount to a rectangle's edge.
+ *
+ * @param rect The rectangle to grow.
+ * @param amount The amount of points to add.
+ * @param edge The edge from which to grow. Growing is always outward (i.e.,
+ * using `CGRectMaxXEdge` will increase the width of the rectangle and leave the
+ * origin unmodified).
+ */
+CGRect CGRectGrow (CGRect rect, CGFloat amount, CGRectEdge edge);
+
+/*
  * Returns the largest rectangle that is part of `rect` and not intersected by
  * `subtraction`.
  *

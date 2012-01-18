@@ -8,6 +8,14 @@
 
 #import <Velvet/CGGeometry+ConvenienceAdditions.h>
 
+CGRect CGRectChop (CGRect rect, CGFloat amount, CGRectEdge edge) {
+    return CGRectNull;
+}
+
+CGRect CGRectGrow (CGRect rect, CGFloat amount, CGRectEdge edge) {
+    return CGRectNull;
+}
+
 CGRect CGRectDifference (CGRect rect, CGRect subtraction) {
     if (CGRectEqualToRect(rect, subtraction))
         return CGRectZero;

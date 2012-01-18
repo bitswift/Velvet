@@ -9,7 +9,10 @@
 #import <Velvet/CGGeometry+ConvenienceAdditions.h>
 
 CGRect CGRectChop (CGRect rect, CGFloat amount, CGRectEdge edge) {
-    return CGRectNull;
+    CGRect slice, remainder;
+    CGRectDivide(rect, &slice, &remainder, amount, edge);
+
+    return remainder;
 }
 
 CGRect CGRectGrow (CGRect rect, CGFloat amount, CGRectEdge edge) {

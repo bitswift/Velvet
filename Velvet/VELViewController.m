@@ -67,7 +67,13 @@
 }
 
 - (void)dealloc {
+    // remove 'self' as the next responder
+    if (m_view.nextResponder == self)
+        m_view.nextResponder = nil;
+
+    // make sure to always call -viewWillUnload and -viewDidUnload
     self.view = nil;
+
     [self.undoManager removeAllActionsWithTarget:self];
 }
 

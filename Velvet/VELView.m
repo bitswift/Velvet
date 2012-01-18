@@ -112,7 +112,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 /*
  * Call the given block on the receiver and all of its subviews, recursively.
  */
-- (void)recursivelyEnumerateViewsUsingBlock:(void(^)(VELView *))block;
+- (void)recursivelyEnumerateViewsUsingBlock:(void (^)(VELView *))block;
 
 /*
  * Removes the given view from the receiver's subview array, if present.
@@ -597,6 +597,20 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)dealloc {
     m_layer.delegate = nil;
+
+    NSUndoManager *undoManager = self.undoManager;
+
+    if (undoManager) {
+        [self recursivelyEnumerateViewsUsingBlock:^(VELView *descendant){
+            [undoManager removeAllActionsWithTarget:descendant];
+        }];
+    }
+
+    // remove 'self' as the next responder on any subviews
+    for (VELView *view in self.subviews) {
+        if (view.nextResponder == self)
+            view.nextResponder = nil;
+    }
 }
 
 #pragma mark Rendering

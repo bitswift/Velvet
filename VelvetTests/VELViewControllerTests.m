@@ -198,6 +198,35 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     STAssertEquals(vc.nextResponder, self.visibleView, @"");
 }
 
+- (void)testRemovesUndoActionsOnDealloc {
+    // need a responder class that creates an undo manager
+    NSDocument *document = [[NSDocument alloc] init];
+    document.hasUndoManager = YES;
+
+    NSUndoManager *undoManager = document.undoManager;
+    STAssertNotNil(undoManager, @"");
+
+    undoManager.groupsByEvent = NO;
+    STAssertFalse(undoManager.canUndo, @"");
+
+    @autoreleasepool {
+        __autoreleasing VELViewController *viewController = [[VELViewController alloc] init];
+        
+        // NSDocument is not actually an NSResponder, but it behaves like one
+        viewController.nextResponder = (id)document;
+
+        // add an undo action to the stack
+        [undoManager beginUndoGrouping];
+        [[undoManager prepareWithInvocationTarget:viewController] viewWillAppear];
+        [undoManager endUndoGrouping];
+
+        STAssertTrue(undoManager.canUndo, @"");
+    }
+
+    // the undo stack should be empty after the view is deallocated
+    STAssertFalse(undoManager.canUndo, @"");
+}
+
 @end
 
 @implementation TestViewController

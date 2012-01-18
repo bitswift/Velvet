@@ -492,6 +492,38 @@
     STAssertNil([superview descendantViewAtPoint:outsidePoint], @"");
 }
 
+- (void)testRemovesUndoActionsOnDealloc {
+    // need a responder class that creates an undo manager
+    NSDocument *document = [[NSDocument alloc] init];
+    document.hasUndoManager = YES;
+
+    NSUndoManager *undoManager = document.undoManager;
+    STAssertNotNil(undoManager, @"");
+
+    undoManager.groupsByEvent = NO;
+    STAssertFalse(undoManager.canUndo, @"");
+
+    @autoreleasepool {
+        __autoreleasing VELView *view = [[VELView alloc] init];
+        
+        // NSDocument is not actually an NSResponder, but it behaves like one
+        view.nextResponder = (id)document;
+
+        // add an undo action to the stack
+        [undoManager beginUndoGrouping];
+        [[undoManager prepareWithInvocationTarget:view]
+            setFrame:CGRectMake(0, 0, 100, 100)
+        ];
+
+        [undoManager endUndoGrouping];
+
+        STAssertTrue(undoManager.canUndo, @"");
+    }
+
+    // the undo stack should be empty after the view is deallocated
+    STAssertFalse(undoManager.canUndo, @"");
+}
+
 @end
 
 @implementation TestView

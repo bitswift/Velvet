@@ -597,6 +597,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)dealloc {
     m_layer.delegate = nil;
+
+    [self.undoManager removeAllActionsWithTarget:self];
 }
 
 #pragma mark Rendering

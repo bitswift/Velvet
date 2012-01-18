@@ -68,6 +68,7 @@
 
 - (void)dealloc {
     self.view = nil;
+    [self.undoManager removeAllActionsWithTarget:self];
 }
 
 #pragma mark Presentation

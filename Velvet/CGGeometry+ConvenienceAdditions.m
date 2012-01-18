@@ -13,7 +13,43 @@ CGRect CGRectChop (CGRect rect, CGFloat amount, CGRectEdge edge) {
 }
 
 CGRect CGRectGrow (CGRect rect, CGFloat amount, CGRectEdge edge) {
-    return CGRectNull;
+    switch (edge) {
+        case CGRectMinXEdge:
+            return CGRectMake(
+                CGRectGetMinX(rect) - amount,
+                CGRectGetMinY(rect),
+                CGRectGetWidth(rect) + amount,
+                CGRectGetHeight(rect)
+            );
+
+        case CGRectMinYEdge:
+            return CGRectMake(
+                CGRectGetMinX(rect),
+                CGRectGetMinY(rect) - amount,
+                CGRectGetWidth(rect),
+                CGRectGetHeight(rect) + amount
+            );
+
+        case CGRectMaxXEdge:
+            return CGRectMake(
+                CGRectGetMinX(rect),
+                CGRectGetMinY(rect),
+                CGRectGetWidth(rect) + amount,
+                CGRectGetHeight(rect)
+            );
+
+        case CGRectMaxYEdge:
+            return CGRectMake(
+                CGRectGetMinX(rect),
+                CGRectGetMinY(rect),
+                CGRectGetWidth(rect),
+                CGRectGetHeight(rect) + amount
+            );
+
+        default:
+            NSCAssert(NO, @"Unrecognized CGRectEdge %i", (int)edge);
+            return CGRectNull;
+    }
 }
 
 CGRect CGRectDifference (CGRect rect, CGRect subtraction) {

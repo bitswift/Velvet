@@ -129,4 +129,20 @@
     STAssertTrue(CGRectEqualToRect(expectedResult, result), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
 }
 
+- (void)testChop {
+    CGRect rect = CGRectMake(100, 100, 100, 100);
+
+    CGRect result = CGRectChop(rect, 25, CGRectMaxXEdge);
+    CGRect expectedResult = CGRectMake(100, 100, 75, 100);
+    STAssertTrue(CGRectEqualToRect(result, expectedResult), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
+}
+
+- (void)testGrow {
+    CGRect rect = CGRectMake(100, 100, 100, 100);
+
+    CGRect result = CGRectGrow(rect, 25, CGRectMinXEdge);
+    CGRect expectedResult = CGRectMake(75, 100, 125, 100);
+    STAssertTrue(CGRectEqualToRect(result, expectedResult), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
+}
+
 @end

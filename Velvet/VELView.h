@@ -163,6 +163,9 @@ typedef enum {
  *  1. If the view has a <superview>, the superview is the next responder.
  *  2. If the view has a <hostView>, the host view is the next responder.
  *  3. Otherwise, there is no next responder.
+ *
+ * Upon deallocation, `VELView` instances automatically remove undo actions
+ * targeting themselves on their `-[NSResponder undoManager]`.
  */
 @interface VELView : NSResponder <VELBridgedView>
 

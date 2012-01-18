@@ -22,6 +22,9 @@
  *  2. If the <view> has a <[VELView hostView]>, the host view is the next
  *  responder.
  *  3. Otherwise, there is no next responder.
+ *
+ * Upon deallocation, a `VELViewController` instance automatically removes undo
+ * actions targeting itself from any `-[NSResponder undoManager]`.
  */
 @interface VELViewController : NSResponder
 

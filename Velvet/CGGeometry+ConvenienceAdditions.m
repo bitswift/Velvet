@@ -27,27 +27,38 @@ CGRect CGRectDifference (CGRect rect, CGRect subtraction) {
     CGFloat maxX = CGRectGetMaxX(rect);
     CGFloat maxY = CGRectGetMaxY(rect);
 
-    CGFloat iminX = CGRectGetMinX(intersection);
-    CGFloat iminY = CGRectGetMinY(intersection);
-    CGFloat imaxX = CGRectGetMaxX(intersection);
-    CGFloat imaxY = CGRectGetMaxY(intersection);
+    // don't chop width-wise if the whole rectangle intersects on that axis --
+    // we already determined up above that the intersection won't cover our
+    // whole rectangle, so we should only subtract along the other axis
+    if (CGRectGetWidth(intersection) < CGRectGetWidth(rect)) {
+        CGFloat iminX = CGRectGetMinX(intersection);
+        CGFloat imaxX = CGRectGetMaxX(intersection);
 
-    // if the intersection was mostly on our right side...
-    if (iminX - minX >= maxX - imaxX) {
-        // chop off the right side
-        maxX = iminX;
-    } else {
-        // chop off the left side
-        minX = imaxX;
+        // if the intersection was mostly on our right side...
+        if (iminX - minX >= maxX - imaxX) {
+            // chop off the right side
+            maxX = iminX;
+        } else {
+            // chop off the left side
+            minX = imaxX;
+        }
     }
 
-    // if the intersection was mostly on our top side...
-    if (iminY - minY >= maxY - imaxY) {
-        // chop off the top side
-        maxY = iminY;
-    } else {
-        // chop off the bottom side
-        minY = imaxY;
+    // don't chop height-wise if the whole rectangle intersects on that axis --
+    // we already determined up above that the intersection won't cover our
+    // whole rectangle, so we should only subtract along the other axis
+    if (CGRectGetHeight(intersection) < CGRectGetHeight(rect)) {
+        CGFloat iminY = CGRectGetMinY(intersection);
+        CGFloat imaxY = CGRectGetMaxY(intersection);
+
+        // if the intersection was mostly on our top side...
+        if (iminY - minY >= maxY - imaxY) {
+            // chop off the top side
+            maxY = iminY;
+        } else {
+            // chop off the bottom side
+            minY = imaxY;
+        }
     }
 
     return CGRectMake(

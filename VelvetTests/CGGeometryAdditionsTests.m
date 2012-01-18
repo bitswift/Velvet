@@ -93,4 +93,40 @@
     STAssertTrue(CGRectEqualToRect(expectedResult, result), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
 }
 
+- (void)testRectDifferenceMinXSide {
+    CGRect rect = CGRectMake(250, 250, 500, 500);
+    CGRect subtraction = CGRectMake(250, 250, 250, 500);
+
+    CGRect expectedResult = CGRectMake(500, 250, 250, 500);
+    CGRect result = CGRectDifference(rect, subtraction);
+    STAssertTrue(CGRectEqualToRect(expectedResult, result), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
+}
+
+- (void)testRectDifferenceMinYSide {
+    CGRect rect = CGRectMake(250, 250, 500, 500);
+    CGRect subtraction = CGRectMake(250, 250, 500, 250);
+
+    CGRect expectedResult = CGRectMake(250, 500, 500, 250);
+    CGRect result = CGRectDifference(rect, subtraction);
+    STAssertTrue(CGRectEqualToRect(expectedResult, result), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
+}
+
+- (void)testRectDifferenceMaxXSide {
+    CGRect rect = CGRectMake(250, 250, 500, 500);
+    CGRect subtraction = CGRectMake(500, 250, 250, 500);
+
+    CGRect expectedResult = CGRectMake(250, 250, 250, 500);
+    CGRect result = CGRectDifference(rect, subtraction);
+    STAssertTrue(CGRectEqualToRect(expectedResult, result), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
+}
+
+- (void)testRectDifferenceMaxYSide {
+    CGRect rect = CGRectMake(250, 250, 500, 500);
+    CGRect subtraction = CGRectMake(250, 500, 500, 250);
+
+    CGRect expectedResult = CGRectMake(250, 250, 500, 250);
+    CGRect result = CGRectDifference(rect, subtraction);
+    STAssertTrue(CGRectEqualToRect(expectedResult, result), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
+}
+
 @end

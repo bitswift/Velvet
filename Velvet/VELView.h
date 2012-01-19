@@ -154,6 +154,25 @@ typedef enum {
 } VELViewContentMode;
 
 /**
+ * Options for defining the behavior of a Velvet animation initiated with
+ * <[VELView animateWithDuration:options:animations:]> or <[VELView
+ * animateWithDuration:options:animations:completion:]>.
+ */
+typedef enum {
+    /**
+     * Lay out the subviews of any animating view after all properties have been
+     * updated, but before committing or executing the animation.
+     */
+    VELViewAnimationOptionLayoutSubviews = (1 << 0),
+
+    /**
+     * Lay out the superview of any animating view after all properties have
+     * been updated, but before committing or executing the animation.
+     */
+    VELViewAnimationOptionLayoutSuperview = (1 << 1)
+} VELViewAnimationOptions;
+
+/**
  * A layer-backed view. A view hierarchy built using this class must ultimately
  * be hosted in a <NSVelvetView>.
  *
@@ -645,12 +664,29 @@ typedef enum {
 + (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(void))completionBlock;
 
 /**
- * Whether changes are currently being added to an animation.
+ * Animates changes to one or more views, specifying the behavior of the
+ * animation with the given options.
  *
- * This is not whether an animation is currently in progress, but whether the
- * calling code is running from an animation block.
+ * @param duration The length of the animation.
+ * @param options A bitmask of `VELViewAnimationOptions` that define the
+ * behavior of the animation.
+ * @param animations A block containing the changes to make that should be
+ * animated.
  */
-+ (BOOL)isAnimating;
++ (void)animateWithDuration:(NSTimeInterval)duration options:(VELViewAnimationOptions)options animations:(void (^)(void))animations;
+
+/**
+ * Animates changes to one or more views with a custom duration.
+ *
+ * @param duration The length of the animation.
+ * @param options A bitmask of `VELViewAnimationOptions` that define the
+ * behavior of the animation.
+ * @param animations A block containing the changes to make that should be
+ * animated.
+ * @param completionBlock A block to execute when the effect of the animation
+ * completes.
+ */
++ (void)animateWithDuration:(NSTimeInterval)duration options:(VELViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(void))completionBlock;
 
 /**
  * @name Core Animation Layer

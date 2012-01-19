@@ -568,18 +568,25 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
     [super encodeRestorableStateWithCoder:coder];
-    
-    NSLog(@"%s: %@", __func__, coder);
+
+    // Clear out the archiver's delegate
+    // and keep a reference to it so we can archive the guestView
+    // using default NSKeyedArchiver behavior
+    NSKeyedArchiver *archiver = (id)coder;
+    id delegate = [archiver delegate];
+    [archiver setDelegate:nil];
+
     [coder encodeObject:self.guestView forKey:@"guestView"];
-    [self.guestView encodeRestorableStateWithCoder:coder];
+
+    [archiver setDelegate:delegate];
 }
 
 - (void)restoreStateWithCoder:(NSCoder *)coder {
     [super restoreStateWithCoder:coder];
-    
-    NSLog(@"%s: %@", __func__, coder);
-    self.guestView = [coder decodeObjectForKey:@"guestView"];
-    [self.guestView restoreStateWithCoder:coder];
+
+    VELView *guestView = [coder decodeObjectForKey:@"guestView"];
+    if (guestView)
+        self.guestView = guestView;
 }
 
 @end

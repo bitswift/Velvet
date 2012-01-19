@@ -25,6 +25,15 @@
 #import "EXTScope.h"
 
 /*
+ *  A union between CGAffineTransform and NSAffineTransformStruct
+ *  for the purposes of converting between the two.
+ */
+typedef union {
+    CGAffineTransform cgAffineTransform;
+    NSAffineTransformStruct nsAffineTransform;
+} VELAffineTransformConversionUnion;
+
+/*
  * The number of animation blocks currently being run.
  *
  * This is not how many animations are currently running, but instead how many
@@ -1299,6 +1308,16 @@ static BOOL VELViewPerformingDeepLayout = NO;
         [self setValue:value forKey:keyPath];
     }
 
+    NSAssert(sizeof(CGAffineTransform) == sizeof(NSAffineTransformStruct), @"Expected CGAffineTransform and NSAffineTransformStruct to be compatible");
+
+    // Decode the stored NSAffineTransform representing
+    // the transform property and set it.
+    NSAffineTransform *storedTransform = [coder decodeObjectForKey:@"transform"];
+
+    VELAffineTransformConversionUnion transforms;
+    transforms.nsAffineTransform = [storedTransform transformStruct];
+    self.transform = transforms.cgAffineTransform;
+
     return self;
 }
 
@@ -1314,6 +1333,19 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
         [coder encodeObject:value forKey:keyPath];
     }
+
+
+    NSAssert(sizeof(CGAffineTransform) == sizeof(NSAffineTransformStruct), @"Expected CGAffineTransform and NSAffineTransformStruct to be compatible");
+
+    // Convert our CGAffineTransform property into
+    // an NSAffineTransformStruct and encode it.
+    VELAffineTransformConversionUnion transforms;
+    transforms.cgAffineTransform = self.transform;
+
+    NSAffineTransform *storedTransform = [NSAffineTransform transform];
+    [storedTransform setTransformStruct:transforms.nsAffineTransform];
+
+    [coder encodeObject:storedTransform forKey:@"transform"];
 }
 
 - (NSArray *)encodableProperties {
@@ -1322,7 +1354,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
         @"bounds",
         @"center",
         @"alignsToIntegralPixels",
-        @"layer.transform",
         @"subviews",
         @"autoresizingMask",
         @"clipsToBounds",

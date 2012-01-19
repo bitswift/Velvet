@@ -30,7 +30,23 @@
  * This is not how many animations are currently running, but instead how many
  * nested animations are being defined.
  */
-static NSUInteger VELViewAnimationBlockDepth = 0;
+static NSUInteger VELViewCurrentAnimationBlockDepth = 0;
+
+/*
+ * The animation options for the current animation block, if any.
+ */
+static VELViewAnimationOptions VELViewCurrentAnimationOptions = 0;
+
+/*
+ * Keeps track of any layers that need to be laid out before the current
+ * animation block is committed.
+ *
+ * The layers should be marked as needing layout before being added to this set.
+ *
+ * This should always be set to `nil` after all animations are committed, to
+ * make sure the array is properly released.
+ */
+static NSMutableSet *VELViewCurrentAnimationLayersNeedingLayout = nil;
 
 /*
  * The function pointer to <VELView>'s implementation of <drawRect:>.
@@ -1024,15 +1040,31 @@ static BOOL VELViewPerformingDeepLayout = NO;
 + (void)animate:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
     [CATransaction flush];
 
+    VELViewAnimationOptions lastAnimationOptions = VELViewCurrentAnimationOptions;
+    NSMutableSet *lastLayersNeedingLayout = VELViewCurrentAnimationLayersNeedingLayout;
+
+    @onExit {
+        VELViewCurrentAnimationOptions = lastAnimationOptions;
+        VELViewCurrentAnimationLayersNeedingLayout = lastLayersNeedingLayout;
+    };
+
     [CATransaction begin];
+    @onExit {
+        [CATransaction commit];
+    };
+
+    VELViewCurrentAnimationOptions = 0;
+    VELViewCurrentAnimationLayersNeedingLayout = nil;
+
+    ++VELViewCurrentAnimationBlockDepth;
+    @onExit {
+        --VELViewCurrentAnimationBlockDepth;
+    };
+
     [CATransaction setDisableActions:NO];
     [CATransaction setCompletionBlock:completionBlock];
 
-    ++VELViewAnimationBlockDepth;
     animations();
-    --VELViewAnimationBlockDepth;
-
-    [CATransaction commit];
 }
 
 + (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations; {
@@ -1040,30 +1072,78 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 + (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
+    [self animateWithDuration:duration options:0 animations:animations completion:completionBlock];
+}
+
++ (void)animateWithDuration:(NSTimeInterval)duration options:(VELViewAnimationOptions)options animations:(void (^)(void))animations; {
+    [self animateWithDuration:duration options:options animations:animations completion:^{}];
+}
+
++ (void)animateWithDuration:(NSTimeInterval)duration options:(VELViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
     [CATransaction flush];
 
+    VELViewAnimationOptions lastAnimationOptions = VELViewCurrentAnimationOptions;
+    NSMutableSet *lastLayersNeedingLayout = VELViewCurrentAnimationLayersNeedingLayout;
+
+    @onExit {
+        VELViewCurrentAnimationOptions = lastAnimationOptions;
+        VELViewCurrentAnimationLayersNeedingLayout = lastLayersNeedingLayout;
+    };
+
     [CATransaction begin];
+    @onExit {
+        [CATransaction commit];
+    };
+
+    VELViewCurrentAnimationOptions = options;
+    VELViewCurrentAnimationLayersNeedingLayout = [[NSMutableSet alloc] init];
+
+    ++VELViewCurrentAnimationBlockDepth;
+    @onExit {
+        --VELViewCurrentAnimationBlockDepth;
+    };
+
     [CATransaction setAnimationDuration:duration];
     [CATransaction setDisableActions:NO];
     [CATransaction setCompletionBlock:completionBlock];
 
-    ++VELViewAnimationBlockDepth;
     animations();
-    --VELViewAnimationBlockDepth;
 
-    [CATransaction commit];
+    NSSet *layersNeedingLayout = VELViewCurrentAnimationLayersNeedingLayout;
+
+    // don't allow any new layers to get marked as needing layout
+    VELViewCurrentAnimationLayersNeedingLayout = nil;
+
+    [layersNeedingLayout makeObjectsPerformSelector:@selector(layoutIfNeeded)];
 }
 
 - (void)changeLayerProperties:(void (^)(void))changesBlock; {
-    if ([[self class] isAnimating]) {
-        changesBlock();
-    } else {
+    if (![[self class] isAnimating]) {
         [CATransaction performWithDisabledActions:changesBlock];
+        return;
+    }
+
+    changesBlock();
+
+    VELViewAnimationOptions options = VELViewCurrentAnimationOptions;
+
+    if (options & VELViewAnimationOptionLayoutSubviews) {
+        if (VELViewCurrentAnimationLayersNeedingLayout && ![VELViewCurrentAnimationLayersNeedingLayout containsObject:self.layer]) {
+            [self.layer setNeedsLayout];
+            [VELViewCurrentAnimationLayersNeedingLayout addObject:self.layer];
+        }
+    }
+
+    if ((options & VELViewAnimationOptionLayoutSuperview) && self.layer.superlayer) {
+        if (VELViewCurrentAnimationLayersNeedingLayout && ![VELViewCurrentAnimationLayersNeedingLayout containsObject:self.layer.superlayer]) {
+            [self.layer.superlayer setNeedsLayout];
+            [VELViewCurrentAnimationLayersNeedingLayout addObject:self.layer.superlayer];
+        }
     }
 }
 
 + (BOOL)isAnimating; {
-    return VELViewAnimationBlockDepth > 0;
+    return VELViewCurrentAnimationBlockDepth > 0;
 }
 
 #pragma mark NSObject overrides
@@ -1163,21 +1243,20 @@ static BOOL VELViewPerformingDeepLayout = NO;
     BOOL wasDeepLayout = VELViewPerformingDeepLayout;
 
     VELViewPerformingDeepLayout = YES;
+    @onExit {
+        VELViewPerformingDeepLayout = wasDeepLayout;
+    };
 
-    [CATransaction performWithDisabledActions:^{
-        [self layoutSubviews];
+    [self layoutSubviews];
 
-        // only one view needs to inform all descendants of a layout at the top,
-        // so we start from the view which received the initial call to this
-        // method
-        if (!wasDeepLayout) {
-            [self.subviews enumerateObjectsUsingBlock:^(VELView *subview, NSUInteger i, BOOL *stop){
-                [subview ancestorDidLayout];
-            }];
-        }
-    }];
-
-    VELViewPerformingDeepLayout = wasDeepLayout;
+    // only one view needs to inform all descendants of a layout at the top,
+    // so we start from the view which received the initial call to this
+    // method
+    if (!wasDeepLayout) {
+        [self.subviews enumerateObjectsUsingBlock:^(VELView *subview, NSUInteger i, BOOL *stop){
+            [subview ancestorDidLayout];
+        }];
+    }
 }
 
 - (CGSize)preferredSizeOfLayer:(CALayer *)layer {

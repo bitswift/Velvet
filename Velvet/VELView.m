@@ -152,6 +152,11 @@ static BOOL VELViewPerformingDeepLayout = NO;
  * controller.
  */
 - (void)updateViewAndViewControllerNextResponders;
+
+/*
+ * The list of the receiver's publicly facing encodable properties.
+ */
+@property (nonatomic, copy, readonly) NSArray *encodableProperties;
 @end
 
 @implementation VELView
@@ -237,11 +242,11 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
     CGSize originalSize = self.layer.frame.size;
     CGSize newSize = frame.size;
-    
+
     [self changeLayerProperties:^{
         self.layer.frame = frame;
     }];
-    
+
     if (!CGSizeEqualToSize(originalSize, newSize)) {
         [self.layer setNeedsLayout];
         [self.layer layoutIfNeeded];
@@ -260,11 +265,11 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 
     BOOL needsLayout = !CGRectEqualToRect(bounds, self.layer.bounds);
-    
+
     [self changeLayerProperties:^{
         self.layer.bounds = bounds;
     }];
-    
+
     if (needsLayout) {
         [self.layer setNeedsLayout];
         [self.layer layoutIfNeeded];
@@ -401,7 +406,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
         if (oldWindow != newWindow)
             [self willMoveToWindow:newWindow];
-        
+
         if (oldVelvetView != newVelvetView)
             [self willMoveToNSVelvetView:newVelvetView];
 
@@ -932,7 +937,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
     NSAssert(self.window, @"%@ window is nil!",self);
-    
+
     NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGPoint hostPoint = [self.layer convertPoint:point toLayer:hostView.layer];
 
@@ -941,7 +946,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (CGPoint)convertFromWindowPoint:(CGPoint)point {
     NSAssert(self.window, @"%@ window is nil!",self);
-    
+
     NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGPoint hostPoint = [hostView convertFromWindowPoint:point];
 
@@ -950,7 +955,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (CGRect)convertToWindowRect:(CGRect)rect {
     NSAssert(self.window, @"%@ window is nil!",self);
-    
+
     NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGRect hostRect = [self.layer convertRect:rect toLayer:hostView.layer];
 
@@ -959,7 +964,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (CGRect)convertFromWindowRect:(CGRect)rect {
     NSAssert(self.window, @"%@ window is nil!",self);
-    
+
     NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGRect hostRect = [hostView convertFromWindowRect:rect];
 
@@ -1278,19 +1283,59 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 }
 
-#pragma mark Restoration
+#pragma mark NSCoding
 
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
-    [super encodeRestorableStateWithCoder:coder];
-    [self.viewController encodeRestorableStateWithCoder:coder];
-    [self.subviews makeObjectsPerformSelector:_cmd withObject:coder];
+- (id)initWithCoder:(NSCoder *)coder {
+    // We do not call [super initWithCoder:]
+    // because NSResponder conforms to <NSCoding>
+    // for the purpose of encoding nibs.
+    self = [self init];
+    if (!self)
+        return nil;
+
+    for (NSString *keyPath in self.encodableProperties) {
+        id value = [coder decodeObjectForKey:keyPath];
+
+        [self setValue:value forKey:keyPath];
+    }
+
+    return self;
 }
 
-- (void)restoreStateWithCoder:(NSCoder *)coder {
-    [super restoreStateWithCoder:coder];
-    [self.viewController restoreStateWithCoder:coder];
-    [self.subviews makeObjectsPerformSelector:_cmd withObject:coder];
+- (void)encodeWithCoder:(NSCoder *)coder {
+    // We do not call [super encodeWithCoder:]
+    // because NSResponder conforms to <NSCoding>
+    // for the purpose of encoding nibs.
 
+    for (NSString *keyPath in self.encodableProperties) {
+        id value = [self valueForKeyPath:keyPath];
+        if (!value)
+            continue;
+
+        [coder encodeObject:value forKey:keyPath];
+    }
+}
+
+- (NSArray *)encodableProperties {
+    return [NSArray arrayWithObjects:
+        @"frame",
+        @"bounds",
+        @"center",
+        @"alignsToIntegralPixels",
+        @"layer.transform",
+        @"subviews",
+        @"autoresizingMask",
+        @"clipsToBounds",
+        @"alpha",
+        @"hidden",
+        @"clearsContextBeforeDrawing",
+        @"backgroundColor",
+        @"opaque",
+        @"contentMode",
+        @"contentStretch",
+        @"userInteractionEnabled",
+        nil
+    ];
 }
 
 @end

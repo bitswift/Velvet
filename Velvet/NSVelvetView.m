@@ -570,6 +570,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [super encodeRestorableStateWithCoder:coder];
     
     NSLog(@"%s: %@", __func__, coder);
+    [coder encodeObject:self.guestView forKey:@"guestView"];
     [self.guestView encodeRestorableStateWithCoder:coder];
 }
 
@@ -577,6 +578,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [super restoreStateWithCoder:coder];
     
     NSLog(@"%s: %@", __func__, coder);
+    self.guestView = [coder decodeObjectForKey:@"guestView"];
     [self.guestView restoreStateWithCoder:coder];
 }
 

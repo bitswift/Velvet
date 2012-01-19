@@ -55,7 +55,7 @@ typedef enum {
 /**
  * A control that can receive click events, similar to `UIControl`.
  */
-@interface VELControl : VELView
+@interface VELControl : VELView <NSCoding>
 
 /**
  * @name Control States

@@ -11,7 +11,7 @@
 /**
  * An image view similar to `NSImageView` or `UIImageView`.
  */
-@interface VELImageView : VELView
+@interface VELImageView : VELView <NSCoding>
 
 /**
  * @name Initialization

@@ -163,3 +163,17 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
     }
 }
 
+void CGRectDivideWithPadding (CGRect rect, CGRect *slicePtr, CGRect *remainderPtr, CGFloat sliceAmount, CGFloat padding, CGRectEdge edge) {
+    CGRect slice;
+
+    // slice
+    CGRectDivide(rect, &slice, &rect, sliceAmount, edge);
+    if (slicePtr)
+        *slicePtr = slice;
+
+    // padding / remainder
+    CGRectDivide(rect, &slice, &rect, padding, edge);
+    if (remainderPtr)
+        *remainderPtr = rect;
+}
+

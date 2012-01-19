@@ -62,3 +62,28 @@ CGRect CGRectGrow (CGRect rect, CGFloat amount, CGRectEdge edge);
  * toward the opposite edge.
  */
 void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *remainder, CGRect intersectingRect, CGRectEdge edge);
+
+/**
+ * Divides a source rectangle into two component rectangles, skipping the given
+ * amount of padding in between them.
+ *
+ * This functions like `CGRectDivide()`, but omits the specified amount of
+ * padding between the two rectangles. This results in a remainder that is
+ * `padding` points smaller from `edge` than it would be with `CGRectDivide()`.
+ *
+ * @param rect The rectangle to divide.
+ * @param slice Upon return, the portion of `rect` starting from `edge` and
+ * continuing for `sliceAmount` points. This argument may be `NULL` to not
+ * return the slice.
+ * @param remainder Upon return, the portion of `rect` beginning `padding`
+ * points after the end of the `slice`. If `rect` is not large enough to leave
+ * a remainder, this will be `CGRectZero`. This argument may be `NULL` to not
+ * return the remainder.
+ * @param sliceAmount The number of points to include in `slice`, starting from
+ * the given edge.
+ * @param padding The number of points of padding to omit between `slice` and
+ * `remainder`.
+ * @param edge The edge from which division begins, proceeding toward the
+ * opposite edge.
+ */
+void CGRectDivideWithPadding (CGRect rect, CGRect *slice, CGRect *remainder, CGFloat sliceAmount, CGFloat padding, CGRectEdge edge);

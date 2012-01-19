@@ -126,6 +126,53 @@
     STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
 }
 
+- (void)testDivideWithPadding {
+    CGRect rect = CGRectMake(50, 50, 100, 100);
+
+    CGRect expectedSlice = CGRectMake(50, 50, 40, 100);
+    CGRect expectedRemainder = CGRectMake(90 + 10, 50, 50, 100);
+
+    CGRect slice, remainder;
+    CGRectDivideWithPadding(rect, &slice, &remainder, 40, 10, CGRectMinXEdge);
+
+    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
+    STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
+}
+
+- (void)testDivideWithPaddingNullSlice {
+    CGRect rect = CGRectMake(50, 50, 100, 100);
+
+    CGRect expectedRemainder = CGRectMake(90 + 10, 50, 50, 100);
+
+    CGRect remainder;
+    CGRectDivideWithPadding(rect, NULL, &remainder, 40, 10, CGRectMinXEdge);
+
+    STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
+}
+
+- (void)testDivideWithPaddingNullRemainder {
+    CGRect rect = CGRectMake(50, 50, 100, 100);
+
+    CGRect expectedSlice = CGRectMake(50, 50, 40, 100);
+
+    CGRect slice;
+    CGRectDivideWithPadding(rect, &slice, NULL, 40, 10, CGRectMinXEdge);
+
+    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
+}
+
+- (void)testDivideWithPaddingNoSpaceForRemainder {
+    CGRect rect = CGRectMake(50, 50, 100, 100);
+
+    CGRect expectedSlice = CGRectMake(50, 50, 95, 100);
+
+    CGRect slice, remainder;
+    CGRectDivideWithPadding(rect, &slice, &remainder, 95, 10, CGRectMinXEdge);
+
+    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
+    STAssertTrue(CGRectIsEmpty(remainder), @"%@ should be empty", NSStringFromRect(remainder));
+}
+
 - (void)testChop {
     CGRect rect = CGRectMake(100, 100, 100, 100);
 

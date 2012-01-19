@@ -8,7 +8,7 @@
 
 #import <AppKit/AppKit.h>
 
-/*
+/**
  * Chops the given amount off of a rectangle's edge, returning the remainder.
  *
  * If `amount` is greater than or equal to the size of the rectangle along the
@@ -20,7 +20,7 @@
  */
 CGRect CGRectChop (CGRect rect, CGFloat amount, CGRectEdge edge);
 
-/*
+/**
  * Adds the given amount to a rectangle's edge.
  *
  * @param rect The rectangle to grow.
@@ -31,20 +31,34 @@ CGRect CGRectChop (CGRect rect, CGFloat amount, CGRectEdge edge);
  */
 CGRect CGRectGrow (CGRect rect, CGFloat amount, CGRectEdge edge);
 
-/*
- * Returns the largest rectangle that is part of `rect` and not intersected by
- * `subtraction`.
+/**
+ * Divides a source rectangle into two component rectangles, determined by
+ * "cutting out" a region that intersects with another rectangle.
  *
- *  - If `rect` does not intersect `subtraction`, `rect` is returned without
- *  modification.
- *  - If `rect` is equal to `subtraction`, an empty rectangle is returned.
- *  - If `rect` is contained entirely within `subtraction`, `CGRectNull` is
- *  returned.
+ * This function will do the following:
  *
- * If the subtraction results in multiple rectangles of equal size, the
- * rectangle starting closest to `(0, 0)` is the one returned.
+ *  1. Determine the intersection of `rect` and `intersectingRect`.
+ *  2. If `rect` does not intersect `intersectingRect`, set `slice` to `rect`,
+ *  set `remainder` to `CGRectNull`, and return immediately.
+ *  3. _Starting from_ the given edge, cut `rect` until the start of the
+ *  intersection is reached. If the intersection starts outside of `rect`, set
+ *  `slice` to `CGRectNull`; otherwise, set `slice` to the cut region (which may
+ *  be of zero size along the cutting axis).
+ *  4. Starting from the given edge, skip the entire length of the intersection.
+ *  5. If the intersection ends outside of `rect`, set `remainder` to
+ *  `CGRectNull`; otherwise, set `remainder` to whatever region of `rect`
+ *  remains (which may be of zero size along the cutting axis).
  *
- * @param rect The rectangle to subtract from.
- * @param subtraction The rectangle to subtract.
+ * @param rect The rectangle to divide.
+ * @param slice Upon return, the portion of `rect` starting from `edge` and
+ * continuing until the intersection of `rect` and `intersectingRect`. This
+ * argument may be `NULL` to not return the slice.
+ * @param remainder Upon return, the portion of `rect` starting _after_ the
+ * intersection of `rect` and `intersectingRect`, and continuing until the end
+ * of `rect`. This argument may be `NULL` to not return the remainder.
+ * @param intersectingRect A rectangle to intersect with `rect` in order to
+ * determine where and how much to cut.
+ * @param edge The edge from which cutting begins, with cutting proceeding
+ * toward the opposite edge.
  */
-CGRect CGRectDifference (CGRect rect, CGRect subtraction);
+void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *remainder, CGRect intersectingRect, CGRectEdge edge);

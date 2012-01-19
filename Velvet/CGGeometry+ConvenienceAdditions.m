@@ -55,64 +55,111 @@ CGRect CGRectGrow (CGRect rect, CGFloat amount, CGRectEdge edge) {
     }
 }
 
-CGRect CGRectDifference (CGRect rect, CGRect subtraction) {
-    if (CGRectEqualToRect(rect, subtraction))
-        return CGRectZero;
+void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *remainder, CGRect intersectingRect, CGRectEdge edge) {
+    if (!CGRectIntersectsRect(rect, intersectingRect)) {
+        // always set these exact arguments, regardless of edge, since those are
+        // the semantics we defined in the interface
 
-    CGRect intersection = CGRectIntersection(rect, subtraction);
-    if (CGRectIsNull(intersection))
-        return rect;
+        if (slice)
+            *slice = rect;
 
-    if (CGRectEqualToRect(intersection, rect)) {
-        // the whole rectangle is contained in 'subtraction' (but not exactly
-        // equal)
-        return CGRectNull;
+        if (remainder)
+            *remainder = CGRectNull;
+
+        return;
     }
 
-    CGFloat minX = CGRectGetMinX(rect);
-    CGFloat minY = CGRectGetMinY(rect);
-    CGFloat maxX = CGRectGetMaxX(rect);
-    CGFloat maxY = CGRectGetMaxY(rect);
+    /*
+     * This function is symmetric, so we'll calculate everything using MinX/MinY
+     * logic, and then simply swap our output values before returning.
+     */
+    
+    // updated in the switch statement down below
+    __block BOOL wasMinEdge = YES;
 
-    // don't chop width-wise if the whole rectangle intersects on that axis --
-    // we already determined up above that the intersection won't cover our
-    // whole rectangle, so we should only subtract along the other axis
-    if (CGRectGetWidth(intersection) < CGRectGetWidth(rect)) {
-        CGFloat iminX = CGRectGetMinX(intersection);
-        CGFloat imaxX = CGRectGetMaxX(intersection);
-
-        // if the intersection was mostly on our right side...
-        if (iminX - minX >= maxX - imaxX) {
-            // chop off the right side
-            maxX = iminX;
+    void (^setSlice)(CGRect) = ^(CGRect rect){
+        if (wasMinEdge) {
+            if (slice)
+                *slice = rect;
         } else {
-            // chop off the left side
-            minX = imaxX;
+            if (remainder)
+                *remainder = rect;
         }
-    }
+    };
 
-    // don't chop height-wise if the whole rectangle intersects on that axis --
-    // we already determined up above that the intersection won't cover our
-    // whole rectangle, so we should only subtract along the other axis
-    if (CGRectGetHeight(intersection) < CGRectGetHeight(rect)) {
-        CGFloat iminY = CGRectGetMinY(intersection);
-        CGFloat imaxY = CGRectGetMaxY(intersection);
-
-        // if the intersection was mostly on our top side...
-        if (iminY - minY >= maxY - imaxY) {
-            // chop off the top side
-            maxY = iminY;
+    void (^setRemainder)(CGRect) = ^(CGRect rect){
+        if (wasMinEdge) {
+            if (remainder)
+                *remainder = rect;
         } else {
-            // chop off the bottom side
-            minY = imaxY;
+            if (slice)
+                *slice = rect;
         }
+    };
+
+    // distance from the start of rect to the start of the intersectingRect (may be
+    // negative)
+    CGFloat rectStartTointersectingRectStart;
+
+    // distance from the end of the intersectingRect to the end of the rect (may be
+    // negative)
+    CGFloat intersectingRectEndToRectEnd;
+
+    // length of the intersection along the cutting axis
+    CGFloat intersectionLength;
+
+    switch (edge) {
+        case CGRectMaxXEdge:
+            wasMinEdge = NO;
+            edge = CGRectMinXEdge;
+
+            // fall through
+
+        case CGRectMinXEdge:
+            rectStartTointersectingRectStart = CGRectGetMinX(intersectingRect) - CGRectGetMinX(rect);
+            intersectingRectEndToRectEnd = CGRectGetMaxX(rect) - CGRectGetMaxX(intersectingRect);
+            intersectionLength = fmin(CGRectGetWidth(intersectingRect), CGRectGetWidth(rect));
+            break;
+
+        case CGRectMaxYEdge:
+            wasMinEdge = NO;
+            edge = CGRectMinYEdge;
+
+            // fall through
+            
+        case CGRectMinYEdge:
+            rectStartTointersectingRectStart = CGRectGetMinY(intersectingRect) - CGRectGetMinY(rect);
+            intersectingRectEndToRectEnd = CGRectGetMaxY(rect) - CGRectGetMaxY(intersectingRect);
+            intersectionLength = fmin(CGRectGetHeight(intersectingRect), CGRectGetHeight(rect));
+            break;
+
+        default:
+            NSCAssert(NO, @"Unrecognized CGRectEdge %i", (int)edge);
     }
 
-    return CGRectMake(
-        minX,
-        minY,
-        maxX - minX,
-        maxY - minY
-    );
+    CGRect totalRemainder = rect;
+
+    if (rectStartTointersectingRectStart < 0) {
+        setSlice(CGRectNull);
+    } else {
+        CGRect slice;
+        CGRectDivide(totalRemainder, &slice, &totalRemainder, rectStartTointersectingRectStart, edge);
+
+        setSlice(slice);
+    }
+
+    if (intersectionLength) {
+        CGRect unusedSlice;
+        CGRectDivide(totalRemainder, &unusedSlice, &totalRemainder, intersectionLength, edge);
+    }
+
+    if (intersectingRectEndToRectEnd < 0) {
+        setRemainder(CGRectNull);
+    } else {
+        CGRect remainder;
+        CGRectDivide(totalRemainder, &remainder, &totalRemainder, intersectingRectEndToRectEnd, edge);
+
+        setRemainder(remainder);
+    }
 }
 

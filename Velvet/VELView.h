@@ -169,7 +169,7 @@ typedef enum {
      * Lay out the superview of any animating view after all properties have
      * been updated, but before committing or executing the animation.
      */
-    VELViewAnimationOptionLayoutSuperview = (2 << 0)
+    VELViewAnimationOptionLayoutSuperview = (1 << 1)
 } VELViewAnimationOptions;
 
 /**

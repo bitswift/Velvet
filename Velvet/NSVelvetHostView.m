@@ -52,6 +52,25 @@
     [self setWantsLayer:YES];
 }
 
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super encodeRestorableStateWithCoder:coder];
+
+    NSLog(@"%s: %@", __func__, coder);
+}
+
+- (void)restoreStateWithCoder:(NSCoder *)coder {
+    [super restoreStateWithCoder:coder];
+
+    NSLog(@"%s: %@", __func__, coder);
+}
+
+#if 0
++ (NSArray *)restorableStateKeyPaths {
+    NSLog(@"%s", __func__);
+    return [NSArray arrayWithObject:@"frame"];
+}
+#endif
+
 #pragma mark Rendering
 
 - (BOOL)needsDisplay {

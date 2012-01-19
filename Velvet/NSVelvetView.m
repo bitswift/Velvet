@@ -509,6 +509,8 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
+    [self invalidateRestorableState];
+
     id<VELDraggingDestination> view = self.lastDraggingDestination;
 
     if ([view respondsToSelector:@selector(performDragOperation:)]) {
@@ -566,11 +568,15 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
     [super encodeRestorableStateWithCoder:coder];
+    
+    NSLog(@"%s: %@", __func__, coder);
     [self.guestView encodeRestorableStateWithCoder:coder];
 }
 
 - (void)restoreStateWithCoder:(NSCoder *)coder {
     [super restoreStateWithCoder:coder];
+    
+    NSLog(@"%s: %@", __func__, coder);
     [self.guestView restoreStateWithCoder:coder];
 }
 

@@ -1191,5 +1191,19 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 }
 
+#pragma mark Restoration
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super encodeRestorableStateWithCoder:coder];
+    [self.viewController encodeRestorableStateWithCoder:coder];
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:coder];
+}
+
+- (void)restoreStateWithCoder:(NSCoder *)coder {
+    [super restoreStateWithCoder:coder];
+    [self.viewController restoreStateWithCoder:coder];
+    [self.subviews makeObjectsPerformSelector:_cmd withObject:coder];
+
+}
 
 @end

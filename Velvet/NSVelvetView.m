@@ -278,7 +278,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         // NSVelvetView.layer is being laid out
         return;
     }
-    
+
     // appKitHostView.layer is being laid out
     //
     // this often happens in response to AppKit adding a focus ring layer, so
@@ -560,6 +560,18 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     // message onto all subviews and our guestView, doing so could result in
     // crazy behavior, since the NSVelvetView of those views is and will remain
     // 'self' by definition
+}
+
+#pragma mark Restoration
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super encodeRestorableStateWithCoder:coder];
+    [self.guestView encodeRestorableStateWithCoder:coder];
+}
+
+- (void)restoreStateWithCoder:(NSCoder *)coder {
+    [super restoreStateWithCoder:coder];
+    [self.guestView restoreStateWithCoder:coder];
 }
 
 @end

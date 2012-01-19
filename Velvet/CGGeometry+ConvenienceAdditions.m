@@ -75,7 +75,7 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
      */
     
     // updated in the switch statement down below
-    __block BOOL wasMinEdge = YES;
+    BOOL wasMinEdge = (edge == CGRectMinXEdge || edge == CGRectMinYEdge);
 
     void (^setSlice)(CGRect) = ^(CGRect rect){
         if (wasMinEdge) {
@@ -110,7 +110,6 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
 
     switch (edge) {
         case CGRectMaxXEdge:
-            wasMinEdge = NO;
             edge = CGRectMinXEdge;
 
             // fall through
@@ -122,7 +121,6 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
             break;
 
         case CGRectMaxYEdge:
-            wasMinEdge = NO;
             edge = CGRectMinYEdge;
 
             // fall through

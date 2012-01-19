@@ -524,6 +524,33 @@
     STAssertFalse(undoManager.canUndo, @"");
 }
 
+- (void)testAnimationWithLayoutSubviewsOption {
+    TestView *view = [[TestView alloc] init];
+
+    [VELView animateWithDuration:0 options:VELViewAnimationOptionLayoutSubviews animations:^{
+        STAssertFalse(view.layoutSubviewsInvoked, @"");
+
+        view.backgroundColor = [NSColor blueColor];
+    }];
+
+    STAssertTrue(view.layoutSubviewsInvoked, @"");
+}
+
+- (void)testAnimationWithLayoutSuperviewOption {
+    TestView *superview = [[TestView alloc] init];
+
+    VELView *view = [[VELView alloc] init];
+    [superview addSubview:view];
+
+    [VELView animateWithDuration:0 options:VELViewAnimationOptionLayoutSuperview animations:^{
+        STAssertFalse(superview.layoutSubviewsInvoked, @"");
+
+        view.backgroundColor = [NSColor blueColor];
+    }];
+
+    STAssertTrue(superview.layoutSubviewsInvoked, @"");
+}
+
 @end
 
 @implementation TestView

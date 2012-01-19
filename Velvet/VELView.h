@@ -689,14 +689,6 @@ typedef enum {
 + (void)animateWithDuration:(NSTimeInterval)duration options:(VELViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(void))completionBlock;
 
 /**
- * Whether changes are currently being added to an animation.
- *
- * This is not whether an animation is currently in progress, but whether the
- * calling code is running from an animation block.
- */
-+ (BOOL)isAnimating;
-
-/**
  * @name Core Animation Layer
  */
 

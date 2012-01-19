@@ -116,6 +116,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
  */
 - (void)changeLayerProperties:(void (^)(void))changesBlock;
 
+/**
+ * Whether changes are currently being added to an animation.
+ *
+ * This is not whether an animation is currently in progress, but whether the
+ * calling code is running from an animation block.
+ */
++ (BOOL)isDefiningAnimation;
+
 /*
  * Whether this view class does its own drawing, as determined by the
  * implementation of a <drawRect:> method.
@@ -1118,7 +1126,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)changeLayerProperties:(void (^)(void))changesBlock; {
-    if (![[self class] isAnimating]) {
+    if (![[self class] isDefiningAnimation]) {
         [CATransaction performWithDisabledActions:changesBlock];
         return;
     }
@@ -1142,7 +1150,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 }
 
-+ (BOOL)isAnimating; {
++ (BOOL)isDefiningAnimation; {
     return VELViewCurrentAnimationBlockDepth > 0;
 }
 

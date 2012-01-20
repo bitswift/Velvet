@@ -6,9 +6,9 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELEventManager.h>
-#import <Velvet/NSWindow+EventHandlingAdditions.h>
-#import <Velvet/VELView.h>
+#import "VELEventManager.h"
+#import "NSWindow+EventHandlingAdditions.h"
+#import "VELView.h"
 #import "EXTScope.h"
 
 @interface VELEventManager ()

@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
+#import "CGBitmapContext+PixelFormatAdditions.h"
 
 CGContextRef CGBitmapContextCreateGeneric(CGSize size, BOOL hasAlpha) {
     size_t width = (size_t)ceil(size.width);

@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/CATransaction+BlockAdditions.h>
+#import "CATransaction+BlockAdditions.h"
 #import "EXTSafeCategory.h"
 
 @safecategory (CATransaction, BlockAdditions)

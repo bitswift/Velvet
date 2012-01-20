@@ -197,11 +197,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         return nil;
 
     [self setUp];
-
-    self.guestView = [[VELView alloc] init];
-
-    [self recalculateNSViewClipping];
-
     return self;
 }
 
@@ -230,6 +225,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
     // setting this up should create a proxy for self.appKitHostView as well
     m_selfLayerDelegateProxy = [VELNSViewLayerDelegateProxy layerDelegateProxyWithLayer:self.layer];
+
+    self.guestView = [[VELView alloc] init];
+
+    [self recalculateNSViewClipping];
 }
 
 - (void)dealloc {
@@ -586,10 +585,8 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [super restoreStateWithCoder:coder];
 
     VELView *guestView = [coder decodeObjectForKey:@"guestView"];
-
     if (guestView)
         self.guestView = guestView;
-    [self recalculateNSViewClipping];
 }
 
 @end

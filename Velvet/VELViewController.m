@@ -97,4 +97,22 @@
     return YES;
 }
 
+#pragma mark NSCoding
+
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    if (!self)
+        return nil;
+
+    self.view = [coder decodeObjectForKey:@"view"];
+
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [super encodeWithCoder:coder];
+
+    [coder encodeObject:self.view forKey:@"view"];
+}
+
 @end

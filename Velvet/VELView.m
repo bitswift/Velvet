@@ -1350,6 +1350,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (NSArray *)encodableProperties {
     return [NSArray arrayWithObjects:
+        @"viewController",
         @"frame",
         @"bounds",
         @"center",

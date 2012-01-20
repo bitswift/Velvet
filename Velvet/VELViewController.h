@@ -16,7 +16,7 @@
  *
  * A view controller is the next responder for its view. A view controller's
  * next responder is set as follows:
- * 
+ *
  *  1. If the <view> has a <[VELView superview]>, the superview is the next
  *  responder.
  *  2. If the <view> has a <[VELView hostView]>, the host view is the next
@@ -26,7 +26,7 @@
  * Upon deallocation, a `VELViewController` instance automatically removes undo
  * actions targeting itself from any `-[NSResponder undoManager]`.
  */
-@interface VELViewController : NSResponder
+@interface VELViewController : NSResponder <NSCoding>
 
 /**
  * Managing the View

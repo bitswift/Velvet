@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import <Velvet/NSWindow+InitializationAdditions.h>
+#import "NSWindow+InitializationAdditions.h"
 #import "EXTSafeCategory.h"
 
 @safecategory (NSWindow, InitializationAdditions)

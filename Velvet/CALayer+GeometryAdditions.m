@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/CALayer+GeometryAdditions.h>
+#import "CALayer+GeometryAdditions.h"
 #import "EXTSafeCategory.h"
 
 static CGRect convertAndClipRectFromSuperlayers (CGRect rect, CALayer *layer);

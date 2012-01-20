@@ -6,9 +6,9 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELViewController.h>
-#import <Velvet/VELView.h>
-#import <Velvet/VELViewPrivate.h>
+#import "VELViewController.h"
+#import "VELView.h"
+#import "VELViewPrivate.h"
 
 @interface VELViewController ()
 @property (nonatomic, strong, readwrite) VELView *view;

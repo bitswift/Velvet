@@ -6,8 +6,8 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/NSVelvetView.h>
+#import "NSView+VELBridgedViewAdditions.h"
+#import "NSVelvetView.h"
 #import <objc/runtime.h>
 #import "EXTSafeCategory.h"
 

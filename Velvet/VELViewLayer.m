@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELViewLayer.h>
-#import <Velvet/VELView.h>
+#import "VELViewLayer.h"
+#import "VELView.h"
 
 @interface VELViewLayer ()
 /*

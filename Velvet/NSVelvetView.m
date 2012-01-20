@@ -6,18 +6,18 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/NSVelvetView.h>
+#import "NSVelvetView.h"
 #import <QuartzCore/QuartzCore.h>
-#import <Velvet/CALayer+GeometryAdditions.h>
-#import <Velvet/CATransaction+BlockAdditions.h>
-#import <Velvet/NSVelvetHostView.h>
-#import <Velvet/NSVelvetViewPrivate.h>
-#import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/VELNSView.h>
-#import <Velvet/VELNSViewLayerDelegateProxy.h>
-#import <Velvet/VELNSViewPrivate.h>
-#import <Velvet/VELView.h>
-#import <Velvet/VELViewPrivate.h>
+#import "CALayer+GeometryAdditions.h"
+#import "CATransaction+BlockAdditions.h"
+#import "NSVelvetHostView.h"
+#import "NSVelvetViewPrivate.h"
+#import "NSView+VELBridgedViewAdditions.h"
+#import "VELNSView.h"
+#import "VELNSViewLayerDelegateProxy.h"
+#import "VELNSViewPrivate.h"
+#import "VELView.h"
+#import "VELViewPrivate.h"
 #import <objc/runtime.h>
 #import "EXTScope.h"
 

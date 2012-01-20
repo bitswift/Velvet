@@ -6,15 +6,15 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELNSView.h>
+#import "VELNSView.h"
 #import <QuartzCore/QuartzCore.h>
-#import <Velvet/CATransaction+BlockAdditions.h>
-#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
-#import <Velvet/NSVelvetView.h>
-#import <Velvet/NSVelvetViewPrivate.h>
-#import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/VELNSViewLayerDelegateProxy.h>
-#import <Velvet/VELNSViewPrivate.h>
+#import "CATransaction+BlockAdditions.h"
+#import "CGBitmapContext+PixelFormatAdditions.h"
+#import "NSVelvetView.h"
+#import "NSVelvetViewPrivate.h"
+#import "NSView+VELBridgedViewAdditions.h"
+#import "VELNSViewLayerDelegateProxy.h"
+#import "VELNSViewPrivate.h"
 #import "EXTScope.h"
 
 @interface VELNSView ()

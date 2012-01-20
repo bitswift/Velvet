@@ -112,8 +112,6 @@
 }
 
 - (void)encodeWithCoder:(NSCoder *)coder {
-    [super encodeWithCoder:coder];
-
     [coder encodeObject:self.view forKey:@"view"];
 }
 

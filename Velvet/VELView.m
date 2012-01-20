@@ -201,6 +201,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
     m_flags.userInteractionEnabled = userInteractionEnabled;
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (BOOL)clearsContextBeforeDrawing {
@@ -209,6 +211,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setClearsContextBeforeDrawing:(BOOL)clearsContext {
     m_flags.clearsContextBeforeDrawing = clearsContext;
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (BOOL)alignsToIntegralPixels {
@@ -217,6 +221,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setAlignsToIntegralPixels:(BOOL)aligns {
     m_flags.alignsToIntegralPixels = aligns;
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (BOOL)isReplacingSubviews {
@@ -235,6 +240,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self changeLayerProperties:^{
         self.layer.masksToBounds = clipsToBounds;
     }];
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 // For geometry properties, it makes sense to reuse the layer's geometry,
@@ -262,6 +269,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     } else {
         [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
     }
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (CGRect)bounds {
@@ -283,6 +292,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
         [self.layer setNeedsLayout];
         [self.layer layoutIfNeeded];
     }
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (CGPoint)center {
@@ -312,6 +323,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }];
 
     [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (VELViewAutoresizingMask)autoresizingMask {
@@ -320,6 +332,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setAutoresizingMask:(VELViewAutoresizingMask)autoresizingMask {
     self.layer.autoresizingMask = autoresizingMask;
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (CGAffineTransform)transform {
@@ -344,6 +357,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self changeLayerProperties:^{
         self.layer.opacity = (float)alpha;
     }];
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (BOOL)isHidden {
@@ -354,6 +369,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self changeLayerProperties:^{
         self.layer.hidden = hidden;
     }];
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (void)setSubviews:(NSArray *)newSubviews {
@@ -390,6 +407,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     for (VELView *view in oldSubviews) {
         [view removeFromSuperview];
     }
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (id<VELHostView>)hostView {
@@ -440,6 +459,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self changeLayerProperties:^{
         self.layer.backgroundColor = color.CGColor;
     }];
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (BOOL)isOpaque {
@@ -448,6 +469,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setOpaque:(BOOL)opaque {
     self.layer.opaque = opaque;
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (VELViewContentMode)contentMode {
@@ -552,6 +575,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 
     self.layer.needsDisplayOnBoundsChange = NO;
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (CGRect)contentStretch {
@@ -562,6 +587,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self changeLayerProperties:^{
         self.layer.contentsCenter = stretch;
     }];
+
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 - (NSWindow *)window {
@@ -579,6 +606,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     m_viewController = controller;
 
     [self updateViewAndViewControllerNextResponders];
+    [[self ancestorNSVelvetView] invalidateRestorableState];
 }
 
 #pragma mark Layer handling
@@ -1330,7 +1358,12 @@ static BOOL VELViewPerformingDeepLayout = NO;
         id value = [self valueForKeyPath:keyPath];
         if (!value)
             continue;
-
+        
+        if ([keyPath isEqualToString:@"viewController"]) {
+            [coder encodeConditionalObject:value forKey:keyPath];
+            continue;
+        }
+        
         [coder encodeObject:value forKey:keyPath];
     }
 

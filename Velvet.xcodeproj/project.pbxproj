@@ -7,14 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0DCD37C6147DB86200A9D6E4 /* NSVelvetHostView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DCD37C4147DB86200A9D6E4 /* NSVelvetHostView.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		0DCD37C7147DB86200A9D6E4 /* NSVelvetHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DCD37C5147DB86200A9D6E4 /* NSVelvetHostView.m */; };
 		0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DEDDD3D147B5D5C0087037C /* VELWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0DEDDD40147B5D5C0087037C /* VELWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DEDDD3E147B5D5C0087037C /* VELWindow.m */; };
 		1A5FCCFA1496B61A00BB49F3 /* VELNSViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A5FCCF91496B61A00BB49F3 /* VELNSViewTests.m */; };
-		1E2819481481EAEF006A747C /* VELCAAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819451481EAEF006A747C /* VELCAAction.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1E2819491481EAEF006A747C /* VELCAAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E2819461481EAEF006A747C /* VELCAAction.m */; };
-		1E28194A1481EAEF006A747C /* VELNSViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E2819471481EAEF006A747C /* VELNSViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		1E2819521481EB14006A747C /* CALayer+GeometryAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E28194C1481EB14006A747C /* CALayer+GeometryAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E2819531481EB14006A747C /* CALayer+GeometryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E28194D1481EB14006A747C /* CALayer+GeometryAdditions.m */; };
 		1E2819541481EB14006A747C /* CATransaction+BlockAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E28194E1481EB14006A747C /* CATransaction+BlockAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -26,8 +23,6 @@
 		1E7BBD41147B157C0010375D /* VELLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7BBD3F147B157B0010375D /* VELLabel.m */; };
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
 		1EA3D71014B37F4A0007E4C4 /* NSVelvetHostViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */; };
-		D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D0150FE914790A1700126F09 /* VELViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D01B962E14C1956100CBDD8E /* VELViewLayer.h in Headers */ = {isa = PBXBuildFile; fileRef = D01B962C14C1956100CBDD8E /* VELViewLayer.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D01B962F14C1956100CBDD8E /* VELViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D01B962D14C1956100CBDD8E /* VELViewLayer.m */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
@@ -37,16 +32,13 @@
 		D020F49714C3972E00C466E1 /* NSWindowAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */; };
 		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
-		D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D03FD8A614C39D760062B7A3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
 		D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D05DC49B14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */; };
 		D0682AAF14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0682AB014C77307001CA434 /* CGGeometry+ConvenienceAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */; };
 		D0682AB414C773EF001CA434 /* CGGeometryAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */; };
-		D06EF03B14B39CFA0035E239 /* VELEventManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D06EF03914B39CFA0035E239 /* VELEventManager.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D06EF03C14B39CFA0035E239 /* VELEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D06EF03A14B39CFA0035E239 /* VELEventManager.m */; };
-		D06EF03F14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D06EF04014B3A0590035E239 /* NSWindow+EventHandlingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D06EF03E14B3A0590035E239 /* NSWindow+EventHandlingAdditions.m */; };
 		D07B72A514C4FC5500AA19DD /* VELControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D07B72A414C4FC5500AA19DD /* VELControlTests.m */; };
 		D08719E614A30AA700F304BC /* VELViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D08719E414A30AA700F304BC /* VELViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -58,7 +50,6 @@
 		D0A96C0614B7AE8B00A64F6F /* AppKit+GeometryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A96C0414B7AE8B00A64F6F /* AppKit+GeometryAdditions.m */; };
 		D0A96C0D14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */; };
 		D0B23AF91491872B009CF46A /* VELImageViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B23AF81491872B009CF46A /* VELImageViewTests.m */; };
-		D0B2E4F414C41A4600812B76 /* VELNSViewLayerDelegateProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = D0B2E4F214C41A4600812B76 /* VELNSViewLayerDelegateProxy.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0B2E4F514C41A4600812B76 /* VELNSViewLayerDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */; };
 		D0B75C68149188FD005C81D5 /* testimage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0B75C67149188FD005C81D5 /* testimage.jpg */; };
 		D0B75C6F14918EB9005C81D5 /* VELViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B75C6E14918EB9005C81D5 /* VELViewTests.m */; };
@@ -84,12 +75,8 @@
 		D0EFFC1F147851A80095AB35 /* Velvet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC01147851A80095AB35 /* Velvet.framework */; };
 		D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC23147851A80095AB35 /* InfoPlist.strings */; };
 		D0F5BFCA14BF6BE000C66839 /* VELHostView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F5BFC914BF6BE000C66839 /* VELHostView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D0F5CD9314C57C4600966B2D /* metamacros.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F5CD8414C57C4600966B2D /* metamacros.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		D0F5CD9414C57C4600966B2D /* EXTRuntimeExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F5CD8614C57C4600966B2D /* EXTRuntimeExtensions.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0F5CD9514C57C4600966B2D /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F5CD8714C57C4600966B2D /* EXTRuntimeExtensions.m */; };
-		D0F5CD9614C57C4600966B2D /* EXTSafeCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F5CD8814C57C4600966B2D /* EXTSafeCategory.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0F5CD9714C57C4600966B2D /* EXTSafeCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F5CD8914C57C4600966B2D /* EXTSafeCategory.m */; };
-		D0F5CD9814C57C4600966B2D /* EXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F5CD8A14C57C4600966B2D /* EXTScope.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D0F5CD9914C57C4600966B2D /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F5CD8B14C57C4600966B2D /* EXTScope.m */; };
 		D0F5CDA014C57C7E00966B2D /* EXTRuntimeExtensionsTest.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F5CD8E14C57C4600966B2D /* EXTRuntimeExtensionsTest.m */; };
 		D0F5CDA114C57C7E00966B2D /* EXTSafeCategoryTest.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F5CD9014C57C4600966B2D /* EXTSafeCategoryTest.m */; };
@@ -591,36 +578,23 @@
 				D0D8C39B1478569600FC9015 /* Velvet.h in Headers */,
 				D0D8C39F1478582C00FC9015 /* NSVelvetView.h in Headers */,
 				D0D8C3AA14785A1300FC9015 /* VELView.h in Headers */,
-				D0150FEA14790A1700126F09 /* VELViewPrivate.h in Headers */,
 				D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */,
 				1E7BBD40147B157C0010375D /* VELLabel.h in Headers */,
 				0DEDDD3F147B5D5C0087037C /* VELWindow.h in Headers */,
 				D0CACD35147C86C0008C42B2 /* VELBridgedView.h in Headers */,
 				D0911B1D147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h in Headers */,
-				0DCD37C6147DB86200A9D6E4 /* NSVelvetHostView.h in Headers */,
-				1E2819481481EAEF006A747C /* VELCAAction.h in Headers */,
-				1E28194A1481EAEF006A747C /* VELNSViewPrivate.h in Headers */,
 				1E2819521481EB14006A747C /* CALayer+GeometryAdditions.h in Headers */,
 				1E2819541481EB14006A747C /* CATransaction+BlockAdditions.h in Headers */,
 				1E2819561481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h in Headers */,
-				D03E64521482717E00E99AA2 /* NSVelvetViewPrivate.h in Headers */,
 				D0E8B35414831419003980B4 /* VELImageView.h in Headers */,
 				D0305D7A1486FC960081D6EA /* VELControl.h in Headers */,
 				D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */,
 				D0D51D0A14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h in Headers */,
 				D08719E614A30AA700F304BC /* VELViewController.h in Headers */,
-				D06EF03B14B39CFA0035E239 /* VELEventManager.h in Headers */,
-				D06EF03F14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h in Headers */,
 				D0A96C0514B7AE8B00A64F6F /* AppKit+GeometryAdditions.h in Headers */,
 				D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */,
 				D0F5BFCA14BF6BE000C66839 /* VELHostView.h in Headers */,
-				D01B962E14C1956100CBDD8E /* VELViewLayer.h in Headers */,
-				D0B2E4F414C41A4600812B76 /* VELNSViewLayerDelegateProxy.h in Headers */,
 				D020F49314C3959500C466E1 /* NSWindow+InitializationAdditions.h in Headers */,
-				D0F5CD9314C57C4600966B2D /* metamacros.h in Headers */,
-				D0F5CD9414C57C4600966B2D /* EXTRuntimeExtensions.h in Headers */,
-				D0F5CD9614C57C4600966B2D /* EXTSafeCategory.h in Headers */,
-				D0F5CD9814C57C4600966B2D /* EXTScope.h in Headers */,
 				D0682AAF14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

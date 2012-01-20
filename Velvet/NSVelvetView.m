@@ -586,8 +586,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [super restoreStateWithCoder:coder];
 
     VELView *guestView = [coder decodeObjectForKey:@"guestView"];
-    if (guestView)
+    if (guestView) {
+        self.guestView.subviews = nil;
         self.guestView = guestView;
+        [self recalculateNSViewClipping];
+    }
+
 }
 
 @end

@@ -52,6 +52,8 @@
 
     if (!view)
         [self viewDidUnload];
+
+    [self invalidateRestorableState];
 }
 
 #pragma mark Lifecycle

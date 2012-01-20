@@ -6,12 +6,12 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import <Velvet/NSWindow+EventHandlingAdditions.h>
-#import <Velvet/NSVelvetView.h>
-#import <Velvet/NSVelvetViewPrivate.h>
-#import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/VELNSView.h>
-#import <Velvet/VELView.h>
+#import "NSWindow+EventHandlingAdditions.h"
+#import "NSVelvetView.h"
+#import "NSVelvetViewPrivate.h"
+#import "NSView+VELBridgedViewAdditions.h"
+#import "VELNSView.h"
+#import "VELView.h"
 #import "EXTSafeCategory.h"
 
 @safecategory (NSWindow, EventHandlingAdditions)

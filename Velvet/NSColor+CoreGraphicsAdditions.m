@@ -6,8 +6,8 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/NSColor+CoreGraphicsAdditions.h>
-#import <Velvet/NSImage+CoreGraphicsAdditions.h>
+#import "NSColor+CoreGraphicsAdditions.h"
+#import "NSImage+CoreGraphicsAdditions.h"
 #import "EXTSafeCategory.h"
 
 static void drawCGImagePattern (void *info, CGContextRef context) {

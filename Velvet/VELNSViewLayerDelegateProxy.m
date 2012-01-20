@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELNSViewLayerDelegateProxy.h>
+#import "VELNSViewLayerDelegateProxy.h"
 
 @interface VELNSViewLayerDelegateProxy () {
     /*

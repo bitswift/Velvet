@@ -634,6 +634,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     for (VELView *view in self.subviews) {
         if (view.nextResponder == self)
             view.nextResponder = nil;
+        else if (view.viewController.nextResponder == self)
+            view.viewController.nextResponder = nil;
     }
 }
 

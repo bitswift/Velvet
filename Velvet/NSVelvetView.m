@@ -176,6 +176,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
             [self.velvetHostView.layer addSublayer:m_guestView.layer];
             m_guestView.hostView = self;
+            [self invalidateRestorableState];
         }
     }];
 }

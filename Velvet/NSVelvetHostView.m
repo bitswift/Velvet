@@ -6,8 +6,8 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/NSVelvetHostView.h>
-#import <Velvet/NSVelvetView.h>
+#import "NSVelvetHostView.h"
+#import "NSVelvetView.h"
 
 @interface NSVelvetHostView ()
 /*

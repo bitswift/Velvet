@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/NSImage+CoreGraphicsAdditions.h>
+#import "NSImage+CoreGraphicsAdditions.h"
 #import "EXTSafeCategory.h"
 
 @safecategory (NSImage, CoreGraphicsAdditions)

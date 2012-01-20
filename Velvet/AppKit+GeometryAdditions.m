@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import <Velvet/AppKit+GeometryAdditions.h>
+#import "AppKit+GeometryAdditions.h"
 
 BOOL NSEqualEdgeInsets (NSEdgeInsets a, NSEdgeInsets b) {
     const CGFloat tolerance = 0.001;

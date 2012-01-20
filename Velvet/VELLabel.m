@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELLabel.h>
+#import "VELLabel.h"
 #import "EXTScope.h"
 
 static const CGFloat VELLabelPadding = 2.0f;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELImageView.h>
+#import "VELImageView.h"
 
 @implementation VELImageView
 

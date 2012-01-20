@@ -6,21 +6,21 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELView.h>
-#import <Velvet/CALayer+GeometryAdditions.h>
-#import <Velvet/CATransaction+BlockAdditions.h>
-#import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
-#import <Velvet/NSColor+CoreGraphicsAdditions.h>
-#import <Velvet/NSVelvetView.h>
-#import <Velvet/NSVelvetViewPrivate.h>
-#import <Velvet/NSView+VELBridgedViewAdditions.h>
-#import <Velvet/VELCAAction.h>
-#import <Velvet/VELDraggingDestination.h>
-#import <Velvet/VELHostView.h>
-#import <Velvet/VELNSViewPrivate.h>
-#import <Velvet/VELViewController.h>
-#import <Velvet/VELViewLayer.h>
-#import <Velvet/VELViewPrivate.h>
+#import "VELView.h"
+#import "CALayer+GeometryAdditions.h"
+#import "CATransaction+BlockAdditions.h"
+#import "CGBitmapContext+PixelFormatAdditions.h"
+#import "NSColor+CoreGraphicsAdditions.h"
+#import "NSVelvetView.h"
+#import "NSVelvetViewPrivate.h"
+#import "NSView+VELBridgedViewAdditions.h"
+#import "VELCAAction.h"
+#import "VELDraggingDestination.h"
+#import "VELHostView.h"
+#import "VELNSViewPrivate.h"
+#import "VELViewController.h"
+#import "VELViewLayer.h"
+#import "VELViewPrivate.h"
 #import <objc/runtime.h>
 #import "EXTScope.h"
 

@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import <Velvet/CGGeometry+ConvenienceAdditions.h>
+#import "CGGeometry+ConvenienceAdditions.h"
 
 CGRect CGRectChop (CGRect rect, CGFloat amount, CGRectEdge edge) {
     CGRect slice, remainder;

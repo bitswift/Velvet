@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELControl.h>
+#import "VELControl.h"
 
 typedef void (^VELControlActionBlock)(NSEvent *);
 

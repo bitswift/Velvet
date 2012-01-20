@@ -6,10 +6,10 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import <Velvet/VELCAAction.h>
-#import <Velvet/VELView.h>
-#import <Velvet/VELNSViewPrivate.h>
-#import <Velvet/CATransaction+BlockAdditions.h>
+#import "VELCAAction.h"
+#import "VELView.h"
+#import "VELNSViewPrivate.h"
+#import "CATransaction+BlockAdditions.h"
 #import <objc/runtime.h>
 
 @interface VELCAAction ()

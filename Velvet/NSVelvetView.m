@@ -569,6 +569,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
     [super encodeRestorableStateWithCoder:coder];
+    
+    [coder encodeObject:self.velvetHostView forKey:@"velvetHostView"];
+    [coder encodeObject:self.appKitHostView forKey:@"appKitHostView"];
 
     // Clear out the archiver's delegate
     // and keep a reference to it so we can archive the guestView
@@ -576,6 +579,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     NSKeyedArchiver *archiver = (id)coder;
     id delegate = [archiver delegate];
     [archiver setDelegate:nil];
+
 
     [coder encodeObject:self.guestView forKey:@"guestView"];
 
@@ -585,7 +589,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)restoreStateWithCoder:(NSCoder *)coder {
     [super restoreStateWithCoder:coder];
 
+    m_velvetHostView = [coder decodeObjectForKey:@"velvetHostView"];
+    m_appKitHostView = [coder decodeObjectForKey:@"appKitHostView"];
     VELView *guestView = [coder decodeObjectForKey:@"guestView"];
+    
     if (guestView) {
         self.guestView.subviews = nil;
         self.guestView = guestView;

@@ -11,18 +11,13 @@
 #import "VELViewPrivate.h"
 
 @interface VELViewLayer ()
-/*
- * The view that this layer is backing.
- */
-@property (nonatomic, weak, readonly) VELView *view;
-
-/*
+/**
  * How many fractions of a point belong in the X coordinate of the receiver's
  * `position`, but have been rounded off to keep the receiver on whole points.
  */
 @property (nonatomic, assign) CGFloat roundoffErrorX;
 
-/*
+/**
  * How many fractions of a point belong in the Y coordinate of the receiver's
  * `position`, but have been rounded off to keep the receiver on whole points.
  */

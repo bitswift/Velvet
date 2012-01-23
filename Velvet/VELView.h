@@ -178,7 +178,7 @@ typedef enum {
  *
  * If a view has a view controller, the view's next responder is the view
  * controller. Otherwise, the next responder is set as follows:
- * 
+ *
  *  1. If the view has a <superview>, the superview is the next responder.
  *  2. If the view has a <hostView>, the host view is the next responder.
  *  3. Otherwise, there is no next responder.
@@ -577,6 +577,7 @@ typedef enum {
 /**
  * Defines which portions of the receiver's content are stretchable.
  *
+ * 
  * This controls how a view's content is stretched to fill its bounds, such as
  * during an animation, or if the <contentMode> is
  * `VELViewContentModeScaleToFill`.

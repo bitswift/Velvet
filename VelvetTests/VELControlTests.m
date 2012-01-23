@@ -39,22 +39,6 @@
     }];
 }
 
-- (void)testSelectionEvents {
-    VELControl *control = [[VELControl alloc] init];
-
-    [self verifyControl:control invokesActionForEvent:VELControlEventSelected usingBlock:^{
-        control.selected = YES;
-    }];
-
-    STAssertTrue(control.selected, @"");
-
-    [self verifyControl:control invokesActionForEvent:VELControlEventDeselected usingBlock:^{
-        control.selected = NO;
-    }];
-
-    STAssertFalse(control.selected, @"");
-}
-
 - (void)verifyControl:(VELControl *)control invokesActionForEvent:(VELControlEventMask)event usingBlock:(void (^)(void))block {
     __block BOOL handlerInvoked = NO;
     

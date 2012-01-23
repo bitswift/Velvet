@@ -144,6 +144,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
  * controller.
  */
 - (void)updateViewAndViewControllerNextResponders;
+
 @end
 
 @implementation VELView
@@ -237,11 +238,11 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
     CGSize originalSize = self.layer.frame.size;
     CGSize newSize = frame.size;
-    
+
     [self changeLayerProperties:^{
         self.layer.frame = frame;
     }];
-    
+
     if (!CGSizeEqualToSize(originalSize, newSize)) {
         [self.layer setNeedsLayout];
         [self.layer layoutIfNeeded];
@@ -260,11 +261,11 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 
     BOOL needsLayout = !CGRectEqualToRect(bounds, self.layer.bounds);
-    
+
     [self changeLayerProperties:^{
         self.layer.bounds = bounds;
     }];
-    
+
     if (needsLayout) {
         [self.layer setNeedsLayout];
         [self.layer layoutIfNeeded];
@@ -401,7 +402,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
         if (oldWindow != newWindow)
             [self willMoveToWindow:newWindow];
-        
+
         if (oldVelvetView != newVelvetView)
             [self willMoveToNSVelvetView:newVelvetView];
 
@@ -937,7 +938,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
     NSAssert(self.window, @"%@ window is nil!",self);
-    
+
     NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGPoint hostPoint = [self.layer convertPoint:point toLayer:hostView.layer];
 
@@ -946,7 +947,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (CGPoint)convertFromWindowPoint:(CGPoint)point {
     NSAssert(self.window, @"%@ window is nil!",self);
-    
+
     NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGPoint hostPoint = [hostView convertFromWindowPoint:point];
 
@@ -955,7 +956,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (CGRect)convertToWindowRect:(CGRect)rect {
     NSAssert(self.window, @"%@ window is nil!",self);
-    
+
     NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGRect hostRect = [self.layer convertRect:rect toLayer:hostView.layer];
 
@@ -964,7 +965,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (CGRect)convertFromWindowRect:(CGRect)rect {
     NSAssert(self.window, @"%@ window is nil!",self);
-    
+
     NSVelvetView *hostView = self.ancestorNSVelvetView;
     CGRect hostRect = [hostView convertFromWindowRect:rect];
 
@@ -1275,5 +1276,13 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 }
 
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super encodeRestorableStateWithCoder:coder];
+    [self.subviews makeObjectsPerformSelector:@selector(encodeRestorableStateWithCoder:) withObject:coder];
+}
 
+- (void)restoreStateWithCoder:(NSCoder *)coder {
+    [super restoreStateWithCoder:coder];
+    [self.subviews makeObjectsPerformSelector:@selector(restoreStateWithCoder:) withObject:coder];
+}
 @end

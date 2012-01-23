@@ -281,7 +281,7 @@
 			name = Layers;
 			sourceTree = "<group>";
 		};
-		D01CF3AD1479A6A100C88D2B /* AppKit Bridging */ = {
+		D01CF3AD1479A6A100C88D2B /* AppKit Bridge */ = {
 			isa = PBXGroup;
 			children = (
 				0DCD37C4147DB86200A9D6E4 /* NSVelvetHostView.h */,
@@ -291,28 +291,13 @@
 				D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */,
 				1E2819451481EAEF006A747C /* VELCAAction.h */,
 				1E2819461481EAEF006A747C /* VELCAAction.m */,
-				D06EF03914B39CFA0035E239 /* VELEventManager.h */,
-				D06EF03A14B39CFA0035E239 /* VELEventManager.m */,
-				D01CF3D21479B18400C88D2B /* VELNSView.h */,
-				D01CF3D31479B18400C88D2B /* VELNSView.m */,
 				D0B2E4F214C41A4600812B76 /* VELNSViewLayerDelegateProxy.h */,
 				D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */,
-				1E2819471481EAEF006A747C /* VELNSViewPrivate.h */,
 			);
-			name = "AppKit Bridging";
+			name = "AppKit Bridge";
 			sourceTree = "<group>";
 		};
-		D01CF3AF1479A6BD00C88D2B /* Native */ = {
-			isa = PBXGroup;
-			children = (
-				D01B962B14C1955400CBDD8E /* Layers */,
-				D08719DE14A30A5400F304BC /* Views */,
-				D08719E314A30A5900F304BC /* View Controllers */,
-			);
-			name = Native;
-			sourceTree = "<group>";
-		};
-		D08719DE14A30A5400F304BC /* Views */ = {
+		D0604C8A14CD5917008B9A7A /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				D0305D781486FC960081D6EA /* VELControl.h */,
@@ -321,6 +306,9 @@
 				D0E8B35314831419003980B4 /* VELImageView.m */,
 				1E7BBD3E147B157B0010375D /* VELLabel.h */,
 				1E7BBD3F147B157B0010375D /* VELLabel.m */,
+				D01CF3D21479B18400C88D2B /* VELNSView.h */,
+				D01CF3D31479B18400C88D2B /* VELNSView.m */,
+				1E2819471481EAEF006A747C /* VELNSViewPrivate.h */,
 				D0D8C3A814785A1300FC9015 /* VELView.h */,
 				D0D8C3A914785A1300FC9015 /* VELView.m */,
 				D0150FE914790A1700126F09 /* VELViewPrivate.h */,
@@ -328,6 +316,15 @@
 				0DEDDD3E147B5D5C0087037C /* VELWindow.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		D0604C8B14CD597E008B9A7A /* Event Handling */ = {
+			isa = PBXGroup;
+			children = (
+				D06EF03914B39CFA0035E239 /* VELEventManager.h */,
+				D06EF03A14B39CFA0035E239 /* VELEventManager.m */,
+			);
+			name = "Event Handling";
 			sourceTree = "<group>";
 		};
 		D08719E314A30A5900F304BC /* View Controllers */ = {
@@ -387,8 +384,11 @@
 		D0D8C39C147856A400FC9015 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D01CF3AD1479A6A100C88D2B /* AppKit Bridging */,
-				D01CF3AF1479A6BD00C88D2B /* Native */,
+				D01CF3AD1479A6A100C88D2B /* AppKit Bridge */,
+				D0604C8B14CD597E008B9A7A /* Event Handling */,
+				D01B962B14C1955400CBDD8E /* Layers */,
+				D08719E314A30A5900F304BC /* View Controllers */,
+				D0604C8A14CD5917008B9A7A /* Views */,
 			);
 			name = Classes;
 			sourceTree = "<group>";

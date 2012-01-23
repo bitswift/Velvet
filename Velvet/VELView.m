@@ -1285,4 +1285,13 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 }
 
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
+    [super encodeRestorableStateWithCoder:coder];
+    [self.subviews makeObjectsPerformSelector:@selector(encodeRestorableStateWithCoder:) withObject:coder];
+}
+
+- (void)restoreStateWithCoder:(NSCoder *)coder {
+    [super restoreStateWithCoder:coder];
+    [self.subviews makeObjectsPerformSelector:@selector(restoreStateWithCoder:) withObject:coder];
+}
 @end

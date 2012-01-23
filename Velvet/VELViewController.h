@@ -26,7 +26,7 @@
  * Upon deallocation, a `VELViewController` instance automatically removes undo
  * actions targeting itself from any `-[NSResponder undoManager]`.
  */
-@interface VELViewController : NSResponder <NSCoding>
+@interface VELViewController : NSResponder
 
 /**
  * Managing the View

@@ -116,22 +116,4 @@ typedef void (^VELControlActionBlock)(NSEvent *);
     }
 }
 
-#pragma mark NSCoding
-
-- (id)initWithCoder:(NSCoder *)coder {
-    self = [super initWithCoder:coder];
-    if (!self)
-        return nil;
-
-    self.selected = [coder decodeBoolForKey:@"selected"];
-
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder {
-    [super encodeWithCoder:coder];
-
-    [coder encodeBool:self.selected forKey:@"selected"];
-}
-
 @end

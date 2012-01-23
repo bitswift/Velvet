@@ -187,7 +187,7 @@ typedef enum {
  * targeting itself and its descendant views from any `-[NSResponder
  * undoManager]`.
  */
-@interface VELView : NSResponder <VELBridgedView, NSCoding>
+@interface VELView : NSResponder <VELBridgedView>
 
 /**
  * @name Initialization

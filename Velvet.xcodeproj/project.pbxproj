@@ -1013,7 +1013,12 @@
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"Libraries/Expecta/src/**",
+					"Libraries/Specta/src/**",
+				);
 				INFOPLIST_FILE = "VelvetTests/VelvetTests-Info.plist";
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1084,7 +1089,12 @@
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"Libraries/Expecta/src/**",
+					"Libraries/Specta/src/**",
+				);
 				INFOPLIST_FILE = "VelvetTests/VelvetTests-Info.plist";
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1097,7 +1107,12 @@
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"Libraries/Expecta/src/**",
+					"Libraries/Specta/src/**",
+				);
 				INFOPLIST_FILE = "VelvetTests/VelvetTests-Info.plist";
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};

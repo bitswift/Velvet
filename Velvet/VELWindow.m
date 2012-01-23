@@ -40,6 +40,9 @@
         return nil;
 
     self.contentView = [[NSVelvetView alloc] init];
+    self.contentView.guestView.backgroundColor = [NSColor windowBackgroundColor];
+    self.contentView.opaque = YES;
+
     return self;
 }
 

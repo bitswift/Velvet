@@ -63,7 +63,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     }
 }
 
-@interface NSVelvetView ()
+@interface NSVelvetView () {
+    struct {
+        BOOL opaque;
+        BOOL userInteractionEnabled;
+    } m_flags;
+}
+
 @property (nonatomic, readonly, strong) NSView *appKitHostView;
 
 /*
@@ -149,12 +155,27 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize guestView = m_guestView;
 @synthesize velvetHostView = m_velvetHostView;
 @synthesize appKitHostView = m_appKitHostView;
-@synthesize userInteractionEnabled = m_userInteractionEnabled;
 @synthesize lastDraggingDestination = m_lastDraggingDestination;
 @synthesize allDraggingDestinations = m_allDraggingDestinations;
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
 @synthesize selfLayerDelegateProxy = m_selfLayerDelegateProxy;
+
+- (BOOL)isUserInteractionEnabled {
+    return m_flags.userInteractionEnabled;
+}
+
+- (void)setUserInteractionEnabled:(BOOL)enabled {
+    m_flags.userInteractionEnabled = enabled;
+}
+
+- (BOOL)isOpaque {
+    return m_flags.opaque;
+}
+
+- (void)setOpaque:(BOOL)opaque {
+    m_flags.opaque = opaque;
+}
 
 - (id<VELHostView>)hostView {
     if (m_hostView)

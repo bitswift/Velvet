@@ -587,10 +587,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder {
     [super encodeRestorableStateWithCoder:coder];
+    [self.guestView encodeRestorableStateWithCoder:coder];
 }
 
 - (void)restoreStateWithCoder:(NSCoder *)coder {
     [super restoreStateWithCoder:coder];
+    [self.guestView restoreStateWithCoder:coder];
 }
 
 @end

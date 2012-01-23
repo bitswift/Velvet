@@ -112,6 +112,11 @@
         return nil;
 
     self.layer.masksToBounds = NO;
+
+    // prevents the layer from displaying until we need to render our contained
+    // view
+    self.contentMode = VELViewContentModeScaleToFill;
+
     return self;
 }
 

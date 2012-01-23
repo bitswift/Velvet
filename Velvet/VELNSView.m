@@ -149,6 +149,17 @@
     [self.ancestorNSVelvetView recalculateNSViewClipping];
 }
 
+#pragma mark Drawing
+
+- (void)drawRect:(CGRect)rect {
+    if (!self.rendersContainedView) {
+        return;
+    }
+
+    CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
+    [self.guestView.layer renderInContext:context];
+}
+
 #pragma mark View hierarchy
 
 - (void)ancestorDidLayout; {
@@ -239,16 +250,6 @@
     }
 
     return cellSize;
-}
-
-#pragma mark Drawing
-
-- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
-    if (!self.rendersContainedView) {
-        return;
-    }
-
-    [self.guestView.layer renderInContext:context];
 }
 
 #pragma mark NSObject overrides

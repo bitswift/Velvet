@@ -1,3 +1,9 @@
 [submodule "Configuration"]
 	path = Configuration
 	url = git://github.com/jspahrsummers/xcconfigs.git
+[submodule "Libraries/Specta"]
+	path = Libraries/Specta
+	url = git@github.com:bitswift/specta.git
+[submodule "Libraries/Expecta"]
+	path = Libraries/Expecta
+	url = git@github.com:bitswift/expecta.git

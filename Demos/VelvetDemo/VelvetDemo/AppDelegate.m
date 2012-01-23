@@ -161,7 +161,7 @@
 
     // VELLabel
     {
-        VELLabel *label = [[VELLabel alloc] initWithFrame:CGRectMake(0, 400, 100, 60)];
+        VELLabel *label = [[VELLabel alloc] initWithFrame:CGRectMake(0, 320, 100, 60)];
         label.backgroundColor = [NSColor whiteColor];
         label.opaque = YES;
 

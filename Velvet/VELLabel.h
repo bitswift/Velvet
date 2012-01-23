@@ -87,7 +87,7 @@ typedef enum {
 /**
  * A simple text label.
  */
-@interface VELLabel : VELView <NSCoding>
+@interface VELLabel : VELView
 
 /**
  * @name Displaying Text

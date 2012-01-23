@@ -438,30 +438,4 @@ static NSRange NSRangeFromCFRange(CFRange range) {
     [self setAttribute:NSParagraphStyleAttributeName value:(__bridge_transfer id)paragraphStyle];
 }
 
-#pragma mark NSCoding
-
-- (id)initWithCoder:(NSCoder *)coder {
-    self = [super initWithCoder:coder];
-    if (!self)
-        return nil;
-
-    self.font = [coder decodeObjectForKey:@"font"];
-    self.textColor = [coder decodeObjectForKey:@"textColor"];
-    self.numberOfLines = [[coder decodeObjectForKey:@"numberOfLines"] unsignedIntegerValue];
-    self.textAlignment = (VELTextAlignment)[[coder decodeObjectForKey:@"textAlignment"] unsignedIntegerValue];
-    self.lineBreakMode = (VELLineBreakMode)[[coder decodeObjectForKey:@"lineBreakMode"] unsignedIntegerValue];
-
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)coder {
-    [super encodeWithCoder:coder];
-
-    [coder encodeObject:self.font forKey:@"font"];
-    [coder encodeObject:self.textColor forKey:@"textColor"];
-    [coder encodeObject:[NSNumber numberWithUnsignedInteger:self.numberOfLines] forKey:@"numberOfLines"];
-    [coder encodeObject:[NSNumber numberWithUnsignedInteger:self.textAlignment] forKey:@"textAlignment"];
-    [coder encodeObject:[NSNumber numberWithUnsignedInteger:self.lineBreakMode] forKey:@"lineBreakMode"];
-}
-
 @end

@@ -6,187 +6,171 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import "CGGeometryAdditionsTests.h"
 #import <Velvet/Velvet.h>
 
-@implementation CGGeometryAdditionsTests
+SpecBegin(CGGeometryAdditions)
 
-- (void)testDivideExcludingIntersectionWithoutIntersection {
-    CGRect rect = CGRectMake(0, 0, 50, 50);
-    CGRect choppingRect = CGRectMake(100, 100, 50, 50);
+describe(@"CGGeometryAdditions", ^{
+    __block CGRect rect, expectedSlice, expectedRemainder, slice, remainder;
 
-    CGRect slice, remainder;
-    CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, CGRectMinXEdge);
 
-    STAssertTrue(CGRectEqualToRect(slice, rect), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(rect));
-    STAssertTrue(CGRectIsNull(remainder), @"%@ should be null", NSStringFromRect(remainder));
-}
+    describe(@"CGRectDivideExcludingIntersection", ^{
+        __block CGRect choppingRect;
 
-- (void)testDivideExcludingIntersectionWithEqualRects {
-    CGRect rect = CGRectMake(0, 0, 50, 50);
-    CGRect choppingRect = CGRectMake(0, 0, 50, 50);
+        before(^{
+            rect = CGRectMake(0, 0, 50, 50);
+            choppingRect = CGRectMake(100, 100, 50, 50);
+        });
 
-    CGRect slice, remainder;
-    CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, CGRectMinXEdge);
 
-    STAssertTrue(CGRectIsEmpty(slice), @"%@ should be empty", NSStringFromRect(slice));
-    STAssertTrue(CGRectIsEmpty(remainder), @"%@ should be empty", NSStringFromRect(remainder));
-}
+        it(@"divides without an intersection", ^{
+            CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, CGRectMinXEdge);
+            expect(slice).toEqual(rect);
+            expect(CGRectIsNull(remainder)).toBeTruthy();
+        });
 
-- (void)testDivideExcludingIntersectionNullSlice {
-    CGRect rect = CGRectMake(0, 0, 50, 50);
-    CGRect choppingRect = CGRectMake(25, 25, 10, 10);
+        it(@"divides with equal rects", ^{
+            choppingRect = CGRectMake(0, 0, 50, 50);
+            CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, CGRectMinXEdge);
+            expect(CGRectIsEmpty(slice)).toBeTruthy();
+            expect(CGRectIsEmpty(remainder)).toBeTruthy();
+        });
 
-    CGRect remainder;
-    CGRectDivideExcludingIntersection(rect, NULL, &remainder, choppingRect, CGRectMinXEdge);
+        context(@"with null values", ^{
+            __block CGRect expectedRect;
+            beforeEach(^{
+                choppingRect = CGRectMake(25, 25, 10, 10);
+                expectedRect = CGRectMake(35, 0, 15, 50);
+            });
 
-    CGRect expectedRemainder = CGRectMake(35, 0, 15, 50);
-    STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
-}
+            it(@"divides with a null slice", ^{
+                CGRectDivideExcludingIntersection(rect, NULL, &remainder, choppingRect, CGRectMinXEdge);
 
-- (void)testDivideExcludingIntersectionNullRemainder {
-    CGRect rect = CGRectMake(0, 0, 50, 50);
-    CGRect choppingRect = CGRectMake(25, 25, 10, 10);
+                expect(remainder).toEqual(expectedRect);
+            });
 
-    CGRect slice;
-    CGRectDivideExcludingIntersection(rect, &slice, NULL, choppingRect, CGRectMaxXEdge);
+            it (@"divides with a null remainder", ^{
+                CGRectDivideExcludingIntersection(rect, &slice, NULL, choppingRect, CGRectMaxXEdge);
+                expect(slice).toEqual(expectedRect);
+            });
+        });
 
-    CGRect expectedSlice = CGRectMake(35, 0, 15, 50);
-    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
-}
+        it(@"divides with containment", ^{
+            rect = CGRectMake(25, 25, 50, 50);
+            choppingRect = CGRectMake(0, 0, 100, 100);
 
-- (void)testDivideExcludingIntersectionWithContainment {
-    CGRect rect = CGRectMake(25, 25, 50, 50);
-    CGRect choppingRect = CGRectMake(0, 0, 100, 100);
+            CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, CGRectMinXEdge);
 
-    CGRect slice, remainder;
-    CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, CGRectMinXEdge);
+            expect(CGRectIsNull(slice)).toBeTruthy();
+            expect(CGRectIsNull(remainder)).toBeTruthy();
+        });
 
-    STAssertTrue(CGRectIsNull(slice), @"%@ should be null", NSStringFromRect(slice));
-    STAssertTrue(CGRectIsNull(remainder), @"%@ should be null", NSStringFromRect(remainder));
-}
+        context(@"with a specified edge", ^{
+            __block CGRectEdge edge;
+            __block CGRect expectedSlice, expectedRemainder;
 
-- (void)testDivideExcludingIntersectionMinXEdge {
-    CGRect rect = CGRectMake(0, 0, 100, 100);
-    CGRect choppingRect = CGRectMake(20, 25, 50, 65);
+            beforeEach(^{
+                rect = CGRectMake(0, 0, 100, 100);
+                choppingRect = CGRectMake(20, 25, 50, 65);
+            });
 
-    CGRectEdge edge = CGRectMinXEdge;
-    CGRect expectedSlice = CGRectMake(0, 0, 20, 100);
-    CGRect expectedRemainder = CGRectMake(70, 0, 30, 100);
+            it(@"divides from MinXEdge", ^{
+                edge = CGRectMinXEdge;
+                expectedSlice = CGRectMake(0, 0, 20, 100);
+                expectedRemainder = CGRectMake(70, 0, 30, 100);
 
-    CGRect slice, remainder;
-    CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
+                CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
 
-    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
-    STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
-}
+                expect(slice).toEqual(expectedSlice);
+                expect(remainder).toEqual(expectedRemainder);
+            });
 
-- (void)testDivideExcludingIntersectionMinYEdge {
-    CGRect rect = CGRectMake(0, 0, 100, 100);
-    CGRect choppingRect = CGRectMake(20, 25, 50, 65);
+            it(@"divides from MinYEdge", ^{
+                edge = CGRectMinYEdge;
+                expectedSlice = CGRectMake(0, 0, 100, 25);
+                expectedRemainder = CGRectMake(0, 90, 100, 10);
 
-    CGRectEdge edge = CGRectMinYEdge;
-    CGRect expectedSlice = CGRectMake(0, 0, 100, 25);
-    CGRect expectedRemainder = CGRectMake(0, 90, 100, 10);
+                CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
 
-    CGRect slice, remainder;
-    CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
+                expect(slice).toEqual(expectedSlice);
+                expect(remainder).toEqual(expectedRemainder);
+            });
 
-    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
-    STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
-}
+            it(@"divides from MaxXEdge", ^{
+                edge = CGRectMaxXEdge;
+                expectedSlice = CGRectMake(70, 0, 30, 100);
+                expectedRemainder = CGRectMake(0, 0, 20, 100);
 
-- (void)testDivideExcludingIntersectionMaxXEdge {
-    CGRect rect = CGRectMake(0, 0, 100, 100);
-    CGRect choppingRect = CGRectMake(20, 25, 50, 65);
+                CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
 
-    CGRectEdge edge = CGRectMaxXEdge;
-    CGRect expectedSlice = CGRectMake(70, 0, 30, 100);
-    CGRect expectedRemainder = CGRectMake(0, 0, 20, 100);
+                expect(slice).toEqual(expectedSlice);
+                expect(remainder).toEqual(expectedRemainder);
+            });
 
-    CGRect slice, remainder;
-    CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
+            it(@"divides from MaxYEdge", ^{
+                edge = CGRectMaxYEdge;
+                expectedSlice = CGRectMake(0, 90, 100, 10);
+                expectedRemainder = CGRectMake(0, 0, 100, 25);
 
-    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
-    STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
-}
+                CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
 
-- (void)testDivideExcludingIntersectionMaxYEdge {
-    CGRect rect = CGRectMake(0, 0, 100, 100);
-    CGRect choppingRect = CGRectMake(20, 25, 50, 65);
+                expect(slice).toEqual(expectedSlice);
+                expect(remainder).toEqual(expectedRemainder);
+            });
+        });
+    });
 
-    CGRectEdge edge = CGRectMaxYEdge;
-    CGRect expectedSlice = CGRectMake(0, 90, 100, 10);
-    CGRect expectedRemainder = CGRectMake(0, 0, 100, 25);
+    describe(@"CGRectDivideWithPadding", ^{
+        beforeEach(^{
+            rect = CGRectMake(50, 50, 100, 100);
+            expectedSlice = CGRectMake(50, 50, 40, 100);
+            expectedRemainder = CGRectMake(90 + 10, 50, 50, 100);
+        });
 
-    CGRect slice, remainder;
-    CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
+        it(@"divides with padding", ^{
+            CGRectDivideWithPadding(rect, &slice, &remainder, 40, 10, CGRectMinXEdge);
 
-    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
-    STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
-}
+            expect(slice).toEqual(expectedSlice);
+            expect(remainder).toEqual(remainder);
+        });
 
-- (void)testDivideWithPadding {
-    CGRect rect = CGRectMake(50, 50, 100, 100);
+        it(@"divides with a null slice", ^{
+            CGRectDivideWithPadding(rect, NULL, &remainder, 40, 10, CGRectMinXEdge);
+            expect(remainder).toEqual(expectedRemainder);
+        });
 
-    CGRect expectedSlice = CGRectMake(50, 50, 40, 100);
-    CGRect expectedRemainder = CGRectMake(90 + 10, 50, 50, 100);
+        it(@"divides with a null remainder", ^{
+            CGRect expectedSlice = CGRectMake(50, 50, 40, 100);
+            CGRectDivideWithPadding(rect, &slice, NULL, 40, 10, CGRectMinXEdge);
+            expect(slice).toEqual(expectedSlice);
+        });
 
-    CGRect slice, remainder;
-    CGRectDivideWithPadding(rect, &slice, &remainder, 40, 10, CGRectMinXEdge);
+        it(@"divides with no space for remainder", ^{
+            CGRect expectedSlice = CGRectMake(50, 50, 95, 100);
+            CGRectDivideWithPadding(rect, &slice, &remainder, 95, 10, CGRectMinXEdge);
+            expect(slice).toEqual(expectedSlice);
+            expect(CGRectIsEmpty(remainder)).toBeTruthy();
+        });
+    });
 
-    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
-    STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
-}
+    describe(@"CGRectChop", ^{
+        rect = CGRectMake(100, 100, 100, 100);
 
-- (void)testDivideWithPaddingNullSlice {
-    CGRect rect = CGRectMake(50, 50, 100, 100);
+        CGRect result = CGRectChop(rect, 25, CGRectMaxXEdge);
+        CGRect expectedResult = CGRectMake(100, 100, 75, 100);
 
-    CGRect expectedRemainder = CGRectMake(90 + 10, 50, 50, 100);
+        expect(result).toEqual(expectedResult);
+    });
 
-    CGRect remainder;
-    CGRectDivideWithPadding(rect, NULL, &remainder, 40, 10, CGRectMinXEdge);
+    describe(@"CGRectGrow", ^{
+        CGRect rect = CGRectMake(100, 100, 100, 100);
 
-    STAssertTrue(CGRectEqualToRect(remainder, expectedRemainder), @"%@ should be equal to %@", NSStringFromRect(remainder), NSStringFromRect(expectedRemainder));
-}
+        CGRect result = CGRectGrow(rect, 25, CGRectMinXEdge);
+        CGRect expectedResult = CGRectMake(75, 100, 125, 100);
+        expect(result).toEqual(expectedResult);
+    });
 
-- (void)testDivideWithPaddingNullRemainder {
-    CGRect rect = CGRectMake(50, 50, 100, 100);
+});
 
-    CGRect expectedSlice = CGRectMake(50, 50, 40, 100);
 
-    CGRect slice;
-    CGRectDivideWithPadding(rect, &slice, NULL, 40, 10, CGRectMinXEdge);
-
-    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
-}
-
-- (void)testDivideWithPaddingNoSpaceForRemainder {
-    CGRect rect = CGRectMake(50, 50, 100, 100);
-
-    CGRect expectedSlice = CGRectMake(50, 50, 95, 100);
-
-    CGRect slice, remainder;
-    CGRectDivideWithPadding(rect, &slice, &remainder, 95, 10, CGRectMinXEdge);
-
-    STAssertTrue(CGRectEqualToRect(slice, expectedSlice), @"%@ should be equal to %@", NSStringFromRect(slice), NSStringFromRect(expectedSlice));
-    STAssertTrue(CGRectIsEmpty(remainder), @"%@ should be empty", NSStringFromRect(remainder));
-}
-
-- (void)testChop {
-    CGRect rect = CGRectMake(100, 100, 100, 100);
-
-    CGRect result = CGRectChop(rect, 25, CGRectMaxXEdge);
-    CGRect expectedResult = CGRectMake(100, 100, 75, 100);
-    STAssertTrue(CGRectEqualToRect(result, expectedResult), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
-}
-
-- (void)testGrow {
-    CGRect rect = CGRectMake(100, 100, 100, 100);
-
-    CGRect result = CGRectGrow(rect, 25, CGRectMinXEdge);
-    CGRect expectedResult = CGRectMake(75, 100, 125, 100);
-    STAssertTrue(CGRectEqualToRect(result, expectedResult), @"%@ should be equal to %@", NSStringFromRect(result), NSStringFromRect(expectedResult));
-}
-
-@end
+SpecEnd

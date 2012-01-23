@@ -191,7 +191,7 @@
 		1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetHostViewTests.m; sourceTree = "<group>"; };
 		D002AEC614CE030B0062AEFC /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = Libraries/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		D002AEC914CE030B0062AEFC /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = Libraries/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
-		D002AEF114CE03820062AEFC /* VelvetTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; path = "VelvetTests-Prefix.pch"; sourceTree = "<group>"; };
+		D002AEF114CE03820062AEFC /* VelvetTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VelvetTests-Prefix.pch"; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
 		D01B962C14C1956100CBDD8E /* VELViewLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewLayer.h; sourceTree = "<group>"; };
 		D01B962D14C1956100CBDD8E /* VELViewLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewLayer.m; sourceTree = "<group>"; };
@@ -213,7 +213,6 @@
 		D0604C8D14CD59DD008B9A7A /* VELNSViewLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewLayer.m; sourceTree = "<group>"; };
 		D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+ConvenienceAdditions.h"; sourceTree = "<group>"; };
 		D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+ConvenienceAdditions.m"; sourceTree = "<group>"; };
-		D0682AB214C773EF001CA434 /* CGGeometryAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGGeometryAdditionsTests.h; sourceTree = "<group>"; };
 		D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGeometryAdditionsTests.m; sourceTree = "<group>"; };
 		D06EF03914B39CFA0035E239 /* VELEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELEventManager.h; sourceTree = "<group>"; };
 		D06EF03A14B39CFA0035E239 /* VELEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELEventManager.m; sourceTree = "<group>"; };
@@ -443,7 +442,6 @@
 		D08719E814A30B4C00F304BC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				D0682AB214C773EF001CA434 /* CGGeometryAdditionsTests.h */,
 				D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */,
 				1EA3D70814B37F3B0007E4C4 /* NSVelvetHostViewTests.h */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,

@@ -25,15 +25,6 @@
 #import "EXTScope.h"
 
 /*
- *  A union between CGAffineTransform and NSAffineTransformStruct
- *  for the purposes of converting between the two.
- */
-typedef union {
-    CGAffineTransform cgAffineTransform;
-    NSAffineTransformStruct nsAffineTransform;
-} VELAffineTransformConversionUnion;
-
-/*
  * The number of animation blocks currently being run.
  *
  * This is not how many animations are currently running, but instead how many

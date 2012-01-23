@@ -8,6 +8,7 @@
 
 #import "VELViewLayer.h"
 #import "VELView.h"
+#import "VELViewPrivate.h"
 
 @interface VELViewLayer ()
 /*
@@ -40,6 +41,15 @@
     NSAssert(!view || [view isKindOfClass:[VELView class]], @"Delegate of %@ is not a VELView: %@", self, view);
 
     return view;
+}
+
+#pragma mark Drawing
+
+- (void)display {
+    if (![[self.view class] doesCustomDrawing])
+        return;
+
+    [super display];
 }
 
 #pragma mark Autoresizing

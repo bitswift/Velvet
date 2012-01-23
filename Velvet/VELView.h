@@ -530,6 +530,20 @@ typedef enum {
 @property (nonatomic, assign) BOOL clearsContextBeforeDrawing;
 
 /**
+ * Whether the scale factor for this view's content should automatically match
+ * that of the window it's in.
+ *
+ * If set to `YES`, moving the view's window to a high-density (HiDPI) screen
+ * will automatically update the `contentsScale` of the receiver's <layer>. This
+ * is normally what you want, to make sure logical points map correctly to real
+ * pixels across different displays, but this may be set to `NO` if the view's
+ * content is resolution-dependent anyways.
+ *
+ * The default value for this property is `YES`.
+ */
+@property (nonatomic, assign) BOOL matchesWindowScaleFactor;
+
+/**
  * The background color of the receiver.
  *
  * The default value for this property is `nil`, meaning that no background is

@@ -19,15 +19,6 @@ typedef void (^VELControlActionBlock)(NSEvent *);
  * for.
  */
 @property (nonatomic, strong, readonly) NSMutableDictionary *actions;
-
-/*
- * Updates the <selected> property, and sends the corresponding action messages
- * with `event` as the underlying event.
- *
- * @param selected The new value for <selected>.
- * @param event The event that triggered the change in selected state.
- */
-- (void)setSelected:(BOOL)selected event:(NSEvent *)event;
 @end
 
 @implementation VELControl
@@ -36,11 +27,6 @@ typedef void (^VELControlActionBlock)(NSEvent *);
 
 @synthesize actions = m_actions;
 @synthesize selected = m_selected;
-@synthesize becomesSelectedOnMouseDown = m_becomesSelectedOnMouseDown;
-
-- (void)setSelected:(BOOL)selected {
-    [self setSelected:selected event:nil];
-}
 
 #pragma mark Lifecycle
 
@@ -115,30 +101,19 @@ typedef void (^VELControlActionBlock)(NSEvent *);
 }
 
 - (void)mouseDown:(NSEvent *)event {
-    if (self.becomesSelectedOnMouseDown)
-        self.selected = YES;
+    [self sendActionsForControlEvents:VELControlEventMouseDown event:event];
 }
 
-- (void)mouseUp:(NSEvent *)theEvent {
-    CGPoint point = [self convertFromWindowPoint:[theEvent locationInWindow]];
+- (void)mouseUp:(NSEvent *)event {
+    CGPoint point = [self convertFromWindowPoint:[event locationInWindow]];
     if (![self pointInside:point])
         return;
 
-    [self sendActionsForControlEvents:VELControlEventClicked event:theEvent];
+    [self sendActionsForControlEvents:VELControlEventClicked event:event];
 
-    if (theEvent.clickCount > 0 && (theEvent.clickCount % 2) == 0) {
-        [self sendActionsForControlEvents:VELControlEventDoubleClicked event:theEvent];
+    if (event.clickCount > 0 && (event.clickCount % 2) == 0) {
+        [self sendActionsForControlEvents:VELControlEventDoubleClicked event:event];
     }
-}
-
-- (void)setSelected:(BOOL)selected event:(NSEvent *)event {
-    if (selected == m_selected)
-        return;
-
-    if ((m_selected = selected))
-        [self sendActionsForControlEvents:VELControlEventSelected];
-    else
-        [self sendActionsForControlEvents:VELControlEventDeselected];
 }
 
 @end

@@ -41,7 +41,7 @@
 
     CGFloat xOrigin = insets.left / width;
     CGFloat yOrigin = insets.top / height;
-    
+
     self.contentStretch = CGRectMake(
         xOrigin,
         yOrigin,

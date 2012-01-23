@@ -14,14 +14,17 @@
 typedef enum {
     /**
      * The control was clicked.
+     *
+     * A click is defined as a mouse down followed by a mouse up, with both
+     * mouse events landing inside the frame of the control.
      */
     VELControlEventClicked = (1 << 0),
 
     /**
      * The control was double-clicked.
      *
-     * This event is always sent after two <VELControlEventClicked> events (one
-     * for each click).
+     * This event is sent when two clicks occur in quick succession, after any
+     * <VELControlEventClicked> actions have been invoked.
      */
     VELControlEventDoubleClicked = (1 << 1),
 
@@ -34,18 +37,9 @@ typedef enum {
     VELControlEventValueChanged = (1 << 2),
 
     /**
-     * The control was selected.
-     *
-     * This event occurs when <[VELControl selected]> is set to `YES`.
+     * The control received a mouse down event inside its frame.
      */
-    VELControlEventSelected = (1 << 3),
-
-    /**
-     * The control was deselected.
-     *
-     * This event occurs when <[VELControl selected]> is set to `NO`.
-     */
-    VELControlEventDeselected = (1 << 4),
+    VELControlEventMouseDown = (1 << 3),
 
     /**
      * A range of event values available for application use.
@@ -73,16 +67,6 @@ typedef enum {
  * The default value for this property is `NO`.
  */
 @property (nonatomic, assign, getter = isSelected) BOOL selected;
-
-/**
- * Whether the receiver automatically becomes <selected> when a mouse down event
- * is received.
- *
- * The default value for this property is `NO`.
- *
- * @warning This method does not implement any kind of automatic deselection.
- */
-@property (nonatomic, assign) BOOL becomesSelectedOnMouseDown;
 
 /**
  * @name Event Dispatch

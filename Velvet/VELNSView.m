@@ -112,6 +112,11 @@
         return nil;
 
     self.layer.masksToBounds = NO;
+
+    // prevents the layer from displaying until we need to render our contained
+    // view
+    self.contentMode = VELViewContentModeScaleToFill;
+
     return self;
 }
 
@@ -147,6 +152,17 @@
     self.guestView.frame = frame;
 
     [self.ancestorNSVelvetView recalculateNSViewClipping];
+}
+
+#pragma mark Drawing
+
+- (void)drawRect:(CGRect)rect {
+    if (!self.rendersContainedView) {
+        return;
+    }
+
+    CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
+    [self.guestView.layer renderInContext:context];
 }
 
 #pragma mark View hierarchy
@@ -239,16 +255,6 @@
     }
 
     return cellSize;
-}
-
-#pragma mark Drawing
-
-- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
-    if (!self.rendersContainedView) {
-        return;
-    }
-
-    [self.guestView.layer renderInContext:context];
 }
 
 #pragma mark NSObject overrides

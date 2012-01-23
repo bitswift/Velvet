@@ -8,8 +8,19 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-/*
+@class VELView;
+
+/**
  * Private layer class for backing a <VELView>.
  */
 @interface VELViewLayer : CALayer
+
+/**
+ * @name View
+ */
+
+/**
+ * The view that this layer is backing.
+ */
+@property (nonatomic, weak, readonly) VELView *view;
 @end

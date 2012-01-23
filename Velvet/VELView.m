@@ -81,6 +81,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         unsigned clearsContextBeforeDrawing:1;
         unsigned alignsToIntegralPixels:1;
         unsigned replacingSubviews:1;
+        unsigned matchesWindowScaleFactor:1;
     } m_flags;
 
     /*
@@ -221,6 +222,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setReplacingSubviews:(BOOL)replacing {
     m_flags.replacingSubviews = replacing;
+}
+
+- (BOOL)matchesWindowScaleFactor {
+    return m_flags.matchesWindowScaleFactor;
+}
+
+- (void)setMatchesWindowScaleFactor:(BOOL)matches {
+    m_flags.matchesWindowScaleFactor = matches;
 }
 
 - (BOOL)clipsToBounds {
@@ -611,6 +620,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     self.opaque = NO;
     self.clearsContextBeforeDrawing = YES;
     self.alignsToIntegralPixels = YES;
+    self.matchesWindowScaleFactor = YES;
 
     if ([[self class] doesCustomDrawing])
         self.contentMode = VELViewContentModeRedraw;
@@ -822,13 +832,15 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)didMoveFromWindow:(NSWindow *)window; {
-    CGFloat newScaleFactor = self.window.backingScaleFactor;
+    if (self.matchesWindowScaleFactor) {
+        CGFloat newScaleFactor = self.window.backingScaleFactor;
 
-    if (newScaleFactor > 0 && fabs(newScaleFactor - self.layer.contentsScale) > 0.01) {
-        // we just moved to a window that has a different pixel density, so
-        // redisplay our layer at that scale factor
-        self.layer.contentsScale = newScaleFactor;
-        [self setNeedsDisplay];
+        if (newScaleFactor > 0 && fabs(newScaleFactor - self.layer.contentsScale) > 0.01) {
+            // we just moved to a window that has a different pixel density, so
+            // redisplay our layer at that scale factor
+            self.layer.contentsScale = newScaleFactor;
+            [self setNeedsDisplay];
+        }
     }
 
     if (self.window)

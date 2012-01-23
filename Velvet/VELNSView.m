@@ -91,6 +91,19 @@
     [super setSubviews:subviews];
 }
 
+- (void)setRendersContainedView:(BOOL)rendersContainedView {
+    NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
+
+    if (m_rendersContainedView != rendersContainedView) {
+        m_rendersContainedView = rendersContainedView;
+
+        [CATransaction performWithDisabledActions:^{
+            [self.layer setNeedsDisplay];
+            [self.layer displayIfNeeded];
+        }];
+    }
+}
+
 #pragma mark Lifecycle
 
 - (id)init {
@@ -228,40 +241,20 @@
     return cellSize;
 }
 
+#pragma mark Drawing
+
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
+    if (!self.rendersContainedView) {
+        return;
+    }
+
+    [self.guestView.layer renderInContext:context];
+}
+
 #pragma mark NSObject overrides
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ %p> frame = %@, NSView = %@ %@", [self class], self, NSStringFromRect(self.frame), self.guestView, NSStringFromRect(self.guestView.frame)];
-}
-
-#pragma mark CALayer delegate
-
-- (void)renderContainedViewInLayer:(CALayer *)layer {
-    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size, YES);
-
-    [self.guestView.layer renderInContext:context];
-
-    CGImageRef image = CGBitmapContextCreateImage(context);
-    layer.contents = (__bridge_transfer id)image;
-
-    CGContextRelease(context);
-}
-
-- (void)setRendersContainedView:(BOOL)rendersContainedView {
-    NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
-
-    if (m_rendersContainedView != rendersContainedView) {
-        m_rendersContainedView = rendersContainedView;
-        if (rendersContainedView) {
-            [CATransaction performWithDisabledActions:^{
-                [self renderContainedViewInLayer:self.layer];
-            }];
-        } else {
-            [CATransaction performWithDisabledActions:^{
-                self.layer.contents = nil;
-            }];
-        }
-    }
 }
 
 @end

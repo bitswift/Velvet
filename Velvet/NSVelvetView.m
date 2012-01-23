@@ -176,7 +176,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
             [self.velvetHostView.layer addSublayer:m_guestView.layer];
             m_guestView.hostView = self;
-            [self invalidateRestorableState];
         }
     }];
 }
@@ -510,8 +509,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (BOOL)performDragOperation:(id<NSDraggingInfo>)sender {
-    [self invalidateRestorableState];
-
     id<VELDraggingDestination> view = self.lastDraggingDestination;
 
     if ([view respondsToSelector:@selector(performDragOperation:)]) {

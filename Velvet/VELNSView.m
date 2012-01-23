@@ -91,6 +91,15 @@
     [super setSubviews:subviews];
 }
 
+- (void)setRendersContainedView:(BOOL)rendersContainedView {
+    NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
+
+    if (m_rendersContainedView != rendersContainedView) {
+        m_rendersContainedView = rendersContainedView;
+        [self.layer display];
+    }
+}
+
 #pragma mark Lifecycle
 
 - (id)init {
@@ -228,15 +237,14 @@
     return cellSize;
 }
 
-#pragma mark NSObject overrides
+#pragma mark Drawing
 
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ %p> frame = %@, NSView = %@ %@", [self class], self, NSStringFromRect(self.frame), self.guestView, NSStringFromRect(self.guestView.frame)];
-}
+- (void)displayLayer:(CALayer *)layer {
+    if (!self.rendersContainedView) {
+        layer.contents = nil;
+        return;
+    }
 
-#pragma mark CALayer delegate
-
-- (void)renderContainedViewInLayer:(CALayer *)layer {
     CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size, YES);
 
     [self.guestView.layer renderInContext:context];
@@ -247,21 +255,10 @@
     CGContextRelease(context);
 }
 
-- (void)setRendersContainedView:(BOOL)rendersContainedView {
-    NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
+#pragma mark NSObject overrides
 
-    if (m_rendersContainedView != rendersContainedView) {
-        m_rendersContainedView = rendersContainedView;
-        if (rendersContainedView) {
-            [CATransaction performWithDisabledActions:^{
-                [self renderContainedViewInLayer:self.layer];
-            }];
-        } else {
-            [CATransaction performWithDisabledActions:^{
-                self.layer.contents = nil;
-            }];
-        }
-    }
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@ %p> frame = %@, NSView = %@ %@", [self class], self, NSStringFromRect(self.frame), self.guestView, NSStringFromRect(self.guestView.frame)];
 }
 
 @end

@@ -96,7 +96,11 @@
 
     if (m_rendersContainedView != rendersContainedView) {
         m_rendersContainedView = rendersContainedView;
-        [self.layer display];
+
+        [CATransaction performWithDisabledActions:^{
+            [self.layer setNeedsDisplay];
+            [self.layer displayIfNeeded];
+        }];
     }
 }
 
@@ -239,20 +243,12 @@
 
 #pragma mark Drawing
 
-- (void)displayLayer:(CALayer *)layer {
+- (void)drawLayer:(CALayer *)layer inContext:(CGContextRef)context {
     if (!self.rendersContainedView) {
-        layer.contents = nil;
         return;
     }
 
-    CGContextRef context = CGBitmapContextCreateGeneric(self.bounds.size, YES);
-
     [self.guestView.layer renderInContext:context];
-
-    CGImageRef image = CGBitmapContextCreateImage(context);
-    layer.contents = (__bridge_transfer id)image;
-
-    CGContextRelease(context);
 }
 
 #pragma mark NSObject overrides

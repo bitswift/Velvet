@@ -26,4 +26,21 @@
  * with another instance of <VELView> or any subclass.
  */
 @property (nonatomic, strong) VELView *guestView;
+
+/**
+ * @name Drawing
+ */
+
+/**
+ * Whether this view should be opaque.
+ *
+ * Setting this to `YES` can result in a significant speedup, but precludes
+ * having any transparency in the view (and, by extension, its <guestView>). If
+ * set to `YES`, the receiver's <guestView> must completely fill its bounds with
+ * content.
+ *
+ * The default value is `NO`.
+ */
+@property (nonatomic, assign, getter = isOpaque) BOOL opaque;
+
 @end

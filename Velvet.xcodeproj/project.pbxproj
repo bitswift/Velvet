@@ -191,6 +191,7 @@
 		1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetHostViewTests.m; sourceTree = "<group>"; };
 		D002AEC614CE030B0062AEFC /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = Libraries/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		D002AEC914CE030B0062AEFC /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = Libraries/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
+		D002AEF114CE03820062AEFC /* VelvetTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; path = "VelvetTests-Prefix.pch"; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
 		D01B962C14C1956100CBDD8E /* VELViewLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewLayer.h; sourceTree = "<group>"; };
 		D01B962D14C1956100CBDD8E /* VELViewLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewLayer.m; sourceTree = "<group>"; };
@@ -570,6 +571,7 @@
 				D0B75C67149188FD005C81D5 /* testimage.jpg */,
 				D0EFFC22147851A80095AB35 /* VelvetTests-Info.plist */,
 				D0EFFC23147851A80095AB35 /* InfoPlist.strings */,
+				D002AEF114CE03820062AEFC /* VelvetTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1012,7 +1014,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				GCC_PREFIX_HEADER = "VelvetTests/VelvetTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"Libraries/Expecta/src/**",
 					"Libraries/Specta/src/**",
@@ -1088,7 +1090,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				GCC_PREFIX_HEADER = "VelvetTests/VelvetTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"Libraries/Expecta/src/**",
 					"Libraries/Specta/src/**",
@@ -1106,7 +1108,7 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Velvet/Velvet-Prefix.pch";
+				GCC_PREFIX_HEADER = "VelvetTests/VelvetTests-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
 					"Libraries/Expecta/src/**",
 					"Libraries/Specta/src/**",

@@ -1,0 +1,18 @@
+//
+//  VelvetTests-Prefix.h
+//  Velvet
+//
+//  Created by Justin Spahr-Summers on 23.01.12.
+//  Copyright (c) 2012 Bitswift. All rights reserved.
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+    #import "Specta.h"
+
+    #define EXP_SHORTHAND
+    #import "Expecta.h"
+
+    // more consistent shorthand for Expecta 'Not'
+    #define not Not
+#endif

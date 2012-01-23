@@ -35,6 +35,7 @@
 		D03FD8A614C39D760062B7A3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
 		D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D05DC49B14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */; };
+		D0604C8F14CD59DD008B9A7A /* VELNSViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0604C8D14CD59DD008B9A7A /* VELNSViewLayer.m */; };
 		D0682AAF14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0682AB014C77307001CA434 /* CGGeometry+ConvenienceAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */; };
 		D0682AB414C773EF001CA434 /* CGGeometryAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */; };
@@ -133,6 +134,8 @@
 		D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDraggingDestination.h; sourceTree = "<group>"; };
 		D05DC49914BD0AA500A0D6C8 /* VELViewDragAndDropTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewDragAndDropTests.h; sourceTree = "<group>"; };
 		D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewDragAndDropTests.m; sourceTree = "<group>"; };
+		D0604C8C14CD59DD008B9A7A /* VELNSViewLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSViewLayer.h; sourceTree = "<group>"; };
+		D0604C8D14CD59DD008B9A7A /* VELNSViewLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewLayer.m; sourceTree = "<group>"; };
 		D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+ConvenienceAdditions.h"; sourceTree = "<group>"; };
 		D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+ConvenienceAdditions.m"; sourceTree = "<group>"; };
 		D0682AB214C773EF001CA434 /* CGGeometryAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGGeometryAdditionsTests.h; sourceTree = "<group>"; };
@@ -275,6 +278,8 @@
 		D01B962B14C1955400CBDD8E /* Layers */ = {
 			isa = PBXGroup;
 			children = (
+				D0604C8C14CD59DD008B9A7A /* VELNSViewLayer.h */,
+				D0604C8D14CD59DD008B9A7A /* VELNSViewLayer.m */,
 				D01B962C14C1956100CBDD8E /* VELViewLayer.h */,
 				D01B962D14C1956100CBDD8E /* VELViewLayer.m */,
 			);
@@ -733,6 +738,7 @@
 				D0F5CD9714C57C4600966B2D /* EXTSafeCategory.m in Sources */,
 				D0F5CD9914C57C4600966B2D /* EXTScope.m in Sources */,
 				D0682AB014C77307001CA434 /* CGGeometry+ConvenienceAdditions.m in Sources */,
+				D0604C8F14CD59DD008B9A7A /* VELNSViewLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

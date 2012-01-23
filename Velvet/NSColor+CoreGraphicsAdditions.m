@@ -74,16 +74,19 @@ static void releasePatternInfo (void *info) {
         CGPatternRelease(pattern);
 
         return (CGColorRef)[(id)result autorelease];
-    } else {
-        NSInteger count = [self numberOfComponents];
-        CGFloat components[count];
-        [self getComponents:components];
-
-        CGColorSpaceRef colorSpaceRef = self.colorSpace.CGColorSpace;
-        CGColorRef result = CGColorCreate(colorSpaceRef, components);
-
-        return (CGColorRef)[(id)result autorelease];
     }
+
+    NSColorSpace *colorSpace = [NSColorSpace genericRGBColorSpace];
+    NSColor *color = [self colorUsingColorSpace:colorSpace];
+
+    NSInteger count = [color numberOfComponents];
+    CGFloat components[count];
+    [color getComponents:components];
+
+    CGColorSpaceRef colorSpaceRef = colorSpace.CGColorSpace;
+    CGColorRef result = CGColorCreate(colorSpaceRef, components);
+
+    return (CGColorRef)[(id)result autorelease];
 }
 
 @end

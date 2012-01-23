@@ -126,15 +126,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
 + (BOOL)isDefiningAnimation;
 
 /*
- * Whether this view class does its own drawing, as determined by the
- * implementation of a <drawRect:> method.
- *
- * If this is `YES`, a bitmap context is automatically created for drawing, and
- * the results of any drawing are cached in its layer.
- */
-+ (BOOL)doesCustomDrawing;
-
-/*
  * Call the given block on the receiver and all of its subviews, recursively.
  */
 - (void)recursivelyEnumerateViewsUsingBlock:(void (^)(VELView *))block;

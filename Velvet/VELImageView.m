@@ -62,7 +62,7 @@
 
     // assume that our image is already at the correct pixel density for the
     // screen
-    self.layer.contentsScale = 1;
+    self.matchesWindowScaleFactor = NO;
 
     return self;
 }

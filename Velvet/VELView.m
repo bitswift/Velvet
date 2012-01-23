@@ -1173,14 +1173,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
     if (self.clearsContextBeforeDrawing)
         CGContextClearRect(context, drawingRegion);
 
-    // scale the context so that 1 point = layer.contentsScale pixels (like iOS)
-    CGAffineTransform pointsToPixels = CGAffineTransformMakeScale(layer.contentsScale, layer.contentsScale);
-
-    CGContextConcatCTM(context, pointsToPixels);
-
-    // convert drawingRegion from _pixels_ to _points_
-    drawingRegion = CGRectApplyAffineTransform(drawingRegion, CGAffineTransformInvert(pointsToPixels));
-
     // enable sub-pixel antialiasing (if drawing onto anything opaque)
     CGContextSetAllowsAntialiasing(context, YES);
     CGContextSetAllowsFontSmoothing(context, YES);

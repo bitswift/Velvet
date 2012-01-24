@@ -6,26 +6,28 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import "NSWindowAdditionsTests.h"
 #import <Velvet/Velvet.h>
 #import <Cocoa/Cocoa.h>
 
-@implementation NSWindowAdditionsTests
+SpecBegin(NSWindowAdditions)
 
-- (void)testInitializationWithContentRect {
-    NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 500, 500)];
-    STAssertNotNil(window, @"");
+describe(@"NSWindowAdditions", ^{
+    it(@"Initializes with contentRect", ^{
+        NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 500, 500)];
 
-    CGRect contentRect = [window contentRectForFrameRect:window.frame];
-    STAssertTrue(CGSizeEqualToSize(contentRect.size, CGSizeMake(500, 500)), @"");
-}
+        expect(window).not.toBeNil();
 
-- (void)testInitializationWithContentRectAndStyle {
-    NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 500, 500) styleMask:NSBorderlessWindowMask];
-    STAssertNotNil(window, @"");
+        CGRect contentRect = [window contentRectForFrameRect:window.frame];
+        expect(contentRect.size).toEqual(CGSizeMake(500, 500));
+    });
 
-    CGRect contentRect = [window contentRectForFrameRect:window.frame];
-    STAssertTrue(CGSizeEqualToSize(contentRect.size, CGSizeMake(500, 500)), @"");
-}
+    it(@"Initializes with content rect and style", ^{
+        NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(100, 100, 500, 500) styleMask:NSBorderlessWindowMask];
+        expect(window).not.toBeNil();
 
-@end
+        CGRect contentRect = [window contentRectForFrameRect:window.frame];
+        expect(contentRect.size).toEqual(CGSizeMake(500, 500));
+    });
+});
+
+SpecEnd

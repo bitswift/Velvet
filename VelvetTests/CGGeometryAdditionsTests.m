@@ -78,42 +78,29 @@ describe(@"CGGeometryAdditions", ^{
                 edge = CGRectMinXEdge;
                 expectedSlice = CGRectMake(0, 0, 20, 100);
                 expectedRemainder = CGRectMake(70, 0, 30, 100);
-
-                CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
-
-                expect(slice).toEqual(expectedSlice);
-                expect(remainder).toEqual(expectedRemainder);
             });
 
             it(@"divides from MinYEdge", ^{
                 edge = CGRectMinYEdge;
                 expectedSlice = CGRectMake(0, 0, 100, 25);
                 expectedRemainder = CGRectMake(0, 90, 100, 10);
-
-                CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
-
-                expect(slice).toEqual(expectedSlice);
-                expect(remainder).toEqual(expectedRemainder);
             });
 
             it(@"divides from MaxXEdge", ^{
                 edge = CGRectMaxXEdge;
                 expectedSlice = CGRectMake(70, 0, 30, 100);
                 expectedRemainder = CGRectMake(0, 0, 20, 100);
-
-                CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
-
-                expect(slice).toEqual(expectedSlice);
-                expect(remainder).toEqual(expectedRemainder);
             });
 
             it(@"divides from MaxYEdge", ^{
                 edge = CGRectMaxYEdge;
                 expectedSlice = CGRectMake(0, 90, 100, 10);
                 expectedRemainder = CGRectMake(0, 0, 100, 25);
-
+            });
+            
+            after(^{
                 CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
-
+                
                 expect(slice).toEqual(expectedSlice);
                 expect(remainder).toEqual(expectedRemainder);
             });

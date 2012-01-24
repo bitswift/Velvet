@@ -106,14 +106,18 @@ describe(@"NSViewAdditions", ^{
         expect([superview descendantViewAtPoint:outsidePoint]).toBeNil();
     });
 
-    it(@"implements pointInside", ^{
+    describe(@"pointInside", ^{
         NSView *view = [[NSView alloc] initWithFrame:CGRectMake(20, 20, 80, 80)];
 
-        CGPoint insidePoint = CGPointMake(51, 31);
-        expect([view pointInside:insidePoint]).toBeTruthy();
+        it(@"returns true when given a point inside the receiver's bounds", ^{
+            CGPoint insidePoint = CGPointMake(51, 31);
+            expect([view pointInside:insidePoint]).toBeTruthy();
+        });
 
-        CGPoint outsidePoint = CGPointMake(49, 200);
-        expect([view pointInside:outsidePoint]).toBeFalsy();
+        it(@"returns false when given a point outside the receiver's bounds", ^{
+            CGPoint outsidePoint = CGPointMake(49, 200);
+            expect([view pointInside:outsidePoint]).toBeFalsy();
+        });
     });
 });
 

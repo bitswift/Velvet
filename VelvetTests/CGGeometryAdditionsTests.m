@@ -97,10 +97,10 @@ describe(@"CGGeometryAdditions", ^{
                 expectedSlice = CGRectMake(0, 90, 100, 10);
                 expectedRemainder = CGRectMake(0, 0, 100, 25);
             });
-            
+
             after(^{
                 CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, edge);
-                
+
                 expect(slice).toEqual(expectedSlice);
                 expect(remainder).toEqual(expectedRemainder);
             });
@@ -110,18 +110,21 @@ describe(@"CGGeometryAdditions", ^{
     describe(@"CGRectDivideWithPadding", ^{
         before(^{
             rect = CGRectMake(50, 50, 100, 100);
-            expectedSlice = CGRectMake(50, 50, 40, 100);
-            expectedRemainder = CGRectMake(90 + 10, 50, 50, 100);
         });
 
         it(@"divides with padding", ^{
+            CGRect expectedSlice = CGRectMake(50, 50, 40, 100);
+            CGRect expectedRemainder = CGRectMake(90 + 10, 50, 50, 100);
+
             CGRectDivideWithPadding(rect, &slice, &remainder, 40, 10, CGRectMinXEdge);
 
             expect(slice).toEqual(expectedSlice);
-            expect(remainder).toEqual(remainder);
+            expect(remainder).toEqual(expectedRemainder);
         });
 
         it(@"divides with a null slice", ^{
+            CGRect expectedRemainder = CGRectMake(90 + 10, 50, 50, 100);
+
             CGRectDivideWithPadding(rect, NULL, &remainder, 40, 10, CGRectMinXEdge);
             expect(remainder).toEqual(expectedRemainder);
         });

@@ -6,140 +6,119 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import "NSViewAdditionsTests.h"
 #import <Velvet/Velvet.h>
 #import <Cocoa/Cocoa.h>
 
-@interface NSViewAdditionsTests ()
-@property (nonatomic, strong) VELWindow *window;
-@end
+SpecBegin(NSViewAdditions)
 
-@implementation NSViewAdditionsTests
-@synthesize window = m_window;
+describe(@"NSViewAdditions", ^{
+    __block VELWindow *window;
+    __block NSView *theNSView;
+    before(^{
+        window = [[VELWindow alloc] initWithContentRect:CGRectMake(100, 100, 500, 500)];
+        theNSView = [[NSView alloc] initWithFrame:CGRectMake(20, 50, 100, 200)];
+    });
 
-- (void)setUp {
-    self.window = [[VELWindow alloc] initWithContentRect:CGRectMake(100, 100, 500, 500)];
-}
+    it(@"conforms to VELBridgedView", ^{
+        expect([NSView class]).toConformTo(@protocol(VELBridgedView));
+        expect(theNSView).toConformTo(@protocol(VELBridgedView));
+    });
 
-- (void)tearDown {
-    self.window = nil;
-}
+    describe(@"Geometry conversion", ^{
+        before(^{
+            [window.contentView addSubview:theNSView];
+        });
 
-- (void)testConformsToVELBridgedView {
-    STAssertTrue([NSView conformsToProtocol:@protocol(VELBridgedView)], @"");
+        it(@"converts from window point", ^{
+            CGPoint point = CGPointMake(125, 255);
 
-    NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
-    STAssertTrue([view conformsToProtocol:@protocol(VELBridgedView)], @"");
-}
+            expect([theNSView convertFromWindowPoint:point]).toEqual([theNSView convertPoint:point fromView:nil]);
+        });
 
-- (void)testConvertFromWindowPoint {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectMake(20, 50, 100, 200)];
-    [self.window.contentView addSubview:view];
+        it(@"converts to window point", ^{
+            CGPoint point = CGPointMake(125, 255);
 
-    CGPoint point = CGPointMake(125, 255);
-    STAssertTrue(CGPointEqualToPoint([view convertFromWindowPoint:point], [view convertPoint:point fromView:nil]), @"");
-}
+            expect([theNSView convertToWindowPoint:point]).toEqual([theNSView convertPoint:point toView:nil]);
+        });
 
-- (void)testConvertToWindowPoint {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectMake(20, 50, 100, 200)];
-    [self.window.contentView addSubview:view];
+        it(@"converts to window rect", ^{
+            CGRect rect = CGRectMake(30, 60, 145, 275);
 
-    CGPoint point = CGPointMake(125, 255);
-    STAssertTrue(CGPointEqualToPoint([view convertToWindowPoint:point], [view convertPoint:point toView:nil]), @"");
-}
+            expect([theNSView convertToWindowRect:rect]).toEqual([theNSView convertRect:rect toView:nil]);
+        });
 
-- (void)testConvertFromWindowRect {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectMake(20, 50, 100, 200)];
-    [self.window.contentView addSubview:view];
+        it(@"converts from window rect", ^{
+            CGRect rect = CGRectMake(30, 60, 145, 275);
 
-    CGRect rect = CGRectMake(30, 60, 145, 275);
-    STAssertTrue(CGRectEqualToRect([view convertToWindowRect:rect], [view convertRect:rect toView:nil]), @"");
-}
+            expect([theNSView convertFromWindowRect:rect]).toEqual([theNSView convertRect:rect fromView:nil]);
+        });
+    });
 
-- (void)testConvertToWindowRect {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectMake(20, 50, 100, 200)];
-    [self.window.contentView addSubview:view];
+    it(@"can have a hostView", ^{
+        expect(theNSView.hostView).toBeNil();
 
-    CGRect rect = CGRectMake(30, 60, 145, 275);
-    STAssertTrue(CGRectEqualToRect([view convertFromWindowRect:rect], [view convertRect:rect fromView:nil]), @"");
-}
+        VELNSView *hostView = [[VELNSView alloc] init];
+        theNSView.hostView = hostView;
 
-- (void)testLayer {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
-    [view setWantsLayer:YES];
+        expect(theNSView.hostView).toEqual(hostView);
+    });
 
-    STAssertNotNil(view.layer, @"");
-}
+    it(@"does not throw an exception in -ancestorDidLayout", ^{
+        [theNSView ancestorDidLayout];
+    });
 
-- (void)testHostView {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
+    it(@"ancestorNSVelvetView is set to the first NSVelvetView in the hierarchy", ^{
+        NSVelvetView *theNSVelvetView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
+        [theNSVelvetView addSubview:theNSView];
+        expect(theNSView.ancestorNSVelvetView).toEqual(theNSVelvetView);
+    });
 
-    STAssertNil(view.hostView, @"");
+    it(@"ancestorScrollView is set to the first NSScrollView in the hierarchy", ^{
+        NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:CGRectZero];
+        expect(scrollView.ancestorScrollView).toEqual(scrollView);
 
-    VELNSView *hostView = [[VELNSView alloc] init];
-    view.hostView = hostView;
+        NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
 
-    STAssertEquals(view.hostView, hostView, @"");
-}
+        [scrollView setDocumentView:view];
 
-- (void)testAncestorDidLayout {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
-    STAssertNoThrow([view ancestorDidLayout], @"");
-}
+        expect(view.ancestorScrollView).toEqual(scrollView);
+    });
 
-- (void)testAncestorNSVelvetView {
-    NSVelvetView *velvetView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
+    it(@"implements willMoveToNSVelvetView and didMoveFromNSVelvetView", ^{
+        NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
+        [view willMoveToNSVelvetView:nil];
+        [view didMoveFromNSVelvetView:nil];
+    });
 
-    NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
-    [velvetView addSubview:view];
+    it(@"implements descendantViewAtPoint", ^{
+        NSView *superview = [[NSView alloc] initWithFrame:CGRectMake(20, 20, 80, 80)];
 
-    STAssertEquals(view.ancestorNSVelvetView, velvetView, @"");
-}
+        NSView *subview = [[NSView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
+        [superview addSubview:subview];
 
-- (void)testAncestorScrollView {
-    NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:CGRectZero];
-    STAssertEquals(scrollView.ancestorScrollView, scrollView, @"");
+        CGPoint subviewPoint = CGPointMake(51, 31);
+        expect([superview descendantViewAtPoint:subviewPoint]).toEqual(subview);
 
-    NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
-    [scrollView setDocumentView:view];
+        CGPoint superviewPoint = CGPointMake(49, 29);
+        expect([superview descendantViewAtPoint:superviewPoint]).toEqual(superview);
 
-    STAssertEquals(view.ancestorScrollView, scrollView, @"");
-}
+        CGPoint outsidePoint = CGPointMake(49, 200);
+        expect([superview descendantViewAtPoint:outsidePoint]).toBeNil();
+    });
 
-- (void)testWillMoveToNSVelvetView {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
-    STAssertNoThrow([view willMoveToNSVelvetView:nil], @"");
-}
+    describe(@"pointInside", ^{
+        NSView *view = [[NSView alloc] initWithFrame:CGRectMake(20, 20, 80, 80)];
 
-- (void)testDidMoveFromNSVelvetView {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
-    STAssertNoThrow([view didMoveFromNSVelvetView:nil], @"");
-}
+        it(@"returns true when given a point inside the receiver's bounds", ^{
+            CGPoint insidePoint = CGPointMake(51, 31);
+            expect([view pointInside:insidePoint]).toBeTruthy();
+        });
 
-- (void)testDescendantViewAtPoint {
-    NSView *superview = [[NSView alloc] initWithFrame:CGRectMake(20, 20, 80, 80)];
+        it(@"returns false when given a point outside the receiver's bounds", ^{
+            CGPoint outsidePoint = CGPointMake(49, 200);
+            expect([view pointInside:outsidePoint]).toBeFalsy();
+        });
+    });
+});
 
-    NSView *subview = [[NSView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
-    [superview addSubview:subview];
-
-    CGPoint subviewPoint = CGPointMake(51, 31);
-    STAssertEquals([superview descendantViewAtPoint:subviewPoint], subview, @"");
-
-    CGPoint superviewPoint = CGPointMake(49, 29);
-    STAssertEquals([superview descendantViewAtPoint:superviewPoint], superview, @"");
-
-    CGPoint outsidePoint = CGPointMake(49, 200);
-    STAssertNil([superview descendantViewAtPoint:outsidePoint], @"");
-}
-
-- (void)testPointInside {
-    NSView *view = [[NSView alloc] initWithFrame:CGRectMake(20, 20, 80, 80)];
-
-    CGPoint insidePoint = CGPointMake(51, 31);
-    STAssertTrue([view pointInside:insidePoint], @"");
-
-    CGPoint outsidePoint = CGPointMake(49, 200);
-    STAssertFalse([view pointInside:outsidePoint], @"");
-}
-
-@end
+SpecEnd

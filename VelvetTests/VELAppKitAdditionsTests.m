@@ -6,20 +6,21 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import "VELAppKitAdditionsTests.h"
 #import <Cocoa/Cocoa.h>
 #import <Velvet/Velvet.h>
 
-@implementation VELAppKitAdditionsTests
+SpecBegin(VELAppKitAdditionsTests)
 
-- (void)testNSEqualEdgeInsets {
-    NSEdgeInsets insets = NSEdgeInsetsMake(2, 3, 4, 5);
+describe(@"VELAppKitAdditions", ^{
+    it(@"can compare NSEdgeInets", ^{
+        NSEdgeInsets insets = NSEdgeInsetsMake(2, 3, 4, 5);
 
-    NSEdgeInsets equalInsets = NSEdgeInsetsMake(2, 3, 4, 5);
-    STAssertTrue(NSEqualEdgeInsets(insets, equalInsets), @"");
+        NSEdgeInsets equalInsets = NSEdgeInsetsMake(2, 3, 4, 5);
+        expect(NSEqualEdgeInsets(insets, equalInsets)).toBeTruthy();
 
-    NSEdgeInsets inequalInsets = NSEdgeInsetsMake(0, 0, 4, 5);
-    STAssertFalse(NSEqualEdgeInsets(insets, inequalInsets), @"");
-}
+        NSEdgeInsets inequalInsets = NSEdgeInsetsMake(0, 0, 4, 5);
+        expect(NSEqualEdgeInsets(insets, inequalInsets)).toBeFalsy();
+    });
+});
 
-@end
+SpecEnd

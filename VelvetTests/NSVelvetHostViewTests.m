@@ -6,18 +6,19 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import "NSVelvetHostViewTests.h"
-
 #import <Cocoa/Cocoa.h>
 #import "NSVelvetHostView.h"
 #import "NSVelvetView.h"
 
-@implementation NSVelvetHostViewTests
+SpecBegin(NSVelvetHostView)
 
-- (void)testVelvetViewProperty {
-    NSVelvetView *view = [[NSVelvetView alloc] init];
-    NSVelvetHostView *hostView = [(id)view performSelector:@selector(velvetHostView)];
-    STAssertEqualObjects(hostView.velvetView, view, @"");
-}
+describe(@"NSVelvetHostView", ^{
+    it(@"has a hostView whose velvetView is the receiver.", ^{
+        NSVelvetView *view = [[NSVelvetView alloc] init];
+        NSVelvetHostView *hostView = [(id)view performSelector:@selector(velvetHostView)];
 
-@end
+        expect(hostView.velvetView).toEqual(view);
+    });
+});
+
+SpecEnd

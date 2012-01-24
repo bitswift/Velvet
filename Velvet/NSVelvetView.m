@@ -7,9 +7,9 @@
 //
 
 #import "NSVelvetView.h"
-#import <QuartzCore/QuartzCore.h>
 #import "CALayer+GeometryAdditions.h"
 #import "CATransaction+BlockAdditions.h"
+#import "EXTScope.h"
 #import "NSVelvetHostView.h"
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
@@ -18,8 +18,8 @@
 #import "VELNSViewPrivate.h"
 #import "VELView.h"
 #import "VELViewPrivate.h"
+#import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
-#import "EXTScope.h"
 
 static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, void *context) {
     VELNSView *hostA = viewA.hostView;
@@ -475,7 +475,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (NSDragOperation)draggingUpdated:(id<NSDraggingInfo>)sender {
-    id<VELDraggingDestination> view = [self deepestViewSupportingDraggingInfo:sender];
+    VELView<VELDraggingDestination> *view = [self deepestViewSupportingDraggingInfo:sender];
 
     if (self.lastDraggingDestination != view) {
         if ([self.lastDraggingDestination respondsToSelector:@selector(draggingExited:)]) {
@@ -496,7 +496,14 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         return [view draggingUpdated:sender];
     }
 
-    return [super draggingUpdated:sender];
+    CGPoint draggingLocation = sender.draggingLocation;
+    if (view && [view pointInside:[view convertFromWindowPoint:draggingLocation]]) {
+        // consider this to be still dragging
+        return [super draggingUpdated:sender];
+    } else {
+        // otherwise, remove dragging indicators and such
+        return NSDragOperationNone;
+    }
 }
 
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {

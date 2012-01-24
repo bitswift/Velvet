@@ -13,7 +13,7 @@
 SpecBegin(NSVelvetHostView)
 
 describe(@"NSVelvetHostView", ^{
-    it(@"has a hostView who's velvetView is the receiver.", ^{
+    it(@"has a hostView whose velvetView is the receiver.", ^{
         NSVelvetView *view = [[NSVelvetView alloc] init];
         NSVelvetHostView *hostView = [(id)view performSelector:@selector(velvetHostView)];
 

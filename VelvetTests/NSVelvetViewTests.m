@@ -16,11 +16,9 @@ SpecBegin(NSVelvetView)
 
 describe(@"NSVelvetView", ^{
     __block VELWindow *window;
-    __block NSVelvetView *theNSVelvetView;
-    before(^{
-       window = [[VELWindow alloc] initWithContentRect:CGRectMake(100, 100, 500, 500)];
-       theNSVelvetView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
 
+    before(^{
+        window = [[VELWindow alloc] initWithContentRect:CGRectMake(100, 100, 500, 500)];
     });
 
     it(@"can set the guest view", ^{
@@ -31,12 +29,12 @@ describe(@"NSVelvetView", ^{
     });
 
     it(@"should set its rootView's nextResponder to the contentView", ^{
-      expect(window.rootView.nextResponder).toEqual(window.contentView);
+        expect(window.rootView.nextResponder).toEqual(window.contentView);
 
-      VELView *view = [[VELView alloc] init];
-      window.rootView = view;
+        VELView *view = [[VELView alloc] init];
+        window.rootView = view;
 
-      expect(view.nextResponder).toEqual(window.contentView);
+        expect(view.nextResponder).toEqual(window.contentView);
     });
 
     it(@"has a nextResponder which is the window", ^{
@@ -44,15 +42,15 @@ describe(@"NSVelvetView", ^{
     });
 
     it(@"conforms to VELBridgedView", ^{
-        expect(theNSVelvetView).toConformTo(@protocol(VELBridgedView));
+        expect(window.contentView).toConformTo(@protocol(VELBridgedView));
     });
 
     it(@"conforms to VELHostView", ^{
-        expect(theNSVelvetView).toConformTo(@protocol(VELHostView));
+        expect(window.contentView).toConformTo(@protocol(VELHostView));
     });
 
     it(@"is initialized with an ancestorNSVelvetView", ^{
-        expect(theNSVelvetView.ancestorNSVelvetView).toEqual(theNSVelvetView);
+        expect(window.contentView.ancestorNSVelvetView).toEqual(window.contentView);
     });
 
     describe(@"descendantViewAtPoint", ^{

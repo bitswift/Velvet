@@ -6,87 +6,89 @@
 //  Copyright (c) 2012 Bitswift. All rights reserved.
 //
 
-#import "NSVelvetViewTests.h"
 #import <Cocoa/Cocoa.h>
 #import <Velvet/Velvet.h>
 
 @interface TestVELView : VELView
 @end
 
-@interface NSVelvetViewTests ()
-@property (nonatomic, strong) VELWindow *window;
-@end
+SpecBegin(NSVelvetView)
 
-@implementation NSVelvetViewTests
-@synthesize window = m_window;
+describe(@"NSVelvetView", ^{
+    __block VELWindow *window;
 
-- (void)setUp {
-    self.window = [[VELWindow alloc] initWithContentRect:CGRectMake(100, 100, 500, 500)];
-}
+    before(^{
+        window = [[VELWindow alloc] initWithContentRect:CGRectMake(100, 100, 500, 500)];
+    });
 
-- (void)tearDown {
-    self.window = nil;
-}
+    it(@"can set the guest view", ^{
+        TestVELView *containerView = [[TestVELView alloc] init];
+        window.contentView.guestView = containerView;
 
-- (void)testSettingGuestViewOnNSVelvetView {
-    TestVELView *containerView = [[TestVELView alloc] init];
-    self.window.contentView.guestView = containerView;
+        expect(window.contentView.guestView).toEqual(containerView);
+    });
 
-    STAssertEqualObjects(self.window.contentView.guestView, containerView, @"");
-}
+    it(@"should set its rootView's nextResponder to the contentView", ^{
+        expect(window.rootView.nextResponder).toEqual(window.contentView);
 
-- (void)testResponderChain {
-    STAssertEquals(self.window.rootView.nextResponder, self.window.contentView, @"");
+        VELView *view = [[VELView alloc] init];
+        window.rootView = view;
 
-    VELView *view = [[VELView alloc] init];
-    self.window.rootView = view;
+        expect(view.nextResponder).toEqual(window.contentView);
+    });
 
-    STAssertEquals(view.nextResponder, self.window.contentView, @"");
-    STAssertEquals(self.window.contentView.nextResponder, self.window, @"");
-}
+    it(@"has a nextResponder which is the window", ^{
+        expect(window.contentView.nextResponder).toEqual(window);
+    });
 
-- (void)testConformsToVELBridgedView {
-    STAssertTrue([NSVelvetView conformsToProtocol:@protocol(VELBridgedView)], @"");
+    it(@"conforms to VELBridgedView", ^{
+        expect(window.contentView).toConformTo(@protocol(VELBridgedView));
+    });
 
-    NSVelvetView *view = [[NSVelvetView alloc] initWithFrame:CGRectZero];
-    STAssertTrue([view conformsToProtocol:@protocol(VELBridgedView)], @"");
-}
+    it(@"conforms to VELHostView", ^{
+        expect(window.contentView).toConformTo(@protocol(VELHostView));
+    });
 
-- (void)testConformsToVELHostView {
-    STAssertTrue([NSVelvetView conformsToProtocol:@protocol(VELHostView)], @"");
+    it(@"should be its ancestorNSVelvetView", ^{
+        expect(window.contentView.ancestorNSVelvetView).toEqual(window.contentView);
+    });
 
-    NSVelvetView *view = [[NSVelvetView alloc] initWithFrame:CGRectZero];
-    STAssertTrue([view conformsToProtocol:@protocol(VELHostView)], @"");
-}
+    describe(@"descendantViewAtPoint", ^{
+        __block NSVelvetView *velvetView;
+        __block VELView *view;
 
-- (void)testAncestorNSVelvetView {
-    NSVelvetView *view = [[NSVelvetView alloc] initWithFrame:CGRectZero];
-    STAssertEquals(view.ancestorNSVelvetView, view, @"");
-}
+        before(^{
+            velvetView = window.contentView;
+            view = [[VELView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
+            [velvetView.guestView addSubview:view];
+        });
 
-- (void)testDescendantViewAtPoint {
-    NSVelvetView *velvetView = self.window.contentView;
 
-    VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
-    [velvetView.guestView addSubview:view];
+        it(@"returns its guestView's subview when the given point is inside the subview's bounds", ^{
+            CGPoint guestSubviewPoint = CGPointMake(51, 31);
+            expect([velvetView descendantViewAtPoint:guestSubviewPoint]).toEqual(view);
+        });
 
-    CGPoint guestSubviewPoint = CGPointMake(51, 31);
-    STAssertEquals([velvetView descendantViewAtPoint:guestSubviewPoint], view, @"");
+        it(@"returns its guestView when the given point is inside the guestView's bounds", ^{
+            CGPoint guestViewPoint = CGPointMake(49, 29);
+            expect([velvetView descendantViewAtPoint:guestViewPoint]).toEqual(velvetView.guestView);
+        });
 
-    CGPoint guestViewPoint = CGPointMake(49, 29);
-    STAssertEquals([velvetView descendantViewAtPoint:guestViewPoint], velvetView.guestView, @"");
+        it(@"returns nil when the given point is outside the receiver's bounds", ^{
+            CGPoint outsidePoint = CGPointMake(49, 1000);
+            expect([velvetView descendantViewAtPoint:outsidePoint]).toBeNil();
+        });
 
-    CGPoint outsidePoint = CGPointMake(49, 1000);
-    STAssertNil([velvetView descendantViewAtPoint:outsidePoint], @"");
-}
+    });
+});
 
-@end
+SpecEnd
 
 @implementation TestVELView
 
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view {
     [super didMoveFromNSVelvetView:view];
-    
+
     // The NSVelvetView's guestView should be self.
     NSAssert(self.ancestorNSVelvetView.guestView == self, @"");
 }

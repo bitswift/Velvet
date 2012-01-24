@@ -67,13 +67,13 @@ describe(@"NSViewAdditions", ^{
         [theNSView ancestorDidLayout];
     });
 
-    it(@"sets its subviews ancestorNSVelvetView to the receiver", ^{
+    it(@"ancestorNSVelvetView is set to the first NSVelvetView in the hierarchy", ^{
         NSVelvetView *theNSVelvetView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
         [theNSVelvetView addSubview:theNSView];
         expect(theNSView.ancestorNSVelvetView).toEqual(theNSVelvetView);
     });
 
-    it(@"sets its subviews ancestorScrollView to the receiver's scrollView", ^{
+    it(@"ancestorScrollView is set to the first NSScrollView in the hierarchy", ^{
         NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:CGRectZero];
         expect(scrollView.ancestorScrollView).toEqual(scrollView);
 

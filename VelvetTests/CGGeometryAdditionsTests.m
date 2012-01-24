@@ -38,7 +38,7 @@ describe(@"CGGeometryAdditions", ^{
 
         describe(@"with null values", ^{
             __block CGRect expectedRect;
-            beforeEach(^{
+            before(^{
                 choppingRect = CGRectMake(25, 25, 10, 10);
                 expectedRect = CGRectMake(35, 0, 15, 50);
             });
@@ -69,7 +69,7 @@ describe(@"CGGeometryAdditions", ^{
             __block CGRectEdge edge;
             __block CGRect expectedSlice, expectedRemainder;
 
-            beforeEach(^{
+            before(^{
                 rect = CGRectMake(0, 0, 100, 100);
                 choppingRect = CGRectMake(20, 25, 50, 65);
             });
@@ -108,7 +108,7 @@ describe(@"CGGeometryAdditions", ^{
     });
 
     describe(@"CGRectDivideWithPadding", ^{
-        beforeEach(^{
+        before(^{
             rect = CGRectMake(50, 50, 100, 100);
             expectedSlice = CGRectMake(50, 50, 40, 100);
             expectedRemainder = CGRectMake(90 + 10, 50, 50, 100);

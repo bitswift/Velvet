@@ -182,7 +182,6 @@
 		1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CATransaction+BlockAdditions.m"; sourceTree = "<group>"; };
 		1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGBitmapContext+PixelFormatAdditions.h"; sourceTree = "<group>"; };
 		1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGBitmapContext+PixelFormatAdditions.m"; sourceTree = "<group>"; };
-		1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewTests.h; sourceTree = "<group>"; };
 		1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetViewTests.m; sourceTree = "<group>"; };
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
 		1E7BBD3F147B157B0010375D /* VELLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabel.m; sourceTree = "<group>"; };
@@ -443,7 +442,6 @@
 			children = (
 				D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
-				1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */,
 				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
 				D020F48A14C3923400C466E1 /* NSViewAdditionsTests.h */,
 				D020F48B14C3923400C466E1 /* NSViewAdditionsTests.m */,

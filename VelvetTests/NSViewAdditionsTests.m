@@ -64,7 +64,7 @@ describe(@"NSViewAdditions", ^{
     });
 
     it(@"does not throw an exception in -ancestorDidLayout", ^{
-        STAssertNoThrow([theNSView ancestorDidLayout], @"");
+        [theNSView ancestorDidLayout];
     });
 
     it(@"sets its subviews ancestorNSVelvetView to the receiver", ^{
@@ -86,8 +86,8 @@ describe(@"NSViewAdditions", ^{
 
     it(@"can move to a nil NSVelvetView", ^{
         NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
-        STAssertNoThrow([view willMoveToNSVelvetView:nil], @"");
-        STAssertNoThrow([view didMoveFromNSVelvetView:nil], @"");
+        [view willMoveToNSVelvetView:nil];
+        [view didMoveFromNSVelvetView:nil];
     });
 
     it(@"implements descendantViewAtPoint", ^{

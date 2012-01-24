@@ -55,7 +55,7 @@ describe(@"NSVelvetView", ^{
         expect(theNSVelvetView.ancestorNSVelvetView).toEqual(theNSVelvetView);
     });
 
-    context(@"descendantViewAtPoint", ^{
+    describe(@"descendantViewAtPoint", ^{
         NSVelvetView *velvetView = window.contentView;
         VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
         [velvetView.guestView addSubview:view];

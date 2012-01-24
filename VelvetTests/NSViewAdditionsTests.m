@@ -24,7 +24,7 @@ describe(@"NSViewAdditions", ^{
         expect(theNSView).toConformTo(@protocol(VELBridgedView));
     });
 
-    context(@"Geometry conversion", ^{
+    describe(@"Geometry conversion", ^{
         before(^{
             [window.contentView addSubview:theNSView];
         });

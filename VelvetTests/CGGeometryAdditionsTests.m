@@ -36,7 +36,7 @@ describe(@"CGGeometryAdditions", ^{
             expect(CGRectIsEmpty(remainder)).toBeTruthy();
         });
 
-        context(@"with null values", ^{
+        describe(@"with null values", ^{
             __block CGRect expectedRect;
             beforeEach(^{
                 choppingRect = CGRectMake(25, 25, 10, 10);
@@ -65,7 +65,7 @@ describe(@"CGGeometryAdditions", ^{
             expect(CGRectIsNull(remainder)).toBeTruthy();
         });
 
-        context(@"with a specified edge", ^{
+        describe(@"with a specified edge", ^{
             __block CGRectEdge edge;
             __block CGRect expectedSlice, expectedRemainder;
 

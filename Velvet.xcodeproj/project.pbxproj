@@ -195,7 +195,6 @@
 		D01B962D14C1956100CBDD8E /* VELViewLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewLayer.m; sourceTree = "<group>"; };
 		D01CF3D21479B18400C88D2B /* VELNSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSView.h; sourceTree = "<group>"; };
 		D01CF3D31479B18400C88D2B /* VELNSView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSView.m; sourceTree = "<group>"; };
-		D020F48A14C3923400C466E1 /* NSViewAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSViewAdditionsTests.h; sourceTree = "<group>"; };
 		D020F48B14C3923400C466E1 /* NSViewAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSViewAdditionsTests.m; sourceTree = "<group>"; };
 		D020F49114C3959500C466E1 /* NSWindow+InitializationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+InitializationAdditions.h"; sourceTree = "<group>"; };
 		D020F49214C3959500C466E1 /* NSWindow+InitializationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+InitializationAdditions.m"; sourceTree = "<group>"; };
@@ -443,7 +442,6 @@
 				D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
 				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
-				D020F48A14C3923400C466E1 /* NSViewAdditionsTests.h */,
 				D020F48B14C3923400C466E1 /* NSViewAdditionsTests.m */,
 				D020F49514C3972E00C466E1 /* NSWindowAdditionsTests.h */,
 				D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */,

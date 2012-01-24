@@ -224,7 +224,6 @@
 		D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELBridgedViewAdditions.m"; sourceTree = "<group>"; };
 		D0A96C0314B7AE8B00A64F6F /* AppKit+GeometryAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppKit+GeometryAdditions.h"; sourceTree = "<group>"; };
 		D0A96C0414B7AE8B00A64F6F /* AppKit+GeometryAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppKit+GeometryAdditions.m"; sourceTree = "<group>"; };
-		D0A96C0B14B7AF1F00A64F6F /* VELAppKitAdditionsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELAppKitAdditionsTests.h; sourceTree = "<group>"; };
 		D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELAppKitAdditionsTests.m; sourceTree = "<group>"; };
 		D0B23AF71491872B009CF46A /* VELImageViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELImageViewTests.h; sourceTree = "<group>"; };
 		D0B23AF81491872B009CF46A /* VELImageViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELImageViewTests.m; sourceTree = "<group>"; };
@@ -443,7 +442,6 @@
 				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
 				D020F48B14C3923400C466E1 /* NSViewAdditionsTests.m */,
 				D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */,
-				D0A96C0B14B7AF1F00A64F6F /* VELAppKitAdditionsTests.h */,
 				D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */,
 				D07B72A314C4FC5500AA19DD /* VELControlTests.h */,
 				D07B72A414C4FC5500AA19DD /* VELControlTests.m */,

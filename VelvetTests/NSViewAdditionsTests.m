@@ -84,7 +84,7 @@ describe(@"NSViewAdditions", ^{
         expect(view.ancestorScrollView).toEqual(scrollView);
     });
 
-    it(@"can move to a nil NSVelvetView", ^{
+    it(@"implements willMoveToNSVelvetView and didMoveFromNSVelvetView", ^{
         NSView *view = [[NSView alloc] initWithFrame:CGRectZero];
         [view willMoveToNSVelvetView:nil];
         [view didMoveFromNSVelvetView:nil];
@@ -99,7 +99,7 @@ describe(@"NSViewAdditions", ^{
         CGPoint subviewPoint = CGPointMake(51, 31);
         expect([superview descendantViewAtPoint:subviewPoint]).toEqual(subview);
 
-    CGPoint superviewPoint = CGPointMake(49, 29);
+        CGPoint superviewPoint = CGPointMake(49, 29);
         expect([superview descendantViewAtPoint:superviewPoint]).toEqual(superview);
 
         CGPoint outsidePoint = CGPointMake(49, 200);

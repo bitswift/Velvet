@@ -54,19 +54,31 @@ describe(@"NSVelvetView", ^{
     });
 
     describe(@"descendantViewAtPoint", ^{
-        NSVelvetView *velvetView = window.contentView;
-        VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
-        [velvetView.guestView addSubview:view];
+        __block NSVelvetView *velvetView;
+        __block VELView *view;
 
-        CGPoint guestSubviewPoint = CGPointMake(51, 31);
-        expect([velvetView descendantViewAtPoint:guestSubviewPoint]).toEqual(view);
+        before(^{
+            velvetView = window.contentView;
+            view = [[VELView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
+            [velvetView.guestView addSubview:view];
+        });
 
 
-        CGPoint guestViewPoint = CGPointMake(49, 29);
-        expect([velvetView descendantViewAtPoint:guestViewPoint]).toEqual(view);
+        it(@"returns its guestView's subview when the given point is inside the subview's bounds", ^{
+            CGPoint guestSubviewPoint = CGPointMake(51, 31);
+            expect([velvetView descendantViewAtPoint:guestSubviewPoint]).toEqual(view);
+        });
 
-        CGPoint outsidePoint = CGPointMake(49, 1000);
-        expect([velvetView descendantViewAtPoint:outsidePoint]).toBeNil();
+        it(@"returns its guestView when the given point is inside the guestView's bounds", ^{
+            CGPoint guestViewPoint = CGPointMake(49, 29);
+            expect([velvetView descendantViewAtPoint:guestViewPoint]).toEqual(velvetView.guestView);
+        });
+
+        it(@"returns nil when the given point is outside the receiver's bounds", ^{
+            CGPoint outsidePoint = CGPointMake(49, 1000);
+            expect([velvetView descendantViewAtPoint:outsidePoint]).toBeNil();
+        });
+
     });
 });
 

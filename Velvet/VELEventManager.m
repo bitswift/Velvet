@@ -26,6 +26,14 @@
  */
 @property (nonatomic, assign, getter = isHandlingEvent) BOOL handlingEvent;
 
+/**
+ * Returns YES if an event was generated in Velvet for the last mouse down event
+ * that routed through the event manager.
+ *
+ * This is used to decide whether to send mouse drag and up events in Velvet.
+ */
+@property (nonatomic, assign) BOOL velvetHandledLastMouseDown;
+
 /*
  * Turns an event into an `NSResponder` message, and attempts to send it to the
  * given responder. If neither `responder` nor the rest of its responder chain
@@ -53,6 +61,7 @@
 
 @synthesize currentGestureResponder = m_currentGestureResponder;
 @synthesize handlingEvent = m_handlingEvent;
+@synthesize velvetHandledLastMouseDown = m_velvetHandledLastMouseDown;
 
 #pragma mark Lifecycle
 
@@ -189,6 +198,7 @@
                 [event.window makeFirstResponder:respondingView];
             }
 
+            self.velvetHandledLastMouseDown = (respondingView != nil);
             break;
 
         case NSScrollWheel:
@@ -210,13 +220,18 @@
 
         case NSLeftMouseUp:
         case NSRightMouseUp:
-        case NSMouseMoved:
         case NSLeftMouseDragged:
         case NSRightMouseDragged:
-        case NSMouseEntered:
-        case NSMouseExited:
         case NSOtherMouseUp:
-        case NSOtherMouseDragged: {
+        case NSOtherMouseDragged:
+            if (!self.velvetHandledLastMouseDown)
+                return NO;
+
+            // Otherwise, fall through
+
+        case NSMouseMoved:
+        case NSMouseEntered:
+        case NSMouseExited: {
             id responder = [event.window firstResponder];
             if (![responder isKindOfClass:[NSView class]]) {
                 [self dispatchEvent:event toResponder:responder];

@@ -49,7 +49,7 @@ describe(@"NSVelvetView", ^{
         expect(window.contentView).toConformTo(@protocol(VELHostView));
     });
 
-    it(@"is initialized with an ancestorNSVelvetView", ^{
+    it(@"should be its ancestorNSVelvetView", ^{
         expect(window.contentView.ancestorNSVelvetView).toEqual(window.contentView);
     });
 

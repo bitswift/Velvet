@@ -187,7 +187,6 @@
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
 		1E7BBD3F147B157B0010375D /* VELLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabel.m; sourceTree = "<group>"; };
 		1E7BBD4B147B17400010375D /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
-		1EA3D70814B37F3B0007E4C4 /* NSVelvetHostViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetHostViewTests.h; sourceTree = "<group>"; };
 		1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetHostViewTests.m; sourceTree = "<group>"; };
 		D002AEC614CE030B0062AEFC /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = Libraries/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		D002AEC914CE030B0062AEFC /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = Libraries/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
@@ -443,7 +442,6 @@
 			isa = PBXGroup;
 			children = (
 				D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */,
-				1EA3D70814B37F3B0007E4C4 /* NSVelvetHostViewTests.h */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
 				1E71313414B7B79800D6D7DF /* NSVelvetViewTests.h */,
 				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,

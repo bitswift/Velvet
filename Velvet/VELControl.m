@@ -104,12 +104,16 @@ typedef void (^VELControlActionBlock)(NSEvent *);
     [self sendActionsForControlEvents:VELControlEventMouseDown event:event];
 }
 
+- (void)mouseDragged:(NSEvent *)event {
+    [self sendActionsForControlEvents:VELControlEventMouseDrag event:event];
+}
+
 - (void)mouseUp:(NSEvent *)event {
     CGPoint point = [self convertFromWindowPoint:[event locationInWindow]];
     if (![self pointInside:point])
         return;
 
-    [self sendActionsForControlEvents:VELControlEventClicked event:event];
+    [self sendActionsForControlEvents:VELControlEventMouseUpInside event:event];
 
     if (event.clickCount > 0 && (event.clickCount % 2) == 0) {
         [self sendActionsForControlEvents:VELControlEventDoubleClicked event:event];

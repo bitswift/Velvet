@@ -42,7 +42,7 @@
     [window.rootView addSubview:self.navBar];
 
     __weak id weakSelf = self;
-    [self.navBar.openCloseButton addActionForControlEvents:VELControlEventClicked usingBlock:^(NSEvent *event){
+    [self.navBar.openCloseButton addActionForControlEvents:VELControlEventMouseUpInside usingBlock:^(NSEvent *event){
         [weakSelf openSelectedScreen];
     }];
 }
@@ -90,7 +90,7 @@
     [self.navBar.openCloseButton removeAction:nil forControlEvents:VELControlAllEvents];
 
     __weak id weakSelf = self;
-    [self.navBar.openCloseButton addActionForControlEvents:VELControlEventClicked usingBlock:^(NSEvent *event){
+    [self.navBar.openCloseButton addActionForControlEvents:VELControlEventMouseUpInside usingBlock:^(NSEvent *event){
         [weakSelf closeEditor];
     }];
 }
@@ -111,7 +111,7 @@
     [self.navBar.openCloseButton removeAction:nil forControlEvents:VELControlAllEvents];
 
     __weak id weakSelf = self;
-    [self.navBar.openCloseButton addActionForControlEvents:VELControlEventClicked usingBlock:^(NSEvent *event){
+    [self.navBar.openCloseButton addActionForControlEvents:VELControlEventMouseUpInside usingBlock:^(NSEvent *event){
         [weakSelf openSelectedScreen];
     }];
 }

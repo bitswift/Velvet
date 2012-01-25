@@ -1058,6 +1058,19 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self.subviews makeObjectsPerformSelector:_cmd withObject:view];
 }
 
+#pragma mark Drag-and-drop
+
+- (NSDraggingSession *)beginDraggingSessionWithItems:(NSArray *)items event:(NSEvent *)event source:(id<NSDraggingSource>)source; {
+    NSVelvetView *velvetView = self.ancestorNSVelvetView;
+    NSAssert(velvetView != nil, @"%@ must be hosted in an NSVelvetView to support dragging", self);
+
+    [items enumerateObjectsUsingBlock:^(NSDraggingItem *item, NSUInteger index, BOOL *stop){
+        item.draggingFrame = [self convertRect:item.draggingFrame toView:velvetView];
+    }];
+
+    return [velvetView beginDraggingSessionWithItems:items event:event source:source];
+}
+
 #pragma mark Layout
 
 - (void)layoutSubviews; {

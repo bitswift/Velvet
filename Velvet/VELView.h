@@ -642,6 +642,19 @@ typedef enum {
 @property (nonatomic, assign, getter = isUserInteractionEnabled) BOOL userInteractionEnabled;
 
 /**
+ * Initiates a dragging session.
+ *
+ * This method is identical in function to the `NSView` method by the same name.
+ * 
+ * @param items An array of `NSDraggingItem` instances. The frame of each item
+ * should be specified in the coordinate system of the receiver.
+ * @param event The mouse-down event from which to begin the drag operation.
+ * @param source An object that serves as the controller for the dragging
+ * operation.
+ */
+- (NSDraggingSession *)beginDraggingSessionWithItems:(NSArray *)items event:(NSEvent *)event source:(id<NSDraggingSource>)source;
+
+/**
  * @name Animations
  */
 

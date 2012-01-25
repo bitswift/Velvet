@@ -178,7 +178,7 @@
         self.control = [[SquareView alloc] initWithFrame:CGRectMake(60, 60, 100, 100)];
         self.control.clipsToBounds = YES;
 
-        [self.control addActionForControlEvents:VELControlEventClicked usingBlock:^(NSEvent *event){
+        [self.control addActionForControlEvents:VELControlEventMouseUpInside usingBlock:^(NSEvent *event){
             NSLog(@"Square view click action with event: %@", event);
         }];
 

@@ -109,7 +109,7 @@ typedef void (^VELControlActionBlock)(NSEvent *);
     if (![self pointInside:point])
         return;
 
-    [self sendActionsForControlEvents:VELControlEventClicked event:event];
+    [self sendActionsForControlEvents:VELControlEventMouseUpInside event:event];
 
     if (event.clickCount > 0 && (event.clickCount % 2) == 0) {
         [self sendActionsForControlEvents:VELControlEventDoubleClicked event:event];

@@ -13,18 +13,17 @@
  */
 typedef enum {
     /**
-     * The control was clicked.
+     * The control received a mouse up event inside its frame.
      *
-     * A click is defined as a mouse down followed by a mouse up, with both
-     * mouse events landing inside the frame of the control.
+     * Typically, this will follow a previous <VELControlEventMouseDown> event.
      */
-    VELControlEventClicked = (1 << 0),
+    VELControlEventMouseUpInside = (1 << 0),
 
     /**
      * The control was double-clicked.
      *
      * This event is sent when two clicks occur in quick succession, after any
-     * <VELControlEventClicked> actions have been invoked.
+     * <VELControlEventMouseUpInside> actions have been invoked.
      */
     VELControlEventDoubleClicked = (1 << 1),
 

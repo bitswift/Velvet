@@ -11,8 +11,7 @@
 
 @safecategory (NSImage, CoreGraphicsAdditions)
 - (CGImageRef)CGImage; {
-    NSGraphicsContext *graphicsContext = [NSGraphicsContext currentContext];
-    return [self CGImageForProposedRect:NULL context:graphicsContext hints:nil];
+    return [self CGImageForProposedRect:NULL context:nil hints:nil];
 }
 
 - (id)initWithCGImage:(CGImageRef)image; {

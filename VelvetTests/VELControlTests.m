@@ -26,16 +26,16 @@
 - (void)testSendActionsForControlEvents {
     VELControl *control = [[VELControl alloc] init];
 
-    [self verifyControl:control invokesActionForEvent:VELControlEventClicked usingBlock:^{
-        [control sendActionsForControlEvents:VELControlEventClicked];
+    [self verifyControl:control invokesActionForEvent:VELControlEventMouseUpInside usingBlock:^{
+        [control sendActionsForControlEvents:VELControlEventMouseUpInside];
     }];
 }
 
 - (void)testSendActionsForControlEventsWithNilEvent {
     VELControl *control = [[VELControl alloc] init];
 
-    [self verifyControl:control invokesActionForEvent:VELControlEventClicked usingBlock:^{
-        [control sendActionsForControlEvents:VELControlEventClicked event:nil];
+    [self verifyControl:control invokesActionForEvent:VELControlEventMouseUpInside usingBlock:^{
+        [control sendActionsForControlEvents:VELControlEventMouseUpInside event:nil];
     }];
 }
 

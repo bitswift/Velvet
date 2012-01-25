@@ -622,6 +622,12 @@ typedef enum {
 - (void)setNeedsDisplayInRect:(CGRect)rect;
 
 /**
+ * Creates and returns a `CGImageRef` that contains a rendering of the view in
+ * its current state.
+ */
+- (CGImageRef)renderedCGImage;
+
+/**
  * @name Event Handling
  */
 

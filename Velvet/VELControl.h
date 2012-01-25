@@ -13,11 +13,22 @@
  */
 typedef enum {
     /**
+     * The control received a mouse down event inside its frame.
+     */
+    VELControlEventMouseDown = (1 << 0),
+
+    /**
+     * The control received a mouse drag event that started inside its frame
+     * (but is not necessarily still there).
+     */
+    VELControlEventMouseDrag = (1 << 1),
+
+    /**
      * The control received a mouse up event inside its frame.
      *
      * Typically, this will follow a previous <VELControlEventMouseDown> event.
      */
-    VELControlEventMouseUpInside = (1 << 0),
+    VELControlEventMouseUpInside = (1 << 2),
 
     /**
      * The control was double-clicked.
@@ -25,7 +36,7 @@ typedef enum {
      * This event is sent when two clicks occur in quick succession, after any
      * <VELControlEventMouseUpInside> actions have been invoked.
      */
-    VELControlEventDoubleClicked = (1 << 1),
+    VELControlEventDoubleClicked = (1 << 3),
 
     /**
      * The value of the control has changed.
@@ -33,12 +44,7 @@ typedef enum {
      * The concept of the control's "value" is specific to the type of control
      * being used. <VELControl> itself does not trigger this event.
      */
-    VELControlEventValueChanged = (1 << 2),
-
-    /**
-     * The control received a mouse down event inside its frame.
-     */
-    VELControlEventMouseDown = (1 << 3),
+    VELControlEventValueChanged = (1 << 4),
 
     /**
      * A range of event values available for application use.

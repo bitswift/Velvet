@@ -600,6 +600,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 - (void)restoreStateWithCoder:(NSCoder *)coder {
     [super restoreStateWithCoder:coder];
     [self.guestView restoreStateWithCoder:coder];
+
+    // apparently we get rendering issues in our layer-hosted views if we don't
+    // flush the transaction immediately after restoration
+    [CATransaction flush];
 }
 
 @end

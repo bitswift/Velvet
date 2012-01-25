@@ -20,8 +20,8 @@
 /**
  * The `CGImage` corresponding to the receiver.
  *
- * The image returned will be scaled to the pixel density of the current
- * `NSGraphicsContext`, if one is available.
+ * @warning **Important:** The image returned may not scaled to the pixel
+ * density of the screen.
  */
 @property (nonatomic, readonly) CGImageRef CGImage;
 

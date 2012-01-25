@@ -11,6 +11,7 @@
 #import "CATransaction+BlockAdditions.h"
 #import "CGBitmapContext+PixelFormatAdditions.h"
 #import "NSColor+CoreGraphicsAdditions.h"
+#import "NSImage+CoreGraphicsAdditions.h"
 #import "NSVelvetView.h"
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
@@ -658,6 +659,51 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self.layer setNeedsDisplayInRect:rect];
 }
 
+- (CGImageRef)renderedCGImage; {
+    [self.layer displayIfNeeded];
+
+    id contents = self.layer.contents;
+    if (contents) {
+        // the documentation says this can be a CGImage or an NSImage
+        if (CFGetTypeID((__bridge CFTypeRef)contents) == CGImageGetTypeID()) {
+            return (__bridge CGImageRef)contents;
+        } else if ([contents isKindOfClass:[NSImage class]]) {
+            return [contents CGImage];
+        }
+    }
+
+    CGSize size = self.bounds.size;
+    if (size.width <= 0 || size.height <= 0)
+        return NULL;
+
+    CGFloat scale = self.layer.contentsScale;
+
+    size.width *= scale;
+    size.height *= scale;
+
+    BOOL hasAlpha = !self.opaque;
+
+    CGContextRef context = CGBitmapContextCreateGeneric(size, hasAlpha);
+    if (!context)
+        return NULL;
+
+    @onExit {
+        CGContextRelease(context);
+    };
+
+    // scale the context to the pixel density
+    CGContextScaleCTM(context, scale, scale);
+
+    [self.layer renderInContext:context];
+    
+    CGImageRef cgImage = CGBitmapContextCreateImage(context);
+    if (!cgImage)
+        return NULL;
+
+    __autoreleasing id autoreleasedImage = (__bridge_transfer id)cgImage;
+    return cgImage;
+}
+
 #pragma mark View hierarchy
 
 - (void)addSubview:(VELView *)view; {
@@ -1010,6 +1056,19 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }
 
     [self.subviews makeObjectsPerformSelector:_cmd withObject:view];
+}
+
+#pragma mark Drag-and-drop
+
+- (NSDraggingSession *)beginDraggingSessionWithItems:(NSArray *)items event:(NSEvent *)event source:(id<NSDraggingSource>)source; {
+    NSVelvetView *velvetView = self.ancestorNSVelvetView;
+    NSAssert(velvetView != nil, @"%@ must be hosted in an NSVelvetView to support dragging", self);
+
+    [items enumerateObjectsUsingBlock:^(NSDraggingItem *item, NSUInteger index, BOOL *stop){
+        item.draggingFrame = [self convertRect:item.draggingFrame toView:velvetView];
+    }];
+
+    return [velvetView beginDraggingSessionWithItems:items event:event source:source];
 }
 
 #pragma mark Layout

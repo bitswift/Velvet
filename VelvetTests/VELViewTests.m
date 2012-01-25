@@ -25,6 +25,17 @@
 - (void)reset;
 @end
 
+SpecBegin(VELView)
+    
+    it(@"should return a rendered CGImage", ^{
+        VELView *view = [[VELView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+
+        CGImageRef image = view.renderedCGImage;
+        expect(image).not.toBeNil();
+    });
+
+SpecEnd
+
 @interface VELViewTests ()
 @property (nonatomic, strong, readonly) VELWindow *window;
 

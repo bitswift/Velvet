@@ -43,7 +43,7 @@
  *
  * @param view The <VELNSView> hosting the `NSView`.
  *
- * @warning **Important:** <endRenderingNSViewOfView:> should be invoked
+ * @warning **Important:** <stopRenderingNSViewOfView:> should be invoked
  * to restore the normal rendering of the `NSView`. Calls to these methods
  * cannot be nested.
  */
@@ -57,7 +57,7 @@
  *
  * @warning **Important:** Calls to this method cannot be nested.
  */
-- (void)endRenderingNSViewOfView:(VELNSView *)view;
+- (void)stopRenderingNSViewOfView:(VELNSView *)view;
 
 /*
  * Schedules the given block to execute when the animation of the current
@@ -138,15 +138,21 @@
         }
     }
 
-    view.rendersContainedView = YES;
-    view.guestView.alphaValue = 0.0;
+    BOOL wasAlreadyRendering = view.renderingContainedView;
+
+    [view startRenderingContainedView];
+    if (!wasAlreadyRendering) {
+        view.guestView.alphaValue = 0.0;
+    }
 }
 
-- (void)endRenderingNSViewOfView:(VELNSView *)view; {
-    view.rendersContainedView = NO;
-    [view synchronizeNSViewGeometry];
+- (void)stopRenderingNSViewOfView:(VELNSView *)view; {
+    [view stopRenderingContainedView];
 
-    view.guestView.alphaValue = 1.0;
+    if (!view.renderingContainedView) {
+        [view synchronizeNSViewGeometry];
+        view.guestView.alphaValue = 1.0;
+    }
 
     if (self.originalFirstResponder) {
         [view.window makeFirstResponder:self.originalFirstResponder];
@@ -196,7 +202,7 @@
     // return NSViews to rendering themselves after this animation completes
     [self runWhenAnimationCompletes:^{
         [cachedViews enumerateObjectsUsingBlock:^(VELNSView *view, NSUInteger idx, BOOL *stop) {
-            [self endRenderingNSViewOfView:view];
+            [self stopRenderingNSViewOfView:view];
         }];
     }];
 }
@@ -208,7 +214,7 @@
         // return NSViews to rendering themselves after this animation completes
         [self runWhenAnimationCompletes:^{
             [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
-                [self endRenderingNSViewOfView:view];
+                [self stopRenderingNSViewOfView:view];
             }];
         }];
     } else {

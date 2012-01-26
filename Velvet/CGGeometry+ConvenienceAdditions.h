@@ -89,6 +89,21 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
 void CGRectDivideWithPadding (CGRect rect, CGRect *slice, CGRect *remainder, CGFloat sliceAmount, CGFloat padding, CGRectEdge edge);
 
 /**
+ * Round down fractional X origins (moving leftward on screen), round
+ * up fractional Y origins (moving upward on screen), and round down fractional
+ * sizes, such that the size of the rectangle will never increase just
+ * from use of this method.
+ *
+ * This function differs from `CGRectIntegral` in that the resultant rectangle
+ * may not completely encompass `rect`. `CGRectIntegral` will ensure that its
+ * resultant rectangle encompasses the original, but may increase the size of
+ * the result to accomplish this.
+ *
+ * @param rect The `CGRect` to adjust.
+ */
+CGRect CGRectFloor(CGRect rect);
+
+/**
  * Returns the dot product of two points.
  *
  * @param point The first specified point.

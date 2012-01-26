@@ -73,7 +73,7 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
      * This function is symmetric, so we'll calculate everything using MinX/MinY
      * logic, and then simply swap our output values before returning.
      */
-    
+
     // updated in the switch statement down below
     BOOL wasMinEdge = (edge == CGRectMinXEdge || edge == CGRectMinYEdge);
 
@@ -124,7 +124,7 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
             edge = CGRectMinYEdge;
 
             // fall through
-            
+
         case CGRectMinYEdge:
             rectStartTointersectingRectStart = CGRectGetMinY(intersectingRect) - CGRectGetMinY(rect);
             intersectingRectEndToRectEnd = CGRectGetMaxY(rect) - CGRectGetMaxY(intersectingRect);
@@ -175,3 +175,39 @@ void CGRectDivideWithPadding (CGRect rect, CGRect *slicePtr, CGRect *remainderPt
         *remainderPtr = rect;
 }
 
+CGFloat CGPointDotProduct(CGPoint point, CGPoint point2) {
+    return (point.x * point2.x + point.y * point2.y);
+}
+
+CGPoint CGPointScale(CGPoint point, CGFloat scale) {
+    return CGPointMake(point.x * scale, point.y * scale);
+}
+
+CGFloat CGPointLength(CGPoint point) {
+    return (CGFloat)sqrt(CGPointDotProduct(point, point));
+}
+
+CGPoint CGPointNormalize(CGPoint point) {
+    CGFloat len = CGPointLength(point);
+    if (len > 0)
+        return CGPointScale(point, 1/len);
+
+    return point;
+}
+
+CGPoint CGPointProject(CGPoint point, CGPoint direction) {
+    CGPoint normalizedDirection = CGPointNormalize(direction);
+    CGFloat distance = CGPointDotProduct(point, normalizedDirection);
+
+    return CGPointScale(normalizedDirection, distance);
+}
+
+CGPoint CGPointProjectAlongAngle(CGPoint point, CGFloat angleInDegrees) {
+    CGFloat angleInRads = angleInDegrees * M_PI / 180;
+    CGPoint direction = CGPointMake(cos(angleInRads), sin(angleInRads));
+    return CGPointProject(point, direction);
+}
+
+CGFloat CGPointAngleInDegrees(CGPoint point) {
+    return atan2(point.y, point.x) * 180 / M_PI;
+}

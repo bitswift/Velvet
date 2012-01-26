@@ -31,12 +31,27 @@ typedef enum {
     VELControlEventMouseUpInside = (1 << 2),
 
     /**
+     * The control received a mouse up event outside its frame.
+     *
+     * Typically, this will follow a previous <VELControlEventMouseDown> event.
+     */
+    VELControlEventMouseUpOutside = (1 << 3),
+
+    /**
+     * The control received a mouse up event at any location.
+     *
+     * This is a combination of <VELControlEventMouseUpInside> and
+     * <VELControlEventMouseUpOutside>.
+     */
+    VELControlEventMouseUp = (VELControlEventMouseUpInside | VELControlEventMouseUpOutside),
+
+    /**
      * The control was double-clicked.
      *
      * This event is sent when two clicks occur in quick succession, after any
      * <VELControlEventMouseUpInside> actions have been invoked.
      */
-    VELControlEventDoubleClicked = (1 << 3),
+    VELControlEventDoubleClicked = (1 << 4),
 
     /**
      * The value of the control has changed.
@@ -44,7 +59,7 @@ typedef enum {
      * The concept of the control's "value" is specific to the type of control
      * being used. <VELControl> itself does not trigger this event.
      */
-    VELControlEventValueChanged = (1 << 4),
+    VELControlEventValueChanged = (1 << 5),
 
     /**
      * A range of event values available for application use.

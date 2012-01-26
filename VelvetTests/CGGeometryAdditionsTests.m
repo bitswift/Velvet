@@ -187,6 +187,16 @@ describe(@"CGGeometryAdditions", ^{
             expect(result).toEqual(rect);
         });
     });
+    
+    describe(@"CGRectMakeInverted", ^{
+        CGRect containingRect = CGRectMake(0, 0, 100, 100);
+
+        // Bottom Left
+        CGRect expectedResult = CGRectMake(0, CGRectGetHeight(containingRect) - 20 - 50, 50, 50);
+
+        CGRect result = CGRectMakeInverted(containingRect, 0, 20, 50, 50);
+        expect(result).toEqual(expectedResult);      
+    });
 
 });
 

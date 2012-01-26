@@ -184,6 +184,15 @@ CGRect CGRectFloor(CGRect rect) {
     );
 }
 
+CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat width, CGFloat height) {
+    return CGRectMake(
+                      x,
+                      CGRectGetHeight(containingRect) - y - height,
+                      width,
+                      height
+                      );
+}
+
 CGFloat CGPointDotProduct(CGPoint point, CGPoint point2) {
     return (point.x * point2.x + point.y * point2.y);
 }

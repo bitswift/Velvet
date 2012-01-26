@@ -127,7 +127,7 @@ CGPoint CGPointNormalize(CGPoint point);
 CGPoint CGPointProject(CGPoint point, CGPoint direction);
 
 /**
- * Returns the angle of a point.
+ * Returns the angle of a vector.
  *
  * @param point The specified point.
  */

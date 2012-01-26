@@ -17,16 +17,23 @@
 #import "VELNSViewPrivate.h"
 #import "EXTScope.h"
 
-@interface VELNSView ()
-@property (nonatomic, assign) BOOL rendersContainedView;
+@interface VELNSView () {
+    /**
+     * A count indicating how many nested calls to <startRenderingContainedView>
+     * are in effect.
+     */
+    NSUInteger m_renderingContainedViewCount;
+}
+
+- (void)synchronizeNSViewGeometry;
+- (void)startRenderingContainedView;
+- (void)stopRenderingContainedView;
 
 /*
  * An object for proxying the layer delegate of the `NSView` (typically the
  * `NSView` itself), used to disable implicit animations.
  */
 @property (nonatomic, strong) VELNSViewLayerDelegateProxy *layerDelegateProxy;
-
-- (void)synchronizeNSViewGeometry;
 @end
 
 @implementation VELNSView
@@ -35,7 +42,6 @@
 
 @synthesize guestView = m_guestView;
 @synthesize layerDelegateProxy = m_layerDelegateProxy;
-@synthesize rendersContainedView = m_rendersContainedView;
 
 - (void)setGuestView:(NSView *)view {
     NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
@@ -91,17 +97,8 @@
     [super setSubviews:subviews];
 }
 
-- (void)setRendersContainedView:(BOOL)rendersContainedView {
-    NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
-
-    if (m_rendersContainedView != rendersContainedView) {
-        m_rendersContainedView = rendersContainedView;
-
-        [CATransaction performWithDisabledActions:^{
-            [self.layer setNeedsDisplay];
-            [self.layer displayIfNeeded];
-        }];
-    }
+- (BOOL)isRenderingContainedView {
+    return m_renderingContainedViewCount > 0;
 }
 
 #pragma mark Lifecycle
@@ -157,12 +154,29 @@
 #pragma mark Drawing
 
 - (void)drawRect:(CGRect)rect {
-    if (!self.rendersContainedView) {
+    if (!self.renderingContainedView) {
         return;
     }
 
     CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
     [self.guestView.layer renderInContext:context];
+}
+
+- (void)startRenderingContainedView; {
+    if (m_renderingContainedViewCount++ == 0) {
+        [CATransaction performWithDisabledActions:^{
+            [self.layer setNeedsDisplay];
+            [self.layer displayIfNeeded];
+        }];
+    }
+}
+
+- (void)stopRenderingContainedView; {
+    NSAssert(m_renderingContainedViewCount > 0, @"Mismatched call to %s", __func__);
+
+    if (--m_renderingContainedViewCount == 0) {
+        self.layer.contents = nil;
+    }
 }
 
 #pragma mark View hierarchy
@@ -176,7 +190,10 @@
     [super willMoveToNSVelvetView:view];
 
     [self.guestView willMoveToNSVelvetView:view];
-    [self.guestView removeFromSuperview];
+
+    [CATransaction performWithDisabledActions:^{
+        [self.guestView removeFromSuperview];
+    }];
 }
 
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {
@@ -207,7 +224,9 @@
 
     // this must only be added after we've completely moved to the host view,
     // because it'll do some ancestor checks for NSView ordering
-    [newView.appKitHostView addSubview:self.guestView];
+    [CATransaction performWithDisabledActions:^{
+        [newView.appKitHostView addSubview:self.guestView];
+    }];
 
     [newView recalculateNSViewOrdering];
     [self synchronizeNSViewGeometry];

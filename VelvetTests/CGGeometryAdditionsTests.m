@@ -160,6 +160,34 @@ describe(@"CGGeometryAdditions", ^{
         expect(result).toEqual(expectedResult);
     });
 
+    describe(@"CGRectFloor", ^{
+        it(@"leaves integers untouched", ^{
+            CGRect rect = CGRectMake(-10, 20, -30, 40);
+            CGRect result = CGRectFloor(rect);
+            expect(result).toEqual(rect);
+        });
+
+        it(@"rounds down, except in Y.", ^{
+            CGRect rect = CGRectMake(10.1, 1.1, -3.4, -4.7);
+
+            CGRect result = CGRectFloor(rect);
+            CGRect expectedResult = CGRectMake(10, 2, -4, -5);
+            expect(result).toEqual(expectedResult);
+        });
+
+        it(@"leaves CGRectNull untouched", ^{
+            CGRect rect = CGRectNull;
+            CGRect result = CGRectFloor(rect);
+            expect(result).toEqual(rect);
+        });
+
+        it(@"leaves CGRectInfinite untouched", ^{
+            CGRect rect = CGRectInfinite;
+            CGRect result = CGRectFloor(rect);
+            expect(result).toEqual(rect);
+        });
+    });
+
 });
 
 

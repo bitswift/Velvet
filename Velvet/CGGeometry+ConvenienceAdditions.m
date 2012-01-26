@@ -175,6 +175,15 @@ void CGRectDivideWithPadding (CGRect rect, CGRect *slicePtr, CGRect *remainderPt
         *remainderPtr = rect;
 }
 
+CGRect CGRectFloor(CGRect rect) {
+    return CGRectMake(
+        floor(rect.origin.x),
+        ceil(rect.origin.y),
+        floor(rect.size.width),
+        floor(rect.size.height)
+    );
+}
+
 CGFloat CGPointDotProduct(CGPoint point, CGPoint point2) {
     return (point.x * point2.x + point.y * point2.y);
 }

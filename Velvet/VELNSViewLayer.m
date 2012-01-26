@@ -21,7 +21,7 @@
 - (void)display {
     // don't cache any layer contents if the VELNSView isn't rendering its
     // NSView
-    if (!self.view.rendersContainedView) {
+    if (!self.view.renderingContainedView) {
         self.contents = nil;
         return;
     }

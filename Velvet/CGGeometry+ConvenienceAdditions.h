@@ -89,6 +89,16 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
 void CGRectDivideWithPadding (CGRect rect, CGRect *slice, CGRect *remainder, CGFloat sliceAmount, CGFloat padding, CGRectEdge edge);
 
 /**
+ * Returns a `CGRect` created by flooring all the components of `rect`.
+ *
+ * @param rect The `CGRect` to floor.
+ *
+ * This function differs from `CGRectIntegral` in that the latter will ensure
+ * that the resultant rectangle encompasses the original rectangle.
+ */
+CGRect CGRectFloor(CGRect rect);
+
+/**
  * Returns the dot product of two points.
  *
  * @param point The first specified point.

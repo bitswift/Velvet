@@ -167,11 +167,11 @@ describe(@"CGGeometryAdditions", ^{
             expect(result).toEqual(rect);
         });
 
-        it(@"rounds down", ^{
-            CGRect rect = CGRectMake(10.1, 1.9, -3.4, -4.7);
+        it(@"rounds down, except in Y.", ^{
+            CGRect rect = CGRectMake(10.1, 1.1, -3.4, -4.7);
 
             CGRect result = CGRectFloor(rect);
-            CGRect expectedResult = CGRectMake(10, 1, -4, -5);
+            CGRect expectedResult = CGRectMake(10, 2, -4, -5);
             expect(result).toEqual(expectedResult);
         });
 

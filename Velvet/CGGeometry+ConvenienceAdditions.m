@@ -178,7 +178,7 @@ void CGRectDivideWithPadding (CGRect rect, CGRect *slicePtr, CGRect *remainderPt
 CGRect CGRectFloor(CGRect rect) {
     return CGRectMake(
         floor(rect.origin.x),
-        floor(rect.origin.y),
+        ceil(rect.origin.y),
         floor(rect.size.width),
         floor(rect.size.height)
     );

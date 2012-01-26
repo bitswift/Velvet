@@ -89,12 +89,17 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
 void CGRectDivideWithPadding (CGRect rect, CGRect *slice, CGRect *remainder, CGFloat sliceAmount, CGFloat padding, CGRectEdge edge);
 
 /**
- * Returns a `CGRect` created by flooring all the components of `rect`.
+ * Round down fractional X origins (moving leftward on screen), round
+ * up fractional Y origins (moving upward on screen), and round down fractional
+ * sizes, such that the size of the rectangle will never increase just
+ * from use of this method.
  *
- * @param rect The `CGRect` to floor.
+ * This function differs from `CGRectIntegral` in that the resultant rectangle
+ * may not completely encompass `rect`. `CGRectIntegral` will ensure that its
+ * resultant rectangle encompasses the original, but may increase the size of
+ * the result to accomplish this.
  *
- * This function differs from `CGRectIntegral` in that the latter will ensure
- * that the resultant rectangle encompasses the original rectangle.
+ * @param rect The `CGRect` to adjust.
  */
 CGRect CGRectFloor(CGRect rect);
 

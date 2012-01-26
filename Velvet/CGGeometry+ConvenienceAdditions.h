@@ -87,3 +87,56 @@ void CGRectDivideExcludingIntersection (CGRect rect, CGRect *slice, CGRect *rema
  * opposite edge.
  */
 void CGRectDivideWithPadding (CGRect rect, CGRect *slice, CGRect *remainder, CGFloat sliceAmount, CGFloat padding, CGRectEdge edge);
+
+/**
+ * Returns the dot product of two points.
+ *
+ * @param point The first specified point.
+ * @param point2 The second specified point.
+ */
+CGFloat CGPointDotProduct(CGPoint point, CGPoint point2);
+
+/**
+ * Returns `point` scaled by `scale`.
+ *
+ * @param point The specified point.
+ * @param scale The specified scaling factor.
+ */
+CGPoint CGPointScale(CGPoint point, CGFloat scale);
+
+/**
+ * Returns the length of `point`.
+ *
+ * @param point The specified point.
+ */
+CGFloat CGPointLength(CGPoint point);
+
+/**
+ * Returns the unit vector of `point`.
+ *
+ * @param point The specified point.
+ */
+CGPoint CGPointNormalize(CGPoint point);
+
+/**
+ * Returns a projected point in the specified direction.
+ *
+ * @param point The point to project.
+ * @param direction A vector to project onto.
+ */
+CGPoint CGPointProject(CGPoint point, CGPoint direction);
+
+/**
+ * Returns the angle of a point.
+ *
+ * @param point The specified point.
+ */
+CGFloat CGPointAngleInDegrees(CGPoint point);
+
+/**
+ *  Projects a point along a specified angle.
+ *
+ *  @param point The point to project.
+ *  @param angleInDegrees An angle specified in degrees.
+ */
+CGPoint CGPointProjectAlongAngle(CGPoint point, CGFloat angleInDegrees);

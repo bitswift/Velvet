@@ -192,7 +192,6 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 
 #pragma mark Drawing
 
-
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
 
@@ -330,20 +329,23 @@ static NSRange NSRangeFromCFRange(CFRange range) {
         CGFloat leading;
         CGFloat lineWidth = CTLineGetTypographicBounds(aLine, &ascent, &descent, &leading);
 
-        originY += ceil(ascent + leading);
+        originY += ceil(ascent);
 
         CGFloat widthOfPrintedGlyphs = lineWidth - CTLineGetTrailingWhitespaceWidth(aLine);
         CGFloat indentWidth = VELLabelPadding;
+
         switch (self.textAlignment) {
             case VELTextAlignmentCenter:
                 indentWidth = floor((drawableWidth - widthOfPrintedGlyphs)/2.0f + VELLabelPadding);
                 break;
+
             case VELTextAlignmentRight:
                 // It is not appropriate to floor `indentWidth` when using `VELTextAlignmentRight`
                 indentWidth = drawableWidth - widthOfPrintedGlyphs + VELLabelPadding;
                 break;
+
             default:
-                break;
+                ;
         }
 
         CGContextSetTextPosition(context, indentWidth, (self.bounds.size.height - VELLabelPadding) - originY);
@@ -355,7 +357,8 @@ static NSRange NSRangeFromCFRange(CFRange range) {
         } else {
             CTLineDraw(aLine, context);
         }
-        originY += descent;
+
+        originY += descent + leading;
     }
 }
 

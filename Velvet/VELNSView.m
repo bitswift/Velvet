@@ -176,7 +176,10 @@
     [super willMoveToNSVelvetView:view];
 
     [self.guestView willMoveToNSVelvetView:view];
-    [self.guestView removeFromSuperview];
+
+    [CATransaction performWithDisabledActions:^{
+        [self.guestView removeFromSuperview];
+    }];
 }
 
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {
@@ -207,7 +210,9 @@
 
     // this must only be added after we've completely moved to the host view,
     // because it'll do some ancestor checks for NSView ordering
-    [newView.appKitHostView addSubview:self.guestView];
+    [CATransaction performWithDisabledActions:^{
+        [newView.appKitHostView addSubview:self.guestView];
+    }];
 
     [newView recalculateNSViewOrdering];
     [self synchronizeNSViewGeometry];

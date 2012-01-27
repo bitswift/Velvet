@@ -198,6 +198,13 @@ describe(@"CGGeometryAdditions", ^{
         expect(result).toEqual(expectedResult);      
     });
 
+    describe(@"CGPointNearPointWithAccuracy", ^{
+        CGPoint point = CGPointMake(0.5, 0.5);
+        CGPoint point2 = CGPointMake(1, 1);
+        CGFloat distance = 0.4;
+        expect(CGPointNearPointWithAccuracy(point, point2, distance)).toBeTruthy();
+    });
+
 });
 
 

@@ -354,6 +354,17 @@ typedef enum {
 - (void)addSubview:(VELView *)view;
 
 /**
+ * Inserts the given view as a subview of the receiver, at the given index.
+ *
+ * @param view The view to add as a subview. This view is removed from its
+ * current superview before being added.
+ *
+ * @warning If a `VELView` has subviews, but other sublayers have been added to its
+ * layer, the ordering between its subviews and its other layers is undefined.
+ */
+- (void)insertSubview:(VELView *)view atIndex:(NSUInteger)index;
+
+/**
  * Returns the closest ancestor that is shared by the receiver and another view,
  * or `nil` if there is no such view.
  *
@@ -645,7 +656,7 @@ typedef enum {
  * Initiates a dragging session.
  *
  * This method is identical in function to the `NSView` method by the same name.
- * 
+ *
  * @param items An array of `NSDraggingItem` instances. The frame of each item
  * should be specified in the coordinate system of the receiver.
  * @param event The mouse-down event from which to begin the drag operation.

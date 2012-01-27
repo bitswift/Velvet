@@ -28,6 +28,7 @@ SpecBegin(VELView)
 
 describe(@"VELView", ^{
     __block VELWindow *window;
+    __block VELView *view;
 
     before(^{
         window = [[VELWindow alloc]
@@ -37,11 +38,10 @@ describe(@"VELView", ^{
             defer:NO
             screen:nil
         ];
+        view = [[VELView alloc] init];
     });
 
     it(@"initializes", ^{
-        __block VELView *view = [[VELView alloc] init];
-
         expect(view.alignsToIntegralPixels).toBeTruthy();
         expect(view.clearsContextBeforeDrawing).toBeTruthy();
         expect(view.contentMode).toEqual(VELViewContentModeScaleToFill);
@@ -54,7 +54,6 @@ describe(@"VELView", ^{
     });
 
     it(@"sizes itself around its center when calling centeredSizeToFit", ^{
-        VELView *view = [[VELView alloc] init];
         VELView *subview = [[VELView alloc] initWithFrame:CGRectMake(100, 0, 300, 200)];
 
         [view addSubview:subview];
@@ -65,7 +64,6 @@ describe(@"VELView", ^{
     });
 
     it(@"removes itself from its superview", ^{
-        VELView *view = [[VELView alloc] init];
         VELView *subview = [[VELView alloc] init];
 
         [view addSubview:subview];
@@ -79,7 +77,6 @@ describe(@"VELView", ^{
     });
 
     it(@"sets subviews", ^{
-        VELView *view = [[VELView alloc] init];
         NSMutableArray *subviews = [[NSMutableArray alloc] init];
         for (NSUInteger i = 0;i < 4;++i) {
             [subviews addObject:[[VELView alloc] init]];
@@ -109,13 +106,11 @@ describe(@"VELView", ^{
     });
 
     describe(@"inserts subviews at a specific index", ^{
-        __block VELView *view;
         __block TestView *subview1;
         __block TestView *subview2;
         __block TestView *subview3;
 
         before(^{
-            view = [[VELView alloc] init];
             subview1 = [[TestView alloc] init];
             subview1.nextSuperview = view;
             subview2 = [[TestView alloc] init];
@@ -273,13 +268,10 @@ describe(@"VELView", ^{
 
     describe(@"responder chain", ^{
         it(@"has a nil responder chain by default", ^{
-            VELView *view = [[VELView alloc] init];
             expect(view.nextResponder).toBeNil();
         });
 
         it(@"has a nextResponder when it is a subview", ^{
-            VELView *view = [[VELView alloc] init];
-
             VELView *superview = [[VELView alloc] init];
             [superview addSubview:view];
 
@@ -288,8 +280,6 @@ describe(@"VELView", ^{
         });
 
         it(@"has a nextResponder when it has a hostView", ^{
-            VELView *view = [[VELView alloc] init];
-
             NSVelvetView *hostView = window.contentView;
             hostView.guestView = view;
 
@@ -298,8 +288,6 @@ describe(@"VELView", ^{
         });
 
         it(@"has a next responder with a superview and hostView", ^{
-            VELView *view = [[VELView alloc] init];
-
             [window.rootView addSubview:view];
 
             // the view's next responder should be the superview, not the host view
@@ -310,7 +298,6 @@ describe(@"VELView", ^{
         it(@"changes nextResponder when moving between hostViews", ^{
             NSVelvetView *firstHostView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
             NSVelvetView *secondHostView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
-            VELView *view = [[VELView alloc] init];
 
             firstHostView.guestView = view;
             expect(view.nextResponder).toEqual(firstHostView);
@@ -321,7 +308,6 @@ describe(@"VELView", ^{
 
         it(@"has a nextResponder with a hostView that is not an NSVelvetView", ^{
             id<VELHostView> hostView = [[VELNSView alloc] init];
-            VELView *view = [[VELView alloc] init];
 
             // obviously a VELNSView should never host a VELView, but this use case
             // mirrors that of our TwUI bridge, and previously a exposed a flaw in how
@@ -332,14 +318,13 @@ describe(@"VELView", ^{
     });
 
     it(@"should return a rendered CGImage", ^{
-        VELView *view = [[VELView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        view.frame = CGRectMake(0, 0, 40, 40);
 
         CGImageRef image = view.renderedCGImage;
         expect(image).not.toBeNil();
     });
 
     it(@"implements pointInside:", ^{
-        VELView *view = [[VELView alloc] init];
         view.frame = CGRectMake(0, 0, 50, 50);
 
         expect([view pointInside:CGPointMake(25, 25)]).toBeTruthy();
@@ -351,7 +336,7 @@ describe(@"VELView", ^{
     it(@"has a fully flexible autoresizingMask", ^{
         VELView *superview = [[VELView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
 
-        VELView *view = [[VELView alloc] initWithFrame:CGRectMake(20, 20, 60, 60)];
+        view.frame = CGRectMake(20, 20, 60, 60);
         [superview addSubview:view];
 
         view.autoresizingMask = VELViewAutoresizingFlexibleLeftMargin | VELViewAutoresizingFlexibleRightMargin | VELViewAutoresizingFlexibleTopMargin | VELViewAutoresizingFlexibleBottomMargin;
@@ -400,8 +385,6 @@ describe(@"VELView", ^{
     });
 
     it(@"aligns to integral points when settings its frame", ^{
-        VELView *view = [[VELView alloc] init];
-
         view.frame = CGRectMake(10.25, 11.5, 12.75, 13.01);
 
         CGRect expectedFrame = CGRectMake(10, 12, 12, 13);
@@ -409,8 +392,6 @@ describe(@"VELView", ^{
     });
 
     it(@"aligns to integral points when settings its bounds", ^{
-        VELView *view = [[VELView alloc] init];
-
         view.bounds = CGRectMake(0, 0, 12.75, 13.01);
 
         CGRect expectedBounds = CGRectMake(0, 0, 12, 13);
@@ -418,8 +399,6 @@ describe(@"VELView", ^{
     });
 
     it(@"aligns to integral points when setting a misaligned center", ^{
-        VELView *view = [[VELView alloc] init];
-
         view.center = CGPointMake(13.7, 14.3);
 
         CGPoint expectedCenter = CGPointMake(13, 15);
@@ -450,13 +429,11 @@ describe(@"VELView", ^{
 
     it(@"conforms to VELBridgedView", ^{
         expect([VELView class]).toConformTo(@protocol(VELBridgedView));
-
-        VELView *view = [[VELView alloc] init];
         expect(view).toConformTo(@protocol(VELBridgedView));
     });
 
     it(@"can convert from a window point to its own coordinate space", ^{
-        VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 100, 100, 200)];
+        view.frame = CGRectMake(50, 100, 100, 200);
         [window.rootView addSubview:view];
 
         CGPoint windowPoint = CGPointMake(175, 355);
@@ -466,7 +443,7 @@ describe(@"VELView", ^{
     });
 
     it(@"can convert to a window point from its own coordinate space", ^{
-        VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 100, 100, 200)];
+        view.frame = CGRectMake(50, 100, 100, 200);
         [window.rootView addSubview:view];
 
         CGPoint windowPoint = CGPointMake(175, 355);
@@ -476,7 +453,7 @@ describe(@"VELView", ^{
     });
 
     it(@"can convert from a window rect", ^{
-        VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 100, 100, 200)];
+        view.frame = CGRectMake(50, 100, 100, 200);
         [window.rootView addSubview:view];
 
         CGRect windowRect = CGRectMake(175, 355, 100, 100);
@@ -486,7 +463,7 @@ describe(@"VELView", ^{
     });
 
     it(@"can convert to a window rect", ^{
-        VELView *view = [[VELView alloc] initWithFrame:CGRectMake(50, 100, 100, 200)];
+        view.frame = CGRectMake(50, 100, 100, 200);
         [window.rootView addSubview:view];
 
         CGRect windowRect = CGRectMake(175, 355, 100, 100);
@@ -496,24 +473,20 @@ describe(@"VELView", ^{
     });
 
     it(@"has a layer", ^{
-        VELView *view = [[VELView alloc] init];
         expect(view.layer).not.toBeNil();
     });
 
     it(@"has a hostView", ^{
-        VELView *view = [[VELView alloc] init];
         expect(view.hostView).toBeNil();
         window.rootView = view;
         expect(view.hostView).toEqual(window.contentView);
     });
 
     it(@"does not throw an exception when calling -ancestorDidLayout", ^{
-        VELView *view = [[VELView alloc] init];
         [view ancestorDidLayout];
     });
 
     it(@"has an ancestorNSVelvetView when adding it as a subview to an NSVelvetView subview", ^{
-        VELView *view = [[VELView alloc] init];
         [window.rootView addSubview:view];
         expect(view.ancestorNSVelvetView).toEqual(window.contentView);
     });
@@ -527,12 +500,10 @@ describe(@"VELView", ^{
     });
 
     it(@"does not throw an exception when calling -willMoveToNSVelvetView:", ^{
-        VELView *view = [[VELView alloc] init];
         [view willMoveToNSVelvetView:nil];
     });
 
     it(@"does not throw an exception when calling -didMoveFromNSVelvetView", ^{
-        VELView *view = [[VELView alloc] init];
         [view didMoveFromNSVelvetView:nil];
     });
 
@@ -612,7 +583,6 @@ describe(@"VELView", ^{
     it(@"can animate VELViewAnimationOptionLayoutSuperview", ^{
         TestView *superview = [[TestView alloc] init];
 
-        VELView *view = [[VELView alloc] init];
         [superview addSubview:view];
 
         [VELView animateWithDuration:0 options:VELViewAnimationOptionLayoutSuperview animations:^{

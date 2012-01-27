@@ -186,11 +186,11 @@ CGRect CGRectFloor(CGRect rect) {
 
 CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat width, CGFloat height) {
     return CGRectMake(
-                      x,
-                      CGRectGetHeight(containingRect) - y - height,
-                      width,
-                      height
-                      );
+        x,
+        CGRectGetHeight(containingRect) - y - height,
+        width,
+        height
+    );
 }
 
 BOOL CGPointNearPointWithAccuracy(CGPoint p, CGPoint q, CGFloat epsilon) {

@@ -115,11 +115,11 @@ CGRect CGRectFloor(CGRect rect);
 CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat width, CGFloat height);
 
 /**
- * Returns true if point is withing epislon distance of point2.
+ * Returns whether `point` is within `epsilon` distance of `point2`.
  *
  * @param point The first specified point.
  * @param point2 The second specified point.
- * @param epislon The acceptable distance between point and point2.
+ * @param epsilon The acceptable distance between point and point2.
  */
 BOOL CGPointNearPointWithAccuracy(CGPoint point, CGPoint point2, CGFloat epsilon);
 

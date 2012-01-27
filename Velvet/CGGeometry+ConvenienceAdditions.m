@@ -193,7 +193,7 @@ CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat 
     );
 }
 
-BOOL CGPointNearPointWithAccuracy(CGPoint p, CGPoint q, CGFloat epsilon) {
+BOOL CGPointEqualToPointWithAccuracy(CGPoint p, CGPoint q, CGFloat epsilon) {
     return (fabs(p.x - q.x) <= epsilon) && (fabs(p.y - q.y) <= epsilon);
 }
 

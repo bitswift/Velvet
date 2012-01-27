@@ -200,19 +200,19 @@ describe(@"CGGeometryAdditions", ^{
         });
     });
 
-    describe(@"CGPointNearPointWithAccuracy", ^{
+    describe(@"CGPointEqualToPointWithAccuracy", ^{
         it(@"compares two points that are close enough", ^{
             CGPoint point = CGPointMake(0.5, 0.5);
             CGPoint point2 = CGPointMake(1, 1);
             CGFloat distance = 0.6;
-            expect(CGPointNearPointWithAccuracy(point, point2, distance)).toBeTruthy();
+            expect(CGPointEqualToPointWithAccuracy(point, point2, distance)).toBeTruthy();
         });
 
         it(@"compares two points that are too far from eachother", ^{
             CGPoint point = CGPointMake(0.5, 0.5);
             CGPoint point2 = CGPointMake(1.5, 11.5);
             CGFloat distance = 0.4;
-            expect(CGPointNearPointWithAccuracy(point, point2, distance)).toBeFalsy();
+            expect(CGPointEqualToPointWithAccuracy(point, point2, distance)).toBeFalsy();
         });
     });
 

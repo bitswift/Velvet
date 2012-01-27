@@ -121,7 +121,7 @@ CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat 
  * @param point2 The second specified point.
  * @param epsilon The acceptable distance between point and point2.
  */
-BOOL CGPointNearPointWithAccuracy(CGPoint point, CGPoint point2, CGFloat epsilon);
+BOOL CGPointEqualToPointWithAccuracy(CGPoint point, CGPoint point2, CGFloat epsilon);
 
 /**
  * Returns the dot product of two points.

@@ -695,7 +695,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     CGContextScaleCTM(context, scale, scale);
 
     [self.layer renderInContext:context];
-    
+
     CGImageRef cgImage = CGBitmapContextCreateImage(context);
     if (!cgImage)
         return NULL;
@@ -707,10 +707,11 @@ static BOOL VELViewPerformingDeepLayout = NO;
 #pragma mark View hierarchy
 
 - (void)addSubview:(VELView *)view; {
-    if (view.superview == self)
-        return;
+    [self insertSubview:view atIndex:[self.subviews count]];
 
-    NSUInteger index = [m_subviews count];
+}
+
+- (void)insertSubview:(VELView *)view atIndex:(NSUInteger)index {
     NSIndexSet *indexSet = nil;
 
     if (!self.replacingSubviews) {
@@ -724,6 +725,21 @@ static BOOL VELViewPerformingDeepLayout = NO;
             [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:@"subviews"];
         }
     };
+
+    void (^insertSubviewAndSublayer)(void) = ^{
+        [m_subviews insertObject:view atIndex:index];
+
+        if (index > 0)
+            [self.layer insertSublayer:view.layer above:[[m_subviews objectAtIndex:index - 1] layer]];
+        else
+            [self.layer insertSublayer:view.layer atIndex:0];
+    };
+
+    if ([m_subviews containsObject:view]) {
+        [m_subviews removeObject:view];
+        insertSubviewAndSublayer();
+        return;
+    }
 
     [CATransaction performWithDisabledActions:^{
         VELView *oldSuperview = view.superview;
@@ -752,10 +768,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
         if (!m_subviews)
             m_subviews = [[NSMutableArray alloc] init];
 
-        [m_subviews addObject:view];
-
         view.superview = self;
-        [self.layer addSublayer:view.layer];
+        insertSubviewAndSublayer();
 
         [view didMoveFromSuperview:oldSuperview];
 
@@ -765,6 +779,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         if (needsWindowUpdate)
             [view didMoveFromWindow:oldWindow];
     }];
+
 }
 
 - (void)ancestorDidLayout; {

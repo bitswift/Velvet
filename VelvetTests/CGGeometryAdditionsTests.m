@@ -187,6 +187,34 @@ describe(@"CGGeometryAdditions", ^{
             expect(result).toEqual(rect);
         });
     });
+    
+    describe(@"CGRectMakeInverted", ^{
+        it(@"compares a newly inverted rect to a flipped reference", ^{
+            CGRect containingRect = CGRectMake(0, 0, 100, 100);
+
+            // Bottom Left
+            CGRect expectedResult = CGRectMake(0, CGRectGetHeight(containingRect) - 20 - 50, 50, 50);
+
+            CGRect result = CGRectMakeInverted(containingRect, 0, 20, 50, 50);
+            expect(result).toEqual(expectedResult);      
+        });
+    });
+
+    describe(@"CGPointEqualToPointWithAccuracy", ^{
+        it(@"compares two points that are close enough", ^{
+            CGPoint point = CGPointMake(0.5, 0.5);
+            CGPoint point2 = CGPointMake(1, 1);
+            CGFloat distance = 0.6;
+            expect(CGPointEqualToPointWithAccuracy(point, point2, distance)).toBeTruthy();
+        });
+
+        it(@"compares two points that are too far from eachother", ^{
+            CGPoint point = CGPointMake(0.5, 0.5);
+            CGPoint point2 = CGPointMake(1.5, 11.5);
+            CGFloat distance = 0.4;
+            expect(CGPointEqualToPointWithAccuracy(point, point2, distance)).toBeFalsy();
+        });
+    });
 
 });
 

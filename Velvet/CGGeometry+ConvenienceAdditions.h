@@ -104,6 +104,26 @@ void CGRectDivideWithPadding (CGRect rect, CGRect *slice, CGRect *remainder, CGF
 CGRect CGRectFloor(CGRect rect);
 
 /**
+ * Creates a rectangle for a coordinate system originating in the bottom-left.
+ *
+ * @param containingRect The rectangle that will "contain" the created rectangle, used as a reference to vertically flip the coordinate system.
+ * @param x The X origin of the rectangle, starting from the top-left.
+ * @param y The Y origin of the rectangle, starting from the top-left.
+ * @param width The width of the rectangle.
+ * @param height The height of the rectangle.
+ */
+CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat width, CGFloat height);
+
+/**
+ * Returns whether `point` is within `epsilon` distance of `point2`.
+ *
+ * @param point The first specified point.
+ * @param point2 The second specified point.
+ * @param epsilon The acceptable distance between point and point2.
+ */
+BOOL CGPointEqualToPointWithAccuracy(CGPoint point, CGPoint point2, CGFloat epsilon);
+
+/**
  * Returns the dot product of two points.
  *
  * @param point The first specified point.

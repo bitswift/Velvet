@@ -189,7 +189,7 @@ describe(@"CGGeometryAdditions", ^{
     });
     
     describe(@"CGRectMakeInverted", ^{
-        it(@"compares a newly inverted rect to a flipped reference", ^{
+        it(@"should create an inverted rect inside a contained rectangle", ^{
             CGRect containingRect = CGRectMake(0, 0, 100, 100);
 
             // Bottom Left

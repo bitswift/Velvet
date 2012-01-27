@@ -726,9 +726,20 @@ static BOOL VELViewPerformingDeepLayout = NO;
         }
     };
 
-    if ([m_subviews containsObject:view]) {
-        [m_subviews removeObject:view];
+    void (^insertSubviewAndSublayer)(void) = ^{
+        if (!m_subviews)
+            m_subviews = [[NSMutableArray alloc] init];
+
         [m_subviews insertObject:view atIndex:index];
+
+        if (index > 0)
+            [self.layer insertSublayer:view.layer above:[[m_subviews objectAtIndex:index - 1] layer]];
+        else
+            [self.layer insertSublayer:view.layer atIndex:0];
+    };
+
+    if ([m_subviews containsObject:view]) {
+        insertSubviewAndSublayer();
         return;
     }
 
@@ -756,16 +767,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
         // normal -didMove and -willMove methods)
         [view.superview removeSubview:view];
 
-        if (!m_subviews)
-            m_subviews = [[NSMutableArray alloc] init];
-
-        [m_subviews insertObject:view atIndex:index];
-
         view.superview = self;
-        if (index > 0)
-            [self.layer insertSublayer:view.layer above:[[m_subviews objectAtIndex:index - 1] layer]];
-        else
-            [self.layer insertSublayer:view.layer atIndex:0];
+        insertSubviewAndSublayer();
 
         [view didMoveFromSuperview:oldSuperview];
 

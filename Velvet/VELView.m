@@ -712,9 +712,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)insertSubview:(VELView *)view atIndex:(NSUInteger)index {
-    if (view.superview == self)
-        return;
-
     NSIndexSet *indexSet = nil;
 
     if (!self.replacingSubviews) {
@@ -728,6 +725,12 @@ static BOOL VELViewPerformingDeepLayout = NO;
             [self didChange:NSKeyValueChangeInsertion valuesAtIndexes:indexSet forKey:@"subviews"];
         }
     };
+
+    if ([m_subviews containsObject:view]) {
+        [m_subviews removeObject:view];
+        [m_subviews insertObject:view atIndex:index];
+        return;
+    }
 
     [CATransaction performWithDisabledActions:^{
         VELView *oldSuperview = view.superview;

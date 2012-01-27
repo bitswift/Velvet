@@ -108,6 +108,59 @@ describe(@"VELView", ^{
         expect(view.subviews).toEqual(subviews);
     });
 
+    describe(@"inserts subviews at a specific index", ^{
+        __block VELView *view;
+        __block TestView *subview1;
+        __block TestView *subview2;
+        __block TestView *subview3;
+
+        before(^{
+            view = [[VELView alloc] init];
+            subview1 = [[TestView alloc] init];
+            subview1.nextSuperview = view;
+            subview2 = [[TestView alloc] init];
+            subview2.nextSuperview = view;
+            subview3 = [[TestView alloc] init];
+            subview3.nextSuperview = view;
+        });
+
+
+        it(@"can insert a subview at index 0", ^{
+            [view insertSubview:subview1 atIndex:0];
+            expect([view.subviews objectAtIndex:0]).toEqual(subview1);
+            expect(subview1.willMoveToSuperviewInvoked).toBeTruthy();
+            expect(subview1.didMoveFromSuperviewInvoked).toBeTruthy();
+            expect(subview1.willMoveToWindowInvoked).toBeFalsy();
+            expect(subview1.didMoveFromWindowInvoked).toBeFalsy();
+
+        });
+
+        it(@"can insert a subview at index 1", ^{
+            [view insertSubview:subview1 atIndex:0];
+            [view insertSubview:subview2 atIndex:1];
+            expect([view.subviews objectAtIndex:1]).toEqual(subview2);
+        });
+
+        it(@"can insert an existing subview into index1", ^{
+            [view insertSubview:subview1 atIndex:0];
+            [view insertSubview:subview3 atIndex:1];
+            [view insertSubview:subview2 atIndex:2];
+            expect([view.subviews objectAtIndex:0]).toEqual(subview1);
+            expect([view.subviews objectAtIndex:1]).toEqual(subview3);
+
+            [subview2 reset];
+            subview2.nextSuperview = view;
+            [view insertSubview:subview2 atIndex:0];
+
+            NSArray *expectedSubviews = [NSArray arrayWithObjects:subview2, subview1, subview3, nil];
+            expect(view.subviews).toEqual(expectedSubviews);
+            expect(subview2.willMoveToSuperviewInvoked).toBeFalsy();
+            expect(subview2.didMoveFromSuperviewInvoked).toBeFalsy();
+            expect(subview2.willMoveToWindowInvoked).toBeFalsy();
+            expect(subview2.didMoveFromWindowInvoked).toBeFalsy();
+        });
+    });
+
     it(@"initializes a subclass", ^{
         TestView *view = [[TestView alloc] init];
         expect(view).not.toBeNil();
@@ -486,13 +539,13 @@ describe(@"VELView", ^{
     describe(@"implements descendantViewAtPoint:", ^{
         __block VELView *superview;
         __block VELView *subview;
-        
+
         before(^{
             superview = [[VELView alloc] initWithFrame:CGRectMake(20, 20, 80, 80)];
             [window.rootView addSubview:superview];
-            
+
             subview = [[VELView alloc] initWithFrame:CGRectMake(50, 30, 100, 150)];
-            [superview addSubview:subview];            
+            [superview addSubview:subview];
         });
 
         it(@"returns a subview when given a subview point", ^{
@@ -571,6 +624,7 @@ describe(@"VELView", ^{
         expect(superview.layoutSubviewsInvoked).toBeTruthy();
     });
 });
+
 SpecEnd
 
 @implementation TestView

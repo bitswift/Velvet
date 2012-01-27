@@ -727,9 +727,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
     };
 
     void (^insertSubviewAndSublayer)(void) = ^{
-        if (!m_subviews)
-            m_subviews = [[NSMutableArray alloc] init];
-
         [m_subviews insertObject:view atIndex:index];
 
         if (index > 0)
@@ -739,6 +736,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     };
 
     if ([m_subviews containsObject:view]) {
+        [m_subviews removeObject:view];
         insertSubviewAndSublayer();
         return;
     }
@@ -766,6 +764,9 @@ static BOOL VELViewPerformingDeepLayout = NO;
         // remove the view from any existing superview (without calling the
         // normal -didMove and -willMove methods)
         [view.superview removeSubview:view];
+
+        if (!m_subviews)
+            m_subviews = [[NSMutableArray alloc] init];
 
         view.superview = self;
         insertSubviewAndSublayer();

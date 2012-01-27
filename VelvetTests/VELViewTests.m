@@ -138,10 +138,11 @@ describe(@"VELView", ^{
 
         it(@"can insert an existing subview into index1", ^{
             [view insertSubview:subview1 atIndex:0];
-            [view insertSubview:subview3 atIndex:1];
-            [view insertSubview:subview2 atIndex:2];
+            [view insertSubview:subview2 atIndex:1];
+            [view insertSubview:subview3 atIndex:2];
             expect([view.subviews objectAtIndex:0]).toEqual(subview1);
-            expect([view.subviews objectAtIndex:1]).toEqual(subview3);
+            expect([view.subviews objectAtIndex:1]).toEqual(subview2);
+            expect([view.subviews objectAtIndex:2]).toEqual(subview3);
 
             [subview2 reset];
             subview2.nextSuperview = view;
@@ -153,6 +154,11 @@ describe(@"VELView", ^{
             expect(subview2.didMoveFromSuperviewInvoked).toBeFalsy();
             expect(subview2.willMoveToWindowInvoked).toBeFalsy();
             expect(subview2.didMoveFromWindowInvoked).toBeFalsy();
+        });
+
+        it(@"can insert the same subview twice", ^{
+            [view insertSubview:subview1 atIndex:0];
+            [view insertSubview:subview1 atIndex:1];
         });
     });
 

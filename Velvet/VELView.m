@@ -736,8 +736,12 @@ static BOOL VELViewPerformingDeepLayout = NO;
     };
 
     if ([m_subviews containsObject:view]) {
-        [m_subviews removeObject:view];
+        NSUInteger currentObjectIndex = [m_subviews indexOfObjectIdenticalTo:view];
+
         insertSubviewAndSublayer();
+        // Remove the previous instance of view from m_subviews after we've reinserted it.
+        currentObjectIndex = index > currentObjectIndex ? currentObjectIndex : currentObjectIndex + 1;
+        [m_subviews removeObjectAtIndex:currentObjectIndex];
         return;
     }
 

@@ -6,9 +6,7 @@
 //  Copyright (c) 2011 Bitswift. All rights reserved.
 //
 
-#import "VELViewControllerTests.h"
 #import <Velvet/Velvet.h>
-#import <Cocoa/Cocoa.h>
 
 // these are static because these methods are only called from
 // -[VELViewController dealloc], and we need to make sure that they were
@@ -23,211 +21,167 @@ static BOOL testViewControllerDidUnloadCalled = NO;
 @property (nonatomic) BOOL viewDidDisappearCalled;
 @end
 
-@interface VELViewControllerTests () {
-    /*
-     * A window to hold the <visibleView>.
-     */
-    VELWindow *m_window;
-}
+SpecBegin(VELViewController)
 
-/*
- * A view that is guaranteed to be visible on screen, to be used for
- * testing appearance/disappearance of subviews.
- */
-@property (nonatomic, strong, readonly) VELView *visibleView;
+    __block VELWindow *window;
+    
+    before(^{
+        testViewControllerWillUnloadCalled = NO;
+        testViewControllerDidUnloadCalled = NO;
 
-/*
- * A window that is guaranteed to be visible on screen.
- */
-@property (nonatomic, strong, readonly) VELWindow *window;
-@end
+        window = [[VELWindow alloc] initWithContentRect:CGRectMake(100, 100, 500, 500)];
+        expect(window).not.toBeNil();
+    });
 
-@implementation VELViewControllerTests
-@synthesize window = m_window;
+    it(@"should remove undo manager actions when deallocating", ^{
+        // need a responder class that creates an undo manager
+        NSDocument *document = [[NSDocument alloc] init];
+        document.hasUndoManager = YES;
 
-- (VELView *)visibleView {
-    return m_window.rootView;
-}
+        NSUndoManager *undoManager = document.undoManager;
+        expect(undoManager).not.toBeNil();
 
-- (void)setUp {
-    testViewControllerWillUnloadCalled = NO;
-    testViewControllerDidUnloadCalled = NO;
+        undoManager.groupsByEvent = NO;
+        expect(undoManager.canUndo).toBeFalsy();
 
-    m_window = [[VELWindow alloc]
-        initWithContentRect:CGRectMake(100, 100, 500, 500)
-        styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
-        backing:NSBackingStoreBuffered
-        defer:NO
-        screen:nil
-    ];
+        @autoreleasepool {
+            __attribute__((objc_precise_lifetime)) VELViewController *viewController = [[VELViewController alloc] init];
+            
+            // NSDocument is not actually an NSResponder, but it behaves like one
+            viewController.nextResponder = (id)document;
 
-    [m_window makeKeyAndOrderFront:nil];
-}
+            // add an undo action to the stack
+            [undoManager beginUndoGrouping];
+            [[undoManager prepareWithInvocationTarget:viewController] viewWillAppear];
+            [undoManager endUndoGrouping];
 
-- (void)tearDown {
-    [m_window close];
-}
+            expect(undoManager.canUndo).toBeTruthy();
+        }
 
-- (void)testInitialization {
-    VELViewController *controller = [[VELViewController alloc] init];
-    STAssertNotNil(controller, @"");
-    STAssertFalse(controller.viewLoaded, @"");
-}
+        // the undo stack should be empty after the view is deallocated
+        expect(undoManager.canUndo).toBeFalsy();
+    });
 
-- (void)testImplicitLoadView {
-    VELViewController *controller = [[VELViewController alloc] init];
+    describe(@"VELViewController", ^{
+        __block VELViewController *controller;
 
-    // using the 'view' property should load it into memory
-    VELView *view = controller.view;
+        before(^{
+            controller = [[VELViewController alloc] init];
+            expect(controller).not.toBeNil();
 
-    STAssertNotNil(view, @"");
-    STAssertTrue(controller.viewLoaded, @"");
+            expect(controller.viewLoaded).toBeFalsy();
+        });
 
-    // re-reading the property should return the same view
-    STAssertEqualObjects(controller.view, view, @"");
-}
+        it(@"should implicitly load its view when the property is accessed", ^{
+            VELView *view = controller.view;
+            expect(view).not.toBeNil();
+            expect(controller.viewLoaded).toBeTruthy();
 
-- (void)testLoadView {
-    VELViewController *controller = [[VELViewController alloc] init];
+            // re-reading the property should return the same view
+            expect(controller.view).toEqual(view);
+        });
 
-    VELView *view = [controller loadView];
-    STAssertNotNil(view, @"");
+        it(@"should load an empty, zero-sized view", ^{
+            VELView *view = [controller loadView];
+            expect(view).not.toBeNil();
 
-    // the view should have zero width and zero height
-    STAssertTrue(CGRectEqualToRect(view.bounds, CGRectZero), @"");
-}
+            expect(CGRectIsEmpty(view.bounds)).toBeTruthy();
+        });
 
-- (void)testViewUnloading {
-    // instantiate a view controller in an explicit autorelease pool to
-    // deterministically control when -dealloc is invoked
-    @autoreleasepool {
-        __autoreleasing TestViewController *vc = [[TestViewController alloc] init];
+        describe(@"responder chain", ^{
+            before(^{
+                expect(controller.view.nextResponder).toEqual(controller);
+            });
 
-        // access the view property so that it gets loaded in the first place
-        [vc view];
-    }
+            after(^{
+                // no matter what happened, the view's next responder should
+                // still be its controller
+                expect(controller.view.nextResponder).toEqual(controller);
+            });
 
-    STAssertTrue(testViewControllerWillUnloadCalled, @"");
-    STAssertTrue(testViewControllerDidUnloadCalled, @"");
-}
+            it(@"should have no next responder by default", ^{
+                expect(controller.nextResponder).toBeNil();
+            });
 
-- (void)testViewAppearance {
-    TestViewController *vc = [[TestViewController alloc] init];
-    [self.visibleView addSubview:vc.view];
+            it(@"should have its view's superview as a next responder", ^{
+                VELView *superview = [[VELView alloc] init];
+                [superview addSubview:controller.view];
 
-    STAssertTrue(vc.viewWillAppearCalled, @"");
-    STAssertTrue(vc.viewDidAppearCalled, @"");
-}
+                expect(controller.nextResponder).toEqual(superview);
+            });
 
-- (void)testViewDisappearance {
-    TestViewController *vc = [[TestViewController alloc] init];
-    [self.visibleView addSubview:vc.view];
+            it(@"should have its view's immediate hostView as a next responder", ^{
+                window.rootView = controller.view;
 
-    [vc.view removeFromSuperview];
-    STAssertTrue(vc.viewWillDisappearCalled, @"");
-    STAssertTrue(vc.viewDidDisappearCalled, @"");
-}
+                expect(controller.nextResponder).toEqual(window.contentView);
+            });
 
-- (void)testMovingBetweenSuperviews {
-    TestViewController *vc = [[TestViewController alloc] init];
+            it(@"should have its view's superview as a next responder before any hostView", ^{
+                [window.rootView addSubview:controller.view];
 
-    VELView *firstSuperview = [[VELView alloc] init];
-    [self.visibleView addSubview:firstSuperview];
+                expect(controller.nextResponder).toEqual(window.rootView);
+            });
+        });
+    });
 
-    VELView *secondSuperview = [[VELView alloc] init];
-    [self.visibleView addSubview:secondSuperview];
+    it(@"should unload its view when deallocated", ^{
+        @autoreleasepool {
+            __attribute__((objc_precise_lifetime)) TestViewController *controller = [[TestViewController alloc] init];
 
-    [firstSuperview addSubview:vc.view];
-
-    // clear out the flags before we change its superview
-    vc.viewWillAppearCalled = NO;
-    vc.viewDidAppearCalled = NO;
-
-    [secondSuperview addSubview:vc.view];
-
-    // moving superviews should not generate new lifecycle messages
-    STAssertFalse(vc.viewWillAppearCalled, @"");
-    STAssertFalse(vc.viewDidAppearCalled, @"");
-    STAssertFalse(vc.viewWillDisappearCalled, @"");
-    STAssertFalse(vc.viewDidDisappearCalled, @"");
-}
-
-- (void)testResponderChainWithoutSuperviewOrHostView {
-    VELViewController *vc = [[VELViewController alloc] init];
-
-    // a view's next responder should be its view controller
-    STAssertEquals(vc.view.nextResponder, vc, @"");
-
-    // the view controller's next responder should be nil in this case
-    STAssertNil(vc.nextResponder, @"");
-}
-
-- (void)testResponderChainWithSuperview {
-    VELViewController *vc = [[VELViewController alloc] init];
-
-    VELView *superview = [[VELView alloc] init];
-    [superview addSubview:vc.view];
-
-    // verify that our view's next responder is still correct
-    STAssertEquals(vc.view.nextResponder, vc, @"");
-
-    // the view controller's next responder should be the superview
-    STAssertEquals(vc.nextResponder, superview, @"");
-}
-
-- (void)testResponderChainWithHostView {
-    VELViewController *vc = [[VELViewController alloc] init];
-
-    NSVelvetView *hostView = self.window.contentView;
-    hostView.guestView = vc.view;
-
-    // verify that our view's next responder is still correct
-    STAssertEquals(vc.view.nextResponder, vc, @"");
-
-    // the view controller's next responder should be the host view
-    STAssertEquals(vc.nextResponder, hostView, @"");
-}
-
-- (void)testResponderChainWithSuperviewAndHostView {
-    VELViewController *vc = [[VELViewController alloc] init];
-
-    [self.visibleView addSubview:vc.view];
-
-    // the view controller's next responder should be the superview, not the
-    // host view
-    STAssertEquals(vc.nextResponder, self.visibleView, @"");
-}
-
-- (void)testRemovesUndoActionsOnDealloc {
-    // need a responder class that creates an undo manager
-    NSDocument *document = [[NSDocument alloc] init];
-    document.hasUndoManager = YES;
-
-    NSUndoManager *undoManager = document.undoManager;
-    STAssertNotNil(undoManager, @"");
-
-    undoManager.groupsByEvent = NO;
-    STAssertFalse(undoManager.canUndo, @"");
-
-    @autoreleasepool {
-        __autoreleasing VELViewController *viewController = [[VELViewController alloc] init];
+            // access the view property to load it in
+            [controller view];
+        }
         
-        // NSDocument is not actually an NSResponder, but it behaves like one
-        viewController.nextResponder = (id)document;
+        expect(testViewControllerWillUnloadCalled).toBeTruthy();
+        expect(testViewControllerDidUnloadCalled).toBeTruthy();
+    });
 
-        // add an undo action to the stack
-        [undoManager beginUndoGrouping];
-        [[undoManager prepareWithInvocationTarget:viewController] viewWillAppear];
-        [undoManager endUndoGrouping];
+    describe(@"custom subclass", ^{
+        __block TestViewController *controller;
 
-        STAssertTrue(undoManager.canUndo, @"");
-    }
+        before(^{
+            controller = [[TestViewController alloc] init];
+        });
 
-    // the undo stack should be empty after the view is deallocated
-    STAssertFalse(undoManager.canUndo, @"");
-}
+        it(@"should invoke viewWillAppear and viewDidAppear", ^{
+            [window.rootView addSubview:controller.view];
 
-@end
+            expect(controller.viewWillAppearCalled).toBeTruthy();
+            expect(controller.viewDidAppearCalled).toBeTruthy();
+        });
+
+        it(@"should invoke viewWillDisappear and viewDidDisappear", ^{
+            [window.rootView addSubview:controller.view];
+            [controller.view removeFromSuperview];
+
+            expect(controller.viewWillDisappearCalled).toBeTruthy();
+            expect(controller.viewDidDisappearCalled).toBeTruthy();
+        });
+
+        it(@"should invoke view lifecycle methods when switching view superviews", ^{
+            VELView *firstSuperview = [[VELView alloc] init];
+            [window.rootView addSubview:firstSuperview];
+
+            VELView *secondSuperview = [[VELView alloc] init];
+            [window.rootView addSubview:secondSuperview];
+
+            [firstSuperview addSubview:controller.view];
+
+            // clear out the flags before we change its superview
+            controller.viewWillAppearCalled = NO;
+            controller.viewDidAppearCalled = NO;
+
+            [secondSuperview addSubview:controller.view];
+
+            // moving superviews should not generate new lifecycle messages
+            expect(controller.viewWillAppearCalled).toBeFalsy();
+            expect(controller.viewDidAppearCalled).toBeFalsy();
+            expect(controller.viewWillDisappearCalled).toBeFalsy();
+            expect(controller.viewDidDisappearCalled).toBeFalsy();
+        });
+    });
+
+SpecEnd
 
 @implementation TestViewController
 @synthesize viewWillAppearCalled;
@@ -242,8 +196,6 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     NSAssert(!self.viewDidAppearCalled, @"");
     NSAssert(!self.viewWillDisappearCalled, @"");
     NSAssert(!self.viewDidDisappearCalled, @"");
-    NSAssert(!testViewControllerWillUnloadCalled, @"");
-    NSAssert(!testViewControllerDidUnloadCalled, @"");
 
     return view;
 }
@@ -256,8 +208,6 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     NSAssert(!self.viewDidAppearCalled, @"");
     NSAssert(!self.viewWillDisappearCalled, @"");
     NSAssert(!self.viewDidDisappearCalled, @"");
-    NSAssert(!testViewControllerWillUnloadCalled, @"");
-    NSAssert(!testViewControllerDidUnloadCalled, @"");
 
     NSAssert(!self.view.superview, @"");
     NSAssert(!self.view.window, @"");
@@ -273,8 +223,6 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     NSAssert(!self.viewDidAppearCalled, @"");
     NSAssert(!self.viewWillDisappearCalled, @"");
     NSAssert(!self.viewDidDisappearCalled, @"");
-    NSAssert(!testViewControllerWillUnloadCalled, @"");
-    NSAssert(!testViewControllerDidUnloadCalled, @"");
 
     NSAssert(self.view.superview, @"");
     NSAssert(self.view.window, @"");
@@ -290,8 +238,6 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     NSAssert(self.viewDidAppearCalled, @"");
     NSAssert(!self.viewWillDisappearCalled, @"");
     NSAssert(!self.viewDidDisappearCalled, @"");
-    NSAssert(!testViewControllerWillUnloadCalled, @"");
-    NSAssert(!testViewControllerDidUnloadCalled, @"");
 
     NSAssert(self.view.superview, @"");
     NSAssert(self.view.window, @"");
@@ -307,8 +253,6 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     NSAssert(self.viewDidAppearCalled, @"");
     NSAssert(self.viewWillDisappearCalled, @"");
     NSAssert(!self.viewDidDisappearCalled, @"");
-    NSAssert(!testViewControllerWillUnloadCalled, @"");
-    NSAssert(!testViewControllerDidUnloadCalled, @"");
 
     NSAssert(!self.view.superview, @"");
     NSAssert(!self.view.window, @"");
@@ -320,9 +264,6 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     [super viewWillUnload];
 
     NSAssert(self.viewLoaded, @"");
-    NSAssert(!testViewControllerWillUnloadCalled, @"");
-    NSAssert(!testViewControllerDidUnloadCalled, @"");
-
     NSAssert(!self.view.superview, @"");
     NSAssert(!self.view.window, @"");
 
@@ -333,8 +274,6 @@ static BOOL testViewControllerDidUnloadCalled = NO;
     [super viewDidUnload];
 
     NSAssert(!self.viewLoaded, @"");
-    NSAssert(testViewControllerWillUnloadCalled, @"");
-    NSAssert(!testViewControllerDidUnloadCalled, @"");
 
     testViewControllerDidUnloadCalled = YES;
 }

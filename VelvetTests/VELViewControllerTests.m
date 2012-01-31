@@ -122,6 +122,41 @@ SpecBegin(VELViewController)
                 expect(controller.nextResponder).toEqual(window.rootView);
             });
         });
+
+        describe(@"parent view controller", ^{
+            it(@"should not have a parent view controller by default", ^{
+                expect(controller.parentViewController).toBeNil();
+            });
+
+            it(@"should be the parent view controller of a direct subview", ^{
+                VELViewController *subviewController = [[VELViewController alloc] init];
+                [controller.view addSubview:subviewController.view];
+
+                expect(subviewController.parentViewController).toEqual(controller);
+            });
+
+            it(@"should be the parent view controller of a descendant", ^{
+                VELView *subview = [[VELView alloc] init];
+                [controller.view addSubview:subview];
+
+                VELViewController *descendantViewController = [[VELViewController alloc] init];
+                [subview addSubview:descendantViewController.view];
+
+                expect(descendantViewController.parentViewController).toEqual(controller);
+            });
+
+            it(@"should find a parent view controller across hierarchies", ^{
+                NSVelvetView *velvetHostView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
+                VELNSView *appKitHostView = [[VELNSView alloc] initWithNSView:velvetHostView];
+
+                [controller.view addSubview:appKitHostView];
+
+                VELViewController *subviewController = [[VELViewController alloc] init];
+                [velvetHostView.guestView addSubview:subviewController.view];
+
+                expect(subviewController.parentViewController).toEqual(controller);
+            });
+        });
     });
 
     it(@"should unload its view when deallocated", ^{

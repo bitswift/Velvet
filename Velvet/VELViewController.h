@@ -29,7 +29,7 @@
 @interface VELViewController : NSResponder
 
 /**
- * Managing the View
+ * @name Managing the View
  */
 
 /**
@@ -89,7 +89,7 @@
 - (void)viewWillUnload;
 
 /**
- * View Presentation
+ * @name View Presentation
  */
 
 /**
@@ -124,5 +124,15 @@
  * invoked.
  */
 - (void)viewDidDisappear;
+
+/**
+ * @name View Controller Hierarchy
+ */
+
+/**
+ * The view controller whose view is the closest ancestor of the receiver's
+ * <view>.
+ */
+@property (nonatomic, weak, readonly) VELViewController *parentViewController;
 
 @end

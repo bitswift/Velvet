@@ -12,8 +12,8 @@
 @protocol VELHostView;
 
 /**
- * A semi-concrete protocol that represents a view that can be bridged by
- * Velvet, allowing interoperation with other UI frameworks.
+ * Represents a view that can be bridged by Velvet, allowing interoperation with
+ * other UI frameworks.
  */
 @protocol VELBridgedView <NSObject>
 @required

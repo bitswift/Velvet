@@ -7,11 +7,25 @@
 //
 
 #import "VELViewController.h"
+#import "VELHostView.h"
 #import "VELView.h"
 #import "VELViewPrivate.h"
 
 @interface VELViewController ()
 @property (nonatomic, strong, readwrite) VELView *view;
+
+/**
+ * Returns the next <VELView> that is an ancestor of <bridgedView> (or
+ * <bridgedView> itself). Returns `nil` if no Velvet hierarchies exist at or
+ * above the given view.
+ *
+ * This will also traverse any host views, to find Velvet hierarchies even
+ * across bridging boundaries.
+ *
+ * @param bridgedView The view to return a <VELView> ancestor of. If this view
+ * is a <VELView>, it is returned.
+ */
+- (VELView *)ancestorVELViewOfBridgedView:(id<VELBridgedView>)bridgedView;
 @end
 
 @implementation VELViewController
@@ -52,6 +66,24 @@
 
     if (!view)
         [self viewDidUnload];
+}
+
+- (VELViewController *)parentViewController {
+    if (![self isViewLoaded])
+        return nil;
+
+    VELView *view = self.view;
+
+    do {
+        // traverse superviews until we reach a root view, then keep trying on
+        // any Velvet hierarchies above its hostView
+        view = view.superview ?: [self ancestorVELViewOfBridgedView:view.hostView];
+
+        if (view.viewController)
+            return view.viewController;
+    } while (view);
+
+    return nil;
 }
 
 #pragma mark Lifecycle
@@ -95,6 +127,20 @@
 
 - (BOOL)acceptsFirstResponder {
     return YES;
+}
+
+#pragma mark View hierarchy
+
+- (VELView *)ancestorVELViewOfBridgedView:(id<VELBridgedView>)bridgedView; {
+    if (!bridgedView)
+        return nil;
+
+    if ([bridgedView isKindOfClass:[VELView class]])
+        return (id)bridgedView;
+
+    // we don't need to check bridgedView.superview, since we already know it's
+    // not in a Velvet hierarchy
+    return [self ancestorVELViewOfBridgedView:bridgedView.hostView];
 }
 
 @end

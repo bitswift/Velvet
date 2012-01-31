@@ -43,7 +43,34 @@
     self.contentView.guestView.backgroundColor = [NSColor windowBackgroundColor];
     self.contentView.opaque = YES;
 
+    // this fixes an issue refreshing our Velvet views when returning from fast user switching
+    [[[NSWorkspace sharedWorkspace] notificationCenter]
+        addObserver:self
+        selector:@selector(workspaceSessionDidBecomeActive:)
+        name:NSWorkspaceSessionDidBecomeActiveNotification
+        object:nil
+    ];
+
     return self;
+}
+
+- (void)dealloc {
+    [[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
+}
+
+#pragma mark Notifications
+
+- (void)workspaceSessionDidBecomeActive:(NSNotification *)notification {
+    // save the first responder, since resetting the hierarchy will lose it
+    NSResponder *firstResponder = [self firstResponder];
+
+    // NSWindow sucks? (magic)
+    self.contentView = self.contentView;
+
+    // reset the frame of the guestView, and re-add it as a layer
+    self.contentView.guestView = self.contentView.guestView;
+
+    [self makeFirstResponder:firstResponder];
 }
 
 @end

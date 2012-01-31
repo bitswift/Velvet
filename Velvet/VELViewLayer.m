@@ -9,6 +9,7 @@
 #import "VELViewLayer.h"
 #import "VELView.h"
 #import "VELViewPrivate.h"
+#import "CATransaction+BlockAdditions.h"
 
 @interface VELViewLayer ()
 /**
@@ -44,7 +45,9 @@
     if (![[self.view class] doesCustomDrawing])
         return;
 
-    [super display];
+    [CATransaction performWithDisabledActions:^{
+        [super display];
+    }];
 }
 
 #pragma mark Autoresizing

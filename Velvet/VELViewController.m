@@ -140,12 +140,7 @@
 
     // we don't need to check bridgedView.superview, since we already know it's
     // not in a Velvet hierarchy
-
-    id<VELHostView> hostView = bridgedView.hostView;
-    if (!hostView)
-        return nil;
-
-    return [self ancestorVELViewOfBridgedView:hostView];
+    return [self ancestorVELViewOfBridgedView:bridgedView.hostView];
 }
 
 @end

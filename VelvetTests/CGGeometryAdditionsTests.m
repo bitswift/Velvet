@@ -200,12 +200,12 @@ describe(@"CGGeometryAdditions", ^{
         });
     });
 
-    describe(@"CGPointIntegral", ^{
-        it(@"rounds components to the closest whole number values", ^{
+    describe(@"CGPointFloor", ^{
+        it(@"rounds components up and left", ^{
             CGPoint point = CGPointMake(0.5, 0.49);
             CGPoint point2 = CGPointMake(-0.5, -0.49);
-            expect(CGPointEqualToPoint(CGPointIntegral(point), CGPointMake(1, 0))).toBeTruthy();
-            expect(CGPointEqualToPoint(CGPointIntegral(point2), CGPointMake(-1, 0))).toBeTruthy();
+            expect(CGPointEqualToPoint(CGPointFloor(point), CGPointMake(0, 1))).toBeTruthy();
+            expect(CGPointEqualToPoint(CGPointFloor(point2), CGPointMake(-1, 0))).toBeTruthy();
         });
     });
 

@@ -115,6 +115,15 @@ CGRect CGRectFloor(CGRect rect);
 CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat width, CGFloat height);
 
 /**
+ * Returns a point with `x` and `y` components rounded to whole numbers. The
+ * point will always be moved up and left, in view coordinates, so `x` will be
+ * rounded down and `y` will be rounded up.
+ *
+ * @param point The point to round.
+ */
+CGPoint CGPointFloor(CGPoint point);
+
+/**
  * Returns whether `point` is within `epsilon` distance of `point2`.
  *
  * @param point The first specified point.

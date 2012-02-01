@@ -97,6 +97,14 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
  */
 @property (nonatomic, strong) NSMutableSet *allDraggingDestinations;
 
+/**
+ * The drag operation returned by the previous call to `draggingEntered:` or
+ * `draggingUpdated:`, which will be the default return value of `draggingEntered:`
+ * or `draggingUpdated:`, if those are not implemented by the view receiving the
+ * drag.
+ */
+@property (nonatomic, assign) NSDragOperation previousDraggingOperation;
+
 /*
  * A counted set of the UTIs registered for drag-and-drop by Velvet views.
  */
@@ -157,6 +165,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize appKitHostView = m_appKitHostView;
 @synthesize lastDraggingDestination = m_lastDraggingDestination;
 @synthesize allDraggingDestinations = m_allDraggingDestinations;
+@synthesize previousDraggingOperation = m_previousDraggingOperation;
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
 @synthesize selfLayerDelegateProxy = m_selfLayerDelegateProxy;
@@ -478,32 +487,41 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     VELView<VELDraggingDestination> *view = [self deepestViewSupportingDraggingInfo:sender];
 
     if (self.lastDraggingDestination != view) {
+        // We're moving into, out of or between valid dragging destination views
+
+        // Exit from the previous dragging destination
         if ([self.lastDraggingDestination respondsToSelector:@selector(draggingExited:)]) {
             [self.lastDraggingDestination draggingExited:sender];
         }
+        self.previousDraggingOperation = NSDragOperationNone;
 
+        // Enter the new dragging destination
         if (view) {
-            self.lastDraggingDestination = view;
             [self.allDraggingDestinations addObject:view];
 
             if ([view respondsToSelector:@selector(draggingEntered:)]) {
-                return [view draggingEntered:sender];
+                self.previousDraggingOperation = [view draggingEntered:sender];
             }
-        } else {
-            self.lastDraggingDestination = nil;
         }
-    } else if ([view respondsToSelector:@selector(draggingUpdated:)]) {
-        return [view draggingUpdated:sender];
+        self.lastDraggingDestination = view;
+
+    } else if (view) {
+        // We're updating within a view
+        if ([view respondsToSelector:@selector(draggingUpdated:)]) {
+            self.previousDraggingOperation = [view draggingUpdated:sender];
+        } else {
+            NSDragOperation expectedOp = [super draggingUpdated:sender];
+            NSAssert(expectedOp == self.previousDraggingOperation,
+                @"NSView would have returned %lu, but previous dragging operation is %lu",
+                (unsigned long)expectedOp, (unsigned long)self.previousDraggingOperation);
+        }
+
+    } else {
+        // We're updating outside any valid drag destinations
+        self.previousDraggingOperation = NSDragOperationNone;
     }
 
-    CGPoint draggingLocation = sender.draggingLocation;
-    if (view && [view pointInside:[view convertFromWindowPoint:draggingLocation]]) {
-        // consider this to be still dragging
-        return [super draggingUpdated:sender];
-    } else {
-        // otherwise, remove dragging indicators and such
-        return NSDragOperationNone;
-    }
+    return self.previousDraggingOperation;
 }
 
 - (void)draggingEnded:(id<NSDraggingInfo>)sender {
@@ -515,6 +533,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
     self.allDraggingDestinations = nil;
     self.lastDraggingDestination = nil;
+    self.previousDraggingOperation = NSDragOperationNone;
 }
 
 - (void)draggingExited:(id<NSDraggingInfo>)sender {
@@ -524,6 +543,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         [view draggingExited:sender];
 
     self.lastDraggingDestination = nil;
+    self.previousDraggingOperation = NSDragOperationNone;
 }
 
 - (BOOL)prepareForDragOperation:(id<NSDraggingInfo>)sender {

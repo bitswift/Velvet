@@ -99,8 +99,10 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
 /**
  * The drag operation returned by the previous call to `draggingEntered:` or
- * `draggingUpdated:`, which will be the default return value of `draggingEntered:`
- * or `draggingUpdated:`, if those are not implemented by the view receiving the
+ * `draggingUpdated:`.
+ *
+ * This will be the default return value of `draggingEntered:` or
+ * `draggingUpdated:`, if those are not implemented by the view receiving the
  * drag.
  */
 @property (nonatomic, assign) NSDragOperation previousDraggingOperation;

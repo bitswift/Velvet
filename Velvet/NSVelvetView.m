@@ -259,6 +259,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     self.guestView = [[VELView alloc] init];
 
     [self recalculateNSViewClipping];
+
+    // Set up to record dragging destinations
+    self.allDraggingDestinations = [NSMutableSet set];
 }
 
 - (void)dealloc {
@@ -463,24 +466,20 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (NSDragOperation)draggingEntered:(id<NSDraggingInfo>)sender {
+    self.previousDraggingOperation = NSDragOperationNone;
+
     id<VELDraggingDestination> view = [self deepestViewSupportingDraggingInfo:sender];
-    if (!view)
-        return NSDragOperationNone;
-
     self.lastDraggingDestination = view;
-
-    if (!self.allDraggingDestinations)
-        self.allDraggingDestinations = [NSMutableSet set];
 
     if (view) {
         [self.allDraggingDestinations addObject:view];
 
         if ([view respondsToSelector:@selector(draggingEntered:)]) {
-            return [view draggingEntered:sender];
+            self.previousDraggingOperation = [view draggingEntered:sender];
         }
     }
 
-    return NSDragOperationNone;
+    return self.previousDraggingOperation;
 }
 
 - (NSDragOperation)draggingUpdated:(id<NSDraggingInfo>)sender {
@@ -531,7 +530,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         }
     }
 
-    self.allDraggingDestinations = nil;
+    [self.allDraggingDestinations removeAllObjects];
     self.lastDraggingDestination = nil;
     self.previousDraggingOperation = NSDragOperationNone;
 }

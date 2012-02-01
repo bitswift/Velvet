@@ -508,11 +508,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         // We're updating within a view
         if ([view respondsToSelector:@selector(draggingUpdated:)]) {
             self.previousDraggingOperation = [view draggingUpdated:sender];
-        } else {
-            NSDragOperation expectedOp = [super draggingUpdated:sender];
-            NSAssert(expectedOp == self.previousDraggingOperation,
-                @"NSView would have returned %lu, but previous dragging operation is %lu",
-                (unsigned long)expectedOp, (unsigned long)self.previousDraggingOperation);
         }
 
     } else {

@@ -98,11 +98,14 @@ describe(@"VELView", ^{
 
         expect(view.subviews).toEqual(subviews);
 
+        NSMutableArray *expectedSublayers = [view.layer.sublayers mutableCopy];
         [subviews exchangeObjectAtIndex:0 withObjectAtIndex:2];
+        [expectedSublayers exchangeObjectAtIndex:0 withObjectAtIndex:2];
 
         // calling -setSubviews: with a new array should replace the old one
         view.subviews = subviews;
         expect(view.subviews).toEqual(subviews);
+        expect(view.layer.sublayers).toEqual(expectedSublayers);
     });
 
     describe(@"inserts subviews at a specific index", ^{

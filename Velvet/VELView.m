@@ -365,10 +365,12 @@ static BOOL VELViewPerformingDeepLayout = NO;
             if (!oldSubviews || existingIndex == NSNotFound) {
                 [self addSubview:view];
             } else {
-                [oldSubviews removeObjectAtIndex:existingIndex];
-                [view.layer removeFromSuperlayer];
-                [m_subviews addObject:view];
-                [self.layer addSublayer:view.layer];
+                [CATransaction performWithDisabledActions:^{
+                    [oldSubviews removeObjectAtIndex:existingIndex];
+                    [view.layer removeFromSuperlayer];
+                    [m_subviews addObject:view];
+                    [self.layer addSublayer:view.layer];
+                }];
             }
         }];
     } else {

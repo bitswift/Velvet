@@ -366,7 +366,9 @@ static BOOL VELViewPerformingDeepLayout = NO;
                 [self addSubview:view];
             } else {
                 [oldSubviews removeObjectAtIndex:existingIndex];
+                [view.layer removeFromSuperlayer];
                 [m_subviews addObject:view];
+                [self.layer addSublayer:view.layer];
             }
         }];
     } else {

@@ -60,7 +60,6 @@
         return nil;
 
     self.userInteractionEnabled = NO;
-    self.contentMode = VELViewContentModeScaleToFill;
     return self;
 }
 
@@ -76,10 +75,8 @@
 
 #pragma mark Drawing
 
-- (void)drawRect:(CGRect)rect {
-    // TODO: this could draw just the portion of the image corresponding to
-    // 'rect'
-    [self.image drawInRect:self.bounds fromRect:NSZeroRect operation:NSCompositeCopy fraction:1];
++ (BOOL)doesCustomDrawing {
+    return YES;
 }
 
 #pragma mark Layout
@@ -119,6 +116,14 @@
         // scale down height accordingly
         return CGSizeMake(size.width, round(size.width / aspectRatio));
     }
+}
+
+#pragma mark CALayer delegate
+
+- (void)displayLayer:(CALayer *)layer {
+    NSGraphicsContext *windowContext = self.window.graphicsContext;
+
+    layer.contents = (__bridge id)[self.image CGImageForProposedRect:NULL context:windowContext hints:nil];
 }
 
 @end

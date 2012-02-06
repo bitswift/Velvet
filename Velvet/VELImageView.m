@@ -123,7 +123,10 @@
 - (void)displayLayer:(CALayer *)layer {
     NSGraphicsContext *windowContext = self.window.graphicsContext;
 
-    layer.contents = (__bridge id)[self.image CGImageForProposedRect:NULL context:windowContext hints:nil];
+    NSNumber *interpolationQuality = [NSNumber numberWithUnsignedInteger:NSImageInterpolationHigh];
+    NSDictionary *hints = [NSDictionary dictionaryWithObject:interpolationQuality forKey:NSImageHintInterpolation];
+
+    layer.contents = (__bridge id)[self.image CGImageForProposedRect:NULL context:windowContext hints:hints];
 }
 
 @end

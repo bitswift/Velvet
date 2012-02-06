@@ -140,7 +140,7 @@
         NSImage *image = [NSImage imageNamed:@"iceberg.jpg"];
 
         self.imageView = [[VELImageView alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
-        self.imageView.image = image.CGImage;
+        self.imageView.image = image;
 
         // 44px on every corner should not scale, while the rest of the image should
         self.imageView.endCapInsets = NSEdgeInsetsMake(44, 44, 44, 44);
@@ -229,11 +229,10 @@
     NSMutableArray *views = [NSMutableArray arrayWithCapacity:numViews];
 
     NSImage *image = [self loadLolz];
-    CGImageRef imageRef = [image CGImageForProposedRect:NULL context:nil hints:nil];
 
     for (NSUInteger i = 0; i < numViews; ++i) {
         VELImageView *v = [[VELImageView alloc] init];
-        v.image = imageRef;
+        v.image = image;
         v.frame = NSMakeRect((i % numCols) * 60, (i / numCols) * 60, 50, 50);
         [views addObject:v];
     }

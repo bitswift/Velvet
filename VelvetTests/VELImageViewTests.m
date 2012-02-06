@@ -38,12 +38,11 @@
 
 - (void)testInitializationWithImage {
     NSImage *image = [self image];
-    CGImageRef CGImage = image.CGImage;
 
-    VELImageView *imageView = [[VELImageView alloc] initWithImage:CGImage];
+    VELImageView *imageView = [[VELImageView alloc] initWithImage:image];
     STAssertNotNil(imageView, @"");
 
-    STAssertEquals(imageView.image, CGImage, @"");
+    STAssertEquals(imageView.image, image, @"");
     STAssertTrue(CGSizeEqualToSize(imageView.bounds.size, image.size), @"");
 
     NSEdgeInsets zeroInsets = NSEdgeInsetsMake(0, 0, 0, 0);
@@ -56,11 +55,8 @@
     VELImageView *imageView = [[VELImageView alloc] init];
     STAssertNotNil(imageView, @"");
 
-    CGImageRef imageRef = testImage.CGImage;
-    STAssertTrue(imageRef != NULL, @"");
-
-    imageView.image = imageRef;
-    STAssertEquals(imageView.image, imageRef, @"");
+    imageView.image = testImage;
+    STAssertEquals(imageView.image, testImage, @"");
 }
 
 - (void)testSizing {
@@ -70,7 +66,7 @@
     CGFloat aspectRatio = size.width / size.height;
 
     VELImageView *imageView = [[VELImageView alloc] init];
-    imageView.image = testImage.CGImage;
+    imageView.image = testImage;
 
     CGSize preferredSize = [imageView sizeThatFits:CGSizeZero];
     STAssertTrue(CGSizeEqualToSize(size, preferredSize), @"");
@@ -108,7 +104,7 @@
 
 - (void)testEndCapInsetsUpdatesContentStretch {
     NSImage *image = self.image;
-    VELImageView *imageView = [[VELImageView alloc] initWithImage:image.CGImage];
+    VELImageView *imageView = [[VELImageView alloc] initWithImage:image];
 
     // top, left, bottom, right
     imageView.endCapInsets = NSEdgeInsetsMake(4, 2, 4, 2);
@@ -126,7 +122,7 @@
 
 - (void)testEndCapInsetsReadsContentStretch {
     NSImage *image = self.image;
-    VELImageView *imageView = [[VELImageView alloc] initWithImage:image.CGImage];
+    VELImageView *imageView = [[VELImageView alloc] initWithImage:image];
 
     imageView.contentStretch = CGRectMake(0.2, 0.25, 0.6, 0.5);
 

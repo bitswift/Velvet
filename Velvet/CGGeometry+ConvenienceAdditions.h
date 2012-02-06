@@ -9,6 +9,13 @@
 #import <AppKit/AppKit.h>
 
 /**
+ * Returns the exact center point of the given rectangle.
+ *
+ * @param rect The rectangle to return the center of.
+ */
+CGPoint CGRectCenterPoint (CGRect rect);
+
+/**
  * Chops the given amount off of a rectangle's edge, returning the remainder.
  *
  * If `amount` is greater than or equal to the size of the rectangle along the

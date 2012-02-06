@@ -13,6 +13,17 @@ SpecBegin(CGGeometryAdditions)
 describe(@"CGGeometryAdditions", ^{
     __block CGRect rect, expectedSlice, expectedRemainder, slice, remainder;
 
+    describe(@"CGRectCenterPoint", ^{
+        it(@"should return the center of a valid rectangle", ^{
+            CGRect rect = CGRectMake(10, 20, 30, 40);
+            expect(CGRectCenterPoint(rect)).toEqual(CGPointMake(25, 40));
+        });
+
+        it(@"should return the center of an empty rectangle", ^{
+            CGRect rect = CGRectMake(10, 20, 0, 0);
+            expect(CGRectCenterPoint(rect)).toEqual(CGPointMake(10, 20));
+        });
+    });
 
     describe(@"CGRectDivideExcludingIntersection", ^{
         __block CGRect choppingRect;
@@ -21,7 +32,6 @@ describe(@"CGGeometryAdditions", ^{
             rect = CGRectMake(0, 0, 50, 50);
             choppingRect = CGRectMake(100, 100, 50, 50);
         });
-
 
         it(@"divides without an intersection", ^{
             CGRectDivideExcludingIntersection(rect, &slice, &remainder, choppingRect, CGRectMinXEdge);

@@ -8,6 +8,13 @@
 
 #import "CGGeometry+ConvenienceAdditions.h"
 
+CGPoint CGRectCenterPoint (CGRect rect) {
+    return CGPointMake(
+        CGRectGetMinX(rect) + CGRectGetWidth(rect) / 2,
+        CGRectGetMinY(rect) + CGRectGetHeight(rect) / 2
+    );
+}
+
 CGRect CGRectChop (CGRect rect, CGFloat amount, CGRectEdge edge) {
     CGRect slice, remainder;
     CGRectDivide(rect, &slice, &remainder, amount, edge);

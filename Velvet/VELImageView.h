@@ -25,7 +25,7 @@
  *
  * @param image The image to display in the receiver.
  */
-- (id)initWithImage:(CGImageRef)image;
+- (id)initWithImage:(NSImage *)image;
 
 /**
  * @name Image
@@ -34,7 +34,7 @@
 /**
  * The image to display in the receiver.
  */
-@property CGImageRef image;
+@property (nonatomic, strong) NSImage *image;
 
 /**
  * @name Scaling Behavior
@@ -50,6 +50,6 @@
  * This is a convenience property which simply translates the receiver's
  * <[VELView contentStretch]> to and from the dimensions of the <image>.
  */
-@property NSEdgeInsets endCapInsets;
+@property (nonatomic, assign) NSEdgeInsets endCapInsets;
 
 @end

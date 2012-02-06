@@ -72,11 +72,11 @@
         NSURL *fileURL = [NSURL fileURLWithPath:path];
         NSImage *image = [[NSImage alloc] initWithContentsOfURL:fileURL];
         if (image) {
-            VELImageView *imageView = [[VELImageView alloc] init];
-            CGImageRef imageRef = [image CGImageForProposedRect:NULL context:NULL hints:NULL];
-            imageView.image = imageRef;
+            VELImageView *imageView = [[VELImageView alloc] initWithImage:image];
+
             CGPoint dragPoint = [self convertFromWindowPoint:[sender draggingLocation]];
-            imageView.frame = CGRectMake(dragPoint.x, dragPoint.y, image.size.width, image.size.height);
+            imageView.center = dragPoint;
+
             [self addSubview:imageView];
         }
     }

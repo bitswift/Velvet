@@ -12,17 +12,19 @@
 
 #pragma mark Properties
 
-- (CGImageRef)image {
-    return (__bridge CGImageRef)self.layer.contents;
-}
+@synthesize image = m_image;
 
-- (void)setImage:(CGImageRef)image {
-    self.layer.contents = (__bridge id)image;
+- (void)setImage:(NSImage *)image {
+    if (m_image == image)
+        return;
+
+    m_image = image;
+    [self setNeedsDisplay];
 }
 
 - (NSEdgeInsets)endCapInsets {
-    size_t width = CGImageGetWidth(self.image);
-    size_t height = CGImageGetHeight(self.image);
+    CGFloat width = self.image.size.width;
+    CGFloat height = self.image.size.height;
 
     CGRect contentStretch = self.contentStretch;
 
@@ -36,8 +38,8 @@
 }
 
 - (void)setEndCapInsets:(NSEdgeInsets)insets {
-    size_t width = CGImageGetWidth(self.image);
-    size_t height = CGImageGetHeight(self.image);
+    CGFloat width = self.image.size.width;
+    CGFloat height = self.image.size.height;
 
     CGFloat xOrigin = insets.left / width;
     CGFloat yOrigin = insets.top / height;
@@ -59,37 +61,34 @@
 
     self.userInteractionEnabled = NO;
     self.contentMode = VELViewContentModeScaleToFill;
-
-    // assume that our image is already at the correct pixel density for the
-    // screen
-    self.matchesWindowScaleFactor = NO;
-
     return self;
 }
 
-- (id)initWithImage:(CGImageRef)image; {
+- (id)initWithImage:(NSImage *)image; {
     self = [self init];
     if (!self)
         return nil;
 
     self.image = image;
-    self.bounds = CGRectMake(0, 0, CGImageGetWidth(image), CGImageGetHeight(image));
+    self.bounds = CGRectMake(0, 0, image.size.width, image.size.height);
     return self;
+}
+
+#pragma mark Drawing
+
+- (void)drawRect:(CGRect)rect {
+    // TODO: this could draw just the portion of the image corresponding to
+    // 'rect'
+    [self.image drawInRect:self.bounds fromRect:NSZeroRect operation:NSCompositeCopy fraction:1];
 }
 
 #pragma mark Layout
 
 - (CGSize)sizeThatFits:(CGSize)size {
-    CGImageRef image = self.image;
-    if (!image)
+    if (!self.image)
         return CGSizeZero;
 
-    size_t width = CGImageGetWidth(image);
-    size_t height = CGImageGetHeight(image);
-    if (!width || !height)
-        return CGSizeZero;
-
-    CGSize actualSize = CGSizeMake(width, height);
+    CGSize actualSize = self.image.size;
 
     if (fabs(size.width) < 0.01)
         size.width = CGFLOAT_MAX;
@@ -97,13 +96,13 @@
     if (fabs(size.height) < 0.01)
         size.height = CGFLOAT_MAX;
 
-    if (size.width >= width && size.height >= height) {
+    if (size.width >= actualSize.width && size.height >= actualSize.height) {
         // the given constraint is bigger than the image, so just use the
         // image's actual size
         return actualSize;
     }
 
-    CGFloat aspectRatio = (CGFloat)width / height;
+    CGFloat aspectRatio = actualSize.width / actualSize.height;
     CGFloat constraintAspectRatio = size.width / size.height;
 
     if (fabs(constraintAspectRatio - aspectRatio) < 0.001) {

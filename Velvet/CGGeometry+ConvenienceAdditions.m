@@ -200,6 +200,20 @@ CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat 
     );
 }
 
+BOOL CGRectEqualToRectWithAccuracy (CGRect rect, CGRect rect2, CGFloat epsilon) {
+    if (!CGPointEqualToPointWithAccuracy(rect.origin, rect2.origin, epsilon))
+        return NO;
+
+    if (!CGSizeEqualToSizeWithAccuracy(rect.size, rect2.size, epsilon))
+        return NO;
+
+    return YES;
+}
+
+BOOL CGSizeEqualToSizeWithAccuracy (CGSize size, CGSize size2, CGFloat epsilon) {
+    return (fabs(size.width - size2.width) <= epsilon) && (fabs(size.height - size2.height) <= epsilon);
+}
+
 CGPoint CGPointFloor(CGPoint point) {
     return CGPointMake(floor(point.x), ceil(point.y));
 }

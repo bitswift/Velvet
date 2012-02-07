@@ -219,19 +219,35 @@ describe(@"CGGeometryAdditions", ^{
         });
     });
 
-    describe(@"CGPointEqualToPointWithAccuracy", ^{
+    describe(@"equality with accuracy", ^{
+        CGRect rect = CGRectMake(0.5, 1.5, 15, 20);
+        CGFloat epsilon = 0.6;
+
+        CGRect closeRect = CGRectMake(1, 1, 15.5, 19.75);
+        CGRect farRect = CGRectMake(1.5, 11.5, 20, 20);
+
         it(@"compares two points that are close enough", ^{
-            CGPoint point = CGPointMake(0.5, 0.5);
-            CGPoint point2 = CGPointMake(1, 1);
-            CGFloat distance = 0.6;
-            expect(CGPointEqualToPointWithAccuracy(point, point2, distance)).toBeTruthy();
+            expect(CGPointEqualToPointWithAccuracy(rect.origin, closeRect.origin, epsilon)).toBeTruthy();
         });
 
-        it(@"compares two points that are too far from eachother", ^{
-            CGPoint point = CGPointMake(0.5, 0.5);
-            CGPoint point2 = CGPointMake(1.5, 11.5);
-            CGFloat distance = 0.4;
-            expect(CGPointEqualToPointWithAccuracy(point, point2, distance)).toBeFalsy();
+        it(@"compares two points that are too far from each other", ^{
+            expect(CGPointEqualToPointWithAccuracy(rect.origin, farRect.origin, epsilon)).toBeFalsy();
+        });
+
+        it(@"compares two rectangles that are close enough", ^{
+            expect(CGRectEqualToRectWithAccuracy(rect, closeRect, epsilon)).toBeTruthy();
+        });
+
+        it(@"compares two rectangles that are too far from each other", ^{
+            expect(CGRectEqualToRectWithAccuracy(rect, farRect, epsilon)).toBeFalsy();
+        });
+
+        it(@"compares two sizes that are close enough", ^{
+            expect(CGSizeEqualToSizeWithAccuracy(rect.size, closeRect.size, epsilon)).toBeTruthy();
+        });
+
+        it(@"compares two sizes that are too far from each other", ^{
+            expect(CGSizeEqualToSizeWithAccuracy(rect.size, farRect.size, epsilon)).toBeFalsy();
         });
     });
 

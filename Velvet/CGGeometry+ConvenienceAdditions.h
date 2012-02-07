@@ -122,6 +122,25 @@ CGRect CGRectFloor(CGRect rect);
 CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat width, CGFloat height);
 
 /**
+ * Returns whether every side of `rect` is within `epsilon` distance of `rect2`.
+ *
+ * @param rect The first rectangle.
+ * @param rect2 The second rectangle.
+ * @param epsilon The acceptable distance between the sides of `rect` and
+ * `rect2`.
+ */
+BOOL CGRectEqualToRectWithAccuracy (CGRect rect, CGRect rect2, CGFloat epsilon);
+
+/**
+ * Returns whether `size` is within `epsilon` points of `size2`.
+ *
+ * @param size The first size.
+ * @param size2 The second size.
+ * @param epsilon The acceptable difference between `size` and `size2`.
+ */
+BOOL CGSizeEqualToSizeWithAccuracy (CGSize size, CGSize size2, CGFloat epsilon);
+
+/**
  * Returns a point with `x` and `y` components rounded to whole numbers. The
  * point will always be moved up and left, in view coordinates, so `x` will be
  * rounded down and `y` will be rounded up.
@@ -133,9 +152,9 @@ CGPoint CGPointFloor(CGPoint point);
 /**
  * Returns whether `point` is within `epsilon` distance of `point2`.
  *
- * @param point The first specified point.
- * @param point2 The second specified point.
- * @param epsilon The acceptable distance between point and point2.
+ * @param point The first point.
+ * @param point2 The second point.
+ * @param epsilon The acceptable distance between `point` and `point2`.
  */
 BOOL CGPointEqualToPointWithAccuracy(CGPoint point, CGPoint point2, CGFloat epsilon);
 

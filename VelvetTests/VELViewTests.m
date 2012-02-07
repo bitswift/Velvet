@@ -452,18 +452,22 @@ describe(@"VELView", ^{
 
         it(@"can convert from a window point to its own coordinate space", ^{
             expect([view convertFromWindowPoint:windowRect.origin]).toEqual(viewRect.origin);
+            expect([view convertPoint:windowRect.origin fromView:nil]).toEqual(viewRect.origin);
         });
 
         it(@"can convert to a window point from its own coordinate space", ^{
             expect([view convertToWindowPoint:viewRect.origin]).toEqual(windowRect.origin);
+            expect([view convertPoint:viewRect.origin toView:nil]).toEqual(windowRect.origin);
         });
 
         it(@"can convert from a window rect", ^{
             expect([view convertFromWindowRect:windowRect]).toEqual(viewRect);
+            expect([view convertRect:windowRect fromView:nil]).toEqual(viewRect);
         });
 
         it(@"can convert to a window rect", ^{
             expect([view convertToWindowRect:viewRect]).toEqual(windowRect);
+            expect([view convertRect:viewRect toView:nil]).toEqual(windowRect);
         });
     });
 

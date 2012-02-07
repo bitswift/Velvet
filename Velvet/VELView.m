@@ -988,18 +988,30 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {
+    if (!view)
+        return [self convertFromWindowPoint:point];
+
     return [self convertFromWindowPoint:[view convertToWindowPoint:point]];
 }
 
 - (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view; {
+    if (!view)
+        return [self convertToWindowPoint:point];
+
     return [view convertFromWindowPoint:[self convertToWindowPoint:point]];
 }
 
 - (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view; {
+    if (!view)
+        return [self convertFromWindowRect:rect];
+
     return [self convertFromWindowRect:[view convertToWindowRect:rect]];
 }
 
 - (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view; {
+    if (!view)
+        return [self convertToWindowRect:rect];
+
     return [view convertFromWindowRect:[self convertToWindowRect:rect]];
 }
 

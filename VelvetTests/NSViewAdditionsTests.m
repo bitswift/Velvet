@@ -14,6 +14,7 @@ SpecBegin(NSViewAdditions)
 describe(@"NSViewAdditions", ^{
     __block VELWindow *window;
     __block NSView *theNSView;
+
     before(^{
         window = [[VELWindow alloc] initWithContentRect:CGRectMake(100, 100, 500, 500)];
         theNSView = [[NSView alloc] initWithFrame:CGRectMake(20, 50, 100, 200)];
@@ -107,7 +108,11 @@ describe(@"NSViewAdditions", ^{
     });
 
     describe(@"pointInside", ^{
-        NSView *view = [[NSView alloc] initWithFrame:CGRectMake(20, 20, 80, 80)];
+        __block NSView *view = nil;
+
+        before(^{
+            view = [[NSView alloc] initWithFrame:CGRectMake(40, 40, 80, 80)];
+        });
 
         it(@"returns true when given a point inside the receiver's bounds", ^{
             CGPoint insidePoint = CGPointMake(51, 31);
@@ -115,6 +120,20 @@ describe(@"NSViewAdditions", ^{
         });
 
         it(@"returns false when given a point outside the receiver's bounds", ^{
+            CGPoint outsidePoint = CGPointMake(49, 200);
+            expect([view pointInside:outsidePoint]).toBeFalsy();
+        });
+
+        it(@"returns true when in a superview and given a point inside the receiver's bounds", ^{
+            [theNSView addSubview:view];
+
+            CGPoint insidePoint = CGPointMake(51, 31);
+            expect([view pointInside:insidePoint]).toBeTruthy();
+        });
+
+        it(@"returns false when in a superview and given a point outside the receiver's bounds", ^{
+            [theNSView addSubview:view];
+
             CGPoint outsidePoint = CGPointMake(49, 200);
             expect([view pointInside:outsidePoint]).toBeFalsy();
         });

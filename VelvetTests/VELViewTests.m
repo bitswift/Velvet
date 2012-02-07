@@ -396,6 +396,20 @@ describe(@"VELView", ^{
             expect(testView.didMoveFromWindowInvoked).toBeFalsy();
         });
 
+        it(@"should not invoke callback methods when superview changes superviews", ^{
+            VELView *superview = [[VELView alloc] init];
+            testView.nextSuperview = superview;
+            [superview addSubview:testView];
+
+            [testView reset];
+            [view addSubview:superview];
+
+            expect(testView.willMoveToSuperviewInvoked).toBeFalsy();
+            expect(testView.didMoveFromSuperviewInvoked).toBeFalsy();
+            expect(testView.willMoveToWindowInvoked).toBeFalsy();
+            expect(testView.didMoveFromWindowInvoked).toBeFalsy();
+        });
+
         it(@"should invoke callback methods when changing superviews", ^{
             testView.nextSuperview = view;
             [view addSubview:testView];

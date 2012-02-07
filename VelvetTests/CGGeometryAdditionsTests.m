@@ -210,6 +210,18 @@ describe(@"CGGeometryAdditions", ^{
         });
     });
 
+    describe(@"CGRectWithSize", ^{
+        it(@"should return a rectangle with a valid size", ^{
+            CGRect rect = CGRectWithSize(CGSizeMake(20, 40));
+            expect(rect).toEqual(CGRectMake(0, 0, 20, 40));
+        });
+
+        it(@"should return a rectangle with zero size", ^{
+            CGRect rect = CGRectWithSize(CGSizeZero);
+            expect(rect).toEqual(CGRectZero);
+        });
+    });
+
     describe(@"CGPointFloor", ^{
         it(@"rounds components up and left", ^{
             CGPoint point = CGPointMake(0.5, 0.49);

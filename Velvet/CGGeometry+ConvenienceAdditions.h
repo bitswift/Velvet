@@ -122,6 +122,14 @@ CGRect CGRectFloor(CGRect rect);
 CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat width, CGFloat height);
 
 /**
+ * Creates and returns a rectangle with an origin of `CGPointZero` and the given
+ * size.
+ *
+ * @param size The size of rectangle to create.
+ */
+CGRect CGRectWithSize (CGSize size);
+
+/**
  * Returns whether every side of `rect` is within `epsilon` distance of `rect2`.
  *
  * @param rect The first rectangle.

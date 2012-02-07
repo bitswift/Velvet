@@ -210,6 +210,10 @@ BOOL CGRectEqualToRectWithAccuracy (CGRect rect, CGRect rect2, CGFloat epsilon) 
     return YES;
 }
 
+CGRect CGRectWithSize (CGSize size) {
+    return CGRectMake(0, 0, size.width, size.height);
+}
+
 BOOL CGSizeEqualToSizeWithAccuracy (CGSize size, CGSize size2, CGFloat epsilon) {
     return (fabs(size.width - size2.width) <= epsilon) && (fabs(size.height - size2.height) <= epsilon);
 }

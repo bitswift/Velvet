@@ -9,6 +9,13 @@
 #import <AppKit/AppKit.h>
 
 /**
+ * Returns the exact center point of the given rectangle.
+ *
+ * @param rect The rectangle to return the center of.
+ */
+CGPoint CGRectCenterPoint (CGRect rect);
+
+/**
  * Chops the given amount off of a rectangle's edge, returning the remainder.
  *
  * If `amount` is greater than or equal to the size of the rectangle along the
@@ -115,6 +122,33 @@ CGRect CGRectFloor(CGRect rect);
 CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat width, CGFloat height);
 
 /**
+ * Creates and returns a rectangle with an origin of `CGPointZero` and the given
+ * size.
+ *
+ * @param size The size of rectangle to create.
+ */
+CGRect CGRectWithSize (CGSize size);
+
+/**
+ * Returns whether every side of `rect` is within `epsilon` distance of `rect2`.
+ *
+ * @param rect The first rectangle.
+ * @param rect2 The second rectangle.
+ * @param epsilon The acceptable distance between the sides of `rect` and
+ * `rect2`.
+ */
+BOOL CGRectEqualToRectWithAccuracy (CGRect rect, CGRect rect2, CGFloat epsilon);
+
+/**
+ * Returns whether `size` is within `epsilon` points of `size2`.
+ *
+ * @param size The first size.
+ * @param size2 The second size.
+ * @param epsilon The acceptable difference between `size` and `size2`.
+ */
+BOOL CGSizeEqualToSizeWithAccuracy (CGSize size, CGSize size2, CGFloat epsilon);
+
+/**
  * Returns a point with `x` and `y` components rounded to whole numbers. The
  * point will always be moved up and left, in view coordinates, so `x` will be
  * rounded down and `y` will be rounded up.
@@ -126,9 +160,9 @@ CGPoint CGPointFloor(CGPoint point);
 /**
  * Returns whether `point` is within `epsilon` distance of `point2`.
  *
- * @param point The first specified point.
- * @param point2 The second specified point.
- * @param epsilon The acceptable distance between point and point2.
+ * @param point The first point.
+ * @param point2 The second point.
+ * @param epsilon The acceptable distance between `point` and `point2`.
  */
 BOOL CGPointEqualToPointWithAccuracy(CGPoint point, CGPoint point2, CGFloat epsilon);
 

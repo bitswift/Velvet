@@ -8,6 +8,13 @@
 
 #import "CGGeometry+ConvenienceAdditions.h"
 
+CGPoint CGRectCenterPoint (CGRect rect) {
+    return CGPointMake(
+        CGRectGetMinX(rect) + CGRectGetWidth(rect) / 2,
+        CGRectGetMinY(rect) + CGRectGetHeight(rect) / 2
+    );
+}
+
 CGRect CGRectChop (CGRect rect, CGFloat amount, CGRectEdge edge) {
     CGRect slice, remainder;
     CGRectDivide(rect, &slice, &remainder, amount, edge);
@@ -191,6 +198,24 @@ CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat 
         width,
         height
     );
+}
+
+BOOL CGRectEqualToRectWithAccuracy (CGRect rect, CGRect rect2, CGFloat epsilon) {
+    if (!CGPointEqualToPointWithAccuracy(rect.origin, rect2.origin, epsilon))
+        return NO;
+
+    if (!CGSizeEqualToSizeWithAccuracy(rect.size, rect2.size, epsilon))
+        return NO;
+
+    return YES;
+}
+
+CGRect CGRectWithSize (CGSize size) {
+    return CGRectMake(0, 0, size.width, size.height);
+}
+
+BOOL CGSizeEqualToSizeWithAccuracy (CGSize size, CGSize size2, CGFloat epsilon) {
+    return (fabs(size.width - size2.width) <= epsilon) && (fabs(size.height - size2.height) <= epsilon);
 }
 
 CGPoint CGPointFloor(CGPoint point) {

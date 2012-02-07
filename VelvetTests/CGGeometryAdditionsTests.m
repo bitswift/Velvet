@@ -23,6 +23,11 @@ describe(@"CGGeometryAdditions", ^{
             CGRect rect = CGRectMake(10, 20, 0, 0);
             expect(CGRectCenterPoint(rect)).toEqual(CGPointMake(10, 20));
         });
+
+        it(@"should return non-integral center points", ^{
+            CGRect rect = CGRectMake(10, 20, 15, 7);
+            expect(CGRectCenterPoint(rect)).toEqual(CGPointMake(17.5, 23.5));
+        });
     });
 
     describe(@"CGRectDivideExcludingIntersection", ^{

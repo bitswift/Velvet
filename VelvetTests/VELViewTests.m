@@ -558,6 +558,21 @@ describe(@"VELView", ^{
             subview.userInteractionEnabled = NO;
             expect([superview descendantViewAtPoint:subviewPoint]).toEqual(superview);
         });
+
+        it(@"should not return self when hidden", ^{
+            superview.hidden = YES;
+            expect([superview descendantViewAtPoint:superviewPoint]).toBeNil();
+        });
+
+        it(@"should not return a subview with superview hidden", ^{
+            superview.hidden = YES;
+            expect([superview descendantViewAtPoint:subviewPoint]).toBeNil();
+        });
+
+        it(@"should not return a hidden subview", ^{
+            subview.hidden = YES;
+            expect([superview descendantViewAtPoint:subviewPoint]).toEqual(superview);
+        });
     });
 
     it(@"removes undo actions on dealloc", ^{

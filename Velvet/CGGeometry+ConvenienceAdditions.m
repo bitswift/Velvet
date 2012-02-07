@@ -262,3 +262,11 @@ CGPoint CGPointProjectAlongAngle(CGPoint point, CGFloat angleInDegrees) {
 CGFloat CGPointAngleInDegrees(CGPoint point) {
     return atan2(point.y, point.x) * 180 / M_PI;
 }
+
+CGPoint CGPointAdd(CGPoint p1, CGPoint p2) {
+    return CGPointMake(p1.x + p2.x, p1.y + p2.y);
+}
+
+CGPoint CGPointSubtract(CGPoint p1, CGPoint p2) {
+    return CGPointMake(p1.x - p2.x, p1.y - p2.y);
+}

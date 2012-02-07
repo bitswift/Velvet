@@ -218,3 +218,19 @@ CGFloat CGPointAngleInDegrees(CGPoint point);
  *  @param angleInDegrees An angle specified in degrees.
  */
 CGPoint CGPointProjectAlongAngle(CGPoint point, CGFloat angleInDegrees);
+
+/**
+ * Add `p1` and `p2`.
+ *
+ * @param p1 The point to which to add.
+ * @param p2 The point to add.
+ */
+CGPoint CGPointAdd(CGPoint p1, CGPoint p2);
+
+/**
+ * Subtracts `p2` from `p1`.
+ *
+ * @param p1 The point from which to subtract.
+ * @param p2 The point to subtract.
+ */
+CGPoint CGPointSubtract(CGPoint p1, CGPoint p2);

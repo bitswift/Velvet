@@ -268,6 +268,23 @@ describe(@"CGGeometryAdditions", ^{
         });
     });
 
+    describe(@"CGPointAdd", ^{
+        it(@"adds two points together, element-wise", ^{
+            CGPoint point1 = CGPointMake(-1, 5);
+            CGPoint point2 = CGPointMake(10, 12);
+            CGPoint sum = CGPointAdd(point1, point2);
+            expect(sum).toEqual(CGPointMake(9, 17));
+        });
+    });
+
+    describe(@"CGPointSubtract", ^{
+        it(@"adds two points together, element-wise", ^{
+            CGPoint point1 = CGPointMake(-1, 5);
+            CGPoint point2 = CGPointMake(10, 12);
+            CGPoint diff = CGPointSubtract(point1, point2);
+            expect(diff).toEqual(CGPointMake(-11, -7));
+        });
+    });
 });
 
 

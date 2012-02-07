@@ -520,6 +520,10 @@ describe(@"VELView", ^{
         __block VELView *superview;
         __block VELView *subview;
 
+        CGPoint superviewPoint = CGPointMake(49, 29);
+        CGPoint subviewPoint = CGPointMake(51, 31);
+        CGPoint outsidePoint = CGPointMake(49, 200);
+
         before(^{
             superview = [[VELView alloc] initWithFrame:CGRectMake(20, 20, 80, 80)];
             [window.rootView addSubview:superview];
@@ -529,18 +533,30 @@ describe(@"VELView", ^{
         });
 
         it(@"returns a subview when given a subview point", ^{
-            CGPoint subviewPoint = CGPointMake(51, 31);
             expect([superview descendantViewAtPoint:subviewPoint]).toEqual(subview);
         });
 
         it(@"returns a superview when given a superview point", ^{
-            CGPoint superviewPoint = CGPointMake(49, 29);
             expect([superview descendantViewAtPoint:superviewPoint]).toEqual(superview);
         });
 
         it(@"returns nil when given an outside point", ^{
-            CGPoint outsidePoint = CGPointMake(49, 200);
             expect([superview descendantViewAtPoint:outsidePoint]).toBeNil();
+        });
+
+        it(@"should not return self with user interaction disabled", ^{
+            superview.userInteractionEnabled = NO;
+            expect([superview descendantViewAtPoint:superviewPoint]).toBeNil();
+        });
+
+        it(@"should not return a subview with superview user interaction disabled", ^{
+            superview.userInteractionEnabled = NO;
+            expect([superview descendantViewAtPoint:subviewPoint]).toBeNil();
+        });
+
+        it(@"should not return a subview that has user interaction disabled", ^{
+            subview.userInteractionEnabled = NO;
+            expect([superview descendantViewAtPoint:subviewPoint]).toEqual(superview);
         });
     });
 

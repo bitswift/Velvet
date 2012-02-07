@@ -93,6 +93,19 @@
 - (void)ancestorDidLayout;
 
 /**
+ * Invoked any time the receiver has changed absolute positions in the view
+ * hierarchy.
+ *
+ * This will include, for example, any time the receiver or one of its ancestors
+ * changes superviews, changes host views, is reordered within its superview,
+ * etc.
+ *
+ * @warning **Important:** The receiver _must_ forward this message to all of
+ * its subviews and any <[VELHostView guestView]>.
+ */
+- (void)viewHierarchyDidChange;
+
+/**
  * Returns the nearest <NSVelvetView> that is an ancestor of the receiver, or of
  * a view hosting the receiver.
  *

@@ -441,44 +441,34 @@ describe(@"VELView", ^{
         expect(view).toConformTo(@protocol(VELBridgedView));
     });
 
-    it(@"can convert from a window point to its own coordinate space", ^{
-        view.frame = CGRectMake(50, 100, 100, 200);
-        [window.rootView addSubview:view];
-
-        CGPoint windowPoint = CGPointMake(175, 355);
-        CGPoint viewPoint = CGPointMake(125, 255);
-
-        expect(CGPointEqualToPoint([view convertFromWindowPoint:windowPoint], viewPoint)).toBeTruthy();
-    });
-
-    it(@"can convert to a window point from its own coordinate space", ^{
-        view.frame = CGRectMake(50, 100, 100, 200);
-        [window.rootView addSubview:view];
-
-        CGPoint windowPoint = CGPointMake(175, 355);
-        CGPoint viewPoint = CGPointMake(125, 255);
-
-        expect(CGPointEqualToPoint([view convertToWindowPoint:viewPoint], windowPoint)).toBeTruthy();
-    });
-
-    it(@"can convert from a window rect", ^{
-        view.frame = CGRectMake(50, 100, 100, 200);
-        [window.rootView addSubview:view];
-
+    describe(@"geometry conversion", ^{
         CGRect windowRect = CGRectMake(175, 355, 100, 100);
         CGRect viewRect = CGRectMake(125, 255, 100, 100);
 
-        expect([view convertFromWindowRect:windowRect]).toEqual(viewRect);
-    });
+        before(^{
+            view.frame = CGRectMake(50, 100, 100, 200);
+            [window.rootView addSubview:view];
+        });
 
-    it(@"can convert to a window rect", ^{
-        view.frame = CGRectMake(50, 100, 100, 200);
-        [window.rootView addSubview:view];
+        it(@"can convert from a window point to its own coordinate space", ^{
+            expect([view convertFromWindowPoint:windowRect.origin]).toEqual(viewRect.origin);
+            expect([view convertPoint:windowRect.origin fromView:nil]).toEqual(viewRect.origin);
+        });
 
-        CGRect windowRect = CGRectMake(175, 355, 100, 100);
-        CGRect viewRect = CGRectMake(125, 255, 100, 100);
+        it(@"can convert to a window point from its own coordinate space", ^{
+            expect([view convertToWindowPoint:viewRect.origin]).toEqual(windowRect.origin);
+            expect([view convertPoint:viewRect.origin toView:nil]).toEqual(windowRect.origin);
+        });
 
-        expect([view convertToWindowRect:viewRect]).toEqual(windowRect);
+        it(@"can convert from a window rect", ^{
+            expect([view convertFromWindowRect:windowRect]).toEqual(viewRect);
+            expect([view convertRect:windowRect fromView:nil]).toEqual(viewRect);
+        });
+
+        it(@"can convert to a window rect", ^{
+            expect([view convertToWindowRect:viewRect]).toEqual(windowRect);
+            expect([view convertRect:viewRect toView:nil]).toEqual(windowRect);
+        });
     });
 
     it(@"has a layer", ^{

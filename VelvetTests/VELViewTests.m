@@ -182,7 +182,7 @@ describe(@"VELView", ^{
         expect(testView.didMoveFromWindowInvoked).toBeFalsy();
     });
 
-    it(@"can move to a superview", ^{
+    it(@"should invoke callback methods when moving to first superview", ^{
         VELView *superview = [[VELView alloc] init];
         TestView *testView = [[TestView alloc] init];
 
@@ -196,7 +196,7 @@ describe(@"VELView", ^{
         expect(testView.didMoveFromWindowInvoked).toBeFalsy();
     });
 
-    it(@"moves across superviews", ^{
+    it(@"should invoke callback methods when changing superviews", ^{
         TestView *testView = [[TestView alloc] init];
 
         VELView *firstSuperview = [[VELView alloc] init];
@@ -219,7 +219,7 @@ describe(@"VELView", ^{
         expect(testView.didMoveFromWindowInvoked).toBeFalsy();
     });
 
-    it(@"can move across windows", ^{
+    it(@"should invoke callback methods when changing windows", ^{
         TestView *testView = [[TestView alloc] init];
         VELWindow *firstWindow = window;
         VELWindow *secondWindow = [[VELWindow alloc]
@@ -250,7 +250,7 @@ describe(@"VELView", ^{
         expect(testView.didMoveFromWindowInvoked).toBeTruthy();
     });
 
-    it(@"can move to a window via superview", ^{
+    it(@"should invoke callback methods when moving to first window via superview", ^{
         TestView *testView = [[TestView alloc] init];
 
         testView.nextSuperview = window.rootView;
@@ -264,7 +264,7 @@ describe(@"VELView", ^{
 
     });
 
-    it(@"can move to a window as a root view", ^{
+    it(@"should invoke callback methods when becoming a window's root view", ^{
         TestView *testView = [[TestView alloc] init];
 
         testView.nextWindow = window;

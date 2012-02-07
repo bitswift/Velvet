@@ -1300,7 +1300,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
     // Clip to self
-    if (!self.userInteractionEnabled || ![self pointInside:point])
+    if (!self.userInteractionEnabled || self.hidden || ![self pointInside:point])
         return nil;
 
     __block id<VELBridgedView> result = self;

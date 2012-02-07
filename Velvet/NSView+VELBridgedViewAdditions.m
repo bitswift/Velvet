@@ -102,7 +102,8 @@
 }
 
 - (BOOL)pointInside:(CGPoint)point {
-    return [self hitTest:point] ? YES : NO;
+    NSPoint superviewPoint = [self convertPoint:point toView:self.superview];
+    return [self hitTest:superviewPoint] ? YES : NO;
 }
 
 #pragma mark View hierarchy

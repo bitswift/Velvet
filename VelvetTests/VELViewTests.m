@@ -38,6 +38,7 @@ describe(@"VELView", ^{
             defer:NO
             screen:nil
         ];
+
         view = [[VELView alloc] init];
     });
 
@@ -106,173 +107,6 @@ describe(@"VELView", ^{
         view.subviews = subviews;
         expect(view.subviews).toEqual(subviews);
         expect(view.layer.sublayers).toEqual(expectedSublayers);
-    });
-
-    describe(@"inserts subviews at a specific index", ^{
-        __block TestView *subview1;
-        __block TestView *subview2;
-        __block TestView *subview3;
-
-        before(^{
-            subview1 = [[TestView alloc] init];
-            subview1.nextSuperview = view;
-            subview2 = [[TestView alloc] init];
-            subview2.nextSuperview = view;
-            subview3 = [[TestView alloc] init];
-            subview3.nextSuperview = view;
-        });
-
-
-        it(@"can insert a subview at index 0", ^{
-            [view insertSubview:subview1 atIndex:0];
-            expect([view.subviews objectAtIndex:0]).toEqual(subview1);
-            expect(subview1.willMoveToSuperviewInvoked).toBeTruthy();
-            expect(subview1.didMoveFromSuperviewInvoked).toBeTruthy();
-            expect(subview1.willMoveToWindowInvoked).toBeFalsy();
-            expect(subview1.didMoveFromWindowInvoked).toBeFalsy();
-
-        });
-
-        it(@"can insert a subview at index 1", ^{
-            [view insertSubview:subview1 atIndex:0];
-            [view insertSubview:subview2 atIndex:1];
-            expect([view.subviews objectAtIndex:1]).toEqual(subview2);
-        });
-
-        it(@"can insert an existing subview into index1", ^{
-            [view insertSubview:subview1 atIndex:0];
-            [view insertSubview:subview2 atIndex:1];
-            [view insertSubview:subview3 atIndex:2];
-            expect([view.subviews objectAtIndex:0]).toEqual(subview1);
-            expect([view.subviews objectAtIndex:1]).toEqual(subview2);
-            expect([view.subviews objectAtIndex:2]).toEqual(subview3);
-
-            [subview2 reset];
-            subview2.nextSuperview = view;
-            [view insertSubview:subview2 atIndex:0];
-
-            NSArray *expectedSubviews = [NSArray arrayWithObjects:subview2, subview1, subview3, nil];
-            expect(view.subviews).toEqual(expectedSubviews);
-            expect(subview2.willMoveToSuperviewInvoked).toBeFalsy();
-            expect(subview2.didMoveFromSuperviewInvoked).toBeFalsy();
-            expect(subview2.willMoveToWindowInvoked).toBeFalsy();
-            expect(subview2.didMoveFromWindowInvoked).toBeFalsy();
-        });
-
-        it(@"can insert the same subview twice", ^{
-            [view insertSubview:subview1 atIndex:0];
-            [view insertSubview:subview1 atIndex:1];
-        });
-    });
-
-    it(@"initializes a subclass", ^{
-        TestView *view = [[TestView alloc] init];
-        expect(view).not.toBeNil();
-
-        VELView *superview = [[VELView alloc] init];
-        TestView *testView = [[TestView alloc] init];
-
-        testView.nextSuperview = superview;
-
-        [superview addSubview:testView];
-
-        expect(testView.willMoveToSuperviewInvoked).toBeTruthy();
-        expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
-        expect(testView.willMoveToWindowInvoked).toBeFalsy();
-        expect(testView.didMoveFromWindowInvoked).toBeFalsy();
-    });
-
-    it(@"should invoke callback methods when moving to first superview", ^{
-        VELView *superview = [[VELView alloc] init];
-        TestView *testView = [[TestView alloc] init];
-
-        testView.nextSuperview = superview;
-
-        [superview addSubview:testView];
-
-        expect(testView.willMoveToSuperviewInvoked).toBeTruthy();
-        expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
-        expect(testView.willMoveToWindowInvoked).toBeFalsy();
-        expect(testView.didMoveFromWindowInvoked).toBeFalsy();
-    });
-
-    it(@"should invoke callback methods when changing superviews", ^{
-        TestView *testView = [[TestView alloc] init];
-
-        VELView *firstSuperview = [[VELView alloc] init];
-        testView.nextSuperview = firstSuperview;
-        [firstSuperview addSubview:testView];
-
-        VELView *secondSuperview = [[VELView alloc] init];
-
-        // reset everything for the crossing over test
-        [testView reset];
-
-        testView.oldSuperview = firstSuperview;
-        testView.nextSuperview = secondSuperview;
-
-        [secondSuperview addSubview:testView];
-
-        expect(testView.willMoveToSuperviewInvoked).toBeTruthy();
-        expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
-        expect(testView.willMoveToWindowInvoked).toBeFalsy();
-        expect(testView.didMoveFromWindowInvoked).toBeFalsy();
-    });
-
-    it(@"should invoke callback methods when changing windows", ^{
-        TestView *testView = [[TestView alloc] init];
-        VELWindow *firstWindow = window;
-        VELWindow *secondWindow = [[VELWindow alloc]
-            initWithContentRect:CGRectMake(100, 100, 500, 500)
-            styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
-            backing:NSBackingStoreBuffered
-            defer:NO
-            screen:nil
-        ];
-
-        testView.nextWindow = firstWindow;
-        testView.nextSuperview = firstWindow.rootView;
-
-        [firstWindow.rootView addSubview:testView];
-
-        // reset everything for the crossing over test
-        [testView reset];
-
-        testView.oldWindow = firstWindow;
-        testView.oldSuperview = firstWindow.rootView;
-        testView.nextWindow = secondWindow;
-        testView.nextSuperview = secondWindow.rootView;
-
-        [secondWindow.rootView addSubview:testView];
-        expect(testView.willMoveToWindowInvoked).toBeTruthy();
-        expect(testView.didMoveFromWindowInvoked).toBeTruthy();
-        expect(testView.willMoveToWindowInvoked).toBeTruthy();
-        expect(testView.didMoveFromWindowInvoked).toBeTruthy();
-    });
-
-    it(@"should invoke callback methods when moving to first window via superview", ^{
-        TestView *testView = [[TestView alloc] init];
-
-        testView.nextSuperview = window.rootView;
-        testView.nextWindow = window;
-
-        [window.rootView addSubview:testView];
-        expect(testView.willMoveToSuperviewInvoked).toBeTruthy();
-        expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
-        expect(testView.willMoveToWindowInvoked).toBeTruthy();
-        expect(testView.didMoveFromWindowInvoked).toBeTruthy();
-
-    });
-
-    it(@"should invoke callback methods when becoming a window's root view", ^{
-        TestView *testView = [[TestView alloc] init];
-
-        testView.nextWindow = window;
-        window.contentView.guestView = testView;
-        expect(testView.willMoveToSuperviewInvoked).toBeFalsy();
-        expect(testView.didMoveFromSuperviewInvoked).toBeFalsy();
-        expect(testView.willMoveToWindowInvoked).toBeTruthy();
-        expect(testView.didMoveFromWindowInvoked).toBeTruthy();
     });
 
     describe(@"responder chain", ^{
@@ -358,39 +192,6 @@ describe(@"VELView", ^{
 
         CGRect expectedFrame = CGRectMake(470, 470, 60, 60);
         expect(view.frame).toEqual(expectedFrame);
-    });
-
-    it(@"only draws a dirty rect", ^{
-        TestView *view = [[TestView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-        [view.layer displayIfNeeded];
-
-        CGRect invalidatedRegion = CGRectMake(10, 10, 25, 25);
-        [view setNeedsDisplayInRect:invalidatedRegion];
-        [view.layer displayIfNeeded];
-
-        // make sure that -drawRect: was called only with the rectangle we
-        // invalidated
-        expect(view.drawRectRegion).toEqual(invalidatedRegion);
-    });
-
-    it(@"calls layoutSubviews when settings its frame", ^{
-        TestView *view = [[TestView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-
-        // Even if layoutSubviews is called on init, we clear side effects here.
-        [view reset];
-
-        view.frame = CGRectMake(10, 10, 25, 25);
-        expect(view.layoutSubviewsInvoked).toBeTruthy();
-    });
-
-    it(@"calls layoutSubviews when setting its bounds", ^{
-        TestView *view = [[TestView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
-
-        // Even if layoutSubviews is called on init, we clear side effects here.
-        [view reset];
-
-        view.bounds = CGRectMake(0, 0, 25, 25);
-        expect(view.layoutSubviewsInvoked).toBeTruthy();
     });
 
     it(@"aligns to integral points when settings its frame", ^{
@@ -577,30 +378,205 @@ describe(@"VELView", ^{
         expect(undoManager.canUndo).toBeFalsy();
     });
 
-    it(@"can animate with VELViewAnimationOptionLayoutSubviews", ^{
-        TestView *view = [[TestView alloc] init];
+    describe(@"subclass", ^{
+        __block TestView *testView;
 
-        [VELView animateWithDuration:0 options:VELViewAnimationOptionLayoutSubviews animations:^{
-            expect(view.layoutSubviewsInvoked).toBeFalsy();
+        before(^{
+            testView = [[TestView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+            expect(testView).not.toBeNil();
+        });
 
-            view.backgroundColor = [NSColor blueColor];
-        }];
+        it(@"should invoke callback methods when moving to first superview", ^{
+            testView.nextSuperview = view;
+            [view addSubview:testView];
 
-        expect(view.layoutSubviewsInvoked).toBeTruthy();
-    });
+            expect(testView.willMoveToSuperviewInvoked).toBeTruthy();
+            expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
+            expect(testView.willMoveToWindowInvoked).toBeFalsy();
+            expect(testView.didMoveFromWindowInvoked).toBeFalsy();
+        });
 
-    it(@"can animate VELViewAnimationOptionLayoutSuperview", ^{
-        TestView *superview = [[TestView alloc] init];
+        it(@"should invoke callback methods when changing superviews", ^{
+            testView.nextSuperview = view;
+            [view addSubview:testView];
 
-        [superview addSubview:view];
+            VELView *secondSuperview = [[VELView alloc] init];
 
-        [VELView animateWithDuration:0 options:VELViewAnimationOptionLayoutSuperview animations:^{
-            expect(superview.layoutSubviewsInvoked).toBeFalsy();
+            // reset everything for the crossing over test
+            [testView reset];
 
-            view.backgroundColor = [NSColor blueColor];
-        }];
+            testView.oldSuperview = view;
+            testView.nextSuperview = secondSuperview;
 
-        expect(superview.layoutSubviewsInvoked).toBeTruthy();
+            [secondSuperview addSubview:testView];
+
+            expect(testView.willMoveToSuperviewInvoked).toBeTruthy();
+            expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
+            expect(testView.willMoveToWindowInvoked).toBeFalsy();
+            expect(testView.didMoveFromWindowInvoked).toBeFalsy();
+        });
+
+        it(@"should invoke callback methods when changing windows", ^{
+            VELWindow *firstWindow = window;
+            VELWindow *secondWindow = [[VELWindow alloc]
+                initWithContentRect:CGRectMake(100, 100, 500, 500)
+                styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
+                backing:NSBackingStoreBuffered
+                defer:NO
+                screen:nil
+            ];
+
+            testView.nextWindow = firstWindow;
+            testView.nextSuperview = firstWindow.rootView;
+
+            [firstWindow.rootView addSubview:testView];
+
+            // reset everything for the crossing over test
+            [testView reset];
+
+            testView.oldWindow = firstWindow;
+            testView.oldSuperview = firstWindow.rootView;
+            testView.nextWindow = secondWindow;
+            testView.nextSuperview = secondWindow.rootView;
+
+            [secondWindow.rootView addSubview:testView];
+            expect(testView.willMoveToWindowInvoked).toBeTruthy();
+            expect(testView.didMoveFromWindowInvoked).toBeTruthy();
+            expect(testView.willMoveToWindowInvoked).toBeTruthy();
+            expect(testView.didMoveFromWindowInvoked).toBeTruthy();
+        });
+
+        it(@"should invoke callback methods when moving to first window via superview", ^{
+            testView.nextSuperview = window.rootView;
+            testView.nextWindow = window;
+
+            [window.rootView addSubview:testView];
+
+            expect(testView.willMoveToSuperviewInvoked).toBeTruthy();
+            expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
+            expect(testView.willMoveToWindowInvoked).toBeTruthy();
+            expect(testView.didMoveFromWindowInvoked).toBeTruthy();
+
+        });
+
+        it(@"should invoke callback methods when becoming a window's root view", ^{
+            testView.nextWindow = window;
+            window.contentView.guestView = testView;
+
+            expect(testView.willMoveToSuperviewInvoked).toBeFalsy();
+            expect(testView.didMoveFromSuperviewInvoked).toBeFalsy();
+            expect(testView.willMoveToWindowInvoked).toBeTruthy();
+            expect(testView.didMoveFromWindowInvoked).toBeTruthy();
+        });
+
+        it(@"only draws a dirty rect", ^{
+            [testView.layer displayIfNeeded];
+
+            CGRect invalidatedRegion = CGRectMake(10, 10, 25, 25);
+            [testView setNeedsDisplayInRect:invalidatedRegion];
+            [testView.layer displayIfNeeded];
+
+            // make sure that -drawRect: was called only with the rectangle we
+            // invalidated
+            expect(testView.drawRectRegion).toEqual(invalidatedRegion);
+        });
+
+        it(@"calls layoutSubviews when settings its frame", ^{
+            // Even if layoutSubviews is called on init, we clear side effects here.
+            [testView reset];
+
+            testView.frame = CGRectMake(10, 10, 25, 25);
+            expect(testView.layoutSubviewsInvoked).toBeTruthy();
+        });
+
+        it(@"calls layoutSubviews when setting its bounds", ^{
+            // Even if layoutSubviews is called on init, we clear side effects here.
+            [testView reset];
+
+            testView.bounds = CGRectMake(0, 0, 25, 25);
+            expect(testView.layoutSubviewsInvoked).toBeTruthy();
+        });
+
+        it(@"can animate with VELViewAnimationOptionLayoutSubviews", ^{
+            [testView reset];
+
+            [VELView animateWithDuration:0 options:VELViewAnimationOptionLayoutSubviews animations:^{
+                expect(testView.layoutSubviewsInvoked).toBeFalsy();
+
+                testView.backgroundColor = [NSColor blueColor];
+            }];
+
+            expect(testView.layoutSubviewsInvoked).toBeTruthy();
+        });
+
+        it(@"can animate VELViewAnimationOptionLayoutSuperview", ^{
+            [testView addSubview:view];
+            [testView reset];
+
+            [VELView animateWithDuration:0 options:VELViewAnimationOptionLayoutSuperview animations:^{
+                expect(testView.layoutSubviewsInvoked).toBeFalsy();
+
+                view.backgroundColor = [NSColor blueColor];
+            }];
+
+            expect(testView.layoutSubviewsInvoked).toBeTruthy();
+        });
+
+        describe(@"inserts subviews at a specific index", ^{
+            __block TestView *subview1;
+            __block TestView *subview2;
+            __block TestView *subview3;
+
+            before(^{
+                subview1 = [[TestView alloc] init];
+                subview1.nextSuperview = view;
+                subview2 = [[TestView alloc] init];
+                subview2.nextSuperview = view;
+                subview3 = [[TestView alloc] init];
+                subview3.nextSuperview = view;
+            });
+
+            it(@"can insert a subview at index 0", ^{
+                [view insertSubview:subview1 atIndex:0];
+                expect([view.subviews objectAtIndex:0]).toEqual(subview1);
+                expect(subview1.willMoveToSuperviewInvoked).toBeTruthy();
+                expect(subview1.didMoveFromSuperviewInvoked).toBeTruthy();
+                expect(subview1.willMoveToWindowInvoked).toBeFalsy();
+                expect(subview1.didMoveFromWindowInvoked).toBeFalsy();
+
+            });
+
+            it(@"can insert a subview at index 1", ^{
+                [view insertSubview:subview1 atIndex:0];
+                [view insertSubview:subview2 atIndex:1];
+                expect([view.subviews objectAtIndex:1]).toEqual(subview2);
+            });
+
+            it(@"can insert an existing subview into index1", ^{
+                [view insertSubview:subview1 atIndex:0];
+                [view insertSubview:subview2 atIndex:1];
+                [view insertSubview:subview3 atIndex:2];
+                expect([view.subviews objectAtIndex:0]).toEqual(subview1);
+                expect([view.subviews objectAtIndex:1]).toEqual(subview2);
+                expect([view.subviews objectAtIndex:2]).toEqual(subview3);
+
+                [subview2 reset];
+                subview2.nextSuperview = view;
+                [view insertSubview:subview2 atIndex:0];
+
+                NSArray *expectedSubviews = [NSArray arrayWithObjects:subview2, subview1, subview3, nil];
+                expect(view.subviews).toEqual(expectedSubviews);
+                expect(subview2.willMoveToSuperviewInvoked).toBeFalsy();
+                expect(subview2.didMoveFromSuperviewInvoked).toBeFalsy();
+                expect(subview2.willMoveToWindowInvoked).toBeFalsy();
+                expect(subview2.didMoveFromWindowInvoked).toBeFalsy();
+            });
+
+            it(@"can insert the same subview twice", ^{
+                [view insertSubview:subview1 atIndex:0];
+                [view insertSubview:subview1 atIndex:1];
+            });
+        });
     });
 });
 

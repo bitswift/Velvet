@@ -188,7 +188,6 @@
 
 - (void)willMoveToNSVelvetView:(NSVelvetView *)view; {
     [super willMoveToNSVelvetView:view];
-
     [self.guestView willMoveToNSVelvetView:view];
 
     [CATransaction performWithDisabledActions:^{
@@ -208,6 +207,20 @@
         return;
     }
 
+    [CATransaction performWithDisabledActions:^{
+        [newView.appKitHostView addSubview:self.guestView];
+    }];
+
+    self.guestView.nextResponder = self;
+}
+
+- (void)viewHierarchyDidChange {
+    [super viewHierarchyDidChange];
+
+    @onExit {
+        [self.guestView viewHierarchyDidChange];
+    };
+
     // verify that VELNSViews are on top of other subviews
     #if DEBUG
     NSArray *siblings = self.superview.subviews;
@@ -222,16 +235,8 @@
     }];
     #endif
 
-    // this must only be added after we've completely moved to the host view,
-    // because it'll do some ancestor checks for NSView ordering
-    [CATransaction performWithDisabledActions:^{
-        [newView.appKitHostView addSubview:self.guestView];
-    }];
-
-    [newView recalculateNSViewOrdering];
+    [self.ancestorNSVelvetView recalculateNSViewOrdering];
     [self synchronizeNSViewGeometry];
-
-    self.guestView.nextResponder = self;
 }
 
 - (id<VELBridgedView>)descendantViewAtPoint:(CGPoint)point {

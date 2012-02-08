@@ -14,6 +14,7 @@
 @property (nonatomic, assign) BOOL willMoveToWindowInvoked;
 @property (nonatomic, assign) BOOL didMoveFromSuperviewInvoked;
 @property (nonatomic, assign) BOOL didMoveFromWindowInvoked;
+@property (nonatomic, assign) BOOL viewHierarchyDidChangeInvoked;
 @property (nonatomic, unsafe_unretained) VELView *oldSuperview;
 @property (nonatomic, unsafe_unretained) VELView *nextSuperview;
 @property (nonatomic, unsafe_unretained) VELWindow *oldWindow;
@@ -415,6 +416,7 @@ describe(@"VELView", ^{
             expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
             expect(testView.willMoveToWindowInvoked).toBeFalsy();
             expect(testView.didMoveFromWindowInvoked).toBeFalsy();
+            expect(testView.viewHierarchyDidChangeInvoked).toBeTruthy();
         });
 
         it(@"should not invoke callback methods when superview changes superviews", ^{
@@ -429,6 +431,7 @@ describe(@"VELView", ^{
             expect(testView.didMoveFromSuperviewInvoked).toBeFalsy();
             expect(testView.willMoveToWindowInvoked).toBeFalsy();
             expect(testView.didMoveFromWindowInvoked).toBeFalsy();
+            expect(testView.viewHierarchyDidChangeInvoked).toBeTruthy();
         });
 
         it(@"should invoke callback methods when changing superviews", ^{
@@ -449,6 +452,7 @@ describe(@"VELView", ^{
             expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
             expect(testView.willMoveToWindowInvoked).toBeFalsy();
             expect(testView.didMoveFromWindowInvoked).toBeFalsy();
+            expect(testView.viewHierarchyDidChangeInvoked).toBeTruthy();
         });
 
         it(@"should invoke callback methods when changing windows", ^{
@@ -479,6 +483,7 @@ describe(@"VELView", ^{
             expect(testView.didMoveFromWindowInvoked).toBeTruthy();
             expect(testView.willMoveToWindowInvoked).toBeTruthy();
             expect(testView.didMoveFromWindowInvoked).toBeTruthy();
+            expect(testView.viewHierarchyDidChangeInvoked).toBeTruthy();
         });
 
         it(@"should invoke callback methods when moving to first window via superview", ^{
@@ -491,7 +496,7 @@ describe(@"VELView", ^{
             expect(testView.didMoveFromSuperviewInvoked).toBeTruthy();
             expect(testView.willMoveToWindowInvoked).toBeTruthy();
             expect(testView.didMoveFromWindowInvoked).toBeTruthy();
-
+            expect(testView.viewHierarchyDidChangeInvoked).toBeTruthy();
         });
 
         it(@"should invoke callback methods when becoming a window's root view", ^{
@@ -502,6 +507,33 @@ describe(@"VELView", ^{
             expect(testView.didMoveFromSuperviewInvoked).toBeFalsy();
             expect(testView.willMoveToWindowInvoked).toBeTruthy();
             expect(testView.didMoveFromWindowInvoked).toBeTruthy();
+            expect(testView.viewHierarchyDidChangeInvoked).toBeTruthy();
+        });
+
+        it(@"should notify about view hierarchy changes when reordered in superview", ^{
+            testView.nextSuperview = view;
+
+            [view addSubview:[[VELView alloc] init]];
+            [view addSubview:testView];
+
+            [testView reset];
+
+            view.subviews = view.subviews.reverseObjectEnumerator.allObjects;
+            expect(testView.viewHierarchyDidChangeInvoked).toBeTruthy();
+        });
+
+        it(@"should notify about view hierarchy changes when reordered in ancestor", ^{
+            VELView *superview = [[VELView alloc] init];
+            testView.nextSuperview = superview;
+            [superview addSubview:testView];
+
+            [view addSubview:[[VELView alloc] init]];
+            [view addSubview:superview];
+
+            [testView reset];
+
+            view.subviews = view.subviews.reverseObjectEnumerator.allObjects;
+            expect(testView.viewHierarchyDidChangeInvoked).toBeTruthy();
         });
 
         it(@"only draws a dirty rect", ^{
@@ -574,6 +606,7 @@ describe(@"VELView", ^{
             it(@"can insert a subview at index 0", ^{
                 [view insertSubview:subview1 atIndex:0];
                 expect([view.subviews objectAtIndex:0]).toEqual(subview1);
+
                 expect(subview1.willMoveToSuperviewInvoked).toBeTruthy();
                 expect(subview1.didMoveFromSuperviewInvoked).toBeTruthy();
                 expect(subview1.willMoveToWindowInvoked).toBeFalsy();
@@ -591,6 +624,7 @@ describe(@"VELView", ^{
                 [view insertSubview:subview1 atIndex:0];
                 [view insertSubview:subview2 atIndex:1];
                 [view insertSubview:subview3 atIndex:2];
+
                 expect([view.subviews objectAtIndex:0]).toEqual(subview1);
                 expect([view.subviews objectAtIndex:1]).toEqual(subview2);
                 expect([view.subviews objectAtIndex:2]).toEqual(subview3);
@@ -601,6 +635,7 @@ describe(@"VELView", ^{
 
                 NSArray *expectedSubviews = [NSArray arrayWithObjects:subview2, subview1, subview3, nil];
                 expect(view.subviews).toEqual(expectedSubviews);
+
                 expect(subview2.willMoveToSuperviewInvoked).toBeFalsy();
                 expect(subview2.didMoveFromSuperviewInvoked).toBeFalsy();
                 expect(subview2.willMoveToWindowInvoked).toBeFalsy();
@@ -618,14 +653,15 @@ describe(@"VELView", ^{
 SpecEnd
 
 @implementation TestView
-@synthesize willMoveToSuperviewInvoked;
-@synthesize willMoveToWindowInvoked;
-@synthesize didMoveFromSuperviewInvoked;
-@synthesize didMoveFromWindowInvoked;
+@synthesize willMoveToSuperviewInvoked = m_willMoveToSuperviewInvoked;
+@synthesize willMoveToWindowInvoked = m_willMoveToWindowInvoked;
+@synthesize didMoveFromSuperviewInvoked = m_didMoveFromSuperviewInvoked;
+@synthesize didMoveFromWindowInvoked = m_didMoveFromWindowInvoked;
+@synthesize viewHierarchyDidChangeInvoked = m_viewHierarchyDidChangeInvoked;
 @synthesize oldSuperview = m_oldSuperview;
 @synthesize oldWindow = m_oldWindow;
-@synthesize nextSuperview;
-@synthesize nextWindow;
+@synthesize nextSuperview = m_nextSuperview;
+@synthesize nextWindow = m_nextWindow;
 @synthesize drawRectRegion = m_drawRectRegion;
 @synthesize layoutSubviewsInvoked = m_layoutSubviewsInvoked;
 
@@ -681,6 +717,11 @@ SpecEnd
     self.didMoveFromWindowInvoked = YES;
 }
 
+- (void)viewHierarchyDidChange {
+    [super viewHierarchyDidChange];
+    self.viewHierarchyDidChangeInvoked = YES;
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.layoutSubviewsInvoked = YES;
@@ -695,6 +736,7 @@ SpecEnd
     self.willMoveToWindowInvoked = NO;
     self.didMoveFromSuperviewInvoked = NO;
     self.didMoveFromWindowInvoked = NO;
+    self.viewHierarchyDidChangeInvoked = NO;
     self.oldSuperview = nil;
     self.oldWindow = nil;
     self.nextSuperview = nil;

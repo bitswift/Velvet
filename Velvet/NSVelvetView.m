@@ -592,6 +592,11 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     return [self.guestView descendantViewAtPoint:point] ?: self;
 }
 
+- (void)viewHierarchyDidChange {
+    [super viewHierarchyDidChange];
+    [self.guestView viewHierarchyDidChange];
+}
+
 - (void)willMoveToNSVelvetView:(NSVelvetView *)view; {
     // despite the <VELBridgedView> contract that says we should forward this
     // message onto all subviews and our guestView, doing so could result in

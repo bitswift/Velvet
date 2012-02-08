@@ -45,6 +45,19 @@
  */
 - (BOOL)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
 
+/*
+ * Attempts to dispatch the given mouse tracking event (`NSMouseEntered`,
+ * `NSMouseMoved` or `NSMouseExited`) to Velvet. Returns whether the event was
+ * handled by Velvet (and thus should be disregarded by AppKit).
+ *
+ * This may translate into a different message than suggested by the exact event
+ * type, or several events, in Velvet. For instance, an `NSMouseMoved` event may
+ * trigger `mouseExited:` and `mouseEntered:` events on Velvet hosted views.
+ *
+ * @param event The event that occurred.
+ */
+- (BOOL)handleMouseTrackingEvent:(NSEvent *)event;
+
 /**
  * Attempts to dispatch the given event to Velvet via the appropriate window.
  * Returns whether the event was handled by Velvet (and thus should be
@@ -239,16 +252,8 @@
 
         case NSMouseMoved:
         case NSMouseEntered:
-        case NSMouseExited: {
-            id responder = [event.window firstResponder];
-            if (![responder isKindOfClass:[NSView class]]) {
-                [self dispatchEvent:event toResponder:responder];
-            }
-
-            // we always want to pass on these kinds of mouse events to the
-            // window, since it does some magic
-            return NO;
-        }
+        case NSMouseExited:
+            return [self handleMouseTrackingEvent:event];
 
         default:
             // any other kind of event is not handled by us
@@ -260,6 +265,10 @@
     } else {
         return NO;
     }
+}
+
+- (BOOL)handleMouseTrackingEvent:(NSEvent *)event {
+    return NO;
 }
 
 @end

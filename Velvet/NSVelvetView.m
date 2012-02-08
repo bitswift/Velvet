@@ -607,6 +607,60 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     }
 }
 
+#pragma mark Mouse Tracking
+
+- (VELView *)descendantVELViewAtPoint:(CGPoint)point {
+    VELView *view = (id)[self descendantViewAtPoint:point];
+    if (![view isKindOfClass:[VELView class]])
+        return nil;
+    return view;
+}
+
+- (void)mouseEntered:(NSEvent *)event {
+    [self mouseMoved:event];
+}
+
+- (void)mouseMoved:(NSEvent *)event {
+    if (self.handlingMouseTrackingEvent)
+        return;
+
+    self.handlingMouseTrackingEvent = YES;
+    @onExit {
+        self.handlingMouseTrackingEvent = NO;
+    };
+
+    CGPoint point = [self convertFromWindowPoint:[event locationInWindow]];
+    VELView *view = [self descendantVELViewAtPoint:point];
+
+    if (view == self.lastMouseTrackingView) {
+        if ([view respondsToSelector:@selector(mouseMoved:)])
+            [view mouseMoved:event];
+        return;
+    }
+
+    if ([self.lastMouseTrackingView respondsToSelector:@selector(mouseExited:)])
+        [self.lastMouseTrackingView mouseExited:event];
+
+    self.lastMouseTrackingView = view;
+
+    if ([view respondsToSelector:@selector(mouseEntered:)])
+        [view mouseEntered:event];
+}
+
+- (void)mouseExited:(NSEvent *)event {
+    if (self.handlingMouseTrackingEvent)
+        return;
+
+    self.handlingMouseTrackingEvent = YES;
+    @onExit {
+        self.handlingMouseTrackingEvent = NO;
+    };
+
+    if ([self.lastMouseTrackingView respondsToSelector:@selector(mouseExited:)])
+        [self.lastMouseTrackingView mouseExited:event];
+    self.lastMouseTrackingView = nil;
+}
+
 #pragma mark VELHostView
 
 - (void)ancestorDidLayout; {

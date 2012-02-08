@@ -366,11 +366,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
                 [self addSubview:view];
             } else {
                 [CATransaction performWithDisabledActions:^{
-                    [oldSubviews removeObjectAtIndex:existingIndex];
                     [view.layer removeFromSuperlayer];
-                    [m_subviews addObject:view];
                     [self.layer addSublayer:view.layer];
                 }];
+
+                [oldSubviews removeObjectAtIndex:existingIndex];
+                [m_subviews addObject:view];
+
+                [view viewHierarchyDidChange];
             }
         }];
     } else {
@@ -421,6 +424,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
         if (oldWindow != newWindow)
             [self didMoveFromWindow:oldWindow];
+
+        [self viewHierarchyDidChange];
     }
 }
 
@@ -786,6 +791,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
         if (needsWindowUpdate)
             [view didMoveFromWindow:oldWindow];
+
+        [view viewHierarchyDidChange];
     }];
 
 }
@@ -853,6 +860,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [self didMoveFromSuperview:superview];
     [self didMoveFromNSVelvetView:velvetView];
     [self didMoveFromWindow:window];
+    [self viewHierarchyDidChange];
 }
 
 - (void)removeSubview:(VELView *)subview; {
@@ -911,6 +919,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
         [self.viewController viewWillDisappear];
 
     [self.subviews makeObjectsPerformSelector:_cmd withObject:window];
+}
+
+- (void)viewHierarchyDidChange {
+    [self.subviews makeObjectsPerformSelector:_cmd];
 }
 
 #pragma mark Responder chain

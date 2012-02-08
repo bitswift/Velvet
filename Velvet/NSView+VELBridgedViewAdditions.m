@@ -116,4 +116,8 @@
     [self.subviews makeObjectsPerformSelector:_cmd withObject:view];
 }
 
+- (void)viewHierarchyDidChange {
+    [self.subviews makeObjectsPerformSelector:_cmd];
+}
+
 @end

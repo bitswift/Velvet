@@ -275,7 +275,24 @@
 }
 
 - (BOOL)handleMouseTrackingEvent:(NSEvent *)event {
-    return NO;
+    id hitView = [event.window bridgedHitTest:[event locationInWindow]];
+
+    if (hitView == self.lastMouseTrackingResponder) {
+        [hitView tryToPerform:@selector(mouseMoved:) with:event];
+        return (hitView != nil);
+    }
+
+    [self.lastMouseTrackingResponder tryToPerform:@selector(mouseExited:) with:event];
+
+    if ([hitView isKindOfClass:[NSView class]]) {
+        self.lastMouseTrackingResponder = nil;
+        return NO;
+    }
+
+    self.lastMouseTrackingResponder = hitView;
+    [hitView tryToPerform:@selector(mouseEntered:) with:event];
+
+    return YES;
 }
 
 @end

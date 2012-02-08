@@ -223,11 +223,19 @@
         case NSLeftMouseDragged:
         case NSRightMouseDragged:
         case NSOtherMouseUp:
-        case NSOtherMouseDragged:
+        case NSOtherMouseDragged: {
             if (!self.velvetHandledLastMouseDown)
                 return NO;
 
-            // Otherwise, fall through
+            id responder = [event.window firstResponder];
+            if (![responder isKindOfClass:[NSView class]]) {
+                [self dispatchEvent:event toResponder:responder];
+            }
+
+            // we always want to pass on these kinds of mouse events to the
+            // window, since it does some magic
+            return NO;
+        }
 
         case NSMouseMoved:
         case NSMouseEntered:

@@ -879,7 +879,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)didMoveFromSuperview:(VELView *)superview; {
     [self updateViewAndViewControllerNextResponders];
-    [self.subviews makeObjectsPerformSelector:_cmd withObject:superview];
 }
 
 - (void)didMoveFromWindow:(NSWindow *)window; {
@@ -903,7 +902,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)willMoveToSuperview:(VELView *)superview; {
-    [self.subviews makeObjectsPerformSelector:_cmd withObject:superview];
 }
 
 - (void)willMoveToWindow:(NSWindow *)window; {

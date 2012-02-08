@@ -279,7 +279,7 @@
 
     if (hitView == self.lastMouseTrackingResponder) {
         [hitView tryToPerform:@selector(mouseMoved:) with:event];
-        return (hitView != nil);
+        return YES;
     }
 
     [self.lastMouseTrackingResponder tryToPerform:@selector(mouseExited:) with:event];
@@ -291,6 +291,8 @@
 
     self.lastMouseTrackingResponder = hitView;
     [hitView tryToPerform:@selector(mouseEntered:) with:event];
+
+    [event.window setAcceptsMouseMovedEvents:(self.lastMouseTrackingResponder != nil)];
 
     return YES;
 }

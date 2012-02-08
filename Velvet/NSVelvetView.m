@@ -119,6 +119,11 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, strong, readonly) NSTrackingArea *trackingArea;
 
 /*
+ * The view that the mouse was last tracked entering, without exiting.
+ */
+@property (nonatomic, weak) VELView *lastMouseTrackingView;
+
+/*
  * A layer used to mask the rendering of `NSView`-owned layers added to the
  * receiver.
  *
@@ -175,6 +180,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize allDraggingDestinations = m_allDraggingDestinations;
 @synthesize previousDraggingOperation = m_previousDraggingOperation;
 @synthesize trackingArea = m_trackingArea;
+@synthesize lastMouseTrackingView = m_lastMouseTrackingView;
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
 @synthesize selfLayerDelegateProxy = m_selfLayerDelegateProxy;

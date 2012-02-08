@@ -34,6 +34,12 @@
  */
 @property (nonatomic, assign) BOOL velvetHandledLastMouseDown;
 
+/**
+ * The Velvet-hosted responder that received the last handled mouse tracking
+ * event.
+ */
+@property (nonatomic, weak) id lastMouseTrackingResponder;
+
 /*
  * Turns an event into an `NSResponder` message, and attempts to send it to the
  * given responder. If neither `responder` nor the rest of its responder chain
@@ -75,6 +81,7 @@
 @synthesize currentGestureResponder = m_currentGestureResponder;
 @synthesize handlingEvent = m_handlingEvent;
 @synthesize velvetHandledLastMouseDown = m_velvetHandledLastMouseDown;
+@synthesize lastMouseTrackingResponder = m_lastMouseTrackingResponder;
 
 #pragma mark Lifecycle
 

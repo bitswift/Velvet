@@ -116,7 +116,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
  * The tracking area used to enable mouse movement events within the Velvet
  * hierarchy.
  */
-@property (nonatomic, strong, readonly) NSTrackingArea *trackingArea;
+@property (nonatomic, strong) NSTrackingArea *trackingArea;
 
 /*
  * A layer used to mask the rendering of `NSView`-owned layers added to the
@@ -272,12 +272,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     // Set up to record dragging destinations
     self.allDraggingDestinations = [NSMutableSet set];
 
-    // Set up tracking area to generate mouse movement events when this window is key
-    m_trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds
-        options:(NSTrackingActiveInKeyWindow | NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited | NSTrackingInVisibleRect)
-        owner:self
-        userInfo:NULL];
-    [self addTrackingArea:m_trackingArea];
+    [self updateTrackingAreas];
 }
 
 - (void)dealloc {
@@ -590,6 +585,21 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     if ([view respondsToSelector:@selector(updateDraggingItemsForDrag:)]) {
         [view updateDraggingItemsForDrag:sender];
     }
+}
+
+#pragma mark Mouse Tracking
+
+- (void)updateTrackingAreas {
+    [super updateTrackingAreas];
+
+    if (self.trackingArea)
+        [self removeTrackingArea:self.trackingArea];
+
+    self.trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds
+        options:(NSTrackingActiveInKeyWindow | NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited)
+        owner:self
+        userInfo:NULL];
+    [self addTrackingArea:self.trackingArea];
 }
 
 #pragma mark VELHostView

@@ -1310,13 +1310,12 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (id<VELBridgedView>)descendantViewAtPoint:(NSPoint)point {
     // Clip to self
-    if (![self pointInside:point])
+    if (!self.userInteractionEnabled || self.hidden || ![self pointInside:point])
         return nil;
 
     __block id<VELBridgedView> result = self;
 
-    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView <VELBridgedView> *view, NSUInteger index, BOOL *stop){
-
+    [self.subviews enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(VELView *view, NSUInteger index, BOOL *stop){
         CGPoint subviewPoint = [view convertPoint:point fromView:self];
 
         id<VELBridgedView> hitTestedView = [view descendantViewAtPoint:subviewPoint];

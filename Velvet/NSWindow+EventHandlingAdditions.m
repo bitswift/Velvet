@@ -40,20 +40,9 @@
 
         NSVelvetView *hostView = testView;
         VELView *velvetView = hostView.guestView;
-
-        if (![velvetView isUserInteractionEnabled]) {
-            break;
-        }
         
         viewPoint = [velvetView convertFromWindowPoint:windowPoint];
         testView = [velvetView descendantViewAtPoint:viewPoint];
-
-        // TODO: make this more general, to support all bridged views
-        if ([testView isKindOfClass:[VELView class]]) {
-            while (testView && ![testView isUserInteractionEnabled]) {
-                testView = [testView superview];
-            }
-        }
 
         if ([testView isKindOfClass:[VELNSView class]]) {
             nsView = [(VELNSView *)testView guestView];

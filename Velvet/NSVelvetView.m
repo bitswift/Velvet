@@ -124,6 +124,14 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, weak) VELView *lastMouseTrackingView;
 
 /*
+ * Whether we're currently handling a mouse tracking event.
+ *
+ * Used to prevent recursion if we pass an event down the hierarchy, which
+ * then comes back through the responder chain.
+ */
+@property (nonatomic, assign) BOOL handlingMouseTrackingEvent;
+
+/*
  * A layer used to mask the rendering of `NSView`-owned layers added to the
  * receiver.
  *
@@ -181,6 +189,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize previousDraggingOperation = m_previousDraggingOperation;
 @synthesize trackingArea = m_trackingArea;
 @synthesize lastMouseTrackingView = m_lastMouseTrackingView;
+@synthesize handlingMouseTrackingEvent = m_handlingMouseTrackingEvent;
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
 @synthesize selfLayerDelegateProxy = m_selfLayerDelegateProxy;

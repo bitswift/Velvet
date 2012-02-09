@@ -11,6 +11,7 @@
 #import <Velvet/Velvet.h>
 #import <QuartzCore/QuartzCore.h>
 #import "VELDraggingDestinationView.h"
+#import "MouseTrackingView.h"
 
 @interface AppDelegate ()
 @property (strong) IBOutlet VELWindow *window;
@@ -201,6 +202,17 @@
         self.buttonHost = [[VELNSView alloc] initWithNSView:button];
         self.buttonHost.backgroundColor = [NSColor blueColor];
         [self.control addSubview:self.buttonHost];
+    }
+
+    // Mouse Tracking View
+    {
+        MouseTrackingView *trackingView = [[MouseTrackingView alloc] initWithFrame:CGRectMake(200, 20, 300, 300)];
+        [self.scrollView addSubview:trackingView];
+
+        MouseTrackingView *innerTrackingView = [[MouseTrackingView alloc] initWithFrame:CGRectMake(20, 20, 100, 100)];
+        innerTrackingView.normalColor = [NSColor colorWithCalibratedRed:0.2 green:0.3 blue:0.4 alpha:1.0];
+        innerTrackingView.dotColor = [NSColor colorWithCalibratedRed:0.6 green:0.1 blue:0.1 alpha:1.0];
+        [trackingView addSubview:innerTrackingView];
     }
 }
 

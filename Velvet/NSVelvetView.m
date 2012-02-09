@@ -116,7 +116,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
  * The tracking area used to enable mouse movement events within the Velvet
  * hierarchy.
  */
-@property (nonatomic, strong) NSTrackingArea *trackingArea;
+@property (nonatomic, strong, readonly) NSTrackingArea *trackingArea;
 
 /*
  * A layer used to mask the rendering of `NSView`-owned layers added to the
@@ -595,7 +595,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     if (self.trackingArea)
         [self removeTrackingArea:self.trackingArea];
 
-    self.trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds
+    m_trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds
         options:(NSTrackingActiveInKeyWindow | NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited)
         owner:self
         userInfo:NULL];

@@ -12,12 +12,12 @@
 #import "EXTScope.h"
 
 @interface VELEventManager ()
-/*
+/**
  * Any Velvet-hosted responder currently handling a continuous gesture event.
  */
 @property (nonatomic, strong) id currentGestureResponder;
 
-/*
+/**
  * Whether an event is currently in the process of being handled in
  * <handleVelvetEvent:>.
  *
@@ -40,7 +40,7 @@
  */
 @property (nonatomic, weak) id lastMouseTrackingResponder;
 
-/*
+/**
  * Turns an event into an `NSResponder` message, and attempts to send it to the
  * given responder. If neither `responder` nor the rest of its responder chain
  * implement the corresponding action, `NO` is returned.
@@ -51,7 +51,7 @@
  */
 - (BOOL)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
 
-/*
+/**
  * Attempts to dispatch the given mouse tracking event (`NSMouseEntered`,
  * `NSMouseMoved` or `NSMouseExited`) to Velvet. Returns whether the event was
  * handled by Velvet (and thus should be disregarded by AppKit).
@@ -63,6 +63,17 @@
  * @param event The event that occurred.
  */
 - (BOOL)handleMouseTrackingEvent:(NSEvent *)event;
+
+/**
+ * If the given event doesn't have an associated window, give it one, and update
+ * its location accordingly.
+ *
+ * This currently just uses the application's `keyWindow` as the receiver, no
+ * matter where the event is.
+ *
+ * @param event The event that may have a `nil` window.
+ */
+- (NSEvent *)mouseEventByAddingWindow:(NSEvent *)event;
 
 /**
  * Attempts to dispatch the given event to Velvet via the appropriate window.
@@ -272,6 +283,35 @@
     } else {
         return NO;
     }
+}
+
+- (NSPoint)convertScreenPoint:(NSPoint)point toWindow:(NSWindow *)window {
+    if (!window)
+        return point;
+    NSRect r = NSMakeRect(point.x, point.y, 1, 1);
+    r = [window convertRectFromScreen:r];
+    return r.origin;
+}
+
+- (NSEvent *)mouseEventByAddingWindow:(NSEvent *)event {
+    if (!event || event.window)
+        return event;
+
+    // For the moment, only consider the key window, because it's all we need
+    NSWindow *keyWindow = [[NSApplication sharedApplication] keyWindow];
+    NSPoint windowLoc = [self convertScreenPoint:event.locationInWindow toWindow:keyWindow];
+
+    NSEvent *windowEvent = [NSEvent mouseEventWithType:event.type
+        location:windowLoc
+        modifierFlags:event.modifierFlags
+        timestamp:event.timestamp
+        windowNumber:keyWindow.windowNumber
+        context:keyWindow.graphicsContext
+        eventNumber:event.eventNumber
+        clickCount:event.clickCount
+        pressure:event.pressure];
+
+    return windowEvent;
 }
 
 - (BOOL)handleMouseTrackingEvent:(NSEvent *)event {

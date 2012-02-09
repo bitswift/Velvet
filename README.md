@@ -1,3 +1,9 @@
+# License
+
+Velvet is released under the 3-clause BSD license. See the LICENSE file for more information.
+
+**Velvet should remain private for the foreseeable future. Please do not publicly discuss or share it.**
+
 # Features
 
  - Defines a modern API for layer-backed views (`VELView`), and provides some basic view classes, including:

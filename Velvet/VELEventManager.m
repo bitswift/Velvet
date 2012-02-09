@@ -34,6 +34,12 @@
  */
 @property (nonatomic, assign) BOOL velvetHandledLastMouseDown;
 
+/**
+ * The Velvet-hosted responder that received the last handled mouse tracking
+ * event.
+ */
+@property (nonatomic, weak) id lastMouseTrackingResponder;
+
 /*
  * Turns an event into an `NSResponder` message, and attempts to send it to the
  * given responder. If neither `responder` nor the rest of its responder chain
@@ -44,6 +50,19 @@
  * corresponding to `event`.
  */
 - (BOOL)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
+
+/*
+ * Attempts to dispatch the given mouse tracking event (`NSMouseEntered`,
+ * `NSMouseMoved` or `NSMouseExited`) to Velvet. Returns whether the event was
+ * handled by Velvet (and thus should be disregarded by AppKit).
+ *
+ * This may translate into a different message than suggested by the exact event
+ * type, or several events, in Velvet. For instance, an `NSMouseMoved` event may
+ * trigger `mouseExited:` and `mouseEntered:` events on Velvet hosted views.
+ *
+ * @param event The event that occurred.
+ */
+- (BOOL)handleMouseTrackingEvent:(NSEvent *)event;
 
 /**
  * Attempts to dispatch the given event to Velvet via the appropriate window.
@@ -62,6 +81,7 @@
 @synthesize currentGestureResponder = m_currentGestureResponder;
 @synthesize handlingEvent = m_handlingEvent;
 @synthesize velvetHandledLastMouseDown = m_velvetHandledLastMouseDown;
+@synthesize lastMouseTrackingResponder = m_lastMouseTrackingResponder;
 
 #pragma mark Lifecycle
 
@@ -223,15 +243,10 @@
         case NSLeftMouseDragged:
         case NSRightMouseDragged:
         case NSOtherMouseUp:
-        case NSOtherMouseDragged:
+        case NSOtherMouseDragged: {
             if (!self.velvetHandledLastMouseDown)
                 return NO;
 
-            // Otherwise, fall through
-
-        case NSMouseMoved:
-        case NSMouseEntered:
-        case NSMouseExited: {
             id responder = [event.window firstResponder];
             if (![responder isKindOfClass:[NSView class]]) {
                 [self dispatchEvent:event toResponder:responder];
@@ -241,6 +256,11 @@
             // window, since it does some magic
             return NO;
         }
+
+        case NSMouseMoved:
+        case NSMouseEntered:
+        case NSMouseExited:
+            return [self handleMouseTrackingEvent:event];
 
         default:
             // any other kind of event is not handled by us
@@ -252,6 +272,29 @@
     } else {
         return NO;
     }
+}
+
+- (BOOL)handleMouseTrackingEvent:(NSEvent *)event {
+    id hitView = [event.window bridgedHitTest:[event locationInWindow]];
+
+    if (hitView == self.lastMouseTrackingResponder) {
+        [hitView tryToPerform:@selector(mouseMoved:) with:event];
+        return YES;
+    }
+
+    [self.lastMouseTrackingResponder tryToPerform:@selector(mouseExited:) with:event];
+
+    if ([hitView isKindOfClass:[NSView class]]) {
+        self.lastMouseTrackingResponder = nil;
+        return NO;
+    }
+
+    self.lastMouseTrackingResponder = hitView;
+    [hitView tryToPerform:@selector(mouseEntered:) with:event];
+
+    [event.window setAcceptsMouseMovedEvents:(self.lastMouseTrackingResponder != nil)];
+
+    return YES;
 }
 
 @end

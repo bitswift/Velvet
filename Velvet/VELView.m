@@ -353,38 +353,38 @@ static BOOL VELViewPerformingDeepLayout = NO;
         self.replacingSubviews = NO;
     };
 
-    NSMutableArray *oldSubviews = [m_subviews mutableCopy];
+    [CATransaction performWithDisabledActions:^{
+        NSMutableArray *oldSubviews = [m_subviews mutableCopy];
 
-    if ([newSubviews count]) {
-        m_subviews = [[NSMutableArray alloc] initWithCapacity:[newSubviews count]];
+        if ([newSubviews count]) {
+            m_subviews = [[NSMutableArray alloc] initWithCapacity:[newSubviews count]];
 
-        // preserve any subviews we already had, but order them to match the input
-        [newSubviews enumerateObjectsUsingBlock:^(VELView *view, NSUInteger newIndex, BOOL *stop){
-            NSUInteger existingIndex = [oldSubviews indexOfObjectIdenticalTo:view];
+            // preserve any subviews we already had, but order them to match the input
+            [newSubviews enumerateObjectsUsingBlock:^(VELView *view, NSUInteger newIndex, BOOL *stop){
+                NSUInteger existingIndex = [oldSubviews indexOfObjectIdenticalTo:view];
 
-            if (!oldSubviews || existingIndex == NSNotFound) {
-                [self addSubview:view];
-            } else {
-                [CATransaction performWithDisabledActions:^{
+                if (!oldSubviews || existingIndex == NSNotFound) {
+                    [self addSubview:view];
+                } else {
                     [view.layer removeFromSuperlayer];
                     [self.layer addSublayer:view.layer];
-                }];
 
-                [oldSubviews removeObjectAtIndex:existingIndex];
-                [m_subviews addObject:view];
+                    [oldSubviews removeObjectAtIndex:existingIndex];
+                    [m_subviews addObject:view];
 
-                [view viewHierarchyDidChange];
-            }
-        }];
-    } else {
-        m_subviews = nil;
-    }
+                    [view viewHierarchyDidChange];
+                }
+            }];
+        } else {
+            m_subviews = nil;
+        }
 
-    // at this point, 'oldSubviews' should only contain subviews which no longer
-    // exist
-    for (VELView *view in oldSubviews) {
-        [view removeFromSuperview];
-    }
+        // at this point, 'oldSubviews' should only contain subviews which no longer
+        // exist
+        for (VELView *view in oldSubviews) {
+            [view removeFromSuperview];
+        }
+    }];
 }
 
 - (id<VELHostView>)hostView {

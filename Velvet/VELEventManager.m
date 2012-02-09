@@ -315,11 +315,15 @@
 }
 
 - (BOOL)handleMouseTrackingEvent:(NSEvent *)event {
+    // Try to determine the window to get the event.
+    event = [self mouseEventByAddingWindow:event];
+    if (!event)
+        return NO;
+
     id hitView = [event.window bridgedHitTest:[event locationInWindow]];
 
     if (hitView == self.lastMouseTrackingResponder) {
-        [hitView tryToPerform:@selector(mouseMoved:) with:event];
-        return YES;
+        return [hitView tryToPerform:@selector(mouseMoved:) with:event];
     }
 
     [self.lastMouseTrackingResponder tryToPerform:@selector(mouseExited:) with:event];
@@ -329,12 +333,10 @@
         return NO;
     }
 
+    [event.window setAcceptsMouseMovedEvents:YES];
+
     self.lastMouseTrackingResponder = hitView;
-    [hitView tryToPerform:@selector(mouseEntered:) with:event];
-
-    [event.window setAcceptsMouseMovedEvents:(self.lastMouseTrackingResponder != nil)];
-
-    return YES;
+    return [hitView tryToPerform:@selector(mouseEntered:) with:event];
 }
 
 @end

@@ -385,7 +385,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
                     focusRingLayer.mask = maskLayer;
                 }
 
-                CGRect rect = [clippingView.layer convertAndClipRect:clippingView.layer.bounds toLayer:focusRingLayer];
+                CGRect rect = [clippingView.layer convertAndClipRect:clippingView.layer.visibleRect toLayer:focusRingLayer];
                 if (CGRectIsNull(rect) || CGRectIsInfinite(rect)) {
                     rect = CGRectZero;
                 }
@@ -406,7 +406,11 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         }
 
         // clip the frame of each NSView using the Velvet hierarchy
-        CGRect rect = [hostView.layer convertAndClipRect:hostView.layer.bounds toLayer:self.layer];
+        CGRect visibleRect = [hostView.layer respondsToSelector:@selector(visibleRect)]
+            ? hostView.layer.visibleRect
+            : hostView.layer.bounds;
+
+        CGRect rect = [hostView.layer convertAndClipRect:visibleRect toLayer:self.layer];
         if (CGRectIsNull(rect) || CGRectIsInfinite(rect))
             continue;
 

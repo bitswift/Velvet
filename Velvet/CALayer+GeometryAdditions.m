@@ -34,7 +34,7 @@ static CGRect convertAndClipRectFromSuperlayers (CGRect rect, CALayer *layer) {
     CALayer *lastLayer = self;
     while (clippingLayer) {
         if (lastLayer.masksToBounds) {
-            rect = CGRectIntersection(rect, lastLayer.bounds);
+            rect = CGRectIntersection(rect, lastLayer.visibleRect);
             if (CGRectIsNull(rect))
                 return CGRectNull;
         }

@@ -22,7 +22,7 @@ static CGRect convertAndClipRectFromSuperlayers (CGRect rect, CALayer *layer) {
     }
 
     if (layer.masksToBounds) {
-        rect = CGRectIntersection(rect, layer.bounds);
+        rect = CGRectIntersection(rect, layer.visibleRect);
     }
 
     return rect;

@@ -406,11 +406,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         }
 
         // clip the frame of each NSView using the Velvet hierarchy
-        CGRect visibleRect = [hostView.layer respondsToSelector:@selector(visibleRect)]
-            ? hostView.layer.visibleRect
-            : hostView.layer.bounds;
-
-        CGRect rect = [hostView.layer convertAndClipRect:visibleRect toLayer:self.layer];
+        CGRect rect = [hostView.layer convertAndClipRect:hostView.layer.visibleRect toLayer:self.layer];
         if (CGRectIsNull(rect) || CGRectIsInfinite(rect))
             continue;
 

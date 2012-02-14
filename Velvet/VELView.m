@@ -671,16 +671,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
 - (CGImageRef)renderedCGImage; {
     [self.layer displayIfNeeded];
 
-    id contents = self.layer.contents;
-    if (contents) {
-        // the documentation says this can be a CGImage or an NSImage
-        if (CFGetTypeID((__bridge CFTypeRef)contents) == CGImageGetTypeID()) {
-            return (__bridge CGImageRef)contents;
-        } else if ([contents isKindOfClass:[NSImage class]]) {
-            return [contents CGImage];
-        }
-    }
-
     CGSize size = self.bounds.size;
     if (size.width <= 0 || size.height <= 0)
         return NULL;

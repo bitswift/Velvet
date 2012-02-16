@@ -9,8 +9,6 @@
 #import "VELLabel.h"
 #import "EXTScope.h"
 
-static const CGFloat VELLabelPadding = 2.0f;
-
 static NSString * const VELLabelEmptyAttributedString = @"\0";
 
 static NSRange NSRangeFromCFRange(CFRange range) {
@@ -165,7 +163,7 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 
         switch (self.lineBreakMode) {
             case VELLineBreakModeCharacterWrap:
-                characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, maximumWidth - VELLabelPadding * 2);
+                characterCount = CTTypesetterSuggestClusterBreak(typesetter, characterIndex, maximumWidth);
                 break;
 
             case VELLineBreakModeClip:
@@ -178,7 +176,7 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             case VELLineBreakModeLastLineMiddleTruncation:
             case VELLineBreakModeTailTruncation:
             default:
-                characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, maximumWidth - VELLabelPadding * 2);
+                characterCount = CTTypesetterSuggestLineBreak(typesetter, characterIndex, maximumWidth);
                 break;
         }
 
@@ -209,8 +207,8 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
 
-    CGFloat drawableWidth = self.bounds.size.width - VELLabelPadding * 2;
-    CGFloat drawableHeight = self.bounds.size.height - VELLabelPadding * 2;
+    CGFloat drawableWidth = self.bounds.size.width;
+    CGFloat drawableHeight = self.bounds.size.height;
 
     NSMutableArray *lines = [self linesForAttributedString:attributedString constrainedToWidth:drawableWidth];
 
@@ -332,23 +330,23 @@ static NSRange NSRangeFromCFRange(CFRange range) {
         originY += ceil(ascent);
 
         CGFloat widthOfPrintedGlyphs = lineWidth - CTLineGetTrailingWhitespaceWidth(aLine);
-        CGFloat indentWidth = VELLabelPadding;
+        CGFloat indentWidth = 0.0f;
 
         switch (self.textAlignment) {
             case VELTextAlignmentCenter:
-                indentWidth = floor((drawableWidth - widthOfPrintedGlyphs)/2.0f + VELLabelPadding);
+                indentWidth = floor((drawableWidth - widthOfPrintedGlyphs)/2.0f);
                 break;
 
             case VELTextAlignmentRight:
                 // It is not appropriate to floor `indentWidth` when using `VELTextAlignmentRight`
-                indentWidth = drawableWidth - widthOfPrintedGlyphs + VELLabelPadding;
+                indentWidth = drawableWidth - widthOfPrintedGlyphs;
                 break;
 
             default:
                 ;
         }
 
-        CGContextSetTextPosition(context, indentWidth, (self.bounds.size.height - VELLabelPadding) - originY);
+        CGContextSetTextPosition(context, indentWidth, (self.bounds.size.height) - originY);
         if (i < lines.count - 1 && self.textAlignment == kCTJustifiedTextAlignment) {
             // Only create justified lines if we are NOT at the last line yet
             aLine = CTLineCreateJustifiedLine(aLine, 1.0f, drawableWidth);
@@ -366,10 +364,6 @@ static NSRange NSRangeFromCFRange(CFRange range) {
     NSAttributedString *string = self.formattedText;
     if (!string)
         return CGSizeZero;
-
-    // subtract our padding here, we'll add it back in at the end after we figure out the text size
-    constraint.width -= VELLabelPadding * 2;
-    constraint.height -= VELLabelPadding * 2;
 
     NSArray *lines;
 
@@ -405,7 +399,7 @@ static NSRange NSRangeFromCFRange(CFRange range) {
         height += ceil(ascent + descent + leading);
     }
 
-    return CGSizeMake(ceil(width + VELLabelPadding * 2), ceil(height + VELLabelPadding * 2));
+    return CGSizeMake(ceil(width), ceil(height));
 }
 
 #pragma mark Formatting

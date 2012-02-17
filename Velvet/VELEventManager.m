@@ -53,8 +53,8 @@
 
 /**
  * Attempts to dispatch the given mouse tracking event (`NSMouseEntered`,
- * `NSMouseMoved` or `NSMouseExited`) to Velvet. Returns whether the event was
- * handled by Velvet (and thus should be disregarded by AppKit).
+ * `NSMouseMoved` or `NSMouseExited`) to Velvet. Regardless of whether the event
+ * was handled by Velvet, it should _not_ be discarded.
  *
  * This may translate into a different message than suggested by the exact event
  * type, or several events, in Velvet. For instance, an `NSMouseMoved` event may
@@ -62,7 +62,7 @@
  *
  * @param event The event that occurred.
  */
-- (BOOL)handleMouseTrackingEvent:(NSEvent *)event;
+- (void)handleMouseTrackingEvent:(NSEvent *)event;
 
 /**
  * If the given event doesn't have an associated window, give it one, and update
@@ -271,7 +271,8 @@
         case NSMouseMoved:
         case NSMouseEntered:
         case NSMouseExited:
-            return [self handleMouseTrackingEvent:event];
+            [self handleMouseTrackingEvent:event];
+            return NO;
 
         default:
             // any other kind of event is not handled by us
@@ -314,29 +315,29 @@
     return windowEvent;
 }
 
-- (BOOL)handleMouseTrackingEvent:(NSEvent *)event {
+- (void)handleMouseTrackingEvent:(NSEvent *)event {
     // Try to determine the window to get the event.
     event = [self mouseEventByAddingWindow:event];
     if (!event)
-        return NO;
+        return;
 
     id hitView = [event.window bridgedHitTest:[event locationInWindow]];
-
     if (hitView == self.lastMouseTrackingResponder) {
-        return [hitView tryToPerform:@selector(mouseMoved:) with:event];
+        [hitView tryToPerform:@selector(mouseMoved:) with:event];
+        return;
     }
 
     [self.lastMouseTrackingResponder tryToPerform:@selector(mouseExited:) with:event];
 
     if ([hitView isKindOfClass:[NSView class]]) {
         self.lastMouseTrackingResponder = nil;
-        return NO;
+        return;
     }
 
     [event.window setAcceptsMouseMovedEvents:YES];
 
     self.lastMouseTrackingResponder = hitView;
-    return [hitView tryToPerform:@selector(mouseEntered:) with:event];
+    [hitView tryToPerform:@selector(mouseEntered:) with:event];
 }
 
 @end

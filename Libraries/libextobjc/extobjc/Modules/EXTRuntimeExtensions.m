@@ -825,6 +825,9 @@ BOOL ext_loadSpecialProtocol (Protocol *protocol, void (^injectionBehavior)(Clas
         // array
         assert(specialProtocolCount < specialProtocolCapacity);
 
+        // disable warning about "leaking" this block, which is released in
+        // ext_injectSpecialProtocols()
+        #ifndef __clang_analyzer__
         ext_specialProtocolInjectionBlock copiedBlock = [injectionBehavior copy];
 
         // construct a new EXTSpecialProtocol structure and add it to the first
@@ -834,6 +837,7 @@ BOOL ext_loadSpecialProtocol (Protocol *protocol, void (^injectionBehavior)(Clas
             .injectionBlock = (__bridge_retained void *)copiedBlock,
             .ready = NO
         };
+        #endif
 
         ++specialProtocolCount;
         pthread_mutex_unlock(&specialProtocolsLock);

@@ -51,7 +51,7 @@
 /**
  * Invoked to load the <view> for the first time.
  *
- * The default implementation of this method creates a blank view with a bounds
+ * The default implementation of this method creates a blank view with a frame
  * of `CGRectZero`.
  *
  * This method should never be explicitly called. It can be overridden by

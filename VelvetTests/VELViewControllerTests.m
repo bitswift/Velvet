@@ -85,7 +85,7 @@ SpecBegin(VELViewController)
             VELView *view = [controller loadView];
             expect(view).not.toBeNil();
 
-            expect(CGRectIsEmpty(view.bounds)).toBeTruthy();
+            expect(CGRectIsEmpty(view.frame)).toBeTruthy();
         });
 
         describe(@"responder chain", ^{

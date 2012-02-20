@@ -38,6 +38,10 @@
 		D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D05DC49B14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */; };
 		D0604C8F14CD59DD008B9A7A /* VELNSViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0604C8D14CD59DD008B9A7A /* VELNSViewLayer.m */; };
+		D067DC4914F2038400B58AC4 /* VELNSViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D067DC4714F2038400B58AC4 /* VELNSViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D067DC4A14F2038400B58AC4 /* VELNSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D067DC4814F2038400B58AC4 /* VELNSViewController.m */; };
+		D067DC7214F2074E00B58AC4 /* testnib.xib in Resources */ = {isa = PBXBuildFile; fileRef = D067DC7114F2074E00B58AC4 /* testnib.xib */; };
+		D067DC7414F2076B00B58AC4 /* VELNSViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D067DC7314F2076B00B58AC4 /* VELNSViewControllerTests.m */; };
 		D0682AAF14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0682AB014C77307001CA434 /* CGGeometry+ConvenienceAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */; };
 		D0682AB414C773EF001CA434 /* CGGeometryAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */; };
@@ -207,6 +211,10 @@
 		D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewDragAndDropTests.m; sourceTree = "<group>"; };
 		D0604C8C14CD59DD008B9A7A /* VELNSViewLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSViewLayer.h; sourceTree = "<group>"; };
 		D0604C8D14CD59DD008B9A7A /* VELNSViewLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewLayer.m; sourceTree = "<group>"; };
+		D067DC4714F2038400B58AC4 /* VELNSViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSViewController.h; sourceTree = "<group>"; };
+		D067DC4814F2038400B58AC4 /* VELNSViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewController.m; sourceTree = "<group>"; };
+		D067DC7114F2074E00B58AC4 /* testnib.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = testnib.xib; sourceTree = "<group>"; };
+		D067DC7314F2076B00B58AC4 /* VELNSViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewControllerTests.m; sourceTree = "<group>"; };
 		D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+ConvenienceAdditions.h"; sourceTree = "<group>"; };
 		D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+ConvenienceAdditions.m"; sourceTree = "<group>"; };
 		D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGeometryAdditionsTests.m; sourceTree = "<group>"; };
@@ -426,6 +434,8 @@
 		D08719E314A30A5900F304BC /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				D067DC4714F2038400B58AC4 /* VELNSViewController.h */,
+				D067DC4814F2038400B58AC4 /* VELNSViewController.m */,
 				D08719E414A30AA700F304BC /* VELViewController.h */,
 				D08719E514A30AA700F304BC /* VELViewController.m */,
 			);
@@ -447,6 +457,7 @@
 				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
 				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
 				D0DB8A7C149028D60082D3DA /* VELLabelTests.m */,
+				D067DC7314F2076B00B58AC4 /* VELNSViewControllerTests.m */,
 				1A5FCCF81496B61A00BB49F3 /* VELNSViewTests.h */,
 				1A5FCCF91496B61A00BB49F3 /* VELNSViewTests.m */,
 				D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */,
@@ -552,9 +563,10 @@
 		D0EFFC21147851A80095AB35 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D0B75C67149188FD005C81D5 /* testimage.jpg */,
-				D0EFFC22147851A80095AB35 /* VelvetTests-Info.plist */,
 				D0EFFC23147851A80095AB35 /* InfoPlist.strings */,
+				D0B75C67149188FD005C81D5 /* testimage.jpg */,
+				D067DC7114F2074E00B58AC4 /* testnib.xib */,
+				D0EFFC22147851A80095AB35 /* VelvetTests-Info.plist */,
 				D002AEF114CE03820062AEFC /* VelvetTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -687,6 +699,7 @@
 				D0F5BFCA14BF6BE000C66839 /* VELHostView.h in Headers */,
 				D020F49314C3959500C466E1 /* NSWindow+InitializationAdditions.h in Headers */,
 				D0682AAF14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h in Headers */,
+				D067DC4914F2038400B58AC4 /* VELNSViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -843,6 +856,7 @@
 			files = (
 				D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */,
 				D0B75C68149188FD005C81D5 /* testimage.jpg in Resources */,
+				D067DC7214F2074E00B58AC4 /* testnib.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,6 +910,7 @@
 				D0F5CD9914C57C4600966B2D /* EXTScope.m in Sources */,
 				D0682AB014C77307001CA434 /* CGGeometry+ConvenienceAdditions.m in Sources */,
 				D0604C8F14CD59DD008B9A7A /* VELNSViewLayer.m in Sources */,
+				D067DC4A14F2038400B58AC4 /* VELNSViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -920,6 +935,7 @@
 				D0F5CDA214C57C7E00966B2D /* EXTScopeTest.m in Sources */,
 				D07B72A514C4FC5500AA19DD /* VELControlTests.m in Sources */,
 				D0682AB414C773EF001CA434 /* CGGeometryAdditionsTests.m in Sources */,
+				D067DC7414F2076B00B58AC4 /* VELNSViewControllerTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

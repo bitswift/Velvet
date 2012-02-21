@@ -806,16 +806,20 @@ static BOOL VELViewPerformingDeepLayout = NO;
     return nil;
 }
 
-- (BOOL)isDescendantOfView:(VELView *)view; {
+- (BOOL)isDescendantOfView:(id<VELBridgedView>)view; {
     NSParameterAssert(view != nil);
 
-    VELView *testView = self;
+    id <VELBridgedView> testView = self;
+    id <VELBridgedView> testSuperview;
 
     do {
         if (testView == view)
             return YES;
 
-        testView = testView.superview;
+        if ([testView respondsToSelector:@selector(superview)])
+            testSuperview = [(id)testView superview];
+
+        testView = testSuperview ?: [testView hostView];
     } while (testView);
 
     return NO;

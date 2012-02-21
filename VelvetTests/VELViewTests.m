@@ -130,6 +130,12 @@ describe(@"VELView", ^{
             // the view's next responder should be the host view
             expect(view.nextResponder).toEqual(hostView);
         });
+        
+        it(@"descends from its hostView when it has a view", ^{
+            NSVelvetView *hostView = window.contentView;
+            hostView.guestView = view;
+            expect([view isDescendantOfView:hostView]).toBeTruthy();
+        });
 
         it(@"has a next responder with a superview and hostView", ^{
             [window.rootView addSubview:view];

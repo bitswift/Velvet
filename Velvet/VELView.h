@@ -378,7 +378,7 @@ typedef enum {
  * @param view The root of the view hierarchy in which to search for the
  * receiver.
  */
-- (BOOL)isDescendantOfView:(VELView *)view;
+- (BOOL)isDescendantOfView:(id<VELBridgedView>)view;
 
 /**
  * Removes the receiver from its <superview>. If the receiver has no superview,

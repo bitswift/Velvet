@@ -261,10 +261,12 @@
             id responder = [event.window firstResponder];
             if (![responder isKindOfClass:[NSView class]]) {
                 [self dispatchEvent:event toResponder:responder];
+                return YES;
             }
 
-            // we always want to pass on these kinds of mouse events to the
-            // window, since it does some magic
+            // if we didn't dispatch an event directly to a bridged view, we
+            // want to pass on these kinds of mouse events to the window, since
+            // it does some magic
             return NO;
         }
 

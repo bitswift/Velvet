@@ -192,11 +192,16 @@ CGRect CGRectFloor(CGRect rect) {
 }
 
 CGRect CGRectMakeInverted (CGRect containingRect, CGFloat x, CGFloat y, CGFloat width, CGFloat height) {
+    CGRect rect = CGRectMake(x, y, width, height);
+    return CGRectInvert(containingRect, rect);
+}
+
+CGRect CGRectInvert (CGRect containingRect, CGRect rect) {
     return CGRectMake(
-        x,
-        CGRectGetHeight(containingRect) - y - height,
-        width,
-        height
+        CGRectGetMinX(rect),
+        CGRectGetHeight(containingRect) - CGRectGetMaxY(rect),
+        CGRectGetWidth(rect),
+        CGRectGetHeight(rect)
     );
 }
 

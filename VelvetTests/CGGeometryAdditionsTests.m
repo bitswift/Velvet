@@ -203,15 +203,26 @@ describe(@"CGGeometryAdditions", ^{
         });
     });
     
-    describe(@"CGRectMakeInverted", ^{
-        it(@"should create an inverted rect inside a contained rectangle", ^{
+    describe(@"inverted rectangles", ^{
+        it(@"should create an inverted rectangle within a containing rectangle", ^{
             CGRect containingRect = CGRectMake(0, 0, 100, 100);
 
             // Bottom Left
             CGRect expectedResult = CGRectMake(0, CGRectGetHeight(containingRect) - 20 - 50, 50, 50);
 
             CGRect result = CGRectMakeInverted(containingRect, 0, 20, 50, 50);
-            expect(result).toEqual(expectedResult);      
+            expect(result).toEqual(expectedResult);
+        });
+
+        it(@"should invert a rectangle within a containing rectangle", ^{
+            CGRect rect = CGRectMake(0, 20, 50, 50);
+            CGRect containingRect = CGRectMake(0, 0, 100, 100);
+
+            // Bottom Left
+            CGRect expectedResult = CGRectMake(0, CGRectGetHeight(containingRect) - 20 - 50, 50, 50);
+
+            CGRect result = CGRectInvert(containingRect, rect);
+            expect(result).toEqual(expectedResult);
         });
     });
 

@@ -82,25 +82,26 @@ NSString * const VELWindowFirstResponderDidChangeNewKey = @"VELWindowFirstRespon
 #pragma mark First Responder
 
 - (BOOL)makeFirstResponder:(NSResponder *)responder {
-    NSResponder *previousResponder = self.firstResponder;
 
     BOOL success = [super makeFirstResponder:responder];
 
-    if (success) {
-        NSResponder *newResponder = self.firstResponder;
+    if (!success)
+        return NO;
 
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-            previousResponder, VELWindowFirstResponderDidChangeOldKey,
-            newResponder, VELWindowFirstResponderDidChangeNewKey,
-            nil
-        ];
+    NSResponder *previousResponder = self.firstResponder ?: [NSNull null];
+    NSResponder *newResponder = self.firstResponder ?: [NSNull null];
 
-        [[NSNotificationCenter defaultCenter]
-            postNotificationName:VELWindowFirstResponderDidChangeNotification
-            object:self
-            userInfo:userInfo
-        ];
-    }
+    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+        previousResponder, VELWindowFirstResponderDidChangeOldKey,
+        newResponder, VELWindowFirstResponderDidChangeNewKey,
+        nil
+    ];
+
+    [[NSNotificationCenter defaultCenter]
+        postNotificationName:VELWindowFirstResponderDidChangeNotification
+        object:self
+        userInfo:userInfo
+    ];
 
     return success;
 }

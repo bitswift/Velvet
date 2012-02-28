@@ -82,13 +82,12 @@ NSString * const VELWindowNewFirstResponderKey = @"VELWindowNewFirstResponderKey
 #pragma mark First Responder
 
 - (BOOL)makeFirstResponder:(NSResponder *)responder {
+    id previousResponder = self.firstResponder ?: [NSNull null];
 
     BOOL success = [super makeFirstResponder:responder];
-
     if (!success)
         return NO;
 
-    id previousResponder = self.firstResponder ?: [NSNull null];
     id newResponder = self.firstResponder ?: [NSNull null];
 
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:

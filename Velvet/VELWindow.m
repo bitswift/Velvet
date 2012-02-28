@@ -88,8 +88,8 @@ NSString * const VELWindowFirstResponderDidChangeNewKey = @"VELWindowFirstRespon
     if (!success)
         return NO;
 
-    NSResponder *previousResponder = self.firstResponder ?: [NSNull null];
-    NSResponder *newResponder = self.firstResponder ?: [NSNull null];
+    id previousResponder = self.firstResponder ?: [NSNull null];
+    id newResponder = self.firstResponder ?: [NSNull null];
 
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
         previousResponder, VELWindowFirstResponderDidChangeOldKey,

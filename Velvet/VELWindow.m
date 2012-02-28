@@ -13,9 +13,9 @@
 
 NSString * const VELWindowFirstResponderDidChangeNotification = @"VELWindowFirstResponderDidChangeNotification";
 
-NSString * const VELWindowFirstResponderDidChangeOldKey = @"VELWindowFirstResponderDidChangeOldKey";
+NSString * const VELWindowOldFirstResponderKey = @"VELWindowOldFirstResponderKey";
 
-NSString * const VELWindowFirstResponderDidChangeNewKey = @"VELWindowFirstResponderDidChangeNewKey";
+NSString * const VELWindowNewFirstResponderKey = @"VELWindowNewFirstResponderKey";
 
 @implementation VELWindow
 
@@ -92,8 +92,8 @@ NSString * const VELWindowFirstResponderDidChangeNewKey = @"VELWindowFirstRespon
     id newResponder = self.firstResponder ?: [NSNull null];
 
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-        previousResponder, VELWindowFirstResponderDidChangeOldKey,
-        newResponder, VELWindowFirstResponderDidChangeNewKey,
+        previousResponder, VELWindowOldFirstResponderKey,
+        newResponder, VELWindowNewFirstResponderKey,
         nil
     ];
 

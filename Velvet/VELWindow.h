@@ -59,6 +59,10 @@ extern NSString * const VELWindowNewFirstResponderKey;
 @property (nonatomic, strong) VELView *rootView;
 
 /**
+ * @name Responder Chain
+ */
+
+/**
  * Attempts to make a given responder the first responder for the window.
  *
  * Behaves like `-[NSWindow makeFirstResponder:]` and posts a

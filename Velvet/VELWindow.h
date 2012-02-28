@@ -12,6 +12,29 @@
 @class VELView;
 
 /**
+ * The name of the `NSNotification` posted when the receiver's `firstResponder`
+ * changes.
+ *
+ * The user info dictionary for this notification will contain the following
+ * keys:
+ *
+ * - <VELWindowFirstResponderDidChangeOldKey>
+ * - <VELWindowFirstResponderDidChangeNewKey>
+ */
+extern NSString * const VELWindowFirstResponderDidChangeNotification;
+
+/**
+ * An `NSNotification` user info key associated with the previous
+ * `firstResponder`.
+ */
+extern NSString * const VELWindowFirstResponderDidChangeOldKey;
+
+/**
+ * An `NSNotification` user info key associated with the new `firstResponder`.
+ */
+extern NSString * const VELWindowFirstResponderDidChangeNewKey;
+
+/**
  * An `NSWindow` automatically set up with a Velvet hierarchy.
  */
 @interface VELWindow : NSWindow
@@ -31,4 +54,18 @@
  * The root of the Velvet hierarchy in the receiver.
  */
 @property (nonatomic, strong) VELView *rootView;
+
+/**
+ * Attempts to make a given responder the first responder for the window.
+ *
+ * Behaves like `-[NSWindow makeFirstResponder:]`.
+ *
+ * Posts a `VELWindowFirstResponderDidChangeNotification` when the first
+ * responder changes.
+ *
+ * @param responder The responder to set as the window's first responder. `nil`
+ * makes the window its first responder.
+ */
+- (BOOL)makeFirstResponder:(NSResponder *)responder;
+
 @end

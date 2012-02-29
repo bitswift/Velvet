@@ -19,6 +19,7 @@
 #import "VELDraggingDestination.h"
 #import "VELHostView.h"
 #import "VELNSViewPrivate.h"
+#import "VELScrollView.h"
 #import "VELViewController.h"
 #import "VELViewLayer.h"
 #import "VELViewPrivate.h"
@@ -1017,6 +1018,15 @@ static BOOL VELViewPerformingDeepLayout = NO;
         return [self convertToWindowRect:rect];
 
     return [view convertFromWindowRect:[self convertToWindowRect:rect]];
+}
+
+- (void)scrollToIncludeRect:(CGRect)rect; {
+    id<VELScrollView> scrollView = self.ancestorScrollView;
+    if (!scrollView)
+        return;
+
+    rect = [self convertRect:rect toView:scrollView];
+    [scrollView scrollToIncludeRect:rect];
 }
 
 #pragma mark VELBridgedView

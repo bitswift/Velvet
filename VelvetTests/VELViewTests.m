@@ -279,6 +279,38 @@ describe(@"VELView", ^{
         });
     });
 
+    describe(@"scrolling to include a rectangle", ^{
+        __block NSScrollView *scrollView;
+
+        before(^{
+            scrollView = [[NSScrollView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+
+            VELNSView *hostView = [[VELNSView alloc] initWithNSView:scrollView];
+            [window.rootView addSubview:hostView];
+        });
+
+        before(^{
+            NSVelvetView *hostView = [[NSVelvetView alloc] init];
+            [hostView.guestView addSubview:view];
+
+            scrollView.documentView = hostView;
+        });
+
+        it(@"should scroll an ancestor NSScrollView to a rectangle in the same coordinate system", ^{
+            view.frame = CGRectMake(0, 0, 1000, 1000);
+
+            [view scrollToIncludeRect:CGRectMake(250, 350, 75, 50)];
+            expect(scrollView.contentView.documentVisibleRect).isGoing.toEqual(CGRectMake(225, 300, 100, 100));
+        });
+
+        it(@"should scroll an ancestor NSScrollView to a rectangle in a different coordinate system", ^{
+            view.frame = CGRectMake(100, 200, 1000, 1000);
+
+            [view scrollToIncludeRect:CGRectMake(250, 350, 75, 50)];
+            expect(scrollView.contentView.documentVisibleRect).isGoing.toEqual(CGRectMake(325, 500, 100, 100));
+        });
+    });
+
     it(@"has a layer", ^{
         expect(view.layer).not.toBeNil();
     });

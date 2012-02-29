@@ -10,6 +10,7 @@
 
 @class NSVelvetView;
 @protocol VELHostView;
+@protocol VELScrollView;
 
 /**
  * Represents a view that can be bridged by Velvet, allowing interoperation with
@@ -114,14 +115,12 @@
 - (NSVelvetView *)ancestorNSVelvetView;
 
 /**
- * Walks up the receiver's ancestor views, returning the nearest view that is
- * considered to be a scroll view.
+ * Walks up the receiver's ancestor views, returning the nearest
+ * <VELScrollView>.
  *
  * Returns `nil` if no scroll view is an ancestor of the receiver.
- *
- * @warning The definition of a "scroll view" may vary across UI frameworks.
  */
-- (id<VELBridgedView>)ancestorScrollView;
+- (id<VELScrollView>)ancestorScrollView;
 
 /**
  * Invoked when the receiver is moving to a new <ancestorNSVelvetView>.

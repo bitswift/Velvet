@@ -7,9 +7,10 @@
 //
 
 #import "NSView+VELBridgedViewAdditions.h"
-#import "NSVelvetView.h"
-#import <objc/runtime.h>
 #import "EXTSafeCategory.h"
+#import "NSVelvetView.h"
+#import "VELScrollView.h"
+#import <objc/runtime.h>
 
 @safecategory (NSView, VELBridgedViewAdditions)
 
@@ -50,9 +51,9 @@
     return nil;
 }
 
-- (id<VELBridgedView>)ancestorScrollView {
-    if ([self isKindOfClass:[NSScrollView class]])
-        return self;
+- (id<VELScrollView>)ancestorScrollView {
+    if ([self conformsToProtocol:@protocol(VELScrollView)])
+        return (id)self;
 
     id<VELHostView> immediateHostView = objc_getAssociatedObject(self, @selector(hostView));
     if (immediateHostView)

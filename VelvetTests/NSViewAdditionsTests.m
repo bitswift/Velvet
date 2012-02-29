@@ -74,7 +74,7 @@ describe(@"NSViewAdditions", ^{
         expect(theNSView.ancestorNSVelvetView).toEqual(theNSVelvetView);
     });
 
-    it(@"ancestorScrollView is set to the first NSScrollView in the hierarchy", ^{
+    it(@"ancestorScrollView returns the first NSClipView in the hierarchy", ^{
         NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:CGRectZero];
         expect(scrollView.ancestorScrollView).toEqual(scrollView);
 
@@ -82,7 +82,7 @@ describe(@"NSViewAdditions", ^{
 
         [scrollView setDocumentView:view];
 
-        expect(view.ancestorScrollView).toEqual(scrollView);
+        expect(view.ancestorScrollView).toEqual(scrollView.contentView);
     });
 
     it(@"implements willMoveToNSVelvetView and didMoveFromNSVelvetView", ^{

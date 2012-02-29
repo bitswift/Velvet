@@ -298,12 +298,13 @@ describe(@"VELView", ^{
         expect(view.ancestorNSVelvetView).toEqual(window.contentView);
     });
 
-    it(@"has an ancestorScrollView when it is a subview of a scrollViews documentView", ^{
+    it(@"has an ancestorScrollView when it is a subview of an NSScrollView's documentView", ^{
         NSScrollView *scrollView = [[NSScrollView alloc] initWithFrame:CGRectZero];
 
         NSVelvetView *velvetView = [[NSVelvetView alloc] initWithFrame:CGRectZero];
         [scrollView setDocumentView:velvetView];
-        expect(velvetView.guestView.ancestorScrollView).toEqual(scrollView);
+
+        expect(velvetView.guestView.ancestorScrollView).toEqual(scrollView.contentView);
     });
 
     it(@"does not throw an exception when calling -willMoveToNSVelvetView:", ^{

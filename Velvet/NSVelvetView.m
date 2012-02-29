@@ -16,6 +16,7 @@
 #import "VELNSView.h"
 #import "VELNSViewLayerDelegateProxy.h"
 #import "VELNSViewPrivate.h"
+#import "VELScrollView.h"
 #import "VELView.h"
 #import "VELViewPrivate.h"
 #import <QuartzCore/QuartzCore.h>
@@ -374,7 +375,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
         CALayer *focusRingLayer = [self focusRingLayerForView:view];
         if (focusRingLayer) {
-            id<VELBridgedView> clippingView = [hostView ancestorScrollView];
+            id<VELScrollView> clippingView = [hostView ancestorScrollView];
 
             if (clippingView) {
                 // set up a mask on the focus ring that clips to any ancestor scroll views

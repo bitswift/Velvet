@@ -11,8 +11,10 @@
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/CGGeometry+ConvenienceAdditions.h>
+#import <Velvet/NSClipView+VELScrollViewAdditions.h>
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSImage+CoreGraphicsAdditions.h>
+#import <Velvet/NSScrollView+VELScrollViewAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSWindow+InitializationAdditions.h>
@@ -24,6 +26,7 @@
 #import <Velvet/VELLabel.h>
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELNSViewController.h>
+#import <Velvet/VELScrollView.h>
 #import <Velvet/VELView.h>
 #import <Velvet/VELViewController.h>
 #import <Velvet/VELWindow.h>

@@ -51,6 +51,12 @@
 		D08719E614A30AA700F304BC /* VELViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = D08719E414A30AA700F304BC /* VELViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D08719E714A30AA700F304BC /* VELViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D08719E514A30AA700F304BC /* VELViewController.m */; };
 		D08719EB14A30B5F00F304BC /* VELViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */; };
+		D08B7BB814FEC0F600F8BD17 /* VELScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = D08B7BB714FEC0F600F8BD17 /* VELScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D08B7BBB14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D08B7BB914FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D08B7BBC14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D08B7BBA14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m */; };
+		D08B7BBF14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D08B7BBE14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m */; };
+		D08B7BE614FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D08B7BE414FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D08B7BE714FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D08B7BE514FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.m */; };
 		D0911B1D147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0911B1E147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */; };
 		D0A96C0514B7AE8B00A64F6F /* AppKit+GeometryAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0A96C0314B7AE8B00A64F6F /* AppKit+GeometryAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -227,6 +233,12 @@
 		D08719E414A30AA700F304BC /* VELViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewController.h; sourceTree = "<group>"; };
 		D08719E514A30AA700F304BC /* VELViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewController.m; sourceTree = "<group>"; };
 		D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewControllerTests.m; sourceTree = "<group>"; };
+		D08B7BB714FEC0F600F8BD17 /* VELScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELScrollView.h; sourceTree = "<group>"; };
+		D08B7BB914FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSClipView+VELScrollViewAdditions.h"; sourceTree = "<group>"; };
+		D08B7BBA14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSClipView+VELScrollViewAdditions.m"; sourceTree = "<group>"; };
+		D08B7BBE14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSClipViewAdditionsTests.m; sourceTree = "<group>"; };
+		D08B7BE414FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScrollView+VELScrollViewAdditions.h"; sourceTree = "<group>"; };
+		D08B7BE514FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScrollView+VELScrollViewAdditions.m"; sourceTree = "<group>"; };
 		D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSView+VELBridgedViewAdditions.h"; sourceTree = "<group>"; };
 		D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSView+VELBridgedViewAdditions.m"; sourceTree = "<group>"; };
 		D0A96C0314B7AE8B00A64F6F /* AppKit+GeometryAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppKit+GeometryAdditions.h"; sourceTree = "<group>"; };
@@ -360,10 +372,14 @@
 				1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */,
 				D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */,
 				D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */,
+				D08B7BB914FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h */,
+				D08B7BBA14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m */,
 				D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */,
 				D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */,
 				D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */,
 				D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */,
+				D08B7BE414FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.h */,
+				D08B7BE514FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.m */,
 				D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */,
 				D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */,
 				D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */,
@@ -446,6 +462,7 @@
 			isa = PBXGroup;
 			children = (
 				D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */,
+				D08B7BBE14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
 				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
 				D020F48B14C3923400C466E1 /* NSViewAdditionsTests.m */,
@@ -476,6 +493,7 @@
 				D0CACD34147C86C0008C42B2 /* VELBridgedView.h */,
 				D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */,
 				D0F5BFC914BF6BE000C66839 /* VELHostView.h */,
+				D08B7BB714FEC0F600F8BD17 /* VELScrollView.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -700,6 +718,9 @@
 				D020F49314C3959500C466E1 /* NSWindow+InitializationAdditions.h in Headers */,
 				D0682AAF14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h in Headers */,
 				D067DC4914F2038400B58AC4 /* VELNSViewController.h in Headers */,
+				D08B7BB814FEC0F600F8BD17 /* VELScrollView.h in Headers */,
+				D08B7BBB14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h in Headers */,
+				D08B7BE614FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -911,6 +932,8 @@
 				D0682AB014C77307001CA434 /* CGGeometry+ConvenienceAdditions.m in Sources */,
 				D0604C8F14CD59DD008B9A7A /* VELNSViewLayer.m in Sources */,
 				D067DC4A14F2038400B58AC4 /* VELNSViewController.m in Sources */,
+				D08B7BBC14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m in Sources */,
+				D08B7BE714FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -936,6 +959,7 @@
 				D07B72A514C4FC5500AA19DD /* VELControlTests.m in Sources */,
 				D0682AB414C773EF001CA434 /* CGGeometryAdditionsTests.m in Sources */,
 				D067DC7414F2076B00B58AC4 /* VELNSViewControllerTests.m in Sources */,
+				D08B7BBF14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

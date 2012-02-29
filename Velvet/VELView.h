@@ -448,6 +448,24 @@ typedef enum {
 - (void)willMoveToWindow:(NSWindow *)window;
 
 /**
+ * @name Scrolling
+ */
+
+/**
+ * Scrolls the receiver's <[VELBridgedView ancestorScrollView]> the minimum
+ * distance required to ensure that the given rectangle is visible.
+ *
+ * Scrolling will occur according to the semantics of <[VELScrollView
+ * scrollToIncludeRect:]>.
+ *
+ * If the receiver is not contained within a scroll view, nothing happens.
+ *
+ * @param rect A rectangle, specified in the receiver's coordinate system, that
+ * should be made visible in the scroll view.
+ */
+- (void)scrollToIncludeRect:(CGRect)rect;
+
+/**
  * @name Layout
  */
 

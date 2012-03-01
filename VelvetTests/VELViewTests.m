@@ -25,6 +25,11 @@
 - (void)reset;
 @end
 
+// Tests BS-1324
+@interface FrameSettingView : VELView
+@property (nonatomic, strong, readonly) VELView *subview;
+@end
+
 SpecBegin(VELView)
 
 describe(@"VELView", ^{
@@ -686,6 +691,15 @@ describe(@"VELView", ^{
                 [view insertSubview:subview1 atIndex:1];
             });
         });
+
+        // BS-1324
+        it(@"should not enter an infinite loop when setting the geometry of subviews in layoutSubviews", ^{
+            FrameSettingView *view = [[FrameSettingView alloc] init];
+            expect(view).not.toBeNil();
+
+            [view.layer setNeedsLayout];
+            [view.layer layoutIfNeeded];
+        });
     });
 });
 
@@ -782,6 +796,31 @@ SpecEnd
     self.nextWindow = nil;
     self.drawRectRegion = CGRectNull;
     self.layoutSubviewsInvoked = NO;
+}
+
+@end
+
+@implementation FrameSettingView
+@synthesize subview = m_subview;
+
+- (id)init {
+    self = [super init];
+    if (!self)
+        return nil;
+
+    m_subview = [[VELView alloc] initWithFrame:CGRectMake(10, 10, 20, 20)];
+    [self addSubview:m_subview];
+
+    return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+
+    // setting subview geometry properties in here should not result in an infinite loop
+    self.subview.frame = CGRectInset(self.subview.frame, -1, -1);
+    self.subview.bounds = CGRectInset(self.subview.bounds, -1, -1);
+    self.subview.center = CGPointMake(self.subview.center.x + 1, self.subview.center.y + 1);
 }
 
 @end

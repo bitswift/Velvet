@@ -246,8 +246,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }];
 
     if (!CGSizeEqualToSize(originalSize, newSize)) {
-        [self.layer setNeedsLayout];
-        [self.layer layoutIfNeeded];
+        [self.layer layoutSublayers];
     } else {
         [self.subviews makeObjectsPerformSelector:@selector(ancestorDidLayout)];
     }
@@ -269,8 +268,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
     }];
 
     if (needsLayout) {
-        [self.layer setNeedsLayout];
-        [self.layer layoutIfNeeded];
+        [self.layer layoutSublayers];
     }
 }
 

@@ -19,7 +19,7 @@
         return;
 
     m_image = image;
-    [self setNeedsDisplay];
+    self.layer.contents = image;
 }
 
 - (NSEdgeInsets)endCapInsets {
@@ -73,12 +73,6 @@
     return self;
 }
 
-#pragma mark Drawing
-
-+ (BOOL)doesCustomDrawing {
-    return YES;
-}
-
 #pragma mark Layout
 
 - (CGSize)sizeThatFits:(CGSize)size {
@@ -116,17 +110,6 @@
         // scale down height accordingly
         return CGSizeMake(size.width, round(size.width / aspectRatio));
     }
-}
-
-#pragma mark CALayer delegate
-
-- (void)displayLayer:(CALayer *)layer {
-    NSGraphicsContext *windowContext = self.window.graphicsContext;
-
-    NSNumber *interpolationQuality = [NSNumber numberWithUnsignedInteger:NSImageInterpolationHigh];
-    NSDictionary *hints = [NSDictionary dictionaryWithObject:interpolationQuality forKey:NSImageHintInterpolation];
-
-    layer.contents = (__bridge id)[self.image CGImageForProposedRect:NULL context:windowContext hints:hints];
 }
 
 @end

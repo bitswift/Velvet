@@ -611,12 +611,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
     self.opaque = NO;
     self.clearsContextBeforeDrawing = YES;
     self.alignsToIntegralPixels = YES;
-    self.matchesWindowScaleFactor = YES;
 
-    if ([[self class] doesCustomDrawing])
+    if ([[self class] doesCustomDrawing]) {
         self.contentMode = VELViewContentModeRedraw;
-    else
+        self.matchesWindowScaleFactor = YES;
+    } else {
         self.contentMode = VELViewContentModeScaleToFill;
+        self.matchesWindowScaleFactor = NO;
+    }
 
     return self;
 }

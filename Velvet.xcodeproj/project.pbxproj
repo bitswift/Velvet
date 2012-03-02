@@ -58,6 +58,7 @@
 		D08719EB14A30B5F00F304BC /* VELViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */; };
 		D0879A6415009D68001FB5D6 /* VELEventRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0879A6215009D68001FB5D6 /* VELEventRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0879A6515009D68001FB5D6 /* VELEventRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0879A6315009D68001FB5D6 /* VELEventRecognizer.m */; };
+		D0879A821500AC98001FB5D6 /* VELEventRecognizerProtected.h in Headers */ = {isa = PBXBuildFile; fileRef = D0879A811500AC98001FB5D6 /* VELEventRecognizerProtected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D08B7BB814FEC0F600F8BD17 /* VELScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = D08B7BB714FEC0F600F8BD17 /* VELScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D08B7BBB14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D08B7BB914FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D08B7BBC14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D08B7BBA14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m */; };
@@ -247,6 +248,7 @@
 		D08719EA14A30B5F00F304BC /* VELViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewControllerTests.m; sourceTree = "<group>"; };
 		D0879A6215009D68001FB5D6 /* VELEventRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELEventRecognizer.h; sourceTree = "<group>"; };
 		D0879A6315009D68001FB5D6 /* VELEventRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELEventRecognizer.m; sourceTree = "<group>"; };
+		D0879A811500AC98001FB5D6 /* VELEventRecognizerProtected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELEventRecognizerProtected.h; sourceTree = "<group>"; };
 		D08B7BB714FEC0F600F8BD17 /* VELScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELScrollView.h; sourceTree = "<group>"; };
 		D08B7BB914FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSClipView+VELScrollViewAdditions.h"; sourceTree = "<group>"; };
 		D08B7BBA14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSClipView+VELScrollViewAdditions.m"; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 				D06EF03914B39CFA0035E239 /* VELEventManager.h */,
 				D06EF03A14B39CFA0035E239 /* VELEventManager.m */,
 				D0879A6215009D68001FB5D6 /* VELEventRecognizer.h */,
+				D0879A811500AC98001FB5D6 /* VELEventRecognizerProtected.h */,
 				D0879A6315009D68001FB5D6 /* VELEventRecognizer.m */,
 			);
 			name = "Event Handling";
@@ -745,6 +748,7 @@
 				D025619C15004999008A71B6 /* NSResponder+ResponderChainAdditions.h in Headers */,
 				D02561B415004C75008A71B6 /* NSWindow+ResponderChainAdditions.h in Headers */,
 				D0879A6415009D68001FB5D6 /* VELEventRecognizer.h in Headers */,
+				D0879A821500AC98001FB5D6 /* VELEventRecognizerProtected.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

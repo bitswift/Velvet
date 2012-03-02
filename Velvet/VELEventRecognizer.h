@@ -91,18 +91,26 @@ typedef enum {
  * any `NSEvent` instances handled by the view or any of its descendants. When
  * the event recognizer identifies an `NSEvent` stream that represents its
  * higher-level event, it will transition into the appropriate
- * `VELEventRecognizerState` and fire its action blocks.
+ * `VELEventRecognizerState` (setting the <state> property in the process) and
+ * fire its action blocks.
  */
 @interface VELEventRecognizer : NSObject
 
 /**
- * @name Associated View
+ * @name Attached View
  */
 
 /**
  * The view that the receiver is attached to.
+ *
+ * Setting this property will detach the receiver from its previous view and
+ * attach it to the new one. If this is set to `nil`, the receiver will not be
+ * attached to any view.
+ *
+ * @warning **Important:** The view set here will automatically retain the
+ * receiver until this is set to `nil` or the view is deallocated.
  */
-@property (nonatomic, unsafe_unretained, readonly) id<VELBridgedView> view;
+@property (nonatomic, weak) id<VELBridgedView> view;
 
 /**
  * @name Recognizer State

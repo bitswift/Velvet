@@ -34,7 +34,7 @@
 		D020F49714C3972E00C466E1 /* NSWindowAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */; };
 		D025619C15004999008A71B6 /* NSResponder+ResponderChainAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D025619A15004999008A71B6 /* NSResponder+ResponderChainAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D025619D15004999008A71B6 /* NSResponder+ResponderChainAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D025619B15004999008A71B6 /* NSResponder+ResponderChainAdditions.m */; };
-		D025619F15004A79008A71B6 /* VELNSResponderAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D025619E15004A79008A71B6 /* VELNSResponderAdditionsTests.m */; };
+		D025619F15004A79008A71B6 /* NSResponderAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D025619E15004A79008A71B6 /* NSResponderAdditionsTests.m */; };
 		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
 		D03FD8A614C39D760062B7A3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
@@ -214,7 +214,7 @@
 		D020F49614C3972E00C466E1 /* NSWindowAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSWindowAdditionsTests.m; sourceTree = "<group>"; };
 		D025619A15004999008A71B6 /* NSResponder+ResponderChainAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSResponder+ResponderChainAdditions.h"; sourceTree = "<group>"; };
 		D025619B15004999008A71B6 /* NSResponder+ResponderChainAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSResponder+ResponderChainAdditions.m"; sourceTree = "<group>"; };
-		D025619E15004A79008A71B6 /* VELNSResponderAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSResponderAdditionsTests.m; sourceTree = "<group>"; };
+		D025619E15004A79008A71B6 /* NSResponderAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSResponderAdditionsTests.m; sourceTree = "<group>"; };
 		D0305D781486FC960081D6EA /* VELControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELControl.h; sourceTree = "<group>"; };
 		D0305D791486FC960081D6EA /* VELControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELControl.m; sourceTree = "<group>"; };
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
@@ -471,6 +471,7 @@
 			children = (
 				D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */,
 				D08B7BBE14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m */,
+				D025619E15004A79008A71B6 /* NSResponderAdditionsTests.m */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
 				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
 				D020F48B14C3923400C466E1 /* NSViewAdditionsTests.m */,
@@ -482,7 +483,6 @@
 				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
 				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
 				D0DB8A7C149028D60082D3DA /* VELLabelTests.m */,
-				D025619E15004A79008A71B6 /* VELNSResponderAdditionsTests.m */,
 				D067DC7314F2076B00B58AC4 /* VELNSViewControllerTests.m */,
 				1A5FCCF81496B61A00BB49F3 /* VELNSViewTests.h */,
 				1A5FCCF91496B61A00BB49F3 /* VELNSViewTests.m */,
@@ -971,7 +971,7 @@
 				D0682AB414C773EF001CA434 /* CGGeometryAdditionsTests.m in Sources */,
 				D067DC7414F2076B00B58AC4 /* VELNSViewControllerTests.m in Sources */,
 				D08B7BBF14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m in Sources */,
-				D025619F15004A79008A71B6 /* VELNSResponderAdditionsTests.m in Sources */,
+				D025619F15004A79008A71B6 /* NSResponderAdditionsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

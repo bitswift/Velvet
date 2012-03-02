@@ -1,5 +1,5 @@
 //
-//  VELNSResponderAdditionsTests.m
+//  NSResponderAdditionsTests.m
 //  Velvet
 //
 //  Created by Justin Spahr-Summers on 01.03.12.
@@ -8,7 +8,7 @@
 
 #import <Velvet/Velvet.h>
 
-SpecBegin(VELNSResponderAdditions)
+SpecBegin(NSResponderAdditions)
     
     __block NSView *view;
 

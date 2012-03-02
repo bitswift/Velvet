@@ -22,9 +22,36 @@
  * The current state of the event recognizer.
  *
  * It is undefined behavior to set this property to a state that cannot be
- * validly transitioned to from the previous state.
+ * validly transitioned to from the existing state.
+ *
+ * This property must not be overridden.
+ *
+ * @warning **Important:** Setting this property may not immediately change its
+ * value (for example, if there are still outstanding <[VELEventRecognizer
+ * recognizersRequiredToFail]>). Use <willTransitionToState:> and
+ * <didTransitionFromState:> to be notified of a successful state transition.
  */
 @property (nonatomic, assign, readwrite) VELEventRecognizerState state;
+
+/**
+ * Invoked immediately before the receiver transitions to the given state.
+ *
+ * When this method is invoked, the receiver's <state> will not have been
+ * modified yet.
+ *
+ * @param toState The state being transitioned to.
+ */
+- (void)willTransitionToState:(VELEventRecognizerState)toState;
+
+/**
+ * Invoked immediately after the receiver transitions to the given state.
+ *
+ * When this method is invoked, the receiver's <state> will have already been
+ * updated.
+ *
+ * @param fromState The state being transitioned from.
+ */
+- (void)didTransitionFromState:(VELEventRecognizerState)fromState;
 
 /**
  * @name Event Handling

@@ -20,8 +20,7 @@
 /**
  * Initializes the receiver and sets its <image> property to the given image.
  *
- * The <[VELView bounds]> of the receiver will automatically be set to match the
- * the image dimensions.
+ * Unlike `UIImageView`, this method does not automatically resize the receiver.
  *
  * @param image The image to display in the receiver.
  */

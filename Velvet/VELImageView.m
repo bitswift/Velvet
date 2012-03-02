@@ -69,7 +69,6 @@
         return nil;
 
     self.image = image;
-    self.bounds = CGRectMake(0, 0, image.size.width, image.size.height);
     return self;
 }
 

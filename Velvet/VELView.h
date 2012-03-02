@@ -568,7 +568,9 @@ typedef enum {
  * pixels across different displays, but this may be set to `NO` if the view's
  * content is resolution-dependent anyways.
  *
- * The default value for this property is `YES`.
+ * The default value for this property depends on whether the class (or one of
+ * its superclasses) reimplements <drawRect:>. If <drawRect:> is reimplemented,
+ * this will default to `YES`; otherwise, this will default to `NO`.
  */
 @property (nonatomic, assign) BOOL matchesWindowScaleFactor;
 

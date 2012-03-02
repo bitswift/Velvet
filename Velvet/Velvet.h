@@ -14,10 +14,12 @@
 #import <Velvet/NSClipView+VELScrollViewAdditions.h>
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSImage+CoreGraphicsAdditions.h>
+#import <Velvet/NSResponder+ResponderChainAdditions.h>
 #import <Velvet/NSScrollView+VELScrollViewAdditions.h>
 #import <Velvet/NSVelvetView.h>
 #import <Velvet/NSView+VELBridgedViewAdditions.h>
 #import <Velvet/NSWindow+InitializationAdditions.h>
+#import <Velvet/NSWindow+ResponderChainAdditions.h>
 #import <Velvet/VELBridgedView.h>
 #import <Velvet/VELControl.h>
 #import <Velvet/VELDraggingDestination.h>

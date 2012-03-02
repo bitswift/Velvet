@@ -611,12 +611,14 @@ static BOOL VELViewPerformingDeepLayout = NO;
     self.opaque = NO;
     self.clearsContextBeforeDrawing = YES;
     self.alignsToIntegralPixels = YES;
-    self.matchesWindowScaleFactor = YES;
 
-    if ([[self class] doesCustomDrawing])
+    if ([[self class] doesCustomDrawing]) {
         self.contentMode = VELViewContentModeRedraw;
-    else
+        self.matchesWindowScaleFactor = YES;
+    } else {
         self.contentMode = VELViewContentModeScaleToFill;
+        self.matchesWindowScaleFactor = NO;
+    }
 
     return self;
 }
@@ -883,17 +885,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)didMoveFromWindow:(NSWindow *)window; {
-    if (self.matchesWindowScaleFactor) {
-        CGFloat newScaleFactor = self.window.backingScaleFactor;
-
-        if (newScaleFactor > 0 && fabs(newScaleFactor - self.layer.contentsScale) > 0.01) {
-            // we just moved to a window that has a different pixel density, so
-            // redisplay our layer at that scale factor
-            self.layer.contentsScale = newScaleFactor;
-            [self setNeedsDisplay];
-        }
-    }
-
     if (self.window)
         [self.viewController viewDidAppear];
     else
@@ -915,6 +906,17 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)viewHierarchyDidChange {
+    if (self.matchesWindowScaleFactor) {
+        CGFloat newScaleFactor = self.window.backingScaleFactor;
+
+        if (newScaleFactor > 0 && fabs(newScaleFactor - self.layer.contentsScale) > 0.01) {
+            // we just moved to a window that has a different pixel density, so
+            // redisplay our layer at that scale factor
+            self.layer.contentsScale = newScaleFactor;
+            [self setNeedsDisplay];
+        }
+    }
+
     [self.subviews makeObjectsPerformSelector:_cmd];
 }
 

@@ -43,7 +43,6 @@
     STAssertNotNil(imageView, @"");
 
     STAssertEquals(imageView.image, image, @"");
-    STAssertTrue(CGSizeEqualToSize(imageView.bounds.size, image.size), @"");
 
     NSEdgeInsets zeroInsets = NSEdgeInsetsMake(0, 0, 0, 0);
     STAssertTrue(NSEqualEdgeInsets(imageView.endCapInsets, zeroInsets), @"");

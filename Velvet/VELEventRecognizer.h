@@ -97,8 +97,16 @@ typedef enum {
 @interface VELEventRecognizer : NSObject
 
 /**
- * @name Attached View
+ * @name Attaching Recognizers to a View
  */
+
+/**
+ * Returns an array containing all event recognizers with a <view> property set
+ * to the given view. If no such recognizers exist, returns `nil`.
+ *
+ * @param view A view to return the event recognizers of.
+ */
++ (NSArray *)eventRecognizersForView:(id<VELBridgedView>)view;
 
 /**
  * The view that the receiver is attached to.

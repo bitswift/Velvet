@@ -113,6 +113,18 @@ SpecBegin(VELEventRecognizer)
         [recognizer removeAction:action];
     });
 
+    it(@"should return recognizers for view", ^{
+        NSArray *recognizers = [VELEventRecognizer eventRecognizersForView:view];
+        expect(recognizers).toEqual([NSArray arrayWithObject:recognizer]);
+    });
+
+    it(@"should return nil recognizers for view without any", ^{
+        NSView *anotherView = [[NSView alloc] initWithFrame:CGRectZero];
+
+        NSArray *recognizers = [VELEventRecognizer eventRecognizersForView:anotherView];
+        expect(recognizers).toBeNil();
+    });
+
     describe(@"one event to recognize", ^{
         __block NSEvent *event;
         __block NSEvent *unrecognizedEvent;

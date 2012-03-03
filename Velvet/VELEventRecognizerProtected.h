@@ -62,6 +62,10 @@
  *
  * This is invoked every time an `NSEvent` would be sent to the receiver's
  * <[VELEventRecognizer view]> or one of its descendants.
+ *
+ * You should invoke the implementation of `super` at the beginning of any
+ * override of this method. Invoking `super` after performing state transitions
+ * will result in undefined behavior.
  */
 - (void)handleEvent:(NSEvent *)event;
 

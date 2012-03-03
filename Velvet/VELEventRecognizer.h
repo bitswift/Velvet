@@ -146,8 +146,7 @@ typedef enum {
 @property (nonatomic, getter = isEnabled) BOOL enabled;
 
 /**
- * Resets the receiver's <state> to `VELEventRecognizerStatePossible` and
- * removes all objects from <eventsReceived>.
+ * Resets the receiver's <state> to `VELEventRecognizerStatePossible`.
  *
  * This method may be overridden by subclasses to perform any additional cleanup
  * required before being able to recognize another event.

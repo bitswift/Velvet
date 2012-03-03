@@ -7,6 +7,7 @@
 //
 
 #import "VELImageView.h"
+#import "CATransaction+BlockAdditions.h"
 
 @implementation VELImageView
 
@@ -19,7 +20,9 @@
         return;
 
     m_image = image;
-    self.layer.contents = image;
+    [CATransaction performWithDisabledActions:^{
+        self.layer.contents = image;        
+    }];
 }
 
 - (NSEdgeInsets)endCapInsets {

@@ -52,32 +52,32 @@ typedef enum {
     /**
      * A continous event already recognized has ended.
      *
-     * From this state, the event recognizer may only move to
-     * <VELEventRecognizerStatePossible>.
+     * From this state, the event recognizer will automatically move to
+     * <VELEventRecognizerStatePossible> on the next run loop iteration.
      */
     VELEventRecognizerStateEnded,
 
     /**
      * A continous event already recognized has been cancelled.
      *
-     * From this state, the event recognizer may only move to
-     * <VELEventRecognizerStatePossible>.
+     * From this state, the event recognizer will automatically move to
+     * <VELEventRecognizerStatePossible> on the next run loop iteration.
      */
     VELEventRecognizerStateCancelled,
 
     /**
      * The event recognizer failed to recognize a discrete event.
      *
-     * From this state, the event recognizer may only move to
-     * <VELEventRecognizerStatePossible>.
+     * From this state, the event recognizer will automatically move to
+     * <VELEventRecognizerStatePossible> on the next run loop iteration.
      */
     VELEventRecognizerStateFailed,
 
     /**
      * The event recognizer has recognized a discrete event.
      *
-     * From this state, the event recognizer may only move to
-     * <VELEventRecognizerStatePossible>.
+     * From this state, the event recognizer will automatically move to
+     * <VELEventRecognizerStatePossible> on the next run loop iteration.
      */
     VELEventRecognizerStateRecognized = VELEventRecognizerStateEnded
 } VELEventRecognizerState;

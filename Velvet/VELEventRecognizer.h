@@ -174,6 +174,8 @@ typedef enum {
  * This is not mutually exclusive with <discrete> -- an event recognizer may be
  * capable of recognizing both continuous and discrete events, though it will
  * not identify both kinds simultaneously.
+ *
+ * The default implementation of this property returns `NO`.
  */
 @property (nonatomic, getter = isContinuous, readonly) BOOL continuous;
 
@@ -189,6 +191,8 @@ typedef enum {
  * This is not mutually exclusive with <continuous> -- an event recognizer may
  * be capable of recognizing both continuous and discrete events, though it will
  * not identify both kinds simultaneously.
+ *
+ * The default implementation of this property returns `NO`.
  */
 @property (nonatomic, getter = isDiscrete, readonly) BOOL discrete;
 

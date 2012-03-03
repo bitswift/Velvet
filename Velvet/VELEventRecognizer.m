@@ -263,19 +263,11 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
         return;
     }
 
-    switch (newState) {
-        case VELEventRecognizerStateEnded:
-        case VELEventRecognizerStateCancelled:
-        case VELEventRecognizerStateFailed:
-            // move to the Possible state on the next run loop iteration
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self reset];
-            });
-
-            break;
-
-        default:
-            ;
+    if (newState == VELEventRecognizerStateEnded || newState == VELEventRecognizerStateCancelled || newState == VELEventRecognizerStateFailed) {
+        // move to the Possible state on the next run loop iteration
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self reset];
+        });
     }
 
     [self willTransitionToState:newState];

@@ -25,7 +25,7 @@ typedef enum {
      *
      * This is the default state.
      */
-    VELEventRecognizerStatePossible,
+    VELEventRecognizerStatePossible = 0,
 
     /**
      * The event recognizer has recognized the beginning of a continuous event.

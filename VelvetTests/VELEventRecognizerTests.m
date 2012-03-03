@@ -20,7 +20,7 @@
  * generate actions for as long as this event is sent. Otherwise, this
  * recognizer will be discrete.
  */
-@property (nonatomic, copy) NSEvent *continuousEvent;
+@property (nonatomic, strong) NSEvent *continuousEvent;
 
 /**
  * Whether <[VELEventRecognizer willTransitionToState:]> was invoked, and the
@@ -685,12 +685,14 @@ SpecEnd
 
     [super handleEvent:event];
 
-    // should not be receiving events in these states
-    expect(self.state).not.toEqual(VELEventRecognizerStateEnded);
-    expect(self.state).not.toEqual(VELEventRecognizerStateCancelled);
-    expect(self.state).not.toEqual(VELEventRecognizerStateFailed);
+    VELEventRecognizerState state = self.state;
 
-    switch (self.state) {
+    // should not be receiving events in these states
+    expect(state).not.toEqual(VELEventRecognizerStateEnded);
+    expect(state).not.toEqual(VELEventRecognizerStateCancelled);
+    expect(state).not.toEqual(VELEventRecognizerStateFailed);
+
+    switch (state) {
         case VELEventRecognizerStatePossible: {
             [self.eventQueue addObject:event];
 
@@ -749,34 +751,36 @@ SpecEnd
     expect(self.willTransitionInvoked).not.toBeTruthy();
     self.willTransitionInvoked = YES;
 
+    VELEventRecognizerState fromState = self.state;
+
     switch (toState) {
         case VELEventRecognizerStatePossible:
-            expect(self.state).not.toEqual(VELEventRecognizerStateBegan);
-            expect(self.state).not.toEqual(VELEventRecognizerStateChanged);
-            expect(self.state).not.toEqual(VELEventRecognizerStatePossible);
+            expect(fromState).not.toEqual(VELEventRecognizerStateBegan);
+            expect(fromState).not.toEqual(VELEventRecognizerStateChanged);
+            expect(fromState).not.toEqual(VELEventRecognizerStatePossible);
             break;
 
         case VELEventRecognizerStateBegan:
             expect(self.continuous).toBeTruthy();
-            expect(self.state).toEqual(VELEventRecognizerStatePossible);
+            expect(fromState).toEqual(VELEventRecognizerStatePossible);
             break;
 
         case VELEventRecognizerStateEnded:
             if (self.discrete) {
                 // this is actually VELEventRecognizerStateRecognized
-                expect(self.state).toEqual(VELEventRecognizerStatePossible);
+                expect(fromState).toEqual(VELEventRecognizerStatePossible);
                 break;
             }
 
         case VELEventRecognizerStateChanged:
         case VELEventRecognizerStateCancelled:
             expect(self.continuous).toBeTruthy();
-            expect(self.state == VELEventRecognizerStateBegan || self.state == VELEventRecognizerStateChanged).toBeTruthy();
+            expect(fromState == VELEventRecognizerStateBegan || fromState == VELEventRecognizerStateChanged).toBeTruthy();
             break;
 
         case VELEventRecognizerStateFailed:
             expect(self.discrete).toBeTruthy();
-            expect(self.state).toEqual(VELEventRecognizerStatePossible);
+            expect(fromState).toEqual(VELEventRecognizerStatePossible);
             break;
 
         default:
@@ -790,7 +794,7 @@ SpecEnd
     expect(self.willTransitionInvoked).toBeTruthy();
     self.willTransitionInvoked = NO;
 
-    if (fromState != VELEventRecognizerStateChanged)
+    if (fromState != VELEventRecognizerStateChanged && fromState != VELEventRecognizerStatePossible)
         expect(self.state).not.toEqual(fromState);
 
     expect(self.active).toEqual(self.state == VELEventRecognizerStateBegan || self.state == VELEventRecognizerStateChanged || self.state == VELEventRecognizerStateEnded);

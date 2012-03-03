@@ -69,20 +69,24 @@ SpecBegin(VELEventRecognizer)
     });
 
     before(^{
-        recognizer = [[TestEventRecognizer alloc] init];
-        expect(recognizer).not.toBeNil();
+        // put the instantiation and whatnot into an autorelease pool, so that
+        // the memory management test right below works properly
+        @autoreleasepool {
+            recognizer = [[TestEventRecognizer alloc] init];
+            expect(recognizer).not.toBeNil();
 
-        expect(recognizer.view).toBeNil();
-        expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
-        expect(recognizer.active).toBeFalsy();
-        expect(recognizer.enabled).toBeTruthy();
-        expect(recognizer.recognizersRequiredToFail).toBeNil();
-        expect(recognizer.delaysEventDelivery).toBeFalsy();
-        expect(recognizer.didReset).toBeFalsy();
-        expect(recognizer.willTransitionInvoked).toBeFalsy();
+            expect(recognizer.view).toBeNil();
+            expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
+            expect(recognizer.active).toBeFalsy();
+            expect(recognizer.enabled).toBeTruthy();
+            expect(recognizer.recognizersRequiredToFail).toBeNil();
+            expect(recognizer.delaysEventDelivery).toBeFalsy();
+            expect(recognizer.didReset).toBeFalsy();
+            expect(recognizer.willTransitionInvoked).toBeFalsy();
 
-        recognizer.view = view;
-        expect(recognizer.view).toEqual(view);
+            recognizer.view = view;
+            expect(recognizer.view).toEqual(view);
+        }
     });
 
     after(^{
@@ -91,12 +95,18 @@ SpecBegin(VELEventRecognizer)
 
     it(@"should be released when view is released", ^{
         __weak VELEventRecognizer *weakRecognizer = recognizer;
-        expect(weakRecognizer).not.toBeNil();
+        __weak NSView *weakView = view;
 
-        recognizer = nil;
-        expect(weakRecognizer).not.toBeNil();
+        @autoreleasepool {
+            expect(weakRecognizer).not.toBeNil();
 
-        view = nil;
+            recognizer = nil;
+            expect(weakRecognizer).not.toBeNil();
+
+            view = nil;
+        }
+
+        expect(weakView).toBeNil();
         expect(weakRecognizer).toBeNil();
     });
 

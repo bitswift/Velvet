@@ -21,6 +21,7 @@
 #import <Velvet/NSWindow+InitializationAdditions.h>
 #import <Velvet/NSWindow+ResponderChainAdditions.h>
 #import <Velvet/VELBridgedView.h>
+#import <Velvet/VELClickEventRecognizer.h>
 #import <Velvet/VELControl.h>
 #import <Velvet/VELDraggingDestination.h>
 #import <Velvet/VELEventRecognizer.h>

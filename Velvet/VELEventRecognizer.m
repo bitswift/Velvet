@@ -211,11 +211,12 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     VELEventRecognizerState oldState = self.state;
 
     switch (newState) {
-        case VELEventRecognizerStatePossible:
+        case VELEventRecognizerStatePossible: {
             transitionValid = !(oldState == VELEventRecognizerStateBegan || oldState == VELEventRecognizerStateChanged);
             break;
+        }
 
-        case VELEventRecognizerStateBegan:
+        case VELEventRecognizerStateBegan: {
             if (!self.continuous) {
                 transitionValid = NO;
                 break;
@@ -223,8 +224,9 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
             transitionValid = (oldState == VELEventRecognizerStatePossible);
             break;
+        }
 
-        case VELEventRecognizerStateEnded: // also VELEventRecognizerStateRecognized
+        case VELEventRecognizerStateEnded: { // also VELEventRecognizerStateRecognized
             if (self.discrete) {
                 transitionValid = (oldState == VELEventRecognizerStatePossible);
                 break;
@@ -241,8 +243,9 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
             transitionValid = (oldState == VELEventRecognizerStateBegan || oldState == VELEventRecognizerStateChanged);
             break;
+        }
 
-        case VELEventRecognizerStateFailed:
+        case VELEventRecognizerStateFailed: {
             if (!self.discrete) {
                 transitionValid = NO;
                 break;
@@ -250,6 +253,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
             transitionValid = (oldState == VELEventRecognizerStatePossible);
             break;
+        }
 
         default:
             NSAssert(NO, @"Unrecognized event recognizer state %i", (int)newState);

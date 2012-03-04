@@ -304,32 +304,36 @@ SpecBegin(VELEventRecognizer)
 
                 [recognizer addActionUsingBlock:^(VELEventRecognizer *recognizer){
                     switch (recognizer.state) {
-                        case VELEventRecognizerStateBegan:
+                        case VELEventRecognizerStateBegan: {
                             expect(recognizer.active).toBeTruthy();
 
                             began = YES;
                             break;
+                        }
 
-                        case VELEventRecognizerStateChanged:
+                        case VELEventRecognizerStateChanged: {
                             expect(began).toBeTruthy();
                             expect(recognizer.active).toBeTruthy();
 
                             changed = YES;
                             break;
+                        }
 
-                        case VELEventRecognizerStateEnded:
+                        case VELEventRecognizerStateEnded: {
                             expect(began).toBeTruthy();
                             expect(recognizer.active).toBeTruthy();
 
                             ended = YES;
                             break;
+                        }
 
-                        case VELEventRecognizerStateCancelled:
+                        case VELEventRecognizerStateCancelled: {
                             expect(began).toBeTruthy();
                             expect(recognizer.active).toBeFalsy();
 
                             cancelled = YES;
                             break;
+                        }
 
                         default:
                             ;
@@ -725,13 +729,14 @@ SpecEnd
         }
 
         case VELEventRecognizerStateBegan:
-        case VELEventRecognizerStateChanged:
+        case VELEventRecognizerStateChanged: {
             if ([event isEqual:self.continuousEvent])
                 self.state = VELEventRecognizerStateChanged;
             else
                 self.state = VELEventRecognizerStateEnded;
 
             break;
+        }
 
         default:
             ;
@@ -754,18 +759,20 @@ SpecEnd
     VELEventRecognizerState fromState = self.state;
 
     switch (toState) {
-        case VELEventRecognizerStatePossible:
+        case VELEventRecognizerStatePossible: {
             expect(fromState).not.toEqual(VELEventRecognizerStateBegan);
             expect(fromState).not.toEqual(VELEventRecognizerStateChanged);
             expect(fromState).not.toEqual(VELEventRecognizerStatePossible);
             break;
+        }
 
-        case VELEventRecognizerStateBegan:
+        case VELEventRecognizerStateBegan: {
             expect(self.continuous).toBeTruthy();
             expect(fromState).toEqual(VELEventRecognizerStatePossible);
             break;
+        }
 
-        case VELEventRecognizerStateEnded:
+        case VELEventRecognizerStateEnded: {
             if (self.discrete) {
                 // this is actually VELEventRecognizerStateRecognized
                 expect(fromState).toEqual(VELEventRecognizerStatePossible);
@@ -777,14 +784,17 @@ SpecEnd
             expect(self.continuous).toBeTruthy();
             expect(fromState == VELEventRecognizerStateBegan || fromState == VELEventRecognizerStateChanged).toBeTruthy();
             break;
+        }
 
-        case VELEventRecognizerStateFailed:
+        case VELEventRecognizerStateFailed: {
             expect(self.discrete).toBeTruthy();
             expect(fromState).toEqual(VELEventRecognizerStatePossible);
             break;
+        }
 
-        default:
+        default: {
             NSAssert(NO, @"Invalid to state: %i", (int)toState);
+        }
     }
 }
 

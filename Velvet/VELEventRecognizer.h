@@ -263,4 +263,9 @@ typedef enum {
  */
 - (void)removeAction:(id)action;
 
+/**
+ * De-registers all blocks that have been added with <addActionUsingBlock:>.
+ */
+- (void)removeAllActions;
+
 @end

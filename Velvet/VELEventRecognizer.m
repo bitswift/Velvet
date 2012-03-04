@@ -301,6 +301,10 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     [self.actions removeObject:action];
 }
 
+- (void)removeAllActions; {
+    [self.actions removeAllObjects];
+}
+
 - (void)sendAction; {
     // make a copy, in case any action blocks remove themselves or add new
     // actions

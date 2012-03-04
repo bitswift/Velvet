@@ -188,9 +188,9 @@
         recognizer.delaysEventDelivery = YES;
         recognizer.view = self.control;
 
-        [recognizer addActionUsingBlock:^(VELEventRecognizer *recognizer){
-            if (recognizer.active)
-                NSLog(@"Double-click action from event recognizer: %@", recognizer);
+        [recognizer addActionUsingBlock:^(id recognizer){
+            if ([recognizer isActive])
+                NSLog(@"Event recognizer double-click at %@", NSStringFromPoint([recognizer locationInView:self.control]));
         }];
 
         [self.scrollView addSubview:self.control];

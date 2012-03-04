@@ -290,12 +290,14 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 }
 
 + (NSArray *)eventRecognizersForView:(id<VELBridgedView>)view; {
-    NSParameterAssert(view != nil);
+    return [self eventRecognizersForLayer:view.layer];
+}
 
-    if (!view.layer)
++ (NSArray *)eventRecognizersForLayer:(CALayer *)layer; {
+    if (!layer)
         return nil;
 
-    return objc_getAssociatedObject(view.layer, VELAttachedEventRecognizersKey);
+    return objc_getAssociatedObject(layer, VELAttachedEventRecognizersKey);
 }
 
 + (void)removeEventRecognizer:(VELEventRecognizer *)recognizer forView:(id<VELBridgedView>)view; {

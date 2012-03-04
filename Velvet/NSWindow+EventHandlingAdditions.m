@@ -51,7 +51,7 @@
         }
     }
 
-    return nil;
+    return nsView;
 }
 
 @end

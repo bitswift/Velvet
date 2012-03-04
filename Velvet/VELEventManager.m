@@ -15,7 +15,7 @@
 /**
  * Any Velvet-hosted responder currently handling a continuous gesture event.
  */
-@property (nonatomic, strong) id currentGestureResponder;
+@property (nonatomic, strong) id<VELBridgedView> currentGestureResponder;
 
 /**
  * Whether an event is currently in the process of being handled in
@@ -215,21 +215,32 @@
         self.handlingEvent = NO;
     };
 
-    id respondingView = nil;
+    __block id respondingView = nil;
+
+    /**
+     * Returns whether we should handle the event dispatch for `respondingView`.
+     * If this returns `NO`, the event should be returned to AppKit for
+     * processing.
+     */
+    BOOL (^velvetShouldHandleRespondingView)(void) = ^ BOOL {
+        return respondingView && ![respondingView isKindOfClass:[NSView class]];
+    };
 
     switch ([event type]) {
         case NSLeftMouseDown:
         case NSRightMouseDown:
         case NSOtherMouseDown:
             respondingView = [event.window bridgedHitTest:[event locationInWindow]];
-            
-            if (respondingView) {
+
+            if (velvetShouldHandleRespondingView()) {
                 // make the view that received the click the first responder for
                 // that window
                 [event.window makeFirstResponder:respondingView];
+                self.velvetHandledLastMouseDown = YES;
+            } else {
+                self.velvetHandledLastMouseDown = NO;
             }
 
-            self.velvetHandledLastMouseDown = (respondingView != nil);
             break;
 
         case NSScrollWheel:
@@ -240,7 +251,11 @@
             break;
 
         case NSEventTypeBeginGesture:
-            self.currentGestureResponder = respondingView = [event.window bridgedHitTest:[event locationInWindow]];
+            respondingView = [event.window bridgedHitTest:[event locationInWindow]];
+            if (velvetShouldHandleRespondingView()) {
+                self.currentGestureResponder = respondingView;
+            }
+
             break;
 
         case NSEventTypeEndGesture:
@@ -259,9 +274,13 @@
                 return NO;
 
             id responder = [event.window firstResponder];
-            if (![responder isKindOfClass:[NSView class]]) {
-                [self dispatchEvent:event toResponder:responder];
-                return YES;
+            if (![responder isKindOfClass:[NSWindow class]]) {
+                respondingView = responder;
+
+                if (velvetShouldHandleRespondingView()) {
+                    [self dispatchEvent:event toResponder:responder];
+                    return YES;
+                }
             }
 
             // if we didn't dispatch an event directly to a bridged view, we
@@ -281,7 +300,7 @@
             ;
     }
 
-    if (respondingView) {
+    if (velvetShouldHandleRespondingView()) {
         return [self dispatchEvent:event toResponder:respondingView];
     } else {
         return NO;

@@ -227,13 +227,14 @@ typedef enum {
 
 /**
  * Whether the receiver should delay `NSEvent` delivery to its <view> until it
- * has recognized or failed to recognize its event.
+ * has failed to recognize its event.
  *
  * In other words, if this is set to `YES`, the receiver will capture `NSEvent`
- * objects meant for its <view> while simultaneously trying to recognize its
- * event. If the event is successfully recognized, the `NSEvent` objects are
- * never delivered to the view. If the event fails to be recognized, then the
- * `NSEvent` objects are immediately sent to the view in the order they arrived.
+ * objects meant for its <view> (or any descendants) while simultaneously trying
+ * to recognize its event. If the event is successfully recognized, the
+ * `NSEvent` objects are never delivered to the view. If the event fails to be
+ * recognized, then the `NSEvent` objects are re-dispatched in the order they
+ * arrived, using `-[NSApplication sendEvent:]`.
  *
  * The default value for this property is `NO`.
  */

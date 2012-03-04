@@ -35,7 +35,7 @@
         id testView = [nsView hitTest:viewPoint];
 
         if (![testView isKindOfClass:[NSVelvetView class]]) {
-            break;
+            return testView;
         }
 
         NSVelvetView *hostView = testView;
@@ -51,7 +51,7 @@
         }
     }
 
-    return nsView;
+    return nil;
 }
 
 @end

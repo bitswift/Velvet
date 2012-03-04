@@ -634,12 +634,14 @@ SpecBegin(VELEventRecognizer)
             [firstDependency handleEvent:event];
             expect(firstDependency.state).toEqual(VELEventRecognizerStateRecognized);
 
-            expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
+            expect(recognizer.state).toEqual(VELEventRecognizerStateFailed);
+            [firstDependency reset];
 
             [firstDependency handleEvent:unrecognizedEvent];
             [secondDependency handleEvent:unrecognizedEvent];
 
-            expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
+            expect(recognizer.state).toEqual(VELEventRecognizerStateFailed);
+            expect(recognizer.state).isGoing.toEqual(VELEventRecognizerStatePossible);
         });
     });
 

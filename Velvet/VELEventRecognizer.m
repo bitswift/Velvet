@@ -38,6 +38,15 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 @property (nonatomic, strong, readonly) NSCountedSet *actions;
 
 /**
+ * If <delaysEventDelivery> is set to `YES`, this will contain events were
+ * meant for the receiver's <view>, but are delayed pending a state transition
+ * of the receiver.
+ *
+ * This array will be `nil` if <delaysEventDelivery> is `NO`.
+ */
+@property (nonatomic, strong) NSMutableArray *delayedEvents;
+
+/**
  * Attaches the given event recognizer to the given view.
  *
  * If `view` is `nil`, nothing happens.
@@ -60,6 +69,17 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 + (void)removeEventRecognizer:(VELEventRecognizer *)recognizer forView:(id<VELBridgedView>)view;
 
 /**
+ * Returns whether the given state indicates a transition from an unrecognized
+ * to a recognized event.
+ *
+ * The result of this method will depend on the <continuous> and <discrete>
+ * values.
+ *
+ * @param state The state to identify.
+ */
+- (BOOL)isNewlyRecognizedState:(VELEventRecognizerState)state;
+
+/**
  * Sets the receiver's <state> without going through the normal logic of the
  * <state> property.
  *
@@ -72,6 +92,11 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
  * Invokes all of the receiver's <actions>.
  */
 - (void)sendAction;
+
+/**
+ * Sends any <delayedEvents> the receiver has, and empties the array.
+ */
+- (void)sendDelayedEvents;
 @end
 
 @implementation VELEventRecognizer
@@ -81,6 +106,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 @synthesize view = m_view;
 @synthesize state = m_state;
 @synthesize recognizersRequiredToFail = m_recognizersRequiredToFail;
+@synthesize delayedEvents = m_delayedEvents;
 @synthesize actions = m_actions;
 
 - (BOOL)isActive {
@@ -122,6 +148,14 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
 - (void)setDelaysEventDelivery:(BOOL)delays {
     m_flags.delaysEventDelivery = delays;
+
+    if (delays) {
+        if (!self.delayedEvents)
+            self.delayedEvents = [NSMutableArray array];
+    } else {
+        [self sendDelayedEvents];
+        self.delayedEvents = nil;
+    }
 }
 
 // this method should never short-circuit if already in the given state,
@@ -145,70 +179,68 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
     // check the status of dependencies, and delay the transition (pending their
     // failure) if necessary
-    if (m_state != state) {
-        if ((self.continuous && state == VELEventRecognizerStateBegan) || (self.discrete && state == VELEventRecognizerStateRecognized)) {
-            // removes all actions added in the loop below
-            __block void (^removeAddedActions)(void) = [^{} copy];
+    if (m_state != state && [self isNewlyRecognizedState:state]) {
+        // removes all actions added in the loop below
+        __block void (^removeAddedActions)(void) = [^{} copy];
 
-            for (__weak VELEventRecognizer *dependency in self.recognizersRequiredToFail) {
-                if (dependency.state == VELEventRecognizerStateFailed)
-                    continue;
+        for (__weak VELEventRecognizer *dependency in self.recognizersRequiredToFail) {
+            if (dependency.state == VELEventRecognizerStateFailed)
+                continue;
 
-                ++dependenciesOutstanding;
+            ++dependenciesOutstanding;
 
-                id action = [dependency addActionUsingBlock:^(VELEventRecognizer *dependency){
-                    switch (dependency.state) {
-                        case VELEventRecognizerStateBegan:
-                        case VELEventRecognizerStateRecognized: {
-                            // the dependency succeeded, so we should fail
-                            removeAddedActions();
+            id action = [dependency addActionUsingBlock:^(VELEventRecognizer *dependency){
+                switch (dependency.state) {
+                    case VELEventRecognizerStateBegan:
+                    case VELEventRecognizerStateRecognized: {
+                        // the dependency succeeded, so we should fail
+                        removeAddedActions();
 
-                            // match the style of the state transition that was
-                            // requested (discrete or continuous)
-                            if (state == VELEventRecognizerStateRecognized)
-                                [weakSelf reallySetState:VELEventRecognizerStateFailed];
-                            else
-                                [weakSelf reallySetState:VELEventRecognizerStatePossible];
+                        // match the style of the state transition that was
+                        // requested (discrete or continuous)
+                        if (state == VELEventRecognizerStateRecognized)
+                            [weakSelf reallySetState:VELEventRecognizerStateFailed];
+                        else
+                            [weakSelf reallySetState:VELEventRecognizerStatePossible];
 
-                            break;
-                        }
-
-                        case VELEventRecognizerStatePossible:
-                        case VELEventRecognizerStateFailed: {
-                            // the dependency failed -- wait on the rest or
-                            // perform our transition
-                            --dependenciesOutstanding;
-                            transitionIfDependenciesFailed();
-
-                            break;
-                        }
-
-                        default:
-                            ;
+                        break;
                     }
-                }];
 
-                // compose this with other actions that will need to be removed
-                void (^originalRemoveAddedActions)(void) = removeAddedActions;
+                    case VELEventRecognizerStatePossible:
+                    case VELEventRecognizerStateFailed: {
+                        // the dependency failed -- wait on the rest or
+                        // perform our transition
+                        --dependenciesOutstanding;
+                        transitionIfDependenciesFailed();
 
-                removeAddedActions = [^{
-                    originalRemoveAddedActions();
-                    [dependency removeAction:action];
-                } copy];
-            }
+                        break;
+                    }
 
-            BOOL (^originalTransition)(void) = transitionIfDependenciesFailed;
-
-            // remove actions if/when we finally transition
-            transitionIfDependenciesFailed = [^{
-                if (originalTransition()) {
-                    removeAddedActions();
-                    return YES;
-                } else {
-                    return NO;
+                    default:
+                        ;
                 }
+            }];
+
+            // compose this with other actions that will need to be removed
+            void (^originalRemoveAddedActions)(void) = removeAddedActions;
+
+            removeAddedActions = [^{
+                originalRemoveAddedActions();
+                [dependency removeAction:action];
             } copy];
         }
+
+        BOOL (^originalTransition)(void) = transitionIfDependenciesFailed;
+
+        // remove actions if/when we finally transition
+        transitionIfDependenciesFailed = [^{
+            if (originalTransition()) {
+                removeAddedActions();
+                return YES;
+            } else {
+                return NO;
+            }
+        } copy];
     }
     
     // this will also work if there were no dependencies
@@ -283,12 +315,51 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 #pragma mark Event Handling
 
 - (void)handleEvent:(NSEvent *)event; {
-    // TODO: queue up delayed events
+    NSParameterAssert(event != nil);
+
+    if (!self.delaysEventDelivery)
+        return;
+
+    if (self.active) {
+        // don't queue this event, since we're already recognizing our gesture
+        return;
+    }
+
+    [self.delayedEvents addObject:event];
+}
+
+- (void)sendDelayedEvents; {
+    if (!self.delaysEventDelivery)
+        return;
+
+    for (NSEvent *event in self.delayedEvents) {
+        [NSApp sendEvent:event];
+    }
+
+    [self.delayedEvents removeAllObjects];
 }
 
 #pragma mark States and Transitions
 
 - (void)didTransitionFromState:(VELEventRecognizerState)fromState; {
+}
+
+- (BOOL)isNewlyRecognizedState:(VELEventRecognizerState)state; {
+    if (self.continuous && state == VELEventRecognizerStateBegan)
+        return YES;
+
+    if (self.discrete && state == VELEventRecognizerStateRecognized) {
+        // if we're also continuous, make sure that this shouldn't be
+        // interpreted as VELEventRecognizerStateEnded instead
+        if (self.continuous) {
+            if (self.state == VELEventRecognizerStateBegan || self.state == VELEventRecognizerStateChanged)
+                return NO;
+        }
+
+        return YES;
+    }
+
+    return NO;
 }
 
 - (void)reset; {
@@ -359,11 +430,29 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
         return;
     }
 
-    if (newState == VELEventRecognizerStateEnded || newState == VELEventRecognizerStateCancelled || newState == VELEventRecognizerStateFailed) {
-        // move to the Possible state on the next run loop iteration
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self reset];
-        });
+    if ([self isNewlyRecognizedState:newState]) {
+        // clear out any delayed events without sending them
+        [self.delayedEvents removeAllObjects];
+    }
+
+    switch (newState) {
+        case VELEventRecognizerStatePossible:
+        case VELEventRecognizerStateFailed: {
+            // send any delayed events
+            [self sendDelayedEvents];
+
+            // fall through
+
+        case VELEventRecognizerStateEnded:
+        case VELEventRecognizerStateCancelled:
+            // move to the Possible state on the next run loop iteration
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self reset];
+            });
+        }
+
+        default:
+            ;
     }
 
     [self willTransitionToState:newState];

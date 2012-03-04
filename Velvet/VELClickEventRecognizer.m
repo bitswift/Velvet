@@ -18,6 +18,11 @@
  * If no clicks have occurred yet, this will be `CGPointZero`.
  */
 @property (nonatomic, assign) CGPoint windowClickLocation;
+
+/**
+ * Marks the recognizer as having failed to recognize its event.
+ */
+- (void)fail;
 @end
 
 @implementation VELClickEventRecognizer
@@ -46,10 +51,15 @@
         return;
     }
 
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fail) object:nil];
+
     if (event.clickCount <= 0) {
-        self.state = VELEventRecognizerStateFailed;
+        [self fail];
     } else if ((NSUInteger)event.clickCount % self.numberOfClicksRequired == 0) {
         self.state = VELEventRecognizerStateRecognized;
+    } else {
+        // fail if we don't receive a multi-click in time
+        [self performSelector:@selector(fail) withObject:nil afterDelay:[NSEvent doubleClickInterval]];
     }
 }
 
@@ -61,6 +71,10 @@
 }
 
 #pragma mark Transitions and States
+
+- (void)fail; {
+    self.state = VELEventRecognizerStateFailed;
+}
 
 - (void)reset {
     [super reset];

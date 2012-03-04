@@ -7,7 +7,9 @@
 //
 
 #import "VELEventRecognizer.h"
+#import "EXTScope.h"
 #import "VELBridgedView.h"
+#import "VELEventRecognizerPrivate.h"
 #import "VELEventRecognizerProtected.h"
 #import <objc/runtime.h>
 
@@ -28,6 +30,8 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
         unsigned delaysEventDelivery:1;
     } m_flags;
 }
+
+@property (nonatomic, strong, readonly) NSMutableSet *eventsToIgnore;
 
 /**
  * Stores the blocks for actions registered with <addActionUsingBlock:>.
@@ -107,6 +111,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 @synthesize state = m_state;
 @synthesize recognizersRequiredToFail = m_recognizersRequiredToFail;
 @synthesize delayedEvents = m_delayedEvents;
+@synthesize eventsToIgnore = m_eventsToIgnore;
 @synthesize actions = m_actions;
 
 - (BOOL)isActive {
@@ -265,6 +270,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
     m_actions = [NSCountedSet set];
     m_flags.enabled = YES;
+    m_eventsToIgnore = [NSMutableSet set];
 
     return self;
 }
@@ -339,11 +345,14 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     if (!self.delaysEventDelivery)
         return;
 
-    for (NSEvent *event in self.delayedEvents) {
-        [NSApp sendEvent:event];
-    }
-
+    NSArray *delayedEvents = [self.delayedEvents copy];
     [self.delayedEvents removeAllObjects];
+
+    [self.eventsToIgnore addObjectsFromArray:delayedEvents];
+
+    for (NSEvent *event in delayedEvents) {
+        [NSApp postEvent:event atStart:NO];
+    }
 }
 
 #pragma mark States and Transitions

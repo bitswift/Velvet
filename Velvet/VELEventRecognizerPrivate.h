@@ -23,4 +23,14 @@
  * @param layer A layer to return the attached event recognizers for.
  */
 + (NSArray *)eventRecognizersForLayer:(CALayer *)layer;
+
+/**
+ * Contains any events that the receiver should ignore.
+ *
+ * This is filled in with delayed events by the event recognizer. When
+ * <VELEventManager> sees any objects in this array come through, it avoids
+ * dispatching them to the receiver, and will remove them from the set at that
+ * point.
+ */
+@property (nonatomic, strong, readonly) NSMutableSet *eventsToIgnore;
 @end

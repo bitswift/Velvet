@@ -236,6 +236,14 @@
 
     NSArray *attachedRecognizers = [VELEventRecognizer eventRecognizersForLayer:layer];
     for (VELEventRecognizer *recognizer in attachedRecognizers) {
+        if ([recognizer.eventsToIgnore containsObject:event]) {
+            [recognizer.eventsToIgnore removeObject:event];
+            continue;
+        }
+
+        if (!recognizer.enabled)
+            continue;
+
         if (recognizer.delaysEventDelivery)
             dispatchToView = NO;
 

@@ -51,27 +51,28 @@ SpecBegin(VELEventRecognizer)
     __block TestEventRecognizer *recognizer;
 
     before(^{
-        view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 1000, 1000)];
-        expect(view).not.toBeNil();
-
-        mouseEventAtLocation = [^(CGFloat x, CGFloat y){
-            CGPoint point = CGPointMake(x, y);
-
-            CGEventRef cgEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, point, kCGMouseButtonLeft);
-            expect(cgEvent).not.toBeNil();
-
-            NSEvent *event = [NSEvent eventWithCGEvent:cgEvent];
-            CFRelease(cgEvent);
-
-            expect(event).not.toBeNil();
-            return event;
-        } copy];
-    });
-
-    before(^{
         // put the instantiation and whatnot into an autorelease pool, so that
         // the memory management test right below works properly
         @autoreleasepool {
+            view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 1000, 1000)];
+            expect(view).not.toBeNil();
+
+            view.layer = [CALayer layer];
+            view.wantsLayer = YES;
+
+            mouseEventAtLocation = [^(CGFloat x, CGFloat y){
+                CGPoint point = CGPointMake(x, y);
+
+                CGEventRef cgEvent = CGEventCreateMouseEvent(NULL, kCGEventLeftMouseDown, point, kCGMouseButtonLeft);
+                expect(cgEvent).not.toBeNil();
+
+                NSEvent *event = [NSEvent eventWithCGEvent:cgEvent];
+                CFRelease(cgEvent);
+
+                expect(event).not.toBeNil();
+                return event;
+            } copy];
+
             recognizer = [[TestEventRecognizer alloc] init];
             expect(recognizer).not.toBeNil();
 

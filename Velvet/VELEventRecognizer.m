@@ -18,7 +18,7 @@ typedef void (^VELEventRecognizerActionBlock)(VELEventRecognizer *);
 
 /**
  * An associated objects key used to attach an `NSArray` of event recognizers to
- * their view.
+ * the layer of their <[VELEventRecognizer view]>.
  */
 static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizers";
 
@@ -277,29 +277,34 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     if (!view)
         return;
 
-    NSArray *existingRecognizers = objc_getAssociatedObject(view, VELAttachedEventRecognizersKey);
+    NSAssert(view.layer, @"Bridged view %@ does not have a layer to attach event recognizer %@ to", view, self);
+
+    NSArray *existingRecognizers = objc_getAssociatedObject(view.layer, VELAttachedEventRecognizersKey);
     if (!existingRecognizers)
         existingRecognizers = [NSArray array];
 
     NSAssert(![existingRecognizers containsObject:recognizer], @"Recognizer %@ is already attached to view %@", recognizer, view);
     
     NSArray *newRecognizers = [existingRecognizers arrayByAddingObject:recognizer];
-    objc_setAssociatedObject(view, VELAttachedEventRecognizersKey, newRecognizers, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(view.layer, VELAttachedEventRecognizersKey, newRecognizers, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 + (NSArray *)eventRecognizersForView:(id<VELBridgedView>)view; {
     NSParameterAssert(view != nil);
 
-    return objc_getAssociatedObject(view, VELAttachedEventRecognizersKey);
+    if (!view.layer)
+        return nil;
+
+    return objc_getAssociatedObject(view.layer, VELAttachedEventRecognizersKey);
 }
 
 + (void)removeEventRecognizer:(VELEventRecognizer *)recognizer forView:(id<VELBridgedView>)view; {
     NSParameterAssert(recognizer != nil);
 
-    if (!view)
+    if (!view.layer)
         return;
 
-    NSArray *existingRecognizers = objc_getAssociatedObject(view, VELAttachedEventRecognizersKey);
+    NSArray *existingRecognizers = objc_getAssociatedObject(view.layer, VELAttachedEventRecognizersKey);
     if (!existingRecognizers)
         return;
 
@@ -309,7 +314,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     if (newRecognizers.count == existingRecognizers.count)
         return;
     
-    objc_setAssociatedObject(view, VELAttachedEventRecognizersKey, newRecognizers, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(view.layer, VELAttachedEventRecognizersKey, newRecognizers, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 #pragma mark Event Handling

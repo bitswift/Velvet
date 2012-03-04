@@ -762,7 +762,6 @@ SpecEnd
         case VELEventRecognizerStatePossible: {
             expect(fromState).not.toEqual(VELEventRecognizerStateBegan);
             expect(fromState).not.toEqual(VELEventRecognizerStateChanged);
-            expect(fromState).not.toEqual(VELEventRecognizerStatePossible);
             break;
         }
 

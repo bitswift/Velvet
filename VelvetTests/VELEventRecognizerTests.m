@@ -90,7 +90,14 @@ SpecBegin(VELEventRecognizer)
     });
 
     after(^{
-        recognizer = nil;
+        @autoreleasepool {
+            recognizer = nil;
+            view = nil;
+        }
+
+        // spin the run loop a couple times, to get rid of any delayed
+        // actions
+        [[NSRunLoop mainRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
     });
 
     it(@"should be released when view is released", ^{

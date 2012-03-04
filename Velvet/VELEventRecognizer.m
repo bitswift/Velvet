@@ -370,7 +370,15 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 }
 
 - (void)reset; {
-    [self reallySetState:VELEventRecognizerStatePossible];
+    VELEventRecognizerState oldState = self.state;
+    VELEventRecognizerState newState = VELEventRecognizerStatePossible;
+
+    [self willTransitionToState:newState];
+    m_state = newState;
+    [self didTransitionFromState:oldState];
+
+    if (self.enabled)
+        [self sendAction];
 }
 
 - (void)willTransitionToState:(VELEventRecognizerState)toState; {

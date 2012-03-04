@@ -277,7 +277,9 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     [self willTransitionToState:newState];
     m_state = newState;
     [self didTransitionFromState:oldState];
-    [self sendAction];
+
+    if (self.enabled)
+        [self sendAction];
 }
 
 #pragma mark Actions

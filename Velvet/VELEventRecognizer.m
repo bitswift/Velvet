@@ -304,7 +304,11 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 }
 
 - (void)sendAction; {
-    for (VELEventRecognizerActionBlock block in self.actions) {
+    // make a copy, in case any action blocks remove themselves or add new
+    // actions
+    NSSet *actions = [self.actions copy];
+    
+    for (VELEventRecognizerActionBlock block in actions) {
         NSUInteger count = [self.actions countForObject:block];
 
         // invoke the block once for each time it's been registered

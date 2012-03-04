@@ -327,18 +327,19 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
 #pragma mark Event Handling
 
-- (void)handleEvent:(NSEvent *)event; {
+- (BOOL)handleEvent:(NSEvent *)event; {
     NSParameterAssert(event != nil);
 
     if (!self.delaysEventDelivery)
-        return;
+        return NO;
 
     if (self.active) {
         // don't queue this event, since we're already recognizing our gesture
-        return;
+        return NO;
     }
 
     [self.delayedEvents addObject:event];
+    return YES;
 }
 
 - (void)sendDelayedEvents; {

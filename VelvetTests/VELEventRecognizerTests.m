@@ -679,10 +679,8 @@ SpecEnd
 
 #pragma mark Event Handling
 
-- (void)handleEvent:(NSEvent *)event; {
+- (BOOL)handleEvent:(NSEvent *)event; {
     NSParameterAssert(event != nil);
-
-    [super handleEvent:event];
 
     VELEventRecognizerState state = self.state;
 
@@ -711,8 +709,15 @@ SpecEnd
             }];
 
             // if we failed or are not done recognizing yet
-            if (failed || self.eventQueue.count != self.eventsToRecognize.count)
-                break;
+            if (failed) {
+                return NO;
+            }
+            
+            [super handleEvent:event];
+
+            if (self.eventQueue.count != self.eventsToRecognize.count) {
+                return YES;
+            }
 
             // recognized all events (we already checked the objects themselves
             // in the above loop)
@@ -722,21 +727,23 @@ SpecEnd
                 self.state = VELEventRecognizerStateRecognized;
 
             [self.eventQueue removeAllObjects];
-            break;
+            return YES;
         }
 
         case VELEventRecognizerStateBegan:
         case VELEventRecognizerStateChanged: {
+            [super handleEvent:event];
+
             if ([event isEqual:self.continuousEvent])
                 self.state = VELEventRecognizerStateChanged;
             else
                 self.state = VELEventRecognizerStateEnded;
 
-            break;
+            return YES;
         }
 
         default:
-            ;
+            return NO;
     }
 }
 

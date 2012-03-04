@@ -38,29 +38,37 @@
 
 #pragma mark Event Handling
 
-- (void)handleEvent:(NSEvent *)event; {
-    [super handleEvent:event];
+- (BOOL)handleEvent:(NSEvent *)event; {
+    if (event.type == NSLeftMouseDown) {
+        if (event.clickCount == 1) {
+            // save the location and wait for a mouse up
+            self.windowClickLocation = [event locationInWindow];
+        }
 
-    if (event.type == NSLeftMouseDown && event.clickCount == 1) {
-        // save the location and wait for a mouse up
-        self.windowClickLocation = [event locationInWindow];
-        return;
+        [super handleEvent:event];
+        return YES;
     }
 
     if (event.type != NSLeftMouseUp) {
-        return;
+        return NO;
     }
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fail) object:nil];
-
     if (event.clickCount <= 0) {
         [self fail];
-    } else if ((NSUInteger)event.clickCount % self.numberOfClicksRequired == 0) {
+        return NO;
+    }
+
+    [super handleEvent:event];
+
+    if ((NSUInteger)event.clickCount % self.numberOfClicksRequired == 0) {
         self.state = VELEventRecognizerStateRecognized;
     } else {
         // fail if we don't receive a multi-click in time
         [self performSelector:@selector(fail) withObject:nil afterDelay:[NSEvent doubleClickInterval]];
     }
+
+    return YES;
 }
 
 - (CGPoint)locationInView:(id<VELBridgedView>)view; {

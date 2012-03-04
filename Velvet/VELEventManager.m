@@ -288,11 +288,11 @@
         if (!recognizer.enabled)
             continue;
 
-        if (recognizer.delaysEventDelivery)
-            dispatchToView = NO;
-
-        [recognizer handleEvent:event];
         [self.eventRecognizersReceivingEvent addObject:recognizer];
+
+        BOOL handled = [recognizer handleEvent:event];
+        if (handled && recognizer.delaysEventDelivery)
+            dispatchToView = NO;
     }
 
     return dispatchToView;

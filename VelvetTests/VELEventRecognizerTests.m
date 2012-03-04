@@ -180,9 +180,8 @@ SpecBegin(VELEventRecognizer)
                 [recognizer handleEvent:event];
             } copy]).not.toInvoke(recognizer, @selector(willTransitionToState:));
 
-            expect([^{
-                [recognizer handleEvent:unrecognizedEvent];
-            } copy]).not.toInvoke(recognizer, @selector(willTransitionToState:));
+            // this may invoke -willTransitionToState: as part of resetting
+            [recognizer handleEvent:unrecognizedEvent];
 
             expect(invoked).toBeFalsy();
         });
@@ -284,15 +283,13 @@ SpecBegin(VELEventRecognizer)
         });
 
         describe(@"continuous event", ^{
-            __block NSEvent *continuousEvent;
-
             __block BOOL began;
             __block BOOL changed;
             __block BOOL ended;
             __block BOOL cancelled;
 
             before(^{
-                recognizer.continuousEvent = continuousEvent = mouseEventAtLocation(100, 85);
+                recognizer.continuousEvent = event;
 
                 expect(recognizer.discrete).toBeFalsy();
                 expect(recognizer.continuous).toBeTruthy();
@@ -352,15 +349,11 @@ SpecBegin(VELEventRecognizer)
 
                 expect([^{
                     [recognizer handleEvent:event];
+                    [recognizer handleEvent:event];
                 } copy]).not.toInvoke(recognizer, @selector(willTransitionToState:));
 
-                expect([^{
-                    [recognizer handleEvent:continuousEvent];
-                } copy]).not.toInvoke(recognizer, @selector(willTransitionToState:));
-
-                expect([^{
-                    [recognizer handleEvent:unrecognizedEvent];
-                } copy]).not.toInvoke(recognizer, @selector(willTransitionToState:));
+                // this may invoke -willTransitionToState: as part of resetting
+                [recognizer handleEvent:unrecognizedEvent];
 
                 expect(invoked).toBeFalsy();
             });
@@ -377,7 +370,7 @@ SpecBegin(VELEventRecognizer)
 
                 for (unsigned i = 0; i < 3; ++i) {
                     expect([^{
-                        [recognizer handleEvent:continuousEvent];
+                        [recognizer handleEvent:event];
                     } copy]).toInvoke(recognizer, @selector(willTransitionToState:));
 
                     expect(began).toBeTruthy();
@@ -708,8 +701,9 @@ SpecEnd
                 // got an event that's invalid, fail to recognize
                 if (self.discrete)
                     self.state = VELEventRecognizerStateFailed;
+                else
+                    [self reset];
 
-                [self reset];
                 failed = YES;
                 *stop = YES;
             }];
@@ -725,6 +719,7 @@ SpecEnd
             else
                 self.state = VELEventRecognizerStateRecognized;
 
+            [self.eventQueue removeAllObjects];
             break;
         }
 

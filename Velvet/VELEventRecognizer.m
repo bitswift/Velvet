@@ -22,7 +22,13 @@ typedef void (^VELEventRecognizerActionBlock)(VELEventRecognizer *);
  */
 static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizers";
 
-@interface VELEventRecognizer ()
+@interface VELEventRecognizer () {
+    struct {
+        unsigned enabled:1;
+        unsigned delaysEventDelivery:1;
+    } m_flags;
+}
+
 /**
  * Stores the blocks for actions registered with <addActionUsingBlock:>.
  *
@@ -74,9 +80,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
 @synthesize view = m_view;
 @synthesize state = m_state;
-@synthesize enabled = m_enabled;
 @synthesize recognizersRequiredToFail = m_recognizersRequiredToFail;
-@synthesize delaysEventDelivery = m_delaysEventDelivery;
 @synthesize actions = m_actions;
 
 - (BOOL)isActive {
@@ -99,17 +103,25 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     return NO;
 }
 
+- (BOOL)isEnabled {
+    return m_flags.enabled;
+}
+
 - (void)setEnabled:(BOOL)enabled {
-    if (enabled == m_enabled)
-        return;
-
-    m_enabled = enabled;
-
-    if (!m_enabled) {
+    m_flags.enabled = enabled;
+    if (!enabled) {
         if (self.state == VELEventRecognizerStateBegan || self.state == VELEventRecognizerStateChanged) {
             [self reallySetState:VELEventRecognizerStateCancelled];
         }
     }
+}
+
+- (BOOL)delaysEventDelivery {
+    return m_flags.delaysEventDelivery;
+}
+
+- (void)setDelaysEventDelivery:(BOOL)delays {
+    m_flags.delaysEventDelivery = delays;
 }
 
 // this method should never short-circuit if already in the given state,
@@ -220,7 +232,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
         return nil;
 
     m_actions = [NSCountedSet set];
-    m_enabled = YES;
+    m_flags.enabled = YES;
 
     return self;
 }

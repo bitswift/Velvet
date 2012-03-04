@@ -14,4 +14,5 @@ Velvet is released under the 3-clause BSD license. See the LICENSE file for more
  - A view controller class usable with any `VELView` instance, including `VELNSView`
  - Automatic alignment of Velvet views to integral pixels (with an option to disable it), avoiding blurriness from landing on half-pixels
  - Automatic HiDPI support
+ - Event recognizers (similar to `UIGestureRecognizer`) for any bridged view
  - Miscellaneous conveniences for bridging Core Animation and Core Graphics functionality with that of AppKit

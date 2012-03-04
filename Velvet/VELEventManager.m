@@ -7,15 +7,31 @@
 //
 
 #import "VELEventManager.h"
-#import "NSWindow+EventHandlingAdditions.h"
-#import "VELView.h"
 #import "EXTScope.h"
+#import "NSWindow+EventHandlingAdditions.h"
+#import "VELEventRecognizer.h"
+#import "VELEventRecognizerPrivate.h"
+#import "VELEventRecognizerProtected.h"
+#import "VELHostView.h"
+#import "VELView.h"
 
 @interface VELEventManager ()
 /**
  * Any Velvet-hosted responder currently handling a continuous gesture event.
  */
-@property (nonatomic, strong) id currentGestureResponder;
+@property (nonatomic, strong) id<VELBridgedView> currentGestureResponder;
+
+/**
+ * The Velvet-hosted responder that handled the last mouse down or mouse drag
+ * event.
+ */
+@property (nonatomic, strong) id<VELBridgedView> currentMouseDownResponder;
+
+/**
+ * The Velvet-hosted responder that received the last handled mouse tracking
+ * event.
+ */
+@property (nonatomic, weak) id lastMouseTrackingResponder;
 
 /**
  * Whether an event is currently in the process of being handled in
@@ -27,18 +43,14 @@
 @property (nonatomic, assign, getter = isHandlingEvent) BOOL handlingEvent;
 
 /**
- * Returns YES if an event was generated in Velvet for the last mouse down event
- * that routed through the event manager.
+ * Tracks event recognizers that have already received the current event via
+ * <dispatchEvent:toEventRecognizersForView:> or
+ * <dispatchEvent:toEventRecognizersForLayer:>, to avoid double dispatch.
  *
- * This is used to decide whether to send mouse drag and up events in Velvet.
+ * This is `nil` by default. It should be set to an empty set before dispatching
+ * an event, and set back to `nil` afterward.
  */
-@property (nonatomic, assign) BOOL velvetHandledLastMouseDown;
-
-/**
- * The Velvet-hosted responder that received the last handled mouse tracking
- * event.
- */
-@property (nonatomic, weak) id lastMouseTrackingResponder;
+@property (nonatomic, strong) NSMutableSet *eventRecognizersReceivingEvent;
 
 /**
  * Turns an event into an `NSResponder` message, and attempts to send it to the
@@ -46,10 +58,46 @@
  * implement the corresponding action, `NO` is returned.
  *
  * @param event The event to dispatch.
- * @param responder The `NSResponder` which should receive the message
- * corresponding to `event`.
+ * @param view The <VELBridgedView> which should receive the message
+ * corresponding to `event`. This view must be an `NSResponder`.
  */
-- (BOOL)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder;
+- (BOOL)dispatchEvent:(NSEvent *)event toBridgedView:(id<VELBridgedView>)view;
+
+/**
+ * Dispatches the given event to all of the event recognizers that are directly
+ * or indirectly attached to the given view. Returns whether the event should
+ * still be passed to the view.
+ *
+ * In other words, this returns `NO` if one or more of the event recognizers has
+ * <[VELEventRecognizer delaysEventDelivery]> set to `YES`.
+ *
+ * This method will dispatch events to the farthest ancestors first, then walk
+ * down the tree, eventually ending at `view`. If the given view has
+ * a <[VELBridgedView hostView]> that is not an ancestor, the host view's event
+ * recognizers will receive `event` before those of `view`.
+ *
+ * @param event The event to dispatch.
+ * @param view A view that may have attached event recognizers, or may have
+ * superviews or a <[VELBridgedView hostView]> with attached event recognizers.
+ */
+- (BOOL)dispatchEvent:(NSEvent *)event toEventRecognizersForView:(id<VELBridgedView>)view;
+
+/**
+ * Dispatches the given event to all of the event recognizers that are directly
+ * or indirectly attached to the given layer. Returns whether the event should
+ * still be passed to the corresponding view.
+ *
+ * In other words, this returns `NO` if one or more of the event recognizers has
+ * <[VELEventRecognizer delaysEventDelivery]> set to `YES`.
+ *
+ * This method will dispatch events to the farthest ancestors first, then walk
+ * down the tree, eventually ending at `layer`.
+ *
+ * @param event The event to dispatch.
+ * @param layer A layer that may have attached event recognizers, or may have
+ * superlayers with attached event recognizers.
+ */
+- (BOOL)dispatchEvent:(NSEvent *)event toEventRecognizersForLayer:(CALayer *)layer;
 
 /**
  * Attempts to dispatch the given mouse tracking event (`NSMouseEntered`,
@@ -90,9 +138,10 @@
 #pragma mark Properties
 
 @synthesize currentGestureResponder = m_currentGestureResponder;
+@synthesize currentMouseDownResponder = m_currentMouseDownResponder;
 @synthesize handlingEvent = m_handlingEvent;
-@synthesize velvetHandledLastMouseDown = m_velvetHandledLastMouseDown;
 @synthesize lastMouseTrackingResponder = m_lastMouseTrackingResponder;
+@synthesize eventRecognizersReceivingEvent = m_eventRecognizersReceivingEvent;
 
 #pragma mark Lifecycle
 
@@ -118,7 +167,9 @@
 
 #pragma mark Event handling
 
-- (BOOL)dispatchEvent:(NSEvent *)event toResponder:(NSResponder *)responder; {
+- (BOOL)dispatchEvent:(NSEvent *)event toBridgedView:(id<VELBridgedView>)view; {
+    NSAssert([view isKindOfClass:[NSResponder class]], @"View %@ is not an NSResponder", view);
+
     SEL action = NULL;
 
     switch ([event type]) {
@@ -199,9 +250,52 @@
     }
 
     if (action)
-        return [responder tryToPerform:action with:event];
+        return [(id)view tryToPerform:action with:event];
     else
         return NO;
+}
+
+- (BOOL)dispatchEvent:(NSEvent *)event toEventRecognizersForView:(id<VELBridgedView>)view; {
+    NSParameterAssert(event != nil);
+
+    if (!view)
+        return YES;
+
+    // dispatch to the host view first, and rely on
+    // eventRecognizersReceivingEvent to deduplicate our events for any common
+    // recognizers
+    return [self dispatchEvent:event toEventRecognizersForView:view.hostView] && [self dispatchEvent:event toEventRecognizersForLayer:view.layer];
+}
+
+- (BOOL)dispatchEvent:(NSEvent *)event toEventRecognizersForLayer:(CALayer *)layer; {
+    NSParameterAssert(event != nil);
+
+    if (!layer)
+        return YES;
+
+    BOOL dispatchToView = [self dispatchEvent:event toEventRecognizersForLayer:layer.superlayer];
+
+    NSArray *attachedRecognizers = [VELEventRecognizer eventRecognizersForLayer:layer];
+    for (VELEventRecognizer *recognizer in attachedRecognizers) {
+        if ([self.eventRecognizersReceivingEvent containsObject:recognizer])
+            continue;
+
+        if ([recognizer.eventsToIgnore containsObject:event]) {
+            [recognizer.eventsToIgnore removeObject:event];
+            continue;
+        }
+
+        if (!recognizer.enabled)
+            continue;
+
+        [self.eventRecognizersReceivingEvent addObject:recognizer];
+
+        BOOL handled = [recognizer handleEvent:event];
+        if (handled && recognizer.delaysEventDelivery)
+            dispatchToView = NO;
+    }
+
+    return dispatchToView;
 }
 
 - (BOOL)handleVelvetEvent:(NSEvent *)event; {
@@ -215,22 +309,67 @@
         self.handlingEvent = NO;
     };
 
-    id respondingView = nil;
+    __block id respondingView = nil;
+
+    // whether the event was received by an event recognizer and delayed from
+    // delivery
+    __block BOOL eventAbsorbedByRecognizer = NO;
+
+    /**
+     * Returns whether we should handle the event dispatch for `respondingView`.
+     * If this returns `NO`, the event should be returned to AppKit for
+     * processing.
+     */
+    BOOL (^velvetShouldHandleRespondingView)(void) = ^ BOOL {
+        return respondingView && ![respondingView isKindOfClass:[NSView class]];
+    };
+
+    /**
+     * Attempts to dispatch the event to `respondingView`. Returns whether the
+     * event should be considered handled.
+     */
+    BOOL (^dispatchToView)(void) = ^{
+        if (![respondingView conformsToProtocol:@protocol(VELBridgedView)])
+            return NO;
+
+        {
+            self.eventRecognizersReceivingEvent = [NSMutableSet set];
+            @onExit {
+                self.eventRecognizersReceivingEvent = nil;
+            };
+
+            if (![self dispatchEvent:event toEventRecognizersForView:respondingView]) {
+                eventAbsorbedByRecognizer = YES;
+                return YES;
+            }
+        }
+
+        if (!velvetShouldHandleRespondingView())
+            return NO;
+
+        return [self dispatchEvent:event toBridgedView:respondingView];
+    };
 
     switch ([event type]) {
         case NSLeftMouseDown:
         case NSRightMouseDown:
         case NSOtherMouseDown:
             respondingView = [event.window bridgedHitTest:[event locationInWindow]];
-            
-            if (respondingView) {
-                // make the view that received the click the first responder for
-                // that window
-                [event.window makeFirstResponder:respondingView];
+            if (!dispatchToView()) {
+                self.currentMouseDownResponder = nil;
+                return NO;
             }
 
-            self.velvetHandledLastMouseDown = (respondingView != nil);
-            break;
+            if (!eventAbsorbedByRecognizer) {
+                NSAssert([respondingView isKindOfClass:[NSResponder class]], @"View %@ is not an NSResponder", respondingView);
+
+                // make the view that received the click the first responder for
+                // that window
+                [event.window makeFirstResponder:(id)respondingView];
+            }
+
+            self.currentMouseDownResponder = respondingView;
+            return YES;
 
         case NSScrollWheel:
         case NSEventTypeMagnify:
@@ -240,7 +379,11 @@
             break;
 
         case NSEventTypeBeginGesture:
-            self.currentGestureResponder = respondingView = [event.window bridgedHitTest:[event locationInWindow]];
+            respondingView = [event.window bridgedHitTest:[event locationInWindow]];
+            if (velvetShouldHandleRespondingView()) {
+                self.currentGestureResponder = respondingView;
+            }
+
             break;
 
         case NSEventTypeEndGesture:
@@ -251,24 +394,17 @@
 
         case NSLeftMouseUp:
         case NSRightMouseUp:
+        case NSOtherMouseUp:
+            respondingView = (id)self.currentMouseDownResponder ?: [event.window firstResponder];
+
+            self.currentMouseDownResponder = nil;
+            break;
+
         case NSLeftMouseDragged:
         case NSRightMouseDragged:
-        case NSOtherMouseUp:
-        case NSOtherMouseDragged: {
-            if (!self.velvetHandledLastMouseDown)
-                return NO;
-
-            id responder = [event.window firstResponder];
-            if (![responder isKindOfClass:[NSView class]]) {
-                [self dispatchEvent:event toResponder:responder];
-                return YES;
-            }
-
-            // if we didn't dispatch an event directly to a bridged view, we
-            // want to pass on these kinds of mouse events to the window, since
-            // it does some magic
-            return NO;
-        }
+        case NSOtherMouseDragged:
+            respondingView = (id)self.currentMouseDownResponder ?: [event.window firstResponder];
+            break;
 
         case NSMouseMoved:
         case NSMouseEntered:
@@ -281,16 +417,13 @@
             ;
     }
 
-    if (respondingView) {
-        return [self dispatchEvent:event toResponder:respondingView];
-    } else {
-        return NO;
-    }
+    return dispatchToView();
 }
 
 - (NSPoint)convertScreenPoint:(NSPoint)point toWindow:(NSWindow *)window {
     if (!window)
         return point;
+
     NSRect r = NSMakeRect(point.x, point.y, 1, 1);
     r = [window convertRectFromScreen:r];
     return r.origin;

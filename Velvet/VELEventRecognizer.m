@@ -112,15 +112,95 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     }
 }
 
+// this method should never short-circuit if already in the given state,
+// since every call to this setter should be interpreted as a new transition
 - (void)setState:(VELEventRecognizerState)state {
     if (!self.enabled)
         return;
 
-    // this method should never short-circuit if already in the given state,
-    // since every call to this setter should be interpreted as a new transition
+    __block NSUInteger dependenciesOutstanding = 0;
+    __weak VELEventRecognizer *weakSelf = self;
+
+    // if all dependencies have failed, actually executes the transition
+    __block BOOL (^transitionIfDependenciesFailed)(void) = [^{
+        if (dependenciesOutstanding) {
+            return NO;
+        } else {
+            [weakSelf reallySetState:state];
+            return YES;
+        }
+    } copy];
+
+    // check the status of dependencies, and delay the transition (pending their
+    // failure) if necessary
+    if (m_state != state) {
+        if ((self.continuous && state == VELEventRecognizerStateBegan) || (self.discrete && state == VELEventRecognizerStateRecognized)) {
+            // removes all actions added in the loop below
+            __block void (^removeAddedActions)(void) = [^{} copy];
+
+            for (__weak VELEventRecognizer *dependency in self.recognizersRequiredToFail) {
+                if (dependency.state == VELEventRecognizerStateFailed)
+                    continue;
+
+                ++dependenciesOutstanding;
+
+                id action = [dependency addActionUsingBlock:^(VELEventRecognizer *dependency){
+                    switch (dependency.state) {
+                        case VELEventRecognizerStateBegan:
+                        case VELEventRecognizerStateRecognized: {
+                            // the dependency succeeded, so we should fail
+                            removeAddedActions();
+
+                            // match the style of the state transition that was
+                            // requested (discrete or continuous)
+                            if (state == VELEventRecognizerStateRecognized)
+                                [weakSelf reallySetState:VELEventRecognizerStateFailed];
+                            else
+                                [weakSelf reallySetState:VELEventRecognizerStatePossible];
+
+                            break;
+                        }
+
+                        case VELEventRecognizerStatePossible:
+                        case VELEventRecognizerStateFailed: {
+                            // the dependency failed -- wait on the rest or
+                            // perform our transition
+                            --dependenciesOutstanding;
+                            transitionIfDependenciesFailed();
+
+                            break;
+                        }
+
+                        default:
+                            ;
+                    }
+                }];
+
+                // compose this with other actions that will need to be removed
+                void (^originalRemoveAddedActions)(void) = removeAddedActions;
+
+                removeAddedActions = [^{
+                    originalRemoveAddedActions();
+                    [dependency removeAction:action];
+                } copy];
+            }
+
+            BOOL (^originalTransition)(void) = transitionIfDependenciesFailed;
+
+            // remove actions if/when we finally transition
+            transitionIfDependenciesFailed = [^{
+                if (originalTransition()) {
+                    removeAddedActions();
+                    return YES;
+                } else {
+                    return NO;
+                }
+            } copy];
+        }
+    }
     
-    // TODO: check dependencies
-    [self reallySetState:state];
+    // this will also work if there were no dependencies
+    transitionIfDependenciesFailed();
 }
 
 - (void)setView:(id<VELBridgedView>)view {

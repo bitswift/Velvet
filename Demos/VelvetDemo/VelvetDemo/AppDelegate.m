@@ -183,8 +183,14 @@
             NSLog(@"Square view click action with event: %@", event);
         }];
 
-        [self.control addActionForControlEvents:VELControlEventDoubleClicked usingBlock:^(NSEvent *event){
-            NSLog(@"Square view double click action with event: %@", event);
+        VELClickEventRecognizer *recognizer = [[VELClickEventRecognizer alloc] init];
+        recognizer.numberOfClicksRequired = 2;
+        recognizer.delaysEventDelivery = YES;
+        recognizer.view = self.control;
+
+        [recognizer addActionUsingBlock:^(id recognizer){
+            if ([recognizer isActive])
+                NSLog(@"Event recognizer double-click at %@", NSStringFromPoint([recognizer locationInView:self.control]));
         }];
 
         [self.scrollView addSubview:self.control];

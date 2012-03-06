@@ -19,6 +19,7 @@ typedef enum {
      *
      * From this state, the event recognizer may move to:
      *
+     *  - <VELEventRecognizerStatePossible> (again)
      *  - <VELEventRecognizerStateBegan>
      *  - <VELEventRecognizerStateFailed>
      *  - <VELEventRecognizerStateRecognized>

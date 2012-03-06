@@ -75,6 +75,8 @@
 		D0A96C0D14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */; };
 		D0B23AF91491872B009CF46A /* VELImageViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B23AF81491872B009CF46A /* VELImageViewTests.m */; };
 		D0B2E4F514C41A4600812B76 /* VELNSViewLayerDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */; };
+		D0B615991506C09200DD9FB0 /* VELDragEventRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0B615971506C09200DD9FB0 /* VELDragEventRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0B6159A1506C09200DD9FB0 /* VELDragEventRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B615981506C09200DD9FB0 /* VELDragEventRecognizer.m */; };
 		D0B75C68149188FD005C81D5 /* testimage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0B75C67149188FD005C81D5 /* testimage.jpg */; };
 		D0B75C6F14918EB9005C81D5 /* VELViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B75C6E14918EB9005C81D5 /* VELViewTests.m */; };
 		D0CACD35147C86C0008C42B2 /* VELBridgedView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELBridgedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -271,6 +273,8 @@
 		D0B23AF81491872B009CF46A /* VELImageViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELImageViewTests.m; sourceTree = "<group>"; };
 		D0B2E4F214C41A4600812B76 /* VELNSViewLayerDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSViewLayerDelegateProxy.h; sourceTree = "<group>"; };
 		D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewLayerDelegateProxy.m; sourceTree = "<group>"; };
+		D0B615971506C09200DD9FB0 /* VELDragEventRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDragEventRecognizer.h; sourceTree = "<group>"; };
+		D0B615981506C09200DD9FB0 /* VELDragEventRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELDragEventRecognizer.m; sourceTree = "<group>"; };
 		D0B75C67149188FD005C81D5 /* testimage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = testimage.jpg; sourceTree = "<group>"; };
 		D0B75C6E14918EB9005C81D5 /* VELViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewTests.m; sourceTree = "<group>"; };
 		D0CACD34147C86C0008C42B2 /* VELBridgedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELBridgedView.h; sourceTree = "<group>"; };
@@ -522,6 +526,8 @@
 			children = (
 				D0A94D011503807E008E7879 /* VELClickEventRecognizer.h */,
 				D0A94D021503807E008E7879 /* VELClickEventRecognizer.m */,
+				D0B615971506C09200DD9FB0 /* VELDragEventRecognizer.h */,
+				D0B615981506C09200DD9FB0 /* VELDragEventRecognizer.m */,
 				D0879A6215009D68001FB5D6 /* VELEventRecognizer.h */,
 				D0879A6315009D68001FB5D6 /* VELEventRecognizer.m */,
 				D0A94CD21503798A008E7879 /* VELEventRecognizerPrivate.h */,
@@ -769,6 +775,7 @@
 				D0879A6415009D68001FB5D6 /* VELEventRecognizer.h in Headers */,
 				D0879A821500AC98001FB5D6 /* VELEventRecognizerProtected.h in Headers */,
 				D0A94D031503807E008E7879 /* VELClickEventRecognizer.h in Headers */,
+				D0B615991506C09200DD9FB0 /* VELDragEventRecognizer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -986,6 +993,7 @@
 				D02561B515004C75008A71B6 /* NSWindow+ResponderChainAdditions.m in Sources */,
 				D0879A6515009D68001FB5D6 /* VELEventRecognizer.m in Sources */,
 				D0A94D041503807E008E7879 /* VELClickEventRecognizer.m in Sources */,
+				D0B6159A1506C09200DD9FB0 /* VELDragEventRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

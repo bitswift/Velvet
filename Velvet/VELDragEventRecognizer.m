@@ -59,6 +59,17 @@
     return YES;
 }
 
+#pragma mark Lifecycle
+
+- (id)init {
+    self = [super init];
+    if (!self)
+        return nil;
+
+    self.shiftLocksAxes = YES;
+    return self;
+}
+
 #pragma mark Geometry
 
 - (CGPoint)projectedVector:(CGPoint)delta angularInterval:(CGFloat)interval {

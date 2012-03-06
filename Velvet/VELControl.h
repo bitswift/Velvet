@@ -60,7 +60,23 @@ typedef enum {
      * being used. <VELControl> itself does not trigger this event.
      */
     VELControlEventValueChanged = (1 << 5),
-
+    
+    /**
+     * The mouse entered the control's frame.
+     *
+     * This event is sent when the mouse first enters the control's frame.
+     */
+    VELControlEventMouseEntered = (1 << 6),
+    
+    /**
+     * The mouse exited the control's frame.
+     *
+     * Typically, this will follow a previous <VELControlEventMouseEntered>
+     * event. If a subview implements `mouseEntered:` then the mouse moving into 
+     * that subview will be considered as exiting the control.
+     */
+    VELControlEventMouseExited = (1 << 7),
+    
     /**
      * A range of event values available for application use.
      */

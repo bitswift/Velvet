@@ -100,6 +100,15 @@ typedef void (^VELControlActionBlock)(NSEvent *);
     return YES;
 }
 
+- (void)mouseEntered:(NSEvent *)event {
+    [self sendActionsForControlEvents:VELControlEventMouseEntered event:event];
+}
+
+- (void)mouseExited:(NSEvent *)event {
+    [self sendActionsForControlEvents:VELControlEventMouseExited event:event];
+}
+
+
 - (void)mouseDown:(NSEvent *)event {
     [self sendActionsForControlEvents:VELControlEventMouseDown event:event];
 }

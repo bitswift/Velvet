@@ -96,7 +96,7 @@
     if (self.charactersIgnoringModifiers && ![self.charactersIgnoringModifiers isEqual:obj.charactersIgnoringModifiers])
         return NO;
 
-    if (self.modifierFlags != obj.modifierFlags)
+    if ((self.modifierFlags & NSDeviceIndependentModifierFlagsMask) != (obj.modifierFlags & NSDeviceIndependentModifierFlagsMask))
         return NO;
 
     return YES;

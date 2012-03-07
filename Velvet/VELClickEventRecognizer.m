@@ -81,6 +81,7 @@
 #pragma mark Transitions and States
 
 - (void)fail; {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fail) object:nil];
     self.state = VELEventRecognizerStateFailed;
 }
 

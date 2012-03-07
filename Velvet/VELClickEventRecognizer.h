@@ -34,9 +34,6 @@
  * Returns the location of the first click in the coordinate system of the given
  * view.
  *
- * If `view` is `nil`, the returned location is in the coordinate system of the
- * clicked window instead.
- *
  * @param view The view with the coordinate system to use for the returned
  * point, or `nil` to return a point in the window's coordinate system. If not
  * `nil`, this view must be in the same window as the receiver's

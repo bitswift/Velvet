@@ -245,6 +245,18 @@
             action = @selector(endGestureWithEvent:);
             break;
 
+        case NSKeyDown:
+            action = @selector(keyDown:);
+            break;
+
+        case NSKeyUp:
+            action = @selector(keyUp:);
+            break;
+
+        case NSFlagsChanged:
+            action = @selector(flagsChanged:);
+            break;
+
         default:
             NSLog(@"*** Unrecognized event: %@", event);
     }
@@ -309,6 +321,19 @@
         self.handlingEvent = NO;
     };
 
+    /**
+     * Dispatches the event to any event recognizers on the given view or any of
+     * its ancestors. Returns whether the event was absorbed by a recognizer.
+     */
+    BOOL (^dispatchToEventRecognizersOfView)(id<VELBridgedView>) = ^ BOOL (id<VELBridgedView> view){
+        self.eventRecognizersReceivingEvent = [NSMutableSet set];
+        @onExit {
+            self.eventRecognizersReceivingEvent = nil;
+        };
+
+        return ![self dispatchEvent:event toEventRecognizersForView:view];
+    };
+
     __block id respondingView = nil;
 
     // whether the event was received by an event recognizer and delayed from
@@ -332,16 +357,9 @@
         if (![respondingView conformsToProtocol:@protocol(VELBridgedView)])
             return NO;
 
-        {
-            self.eventRecognizersReceivingEvent = [NSMutableSet set];
-            @onExit {
-                self.eventRecognizersReceivingEvent = nil;
-            };
-
-            if (![self dispatchEvent:event toEventRecognizersForView:respondingView]) {
-                eventAbsorbedByRecognizer = YES;
-                return YES;
-            }
+        if (dispatchToEventRecognizersOfView(respondingView)) {
+            eventAbsorbedByRecognizer = YES;
+            return YES;
         }
 
         if (!velvetShouldHandleRespondingView())
@@ -412,9 +430,17 @@
             [self handleMouseTrackingEvent:event];
             return NO;
 
-        default:
-            // any other kind of event is not handled by us
-            ;
+        default: {
+            // assume this kind of event would go to the first responder, so
+            // dispatch to any event recognizers for it
+            id responder = [event.window firstResponder];
+            if ([responder conformsToProtocol:@protocol(VELBridgedView)]) {
+                if (dispatchToEventRecognizersOfView(responder))
+                    return YES;
+            }
+
+            return NO;
+        }
     }
 
     return dispatchToView();

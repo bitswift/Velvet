@@ -16,7 +16,7 @@
 /**
  * The type of block passed to <[VELEventRecognizer addActionUsingBlock:]>.
  */
-typedef void (^VELEventRecognizerActionBlock)(VELEventRecognizer *);
+typedef void (^VELEventRecognizerActionBlock)(id);
 
 /**
  * An associated objects key used to attach an `NSArray` of event recognizers to

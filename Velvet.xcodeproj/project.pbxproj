@@ -77,6 +77,9 @@
 		D0B2E4F514C41A4600812B76 /* VELNSViewLayerDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */; };
 		D0B615991506C09200DD9FB0 /* VELDragEventRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0B615971506C09200DD9FB0 /* VELDragEventRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0B6159A1506C09200DD9FB0 /* VELDragEventRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B615981506C09200DD9FB0 /* VELDragEventRecognizer.m */; };
+		D0B616791506E33D00DD9FB0 /* VELKeyPress.h in Headers */ = {isa = PBXBuildFile; fileRef = D0B616771506E33D00DD9FB0 /* VELKeyPress.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0B6167A1506E33D00DD9FB0 /* VELKeyPress.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B616781506E33D00DD9FB0 /* VELKeyPress.m */; };
+		D0B6168E1506E7B000DD9FB0 /* VELKeyPressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B6168D1506E7B000DD9FB0 /* VELKeyPressTests.m */; };
 		D0B75C68149188FD005C81D5 /* testimage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0B75C67149188FD005C81D5 /* testimage.jpg */; };
 		D0B75C6F14918EB9005C81D5 /* VELViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B75C6E14918EB9005C81D5 /* VELViewTests.m */; };
 		D0CACD35147C86C0008C42B2 /* VELBridgedView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELBridgedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -275,6 +278,9 @@
 		D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewLayerDelegateProxy.m; sourceTree = "<group>"; };
 		D0B615971506C09200DD9FB0 /* VELDragEventRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDragEventRecognizer.h; sourceTree = "<group>"; };
 		D0B615981506C09200DD9FB0 /* VELDragEventRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELDragEventRecognizer.m; sourceTree = "<group>"; };
+		D0B616771506E33D00DD9FB0 /* VELKeyPress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELKeyPress.h; sourceTree = "<group>"; };
+		D0B616781506E33D00DD9FB0 /* VELKeyPress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELKeyPress.m; sourceTree = "<group>"; };
+		D0B6168D1506E7B000DD9FB0 /* VELKeyPressTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELKeyPressTests.m; sourceTree = "<group>"; };
 		D0B75C67149188FD005C81D5 /* testimage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = testimage.jpg; sourceTree = "<group>"; };
 		D0B75C6E14918EB9005C81D5 /* VELViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewTests.m; sourceTree = "<group>"; };
 		D0CACD34147C86C0008C42B2 /* VELBridgedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELBridgedView.h; sourceTree = "<group>"; };
@@ -474,6 +480,8 @@
 			children = (
 				D06EF03914B39CFA0035E239 /* VELEventManager.h */,
 				D06EF03A14B39CFA0035E239 /* VELEventManager.m */,
+				D0B616771506E33D00DD9FB0 /* VELKeyPress.h */,
+				D0B616781506E33D00DD9FB0 /* VELKeyPress.m */,
 				D0A94D001503805D008E7879 /* Event Recognizers */,
 			);
 			name = "Event Handling";
@@ -506,6 +514,7 @@
 				D0A112D61501B7ED00F3DC16 /* VELEventRecognizerTests.m */,
 				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
 				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
+				D0B6168D1506E7B000DD9FB0 /* VELKeyPressTests.m */,
 				D0DB8A7B149028D60082D3DA /* VELLabelTests.h */,
 				D0DB8A7C149028D60082D3DA /* VELLabelTests.m */,
 				D067DC7314F2076B00B58AC4 /* VELNSViewControllerTests.m */,
@@ -776,6 +785,7 @@
 				D0879A821500AC98001FB5D6 /* VELEventRecognizerProtected.h in Headers */,
 				D0A94D031503807E008E7879 /* VELClickEventRecognizer.h in Headers */,
 				D0B615991506C09200DD9FB0 /* VELDragEventRecognizer.h in Headers */,
+				D0B616791506E33D00DD9FB0 /* VELKeyPress.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -994,6 +1004,7 @@
 				D0879A6515009D68001FB5D6 /* VELEventRecognizer.m in Sources */,
 				D0A94D041503807E008E7879 /* VELClickEventRecognizer.m in Sources */,
 				D0B6159A1506C09200DD9FB0 /* VELDragEventRecognizer.m in Sources */,
+				D0B6167A1506E33D00DD9FB0 /* VELKeyPress.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1022,6 +1033,7 @@
 				D08B7BBF14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m in Sources */,
 				D025619F15004A79008A71B6 /* NSResponderAdditionsTests.m in Sources */,
 				D0A112D71501B7ED00F3DC16 /* VELEventRecognizerTests.m in Sources */,
+				D0B6168E1506E7B000DD9FB0 /* VELKeyPressTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

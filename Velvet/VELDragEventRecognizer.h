@@ -30,8 +30,8 @@
  * during a drag.
  *
  * If this is set to `YES` and shift is being held down, the
- * <translationInView:> method will only return values that have been clamped to
- * one of the axes. Otherwise, the values returned by <translationInView:>
+ * <translationInView:> method will only return values that have been projected
+ * to one of the axes. Otherwise, the values returned by <translationInView:>
  * describe the exact cursor position without modification.
  *
  * The default value for this property is `YES`.

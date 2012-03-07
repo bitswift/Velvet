@@ -77,6 +77,8 @@
 		D0B2E4F514C41A4600812B76 /* VELNSViewLayerDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */; };
 		D0B615991506C09200DD9FB0 /* VELDragEventRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0B615971506C09200DD9FB0 /* VELDragEventRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0B6159A1506C09200DD9FB0 /* VELDragEventRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B615981506C09200DD9FB0 /* VELDragEventRecognizer.m */; };
+		D0B616631506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0B616611506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0B616641506E0B100DD9FB0 /* VELKeyPressEventRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B616621506E0B100DD9FB0 /* VELKeyPressEventRecognizer.m */; };
 		D0B616791506E33D00DD9FB0 /* VELKeyPress.h in Headers */ = {isa = PBXBuildFile; fileRef = D0B616771506E33D00DD9FB0 /* VELKeyPress.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0B6167A1506E33D00DD9FB0 /* VELKeyPress.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B616781506E33D00DD9FB0 /* VELKeyPress.m */; };
 		D0B6168E1506E7B000DD9FB0 /* VELKeyPressTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B6168D1506E7B000DD9FB0 /* VELKeyPressTests.m */; };
@@ -278,6 +280,8 @@
 		D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewLayerDelegateProxy.m; sourceTree = "<group>"; };
 		D0B615971506C09200DD9FB0 /* VELDragEventRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDragEventRecognizer.h; sourceTree = "<group>"; };
 		D0B615981506C09200DD9FB0 /* VELDragEventRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELDragEventRecognizer.m; sourceTree = "<group>"; };
+		D0B616611506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELKeyPressEventRecognizer.h; sourceTree = "<group>"; };
+		D0B616621506E0B100DD9FB0 /* VELKeyPressEventRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELKeyPressEventRecognizer.m; sourceTree = "<group>"; };
 		D0B616771506E33D00DD9FB0 /* VELKeyPress.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELKeyPress.h; sourceTree = "<group>"; };
 		D0B616781506E33D00DD9FB0 /* VELKeyPress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELKeyPress.m; sourceTree = "<group>"; };
 		D0B6168D1506E7B000DD9FB0 /* VELKeyPressTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELKeyPressTests.m; sourceTree = "<group>"; };
@@ -541,6 +545,8 @@
 				D0879A6315009D68001FB5D6 /* VELEventRecognizer.m */,
 				D0A94CD21503798A008E7879 /* VELEventRecognizerPrivate.h */,
 				D0879A811500AC98001FB5D6 /* VELEventRecognizerProtected.h */,
+				D0B616611506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h */,
+				D0B616621506E0B100DD9FB0 /* VELKeyPressEventRecognizer.m */,
 			);
 			name = "Event Recognizers";
 			sourceTree = "<group>";
@@ -786,6 +792,7 @@
 				D0A94D031503807E008E7879 /* VELClickEventRecognizer.h in Headers */,
 				D0B615991506C09200DD9FB0 /* VELDragEventRecognizer.h in Headers */,
 				D0B616791506E33D00DD9FB0 /* VELKeyPress.h in Headers */,
+				D0B616631506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1005,6 +1012,7 @@
 				D0A94D041503807E008E7879 /* VELClickEventRecognizer.m in Sources */,
 				D0B6159A1506C09200DD9FB0 /* VELDragEventRecognizer.m in Sources */,
 				D0B6167A1506E33D00DD9FB0 /* VELKeyPress.m in Sources */,
+				D0B616641506E0B100DD9FB0 /* VELKeyPressEventRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

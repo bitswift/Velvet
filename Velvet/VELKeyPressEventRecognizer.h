@@ -28,4 +28,11 @@
  */
 @property (nonatomic, copy) NSArray *keyPressesToRecognize;
 
+/**
+ * The maximum amount of time that may pass between two key presses.
+ *
+ * If this time limit is exceeded, the recognizer will fail.
+ */
+@property (nonatomic, assign) NSTimeInterval maximumKeyPressInterval;
+
 @end

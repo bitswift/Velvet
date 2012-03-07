@@ -16,6 +16,11 @@
  * received so far.
  */
 @property (nonatomic, strong, readonly) NSMutableArray *receivedKeyPresses;
+
+/**
+ * Marks the recognizer as having failed to recognize its event.
+ */
+- (void)fail;
 @end
 
 @implementation VELKeyPressEventRecognizer
@@ -24,6 +29,7 @@
 
 @synthesize keyPressesToRecognize = m_keyPressesToRecognize;
 @synthesize receivedKeyPresses = m_receivedKeyPresses;
+@synthesize maximumKeyPressInterval = m_maximumKeyPressInterval;
 
 - (BOOL)isDiscrete {
     return YES;
@@ -37,6 +43,8 @@
         return nil;
 
     m_receivedKeyPresses = [NSMutableArray array];
+
+    self.maximumKeyPressInterval = 0.7;
     return self;
 }
 
@@ -50,6 +58,7 @@
     if (!keyPress)
         return NO;
 
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fail) object:nil];
     [self.receivedKeyPresses addObject:keyPress];
 
     __block BOOL failed = NO;
@@ -62,15 +71,16 @@
         *stop = YES;
     }];
 
-    // if we failed or are not done recognizing yet
     if (failed) {
-        self.state = VELEventRecognizerStateFailed;
+        [self fail];
         return NO;
     }
     
     [super handleEvent:event];
 
     if (self.receivedKeyPresses.count < self.keyPressesToRecognize.count) {
+        // fail if we don't receive another key press in time
+        [self performSelector:@selector(fail) withObject:nil afterDelay:self.maximumKeyPressInterval];
         return YES;
     }
 
@@ -83,6 +93,10 @@
 }
 
 #pragma mark Transitions and States
+
+- (void)fail; {
+    self.state = VELEventRecognizerStateFailed;
+}
 
 - (void)reset; {
     [super reset];

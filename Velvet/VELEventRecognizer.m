@@ -113,6 +113,8 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 @synthesize delayedEvents = m_delayedEvents;
 @synthesize eventsToIgnore = m_eventsToIgnore;
 @synthesize actions = m_actions;
+@synthesize shouldPreventEventRecognizerBlock = m_shouldPreventEventRecognizerBlock;
+@synthesize shouldBePreventedByEventRecognizerBlock = m_shouldBePreventedByEventRecognizerBlock;
 
 - (BOOL)isActive {
     switch (self.state) {
@@ -354,6 +356,28 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     for (NSEvent *event in delayedEvents) {
         [NSApp postEvent:event atStart:NO];
     }
+}
+
+#pragma mark Dependencies
+
+- (BOOL)shouldPreventEventRecognizer:(VELEventRecognizer *)recognizer fromReceivingEvent:(NSEvent *)event; {
+    NSParameterAssert(recognizer != nil);
+    NSParameterAssert(event != nil);
+
+    if (self.shouldPreventEventRecognizerBlock)
+        return self.shouldPreventEventRecognizerBlock(recognizer, event);
+    else
+        return NO;
+}
+
+- (BOOL)shouldBePreventedByEventRecognizer:(VELEventRecognizer *)recognizer fromReceivingEvent:(NSEvent *)event; {
+    NSParameterAssert(recognizer != nil);
+    NSParameterAssert(event != nil);
+
+    if (self.shouldBePreventedByEventRecognizerBlock)
+        return self.shouldBePreventedByEventRecognizerBlock(recognizer, event);
+    else
+        return NO;
 }
 
 #pragma mark States and Transitions

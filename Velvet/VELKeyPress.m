@@ -25,6 +25,9 @@
 - (id)initWithEvent:(NSEvent *)event; {
     NSParameterAssert(event != nil);
 
+    if (event.type != NSKeyDown && event.type != NSKeyUp)
+        return nil;
+
     self = [self initWithCharactersIgnoringModifiers:event.charactersIgnoringModifiers modifierFlags:event.modifierFlags];
     if (!self)
         return nil;

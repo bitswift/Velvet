@@ -24,6 +24,7 @@
 #import <Velvet/VELClickEventRecognizer.h>
 #import <Velvet/VELControl.h>
 #import <Velvet/VELDraggingDestination.h>
+#import <Velvet/VELDragEventRecognizer.h>
 #import <Velvet/VELEventRecognizer.h>
 #import <Velvet/VELHostView.h>
 #import <Velvet/VELImageView.h>

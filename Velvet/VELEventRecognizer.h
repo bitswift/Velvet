@@ -19,6 +19,7 @@ typedef enum {
      *
      * From this state, the event recognizer may move to:
      *
+     *  - <VELEventRecognizerStatePossible> (again)
      *  - <VELEventRecognizerStateBegan>
      *  - <VELEventRecognizerStateFailed>
      *  - <VELEventRecognizerStateRecognized>
@@ -254,7 +255,7 @@ typedef enum {
  * @param block A block to invoke when the receiver's <state> changes. The block
  * will be passed the receiver when invoked.
  */
-- (id)addActionUsingBlock:(void (^)(VELEventRecognizer *))block;
+- (id)addActionUsingBlock:(void (^)(id recognizer))block;
 
 /**
  * De-registers a block previously added with <addActionUsingBlock:>.

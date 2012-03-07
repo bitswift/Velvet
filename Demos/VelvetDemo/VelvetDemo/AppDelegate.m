@@ -155,6 +155,21 @@
         [textField.cell setUsesSingleLineMode:YES];
         [textField.cell setScrollable:YES];
 
+        textField.wantsLayer = YES;
+
+        VELKeyPressEventRecognizer *recognizer = [[VELKeyPressEventRecognizer alloc] init];
+        recognizer.view = textField;
+        recognizer.keyPressesToRecognize = [NSArray arrayWithObjects:
+            [[VELKeyPress alloc] initWithCharactersIgnoringModifiers:@"h" modifierFlags:0],
+            [[VELKeyPress alloc] initWithCharactersIgnoringModifiers:@"i" modifierFlags:0],
+            nil
+        ];
+
+        [recognizer addActionUsingBlock:^(VELKeyPressEventRecognizer *recognizer){
+            if (recognizer.active)
+                NSLog(@"Hi to you too!");
+        }];
+
         VELNSView *textFieldHost = [[VELNSView alloc] initWithNSView:textField];
         textFieldHost.backgroundColor = [NSColor greenColor];
         [self.scrollView addSubview:textFieldHost];

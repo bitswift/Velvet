@@ -28,6 +28,8 @@
 #import <Velvet/VELEventRecognizer.h>
 #import <Velvet/VELHostView.h>
 #import <Velvet/VELImageView.h>
+#import <Velvet/VELKeyPress.h>
+#import <Velvet/VELKeyPressEventRecognizer.h>
 #import <Velvet/VELLabel.h>
 #import <Velvet/VELNSView.h>
 #import <Velvet/VELNSViewController.h>

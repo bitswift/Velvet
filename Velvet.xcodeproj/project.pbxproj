@@ -50,6 +50,8 @@
 		D0682AAF14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0682AB014C77307001CA434 /* CGGeometry+ConvenienceAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */; };
 		D0682AB414C773EF001CA434 /* CGGeometryAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */; };
+		D069F4C615096E4400ED37DC /* NSEvent+ButtonStateAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D069F4C415096E4400ED37DC /* NSEvent+ButtonStateAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D069F4C715096E4400ED37DC /* NSEvent+ButtonStateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */; };
 		D06EF03C14B39CFA0035E239 /* VELEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D06EF03A14B39CFA0035E239 /* VELEventManager.m */; };
 		D06EF04014B3A0590035E239 /* NSWindow+EventHandlingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D06EF03E14B3A0590035E239 /* NSWindow+EventHandlingAdditions.m */; };
 		D07B72A514C4FC5500AA19DD /* VELControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D07B72A414C4FC5500AA19DD /* VELControlTests.m */; };
@@ -247,6 +249,8 @@
 		D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGGeometry+ConvenienceAdditions.h"; sourceTree = "<group>"; };
 		D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGGeometry+ConvenienceAdditions.m"; sourceTree = "<group>"; };
 		D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGeometryAdditionsTests.m; sourceTree = "<group>"; };
+		D069F4C415096E4400ED37DC /* NSEvent+ButtonStateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEvent+ButtonStateAdditions.h"; sourceTree = "<group>"; };
+		D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEvent+ButtonStateAdditions.m"; sourceTree = "<group>"; };
 		D06EF03914B39CFA0035E239 /* VELEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELEventManager.h; sourceTree = "<group>"; };
 		D06EF03A14B39CFA0035E239 /* VELEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELEventManager.m; sourceTree = "<group>"; };
 		D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+EventHandlingAdditions.h"; sourceTree = "<group>"; };
@@ -413,6 +417,8 @@
 				D08B7BBA14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m */,
 				D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */,
 				D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */,
+				D069F4C415096E4400ED37DC /* NSEvent+ButtonStateAdditions.h */,
+				D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */,
 				D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */,
 				D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */,
 				D025619A15004999008A71B6 /* NSResponder+ResponderChainAdditions.h */,
@@ -793,6 +799,7 @@
 				D0B615991506C09200DD9FB0 /* VELDragEventRecognizer.h in Headers */,
 				D0B616791506E33D00DD9FB0 /* VELKeyPress.h in Headers */,
 				D0B616631506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h in Headers */,
+				D069F4C615096E4400ED37DC /* NSEvent+ButtonStateAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1013,6 +1020,7 @@
 				D0B6159A1506C09200DD9FB0 /* VELDragEventRecognizer.m in Sources */,
 				D0B6167A1506E33D00DD9FB0 /* VELKeyPress.m in Sources */,
 				D0B616641506E0B100DD9FB0 /* VELKeyPressEventRecognizer.m in Sources */,
+				D069F4C715096E4400ED37DC /* NSEvent+ButtonStateAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

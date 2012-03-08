@@ -64,6 +64,28 @@ describe(@"NSViewAdditions", ^{
         expect(theNSView.hostView).toEqual(hostView);
     });
 
+    it(@"returns its hostView as the immediateParentView when it has one", ^{
+        VELNSView *hostView = [[VELNSView alloc] initWithNSView:theNSView];
+        expect(theNSView.immediateParentView).toEqual(hostView);
+    });
+
+    it(@"returns its superview as the immediateParentView when the hostView is not immediate", ^{
+        NSView *superview = [[NSView alloc] initWithFrame:CGRectZero];
+        [superview addSubview:theNSView];
+
+        VELNSView *hostView = [[VELNSView alloc] init];
+        hostView.guestView = superview;
+
+        expect(theNSView.immediateParentView).toEqual(superview);
+    });
+
+    it(@"returns its hostView before its NSVelvetView as the immediateParentView", ^{
+        VELNSView *hostView = [[VELNSView alloc] initWithNSView:theNSView];
+        [window.rootView addSubview:hostView];
+
+        expect(theNSView.immediateParentView).toEqual(hostView);
+    });
+
     it(@"does not throw an exception in -ancestorDidLayout", ^{
         [theNSView ancestorDidLayout];
     });

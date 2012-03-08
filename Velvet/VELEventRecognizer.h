@@ -84,6 +84,13 @@ typedef enum {
 } VELEventRecognizerState;
 
 /**
+ * Returns a string representation of `state`.
+ *
+ * This is for debugging, and is not localized.
+ */
+NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
+
+/**
  * An abstract class representing an event recognizer, which is an object
  * similar to `UIGestureRecognizer` that can identify continuous or discrete
  * events of any kind.

@@ -118,6 +118,11 @@ typedef void (^VELControlActionBlock)(NSEvent *);
 }
 
 - (void)mouseUp:(NSEvent *)event {
+    if (!self.window) {
+        [self sendActionsForControlEvents:VELControlEventMouseUpOutside event:event];
+        return;
+    }
+
     CGPoint point = [self convertFromWindowPoint:[event locationInWindow]];
 
     if ([self pointInside:point]) {

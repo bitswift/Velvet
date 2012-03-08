@@ -34,7 +34,7 @@
  * acted on to transition between states.
  *
  * A drag requires a mouse down before it will transition into
- * <VELEventRecognizerStateBegan>.
+ * `VELEventRecognizerStateBegan`.
  */
 @property (nonatomic) BOOL didMouseDown;
 

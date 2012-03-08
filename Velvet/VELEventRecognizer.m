@@ -546,5 +546,5 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state) {
         case VELEventRecognizerStateCancelled: return @"Cancelled";
         case VELEventRecognizerStateFailed: return @"Failed";
     }
-    return [NSString stringWithFormat:@"Unknown State (%d)", state];
+    return [NSString stringWithFormat:@"Unknown State (%d)", (int)state];
 }

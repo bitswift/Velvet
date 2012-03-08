@@ -84,6 +84,12 @@
 @property (nonatomic, unsafe_unretained) id<VELHostView> hostView;
 
 /**
+ * Returns the receiver's <hostView> or superview, whichever is closer in the
+ * hierarchy.
+ */
+- (id<VELBridgedView>)immediateParentView;
+
+/**
  * Invoked any time an ancestor of the receiver has relaid itself out,
  * potentially moving or clipping the receiver relative to one of its ancestor
  * views.

@@ -326,6 +326,16 @@ describe(@"VELView", ^{
         expect(view.hostView).toEqual(window.contentView);
     });
 
+    it(@"returns its hostView as the immediateParentView when it has one", ^{
+        window.rootView = view;
+        expect(view.immediateParentView).toEqual(window.contentView);
+    });
+
+    it(@"returns its superview as the immediateParentView when the hostView is not immediate", ^{
+        [window.rootView addSubview:view];
+        expect(view.immediateParentView).toEqual(window.rootView);
+    });
+
     it(@"does not throw an exception when calling -ancestorDidLayout", ^{
         [view ancestorDidLayout];
     });

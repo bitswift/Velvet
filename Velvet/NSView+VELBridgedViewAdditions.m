@@ -30,6 +30,14 @@
         return self.superview.hostView;
 }
 
+- (id<VELBridgedView>)immediateParentView {
+    id<VELHostView> hostView = objc_getAssociatedObject(self, @selector(hostView));
+    if (hostView)
+        return hostView;
+    else
+        return self.superview;
+}
+
 - (void)setHostView:(id<VELHostView>)hostView {
     objc_setAssociatedObject(self, @selector(hostView), hostView, OBJC_ASSOCIATION_ASSIGN);
 }

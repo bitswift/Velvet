@@ -8,6 +8,7 @@
 
 #import "VELEventManager.h"
 #import "EXTScope.h"
+#import "NSEvent+ButtonStateAdditions.h"
 #import "NSWindow+EventHandlingAdditions.h"
 #import "VELEventRecognizer.h"
 #import "VELEventRecognizerPrivate.h"
@@ -426,9 +427,35 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
         default: {
             // assume this kind of event would go to the first responder, so
             // dispatch to any event recognizers for it
-            id responder = [event.window firstResponder];
-            if ([responder conformsToProtocol:@protocol(VELBridgedView)]) {
-                if (![self dispatchEvent:event toEventRecognizersForView:responder])
+            id view = [event.window firstResponder];
+            if (view && ![view conformsToProtocol:@protocol(VELBridgedView)])
+                return NO;
+
+            // this might be some kind of event that isn't technically a mouse
+            // event, but still has that kind of information
+            if (event.hasMouseButtonState) {
+                // convert to actual mouse events, and dispatch only to our
+                // event recognizers
+                NSArray *mouseEvents = event.correspondingMouseEvents;
+
+                BOOL consumed = NO;
+                for (NSEvent *mouseEvent in mouseEvents) {
+                    NSEvent *windowedMouseEvent = [self mouseEventByAddingWindow:mouseEvent];
+
+                    if (!view) {
+                        view = [windowedMouseEvent.window bridgedHitTest:windowedMouseEvent.locationInWindow withEvent:windowedMouseEvent];
+                        if (!view)
+                            continue;
+                    }
+
+                    consumed |= [self dispatchEvent:windowedMouseEvent toEventRecognizersForView:view];
+                }
+
+                if (consumed)
+                    return YES;
+            } else if (view) {
+                // otherwise, just pass it down normally
+                if (![self dispatchEvent:event toEventRecognizersForView:view])
                     return YES;
             }
 
@@ -452,19 +479,31 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
     if (!event || event.window)
         return event;
 
-    // For the moment, only consider the key window, because it's all we need
-    NSWindow *keyWindow = [[NSApplication sharedApplication] keyWindow];
-    NSPoint windowLoc = [self convertScreenPoint:event.locationInWindow toWindow:keyWindow];
+    NSWindow *matchingWindow = nil;
+    CGPoint windowLocation;
+    
+    for (NSWindow *window in [NSApp windows]) {
+        CGPoint screenPoint = event.locationInWindow;
+        if (!CGRectContainsPoint(window.frame, screenPoint))
+            continue;
+
+        matchingWindow = window;
+        windowLocation = [self convertScreenPoint:event.locationInWindow toWindow:window];
+    }
+
+    if (!matchingWindow)
+        return nil;
 
     NSEvent *windowEvent = [NSEvent mouseEventWithType:event.type
-        location:windowLoc
+        location:windowLocation
         modifierFlags:event.modifierFlags
         timestamp:event.timestamp
-        windowNumber:keyWindow.windowNumber
-        context:keyWindow.graphicsContext
+        windowNumber:matchingWindow.windowNumber
+        context:matchingWindow.graphicsContext
         eventNumber:event.eventNumber
         clickCount:event.clickCount
-        pressure:event.pressure];
+        pressure:event.pressure
+    ];
 
     return windowEvent;
 }

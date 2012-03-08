@@ -43,16 +43,6 @@
 @property (nonatomic, assign, getter = isHandlingEvent) BOOL handlingEvent;
 
 /**
- * Tracks event recognizers that have already received the current event via
- * <dispatchEvent:toEventRecognizersForView:> or
- * <dispatchEvent:toEventRecognizersForLayer:>, to avoid double dispatch.
- *
- * This is `nil` by default. It should be set to an empty set before dispatching
- * an event, and set back to `nil` afterward.
- */
-@property (nonatomic, strong) NSMutableSet *eventRecognizersReceivingEvent;
-
-/**
  * Turns an event into an `NSResponder` message, and attempts to send it to the
  * given responder. If neither `responder` nor the rest of its responder chain
  * implement the corresponding action, `NO` is returned.
@@ -81,23 +71,6 @@
  * superviews or a <[VELBridgedView hostView]> with attached event recognizers.
  */
 - (BOOL)dispatchEvent:(NSEvent *)event toEventRecognizersForView:(id<VELBridgedView>)view;
-
-/**
- * Dispatches the given event to all of the event recognizers that are directly
- * or indirectly attached to the given layer. Returns whether the event should
- * still be passed to the corresponding view.
- *
- * In other words, this returns `NO` if one or more of the event recognizers has
- * <[VELEventRecognizer delaysEventDelivery]> set to `YES`.
- *
- * This method will dispatch events to the farthest ancestors first, then walk
- * down the tree, eventually ending at `layer`.
- *
- * @param event The event to dispatch.
- * @param layer A layer that may have attached event recognizers, or may have
- * superlayers with attached event recognizers.
- */
-- (BOOL)dispatchEvent:(NSEvent *)event toEventRecognizersForLayer:(CALayer *)layer;
 
 /**
  * Attempts to dispatch the given mouse tracking event (`NSMouseEntered`,
@@ -141,7 +114,6 @@
 @synthesize currentMouseDownResponder = m_currentMouseDownResponder;
 @synthesize handlingEvent = m_handlingEvent;
 @synthesize lastMouseTrackingResponder = m_lastMouseTrackingResponder;
-@synthesize eventRecognizersReceivingEvent = m_eventRecognizersReceivingEvent;
 
 #pragma mark Lifecycle
 
@@ -273,25 +245,10 @@
     if (!view)
         return YES;
 
-    // dispatch to the host view first, and rely on
-    // eventRecognizersReceivingEvent to deduplicate our events for any common
-    // recognizers
-    return [self dispatchEvent:event toEventRecognizersForView:view.hostView] && [self dispatchEvent:event toEventRecognizersForLayer:view.layer];
-}
+    BOOL dispatchToView = [self dispatchEvent:event toEventRecognizersForView:view.immediateParentView];
 
-- (BOOL)dispatchEvent:(NSEvent *)event toEventRecognizersForLayer:(CALayer *)layer; {
-    NSParameterAssert(event != nil);
-
-    if (!layer)
-        return YES;
-
-    BOOL dispatchToView = [self dispatchEvent:event toEventRecognizersForLayer:layer.superlayer];
-
-    NSArray *attachedRecognizers = [VELEventRecognizer eventRecognizersForLayer:layer];
+    NSArray *attachedRecognizers = [VELEventRecognizer eventRecognizersForView:view];
     for (VELEventRecognizer *recognizer in attachedRecognizers) {
-        if ([self.eventRecognizersReceivingEvent containsObject:recognizer])
-            continue;
-
         if ([recognizer.eventsToIgnore containsObject:event]) {
             [recognizer.eventsToIgnore removeObject:event];
             continue;
@@ -299,8 +256,6 @@
 
         if (!recognizer.enabled)
             continue;
-
-        [self.eventRecognizersReceivingEvent addObject:recognizer];
 
         BOOL handled = [recognizer handleEvent:event];
         if (handled && recognizer.delaysEventDelivery)
@@ -319,19 +274,6 @@
     self.handlingEvent = YES;
     @onExit {
         self.handlingEvent = NO;
-    };
-
-    /**
-     * Dispatches the event to any event recognizers on the given view or any of
-     * its ancestors. Returns whether the event was absorbed by a recognizer.
-     */
-    BOOL (^dispatchToEventRecognizersOfView)(id<VELBridgedView>) = ^ BOOL (id<VELBridgedView> view){
-        self.eventRecognizersReceivingEvent = [NSMutableSet set];
-        @onExit {
-            self.eventRecognizersReceivingEvent = nil;
-        };
-
-        return ![self dispatchEvent:event toEventRecognizersForView:view];
     };
 
     __block id respondingView = nil;
@@ -357,7 +299,7 @@
         if (![respondingView conformsToProtocol:@protocol(VELBridgedView)])
             return NO;
 
-        if (dispatchToEventRecognizersOfView(respondingView)) {
+        if (![self dispatchEvent:event toEventRecognizersForView:respondingView]) {
             eventAbsorbedByRecognizer = YES;
             return YES;
         }
@@ -435,7 +377,7 @@
             // dispatch to any event recognizers for it
             id responder = [event.window firstResponder];
             if ([responder conformsToProtocol:@protocol(VELBridgedView)]) {
-                if (dispatchToEventRecognizersOfView(responder))
+                if (![self dispatchEvent:event toEventRecognizersForView:responder])
                     return YES;
             }
 

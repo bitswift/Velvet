@@ -936,20 +936,13 @@ static BOOL VELViewPerformingDeepLayout = NO;
 - (void)updateViewAndViewControllerNextResponders; {
     NSResponder *responderAfterViewController;
 
-    if (self.superview)
-        responderAfterViewController = self.superview;
-    else if (self.hostView)
-        responderAfterViewController = (id)self.hostView;
-    else
-        responderAfterViewController = nil;
-
     if (self.viewController) {
         self.nextResponder = self.viewController;
-        self.viewController.nextResponder = responderAfterViewController;
+        self.viewController.nextResponder = (id)self.immediateParentView;
     } else {
         // no view controller, set the next responder as it would've been set on
         // our view controller
-        self.nextResponder = responderAfterViewController;
+        self.nextResponder = (id)self.immediateParentView;
     }
 }
 

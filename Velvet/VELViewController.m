@@ -77,7 +77,7 @@
     do {
         // traverse superviews until we reach a root view, then keep trying on
         // any Velvet hierarchies above its hostView
-        view = view.superview ?: [self ancestorVELViewOfBridgedView:view.hostView];
+        view = [self ancestorVELViewOfBridgedView:view.immediateParentView];
 
         if (view.viewController)
             return view.viewController;

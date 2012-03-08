@@ -63,11 +63,7 @@
     if ([self conformsToProtocol:@protocol(VELScrollView)])
         return (id)self;
 
-    id<VELHostView> immediateHostView = objc_getAssociatedObject(self, @selector(hostView));
-    if (immediateHostView)
-        return immediateHostView.ancestorScrollView;
-
-    return self.superview.ancestorScrollView;
+    return self.immediateParentView.ancestorScrollView;
 }
 
 #pragma mark Geometry

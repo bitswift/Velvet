@@ -57,9 +57,6 @@ SpecBegin(VELEventRecognizer)
             view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 1000, 1000)];
             expect(view).not.toBeNil();
 
-            view.layer = [CALayer layer];
-            view.wantsLayer = YES;
-
             mouseEventAtLocation = [^(CGFloat x, CGFloat y){
                 CGPoint point = CGPointMake(x, y);
 

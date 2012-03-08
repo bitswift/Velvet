@@ -556,7 +556,19 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 #pragma mark NSObject overrides
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@: %p>( state = %i, enabled = %i )", [self class], self, (int)self.state, (int)self.enabled];
+    return [NSString stringWithFormat:@"<%@: %p>( state = %@, enabled = %i )", [self class], self, NSStringFromVELEventRecognizerState(self.state), (int)self.enabled];
 }
 
 @end
+
+NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state) {
+    switch (state) {
+        case VELEventRecognizerStatePossible: return @"Possible";
+        case VELEventRecognizerStateBegan: return @"Began";
+        case VELEventRecognizerStateChanged: return @"Changed";
+        case VELEventRecognizerStateEnded: return @"Recognized/Ended";
+        case VELEventRecognizerStateCancelled: return @"Cancelled";
+        case VELEventRecognizerStateFailed: return @"Failed";
+    }
+    return [NSString stringWithFormat:@"Unknown State (%d)", state];
+}

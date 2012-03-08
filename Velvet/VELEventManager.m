@@ -15,6 +15,34 @@
 #import "VELHostView.h"
 #import "VELView.h"
 
+/**
+ * Walks up the hierarchy of the given view, collecting all enabled event
+ * recognizers into the given array.
+ *
+ * The recognizers added to the given array will be in order that events should
+ * be dispatched (i.e., with ancestor recognizers first). Any disabled
+ * recognizers will be omitted from the array.
+ *
+ * @param recognizers A mutable array to add recognizers to. This should be
+ * provided as an empty array.
+ * @param view A view from which retrieve all attached recognizers. This may be
+ * `nil`.
+ */
+static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, id<VELBridgedView> view) {
+    NSCParameterAssert(recognizers != nil);
+
+    if (!view)
+        return;
+
+    getEventRecognizersFromViewHierarchy(recognizers, view.immediateParentView);
+
+    NSArray *attachedRecognizers = [VELEventRecognizer eventRecognizersForView:view];
+    for (VELEventRecognizer *recognizer in attachedRecognizers) {
+        if (recognizer.enabled)
+            [recognizers addObject:recognizer];
+    }
+}
+
 @interface VELEventManager ()
 /**
  * Any Velvet-hosted responder currently handling a continuous gesture event.
@@ -241,21 +269,44 @@
 
 - (BOOL)dispatchEvent:(NSEvent *)event toEventRecognizersForView:(id<VELBridgedView>)view; {
     NSParameterAssert(event != nil);
+    NSParameterAssert(view != nil);
 
-    if (!view)
+    NSMutableArray *recognizers = [NSMutableArray array];
+    getEventRecognizersFromViewHierarchy(recognizers, view);
+
+    if (!recognizers.count)
         return YES;
 
-    BOOL dispatchToView = [self dispatchEvent:event toEventRecognizersForView:view.immediateParentView];
+    BOOL dispatchToView = YES;
 
-    NSArray *attachedRecognizers = [VELEventRecognizer eventRecognizersForView:view];
-    for (VELEventRecognizer *recognizer in attachedRecognizers) {
+    // find recognizers that prevent each other (descendants first, so that they
+    // can prevent ancestors)
+    NSUInteger i = recognizers.count - 1;
+    do {
+        VELEventRecognizer *first = [recognizers objectAtIndex:i];
+
+        NSUInteger j = recognizers.count - 1;
+        do {
+            if (i == j) {
+                // this is the same recognizer, skip it
+                continue;
+            }
+
+            VELEventRecognizer *second = [recognizers objectAtIndex:j];
+            if ([first shouldPreventEventRecognizer:second fromReceivingEvent:event] || [second shouldBePreventedByEventRecognizer:first fromReceivingEvent:event]) {
+                [recognizers removeObjectAtIndex:j];
+
+                if (i > j)
+                    --i;
+            }
+        } while (j-- > 0);
+    } while (i-- > 0);
+
+    for (VELEventRecognizer *recognizer in recognizers) {
         if ([recognizer.eventsToIgnore containsObject:event]) {
             [recognizer.eventsToIgnore removeObject:event];
             continue;
         }
-
-        if (!recognizer.enabled)
-            continue;
 
         BOOL handled = [recognizer handleEvent:event];
         if (handled && recognizer.delaysEventDelivery)

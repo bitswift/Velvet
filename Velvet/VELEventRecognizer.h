@@ -101,6 +101,21 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  * higher-level event, it will transition into the appropriate
  * `VELEventRecognizerState` (setting the <state> property in the process) and
  * fire its action blocks.
+ *
+ * When an event is about to be dispatched to any view that has attached
+ * recognizers, or any ancestors with attached recognizers, the event will be
+ * delivered to any recognizers before being delivered to any of the views.
+ * Ancestor recognizers (those attached to views higher up in the hierarchy)
+ * will receive the event first, followed by their immediate descendants, and so
+ * on. If <delaysEventDelivery> is `YES` for any recognizer in the chain, the
+ * original view (the one that was going to receive the event) will not receive
+ * the event until that recognizer has transitioned states.
+ *
+ * If a given recognizer depends on another,
+ * <shouldPreventEventRecognizer:fromReceivingEvent:>,
+ * <shouldBePreventedByEventRecognizer:fromReceivingEvent:>, and
+ * <recognizersRequiredToFail> can be used to alter the order of event delivery
+ * or entirely prevent certain recognizers from receiving certain events.
  */
 @interface VELEventRecognizer : NSObject
 
@@ -228,6 +243,75 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  * The default value for this property is `nil`.
  */
 @property (nonatomic, copy) NSSet *recognizersRequiredToFail;
+
+/**
+ * Invoked to test whether the receiver should prevent `recognizer` from
+ * receiving `event`.
+ *
+ * If this block returns `YES`, `event` will not be delivered to `recognizer`.
+ *
+ * This block is invoked from the default implementation of
+ * <shouldPreventEventRecognizer:fromReceivingEvent:>.
+ *
+ * The default value for this property is `nil`.
+ */
+@property (nonatomic, copy) BOOL (^shouldPreventEventRecognizerBlock)(VELEventRecognizer *recognizer, NSEvent *event);
+
+/**
+ * Invoked to test whether `recognizer` should prevent the receiver from
+ * receiving `event`.
+ *
+ * If this block returns `YES`, `event` will not be delivered to the receiver.
+ *
+ * This block is invoked from the default implementation of
+ * <shouldBePreventedByEventRecognizer:fromReceivingEvent:>.
+ *
+ * The default value for this property is `nil`.
+ */
+@property (nonatomic, copy) BOOL (^shouldBePreventedByEventRecognizerBlock)(VELEventRecognizer *recognizer, NSEvent *event);
+
+/**
+ * Whether the receiver should prevent the given event recognizer from receiving
+ * the given event.
+ *
+ * If this method returns `YES`, `event` will not be delivered to `recognizer`.
+ *
+ * This method will be invoked every time an event is dispatched to a view that
+ * has attached recognizers, or any ancestors with attached recognizers. This
+ * method will be invoked on _descendant_ recognizers first, thus giving them
+ * a chance to prevent event delivery to recognizers further up the chain.
+ *
+ * The default implementation of this method invokes any
+ * <shouldPreventEventRecognizerBlock> that has been set, and returns the
+ * result. If no <shouldBePreventedByEventRecognizerBlock> has been set, `NO` is
+ * returned.
+ *
+ * @param recognizer Another event recognizer.
+ * @param event An event being considered for delivery to `recognizer`.
+ */
+- (BOOL)shouldPreventEventRecognizer:(VELEventRecognizer *)recognizer fromReceivingEvent:(NSEvent *)event;
+
+/**
+ * Whether the given event recognizer should prevent the receiver from receiving
+ * the given event.
+ *
+ * If this method returns `YES`, `event` will not be delivered to the receiver.
+ *
+ * This method will be invoked every time an event is dispatched to a view that
+ * has attached recognizers, or any ancestors with attached recognizers. This
+ * method will be invoked on _ancestor_ recognizers first, thus giving
+ * descendants a chance to prevent event delivery to recognizers further up the
+ * chain.
+ *
+ * The default implementation of this method invokes and
+ * <shouldBePreventedByEventRecognizerBlock> that has been set, and returns the
+ * result. If no <shouldBePreventedByEventRecognizerBlock> has been set, `NO` is
+ * returned.
+ *
+ * @param recognizer Another event recognizer.
+ * @param event An event being considered for delivery to the receiver.
+ */
+- (BOOL)shouldBePreventedByEventRecognizer:(VELEventRecognizer *)recognizer fromReceivingEvent:(NSEvent *)event;
 
 /**
  * @name Controlling Event Delivery

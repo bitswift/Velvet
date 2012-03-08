@@ -365,7 +365,7 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
         case NSLeftMouseDown:
         case NSRightMouseDown:
         case NSOtherMouseDown:
-            respondingView = [event.window bridgedHitTest:[event locationInWindow]];
+            respondingView = [event.window bridgedHitTest:[event locationInWindow] withEvent:event];
             if (!dispatchToView()) {
                 self.currentMouseDownResponder = nil;
                 return NO;
@@ -386,11 +386,11 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
         case NSEventTypeMagnify:
         case NSEventTypeSwipe:
         case NSEventTypeRotate:
-            respondingView = [event.window bridgedHitTest:[event locationInWindow]];
+            respondingView = [event.window bridgedHitTest:[event locationInWindow] withEvent:event];
             break;
 
         case NSEventTypeBeginGesture:
-            respondingView = [event.window bridgedHitTest:[event locationInWindow]];
+            respondingView = [event.window bridgedHitTest:[event locationInWindow] withEvent:event];
             if (velvetShouldHandleRespondingView()) {
                 self.currentGestureResponder = respondingView;
             }
@@ -475,7 +475,7 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
     if (!event)
         return;
 
-    id hitView = [event.window bridgedHitTest:[event locationInWindow]];
+    id hitView = [event.window bridgedHitTest:[event locationInWindow] withEvent:event];
     if (hitView == self.lastMouseTrackingResponder) {
         [hitView tryToPerform:@selector(mouseMoved:) with:event];
         return;

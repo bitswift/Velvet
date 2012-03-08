@@ -25,6 +25,8 @@
  *
  * @param windowPoint A point, specified in the coordinate system of the window,
  * at which to look for a view.
+ * @param event The event that triggered this hit test, or `nil` if not called
+ * as part of event handling.
  */
-- (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint;
+- (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint withEvent:(NSEvent *)event;
 @end

@@ -30,6 +30,15 @@
 @property (nonatomic, getter = isShiftPressed) BOOL shiftPressed;
 
 /**
+ * Whether the recognizer has seen an `NSMouseDown` event that hasn't yet been
+ * acted on to transition between states.
+ *
+ * A drag requires a mouse down before it will transition into
+ * <VELEventRecognizerStateBegan>.
+ */
+@property (nonatomic) BOOL didMouseDown;
+
+/**
  * Returns a vector of `delta` projected to the nearest angle that is a multiple
  * of `interval` degrees.
  *
@@ -54,6 +63,7 @@
 @synthesize locationInWindow = m_locationInWindow;
 @synthesize initialLocationInWindow = m_initialLocationInWindow;
 @synthesize shiftPressed = m_shiftPressed;
+@synthesize didMouseDown = m_didMouseDown;
 
 - (BOOL)isContinuous {
     return YES;
@@ -111,6 +121,7 @@
             [super handleEvent:event];
 
             self.locationInWindow = self.initialLocationInWindow = event.locationInWindow;
+            self.didMouseDown = YES;
             [self updateModifiers:event];
 
             // if there's (effectively) no minimum distance, begin recognition
@@ -135,8 +146,10 @@
                 if (event.type == NSLeftMouseUp)
                     transitionToState = VELEventRecognizerStateEnded;
             } else if (CGPointLength([self translationInView:nil]) >= self.minimumDistance) {
-                shouldUpdate = YES;
-                transitionToState = VELEventRecognizerStateBegan;
+                if (self.didMouseDown) {
+                    shouldUpdate = YES;
+                    transitionToState = VELEventRecognizerStateBegan;
+                }
             } else if (event.type == NSLeftMouseUp) {
                 // transition to the Possible state again, and dispatch any
                 // delayed events
@@ -176,6 +189,20 @@
     self.shiftPressed = (event.modifierFlags & NSShiftKeyMask) != 0;
 
     return self.shiftLocksAxes && (self.shiftPressed != oldShiftPressed);
+}
+
+#pragma mark State Transitions
+
+- (void)didTransitionFromState:(VELEventRecognizerState)fromState {
+    [super didTransitionFromState:fromState];
+    if (self.state == VELEventRecognizerStateBegan) {
+        self.didMouseDown = NO;
+    }
+}
+
+- (void)reset {
+    [super reset];
+    self.didMouseDown = NO;
 }
 
 @end

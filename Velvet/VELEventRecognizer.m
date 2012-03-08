@@ -532,7 +532,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 #pragma mark NSObject overrides
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@: %p>( state = %i, enabled = %i, view = %@ )", [self class], self, (int)self.state, (int)self.enabled, self.view];
+    return [NSString stringWithFormat:@"<%@: %p>( state = %i, enabled = %i )", [self class], self, (int)self.state, (int)self.enabled];
 }
 
 @end

@@ -90,4 +90,10 @@
     self.windowClickLocation = CGPointZero;
 }
 
+#pragma mark NSObject overrides
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p>( state = %i, clicks = %u, enabled = %i, view = %@ )", [self class], self, (int)self.state, (unsigned)self.numberOfClicksRequired, (int)self.enabled, self.view];
+}
+
 @end

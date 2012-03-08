@@ -393,6 +393,13 @@ static BOOL VELViewPerformingDeepLayout = NO;
         return self.superview.hostView;
 }
 
+- (id<VELBridgedView>)immediateParentView {
+    if (m_hostView)
+        return m_hostView;
+    else
+        return self.superview;
+}
+
 - (void)setHostView:(id<VELHostView>)view {
     if (view == m_hostView)
         return;

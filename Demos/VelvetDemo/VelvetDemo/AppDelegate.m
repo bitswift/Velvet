@@ -155,8 +155,6 @@
         [textField.cell setUsesSingleLineMode:YES];
         [textField.cell setScrollable:YES];
 
-        textField.wantsLayer = YES;
-
         VELKeyPressEventRecognizer *recognizer = [[VELKeyPressEventRecognizer alloc] init];
         recognizer.view = textField;
         recognizer.keyPressesToRecognize = [NSArray arrayWithObjects:

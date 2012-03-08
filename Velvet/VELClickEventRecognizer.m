@@ -90,4 +90,10 @@
     self.windowClickLocation = CGPointZero;
 }
 
+#pragma mark NSObject overrides
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<%@: %p>( state = %@, clicks = %u, enabled = %i )", [self class], self, NSStringFromVELEventRecognizerState(self.state), (unsigned)self.numberOfClicksRequired, (int)self.enabled];
+}
+
 @end

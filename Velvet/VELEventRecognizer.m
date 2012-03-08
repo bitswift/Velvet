@@ -113,6 +113,8 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 @synthesize delayedEvents = m_delayedEvents;
 @synthesize eventsToIgnore = m_eventsToIgnore;
 @synthesize actions = m_actions;
+@synthesize shouldPreventEventRecognizerBlock = m_shouldPreventEventRecognizerBlock;
+@synthesize shouldBePreventedByEventRecognizerBlock = m_shouldBePreventedByEventRecognizerBlock;
 
 - (BOOL)isActive {
     switch (self.state) {
@@ -356,6 +358,28 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     }
 }
 
+#pragma mark Dependencies
+
+- (BOOL)shouldPreventEventRecognizer:(VELEventRecognizer *)recognizer fromReceivingEvent:(NSEvent *)event; {
+    NSParameterAssert(recognizer != nil);
+    NSParameterAssert(event != nil);
+
+    if (self.shouldPreventEventRecognizerBlock)
+        return self.shouldPreventEventRecognizerBlock(recognizer, event);
+    else
+        return NO;
+}
+
+- (BOOL)shouldBePreventedByEventRecognizer:(VELEventRecognizer *)recognizer fromReceivingEvent:(NSEvent *)event; {
+    NSParameterAssert(recognizer != nil);
+    NSParameterAssert(event != nil);
+
+    if (self.shouldBePreventedByEventRecognizerBlock)
+        return self.shouldBePreventedByEventRecognizerBlock(recognizer, event);
+    else
+        return NO;
+}
+
 #pragma mark States and Transitions
 
 - (void)didTransitionFromState:(VELEventRecognizerState)fromState; {
@@ -532,7 +556,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 #pragma mark NSObject overrides
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@: %p>( state = %@, enabled = %i, view = %@ )", [self class], self, NSStringFromVELEventRecognizerState(self.state), (int)self.enabled, self.view];
+    return [NSString stringWithFormat:@"<%@: %p>( state = %@, enabled = %i )", [self class], self, NSStringFromVELEventRecognizerState(self.state), (int)self.enabled];
 }
 
 @end

@@ -196,14 +196,35 @@
             NSLog(@"Square view click action with event: %@", event);
         }];
 
-        VELClickEventRecognizer *recognizer = [[VELClickEventRecognizer alloc] init];
-        recognizer.numberOfClicksRequired = 2;
-        recognizer.delaysEventDelivery = YES;
-        recognizer.view = self.control;
+        VELClickEventRecognizer *doubleClickRecognizer = [[VELClickEventRecognizer alloc] init];
+        doubleClickRecognizer.numberOfClicksRequired = 2;
+        doubleClickRecognizer.delaysEventDelivery = NO;
+        doubleClickRecognizer.view = self.control;
 
-        [recognizer addActionUsingBlock:^(id recognizer){
-            if ([recognizer isActive])
-                NSLog(@"Event recognizer double-click at %@", NSStringFromPoint([recognizer locationInView:self.control]));
+        [doubleClickRecognizer addActionUsingBlock:^(VELClickEventRecognizer *doubleClickRecognizer){
+            if ([doubleClickRecognizer isActive])
+                NSLog(@"Event recognizer double-click at %@", NSStringFromPoint([doubleClickRecognizer locationInView:self.control]));
+        }];
+
+        VELClickEventRecognizer *quadrupleClickRecognizer = [[VELClickEventRecognizer alloc] init];
+        quadrupleClickRecognizer.numberOfClicksRequired = 4;
+        quadrupleClickRecognizer.delaysEventDelivery = NO;
+        quadrupleClickRecognizer.view = self.control;
+
+        // allow quadruple-clicks to prevent double-clicks
+        doubleClickRecognizer.shouldBePreventedByEventRecognizerBlock = ^(VELEventRecognizer *recognizer, NSEvent *event){
+            if (!(event.type == NSLeftMouseDown || event.type == NSLeftMouseUp))
+                return NO;
+
+            if (recognizer != quadrupleClickRecognizer)
+                return NO;
+
+            return event.clickCount == 4;
+        };
+
+        [quadrupleClickRecognizer addActionUsingBlock:^(VELClickEventRecognizer *quadrupleClickRecognizer){
+            if ([quadrupleClickRecognizer isActive])
+                NSLog(@"Event recognizer quadruple click at %@", NSStringFromPoint([quadrupleClickRecognizer locationInView:self.control]));
         }];
 
         [self.scrollView addSubview:self.control];

@@ -568,6 +568,10 @@ SpecBegin(VELEventRecognizer)
         __block TestEventRecognizer *firstDependency;
         __block TestEventRecognizer *secondDependency;
 
+        __block BOOL preventionBlockResult;
+        __block BOOL (^preventionBlock)(VELEventRecognizer *, NSEvent *);
+        __block BOOL preventionBlockInvoked;
+
         before(^{
             event = mouseEventAtLocation(50, 25);
             unrecognizedEvent = mouseEventAtLocation(-1, -5);
@@ -588,6 +592,15 @@ SpecBegin(VELEventRecognizer)
 
             recognizer.recognizersRequiredToFail = dependencies;
             expect(recognizer.recognizersRequiredToFail).toEqual(dependencies);
+
+            preventionBlockInvoked = NO;
+            preventionBlock = [^(VELEventRecognizer *recognizer, NSEvent *eventToPrevent){
+                expect(recognizer).toEqual(firstDependency);
+                expect(eventToPrevent).toEqual(event);
+
+                preventionBlockInvoked = YES;
+                return preventionBlockResult;
+            } copy];
         });
 
         it(@"should not handle events before all dependencies fail", ^{
@@ -653,6 +666,42 @@ SpecBegin(VELEventRecognizer)
             [secondDependency handleEvent:unrecognizedEvent];
 
             expect(invoked).toBeFalsy();
+        });
+
+        it(@"should return NO without a shouldPreventEventRecognizerBlock", ^{
+            expect([recognizer shouldPreventEventRecognizer:firstDependency fromReceivingEvent:event]).toBeFalsy();
+        });
+
+        it(@"should return NO without a shouldBePreventedByEventRecognizerBlock", ^{
+            expect([recognizer shouldBePreventedByEventRecognizer:firstDependency fromReceivingEvent:event]).toBeFalsy();
+        });
+
+        it(@"should invoke shouldPreventEventRecognizerBlock and return its result", ^{
+            recognizer.shouldPreventEventRecognizerBlock = preventionBlock;
+
+            preventionBlockResult = NO;
+            preventionBlockInvoked = NO;
+            expect([recognizer shouldPreventEventRecognizer:firstDependency fromReceivingEvent:event]).toEqual(preventionBlockResult);
+            expect(preventionBlockInvoked).toBeTruthy();
+
+            preventionBlockResult = YES;
+            preventionBlockInvoked = NO;
+            expect([recognizer shouldPreventEventRecognizer:firstDependency fromReceivingEvent:event]).toEqual(preventionBlockResult);
+            expect(preventionBlockInvoked).toBeTruthy();
+        });
+
+        it(@"should invoke shouldBePreventedByEventRecognizerBlock and return its result", ^{
+            recognizer.shouldBePreventedByEventRecognizerBlock = preventionBlock;
+
+            preventionBlockResult = NO;
+            preventionBlockInvoked = NO;
+            expect([recognizer shouldBePreventedByEventRecognizer:firstDependency fromReceivingEvent:event]).toEqual(preventionBlockResult);
+            expect(preventionBlockInvoked).toBeTruthy();
+
+            preventionBlockResult = YES;
+            preventionBlockInvoked = NO;
+            expect([recognizer shouldBePreventedByEventRecognizer:firstDependency fromReceivingEvent:event]).toEqual(preventionBlockResult);
+            expect(preventionBlockInvoked).toBeTruthy();
         });
     });
 

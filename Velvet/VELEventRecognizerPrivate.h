@@ -14,17 +14,6 @@
  */
 @interface VELEventRecognizer (Private)
 /**
- * Returns an array containing all event recognizers attached to the given
- * layer. If no such recognizers exist, returns `nil`.
- *
- * An event recognizer becomes attached to a layer when its <[VELEventRecognizer
- * view]> is set.
- *
- * @param layer A layer to return the attached event recognizers for.
- */
-+ (NSArray *)eventRecognizersForLayer:(CALayer *)layer;
-
-/**
  * Contains any events that the receiver should ignore.
  *
  * This is filled in with delayed events by the event recognizer. When

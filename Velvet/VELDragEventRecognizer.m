@@ -118,6 +118,10 @@
 - (BOOL)handleEvent:(NSEvent *)event {
     switch (event.type) {
         case NSLeftMouseDown: {
+            if (self.didMouseDown) {
+                return NO;
+            }
+
             [super handleEvent:event];
 
             self.locationInWindow = self.initialLocationInWindow = event.locationInWindow;
@@ -192,13 +196,6 @@
 }
 
 #pragma mark State Transitions
-
-- (void)didTransitionFromState:(VELEventRecognizerState)fromState {
-    [super didTransitionFromState:fromState];
-    if (self.state == VELEventRecognizerStateBegan) {
-        self.didMouseDown = NO;
-    }
-}
 
 - (void)reset {
     [super reset];

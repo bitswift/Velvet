@@ -15,14 +15,8 @@
 #import "EXTSafeCategory.h"
 
 @safecategory (NSWindow, EventHandlingAdditions)
-- (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint; {
+- (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint withEvent:(NSEvent *)event; {
     NSView *nsView = self.contentView;
-
-    if (![self isKeyWindow]) {
-        // we currently do not support any click-through events when the window is
-        // not already key
-        return nil;
-    }
 
     NSView *frameHitTestedView = [[nsView superview] hitTest:windowPoint];
     if ([frameHitTestedView isKindOfClass:NSClassFromString(@"NSThemeFrame")]) {
@@ -35,7 +29,11 @@
         id testView = [nsView hitTest:viewPoint];
 
         if (![testView isKindOfClass:[NSVelvetView class]]) {
-            return testView;
+            if (event.type != NSLeftMouseDown || [self isKeyWindow] || [testView acceptsFirstMouse:event]) {
+                return testView;
+            } else {
+                return nil;
+            }
         }
 
         NSVelvetView *hostView = testView;

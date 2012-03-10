@@ -14,7 +14,6 @@
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
 #import "VELNSView.h"
-#import "VELNSViewLayerDelegateProxy.h"
 #import "VELNSViewPrivate.h"
 #import "VELScrollView.h"
 #import "VELView.h"
@@ -129,12 +128,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, strong) CAShapeLayer *maskLayer;
 
 /*
- * The <VELNSViewLayerDelegateProxy> that is the delegate of the receiver's
- * layer.
- */
-@property (nonatomic, strong, readonly) VELNSViewLayerDelegateProxy *selfLayerDelegateProxy;
-
-/*
  * Returns any existing AppKit-created focus ring layer for the given view, or
  * `nil` if one could not be found.
  */
@@ -178,7 +171,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize trackingArea = m_trackingArea;
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
-@synthesize selfLayerDelegateProxy = m_selfLayerDelegateProxy;
 
 - (BOOL)isUserInteractionEnabled {
     return m_flags.userInteractionEnabled;

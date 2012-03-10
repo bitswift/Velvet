@@ -77,7 +77,6 @@
 		D0A96C0614B7AE8B00A64F6F /* AppKit+GeometryAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A96C0414B7AE8B00A64F6F /* AppKit+GeometryAdditions.m */; };
 		D0A96C0D14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */; };
 		D0B23AF91491872B009CF46A /* VELImageViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B23AF81491872B009CF46A /* VELImageViewTests.m */; };
-		D0B2E4F514C41A4600812B76 /* VELNSViewLayerDelegateProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */; };
 		D0B615991506C09200DD9FB0 /* VELDragEventRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0B615971506C09200DD9FB0 /* VELDragEventRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0B6159A1506C09200DD9FB0 /* VELDragEventRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B615981506C09200DD9FB0 /* VELDragEventRecognizer.m */; };
 		D0B616631506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h in Headers */ = {isa = PBXBuildFile; fileRef = D0B616611506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -283,8 +282,6 @@
 		D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELAppKitAdditionsTests.m; sourceTree = "<group>"; };
 		D0B23AF71491872B009CF46A /* VELImageViewTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELImageViewTests.h; sourceTree = "<group>"; };
 		D0B23AF81491872B009CF46A /* VELImageViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELImageViewTests.m; sourceTree = "<group>"; };
-		D0B2E4F214C41A4600812B76 /* VELNSViewLayerDelegateProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELNSViewLayerDelegateProxy.h; sourceTree = "<group>"; };
-		D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELNSViewLayerDelegateProxy.m; sourceTree = "<group>"; };
 		D0B615971506C09200DD9FB0 /* VELDragEventRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDragEventRecognizer.h; sourceTree = "<group>"; };
 		D0B615981506C09200DD9FB0 /* VELDragEventRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELDragEventRecognizer.m; sourceTree = "<group>"; };
 		D0B616611506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELKeyPressEventRecognizer.h; sourceTree = "<group>"; };
@@ -459,8 +456,6 @@
 				D0D8C39D1478582C00FC9015 /* NSVelvetView.h */,
 				D0D8C39E1478582C00FC9015 /* NSVelvetView.m */,
 				D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */,
-				D0B2E4F214C41A4600812B76 /* VELNSViewLayerDelegateProxy.h */,
-				D0B2E4F314C41A4600812B76 /* VELNSViewLayerDelegateProxy.m */,
 			);
 			name = "AppKit Bridge";
 			sourceTree = "<group>";
@@ -1016,7 +1011,6 @@
 				D06EF04014B3A0590035E239 /* NSWindow+EventHandlingAdditions.m in Sources */,
 				D0A96C0614B7AE8B00A64F6F /* AppKit+GeometryAdditions.m in Sources */,
 				D01B962F14C1956100CBDD8E /* VELViewLayer.m in Sources */,
-				D0B2E4F514C41A4600812B76 /* VELNSViewLayerDelegateProxy.m in Sources */,
 				D020F49414C3959500C466E1 /* NSWindow+InitializationAdditions.m in Sources */,
 				D0F5CD9514C57C4600966B2D /* EXTRuntimeExtensions.m in Sources */,
 				D0F5CD9714C57C4600966B2D /* EXTSafeCategory.m in Sources */,

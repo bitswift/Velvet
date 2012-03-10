@@ -250,16 +250,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [m_appKitHostView setWantsLayer:YES];
     [self addSubview:m_appKitHostView];
 
+    self.guestView = [[VELView alloc] init];
+
     // set up masking on the AppKit host view, and make ourselves the layout
     // manager, so that we'll know when new sublayers are added
     self.appKitHostView.layer.mask = self.maskLayer;
     self.appKitHostView.layer.layoutManager = self;
-
-    // setting this up should create a proxy for self.appKitHostView as well
-    m_selfLayerDelegateProxy = [VELNSViewLayerDelegateProxy layerDelegateProxyWithLayer:self.layer];
-
-    self.guestView = [[VELView alloc] init];
-
     [self recalculateNSViewClipping];
 
     // Set up to record dragging destinations

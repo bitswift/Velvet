@@ -47,9 +47,8 @@
 
 - (void)setUp; {
     // set up layer hosting for Velvet
-    CALayer *layer = [CALayer layer];
-    [self setLayer:layer];
-    [self setWantsLayer:YES];
+    self.layer = [CALayer layer];
+    self.wantsLayer = YES;
 }
 
 #pragma mark Rendering

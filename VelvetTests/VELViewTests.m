@@ -257,10 +257,14 @@ describe(@"VELView", ^{
     describe(@"geometry conversion", ^{
         CGRect windowRect = CGRectMake(175, 355, 100, 100);
         CGRect viewRect = CGRectMake(125, 255, 100, 100);
+        CGRect subviewRect = CGRectMake(115, 245, 50, 50);
+        __block VELView *subview = [[VELView alloc] init];
 
         before(^{
             view.frame = CGRectMake(50, 100, 100, 200);
+            subview.frame = CGRectMake(10, 10, 50, 50);
             [window.rootView addSubview:view];
+            [view addSubview:subview];
         });
 
         it(@"can convert from a window point to its own coordinate space", ^{
@@ -281,6 +285,22 @@ describe(@"VELView", ^{
         it(@"can convert to a window rect", ^{
             expect([view convertToWindowRect:viewRect]).toEqual(windowRect);
             expect([view convertRect:viewRect toView:nil]).toEqual(windowRect);
+        });
+
+        it(@"can convert a point to another view's coordinate space", ^{
+            expect([view convertPoint:viewRect.origin toView:subview]).toEqual(subviewRect.origin);
+        });
+        
+        it(@"can convert a point into its own coordinate space", ^{
+            expect([view convertPoint:subviewRect.origin fromView:subview]).toEqual(viewRect.origin);
+        });
+
+        it(@"can convert a rect to another view's coordinate space", ^{
+            expect([view convertRect:subview.frame toView:subview]).toEqual(subview.bounds);
+        });
+
+        it(@"can convert a rect from another view's coordinate space", ^{
+            expect([view convertRect:subview.bounds fromView:subview]).toEqual(subview.frame);
         });
     });
 

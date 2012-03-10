@@ -294,6 +294,14 @@ describe(@"VELView", ^{
         it(@"can convert a point into its own coordinate space", ^{
             expect([view convertPoint:secondViewRect.origin fromView:view2]).toEqual(viewRect.origin);
         });
+
+        it(@"can convert a rect to another view's coordinate space", ^{
+            expect([view convertRect:view2.frame toView:view2]).toEqual(view2.bounds);
+        });
+
+        it(@"can convert a rect from another view's coordinate space", ^{
+            expect([view convertRect:view2.bounds fromView:view2]).toEqual(view2.frame);
+        });
     });
 
     describe(@"scrolling to include a rectangle", ^{

@@ -10,10 +10,11 @@
 #import "EXTScope.h"
 #import "NSEvent+ButtonStateAdditions.h"
 #import "NSWindow+EventHandlingAdditions.h"
-#import "VELEventRecognizer.h"
 #import "VELEventRecognizerPrivate.h"
 #import "VELEventRecognizerProtected.h"
 #import "VELHostView.h"
+#import "VELKeyPress.h"
+#import "VELKeyPressEventRecognizer.h"
 #import "VELView.h"
 
 /**
@@ -147,7 +148,40 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
 #pragma mark Lifecycle
 
 + (void)load {
+    // set up a global event recognizer for VELHostView debug mode
+    #ifdef DEBUG
+    __block BOOL hostViewDebugModeEnabled = NO;
+
+    NSMutableArray *keyPresses = [NSMutableArray array];
+    for (unsigned i = 0; i < 3; ++i) {
+        VELKeyPress *keyPress = [[VELKeyPress alloc] initWithCharactersIgnoringModifiers:nil modifierFlags:NSControlKeyMask];
+        [keyPresses addObject:keyPress];
+    }
+
+    VELKeyPressEventRecognizer *recognizer = [[VELKeyPressEventRecognizer alloc] init];
+    recognizer.keyPressesToRecognize = keyPresses;
+
+    [recognizer addActionUsingBlock:^(VELKeyPressEventRecognizer *recognizer){
+        if (!recognizer.active)
+            return;
+
+        hostViewDebugModeEnabled = !hostViewDebugModeEnabled;
+        if (hostViewDebugModeEnabled) {
+            NSLog(@"*** Enabling host view debug mode");
+        } else {
+            NSLog(@"*** Disabling host view debug mode");
+        }
+
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:hostViewDebugModeEnabled] forKey:VELHostViewDebugModeIsEnabledKey];
+        [[NSNotificationCenter defaultCenter] postNotificationName:VELHostViewDebugModeChangedNotification object:self userInfo:userInfo];
+    }];
+    #endif
+
     [NSEvent addLocalMonitorForEventsMatchingMask:NSAnyEventMask handler:^ id (NSEvent *event){
+        #ifdef DEBUG
+        [recognizer handleEvent:event];
+        #endif
+
         if ([[self defaultManager] handleVelvetEvent:event])
             return nil;
         else

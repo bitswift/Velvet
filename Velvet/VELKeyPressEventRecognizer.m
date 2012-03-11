@@ -51,12 +51,21 @@
 #pragma mark Event Handling
 
 - (BOOL)handleEvent:(NSEvent *)event; {
-    if (event.type != NSKeyDown || [event isARepeat])
+    if (event.type == NSKeyDown) {
+        if ([event isARepeat])
+            return NO;
+    } else if (event.type != NSFlagsChanged) {
         return NO;
+    }
 
     VELKeyPress *keyPress = [[VELKeyPress alloc] initWithEvent:event];
     if (!keyPress)
         return NO;
+
+    if (event.type == NSFlagsChanged && (keyPress.modifierFlags & NSDeviceIndependentModifierFlagsMask) == 0) {
+        // ignore empty modifier flags, which are basically like KeyUp
+        return NO;
+    }
 
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(fail) object:nil];
     [self.receivedKeyPresses addObject:keyPress];

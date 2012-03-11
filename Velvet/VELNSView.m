@@ -121,33 +121,6 @@
     // prevents the layer from displaying until we need to render our contained
     // view
     self.contentMode = VELViewContentModeScaleToFill;
-
-    #ifdef DEBUG
-    CALayer *hostDebugLayer = [CALayer layer];
-    hostDebugLayer.backgroundColor = [NSColor blueColor].CGColor;
-    hostDebugLayer.opacity = 0.3;
-    hostDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-    hostDebugLayer.zPosition = CGFLOAT_MAX;
-
-    m_hostViewDebugModeObserver = [[NSNotificationCenter defaultCenter]
-        addObserverForName:VELHostViewDebugModeChangedNotification
-        object:nil
-        queue:[NSOperationQueue mainQueue]
-        usingBlock:^(NSNotification *notification){
-            BOOL enabled = [[notification.userInfo objectForKey:VELHostViewDebugModeIsEnabledKey] boolValue];
-
-            if (enabled) {
-                hostDebugLayer.frame = self.bounds;
-                
-                // NSVelvetView takes care of the overlay on our guestView
-                [self.layer addSublayer:hostDebugLayer];
-            } else {
-                [hostDebugLayer removeFromSuperlayer];
-            }
-        }
-    ];
-    #endif
-
     return self;
 }
 

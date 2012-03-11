@@ -1198,6 +1198,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [CATransaction setDisableActions:NO];
     [CATransaction setCompletionBlock:completionBlock];
 
+    [[NSAnimationContext currentContext] setDuration:[CATransaction animationDuration]];
+
     animations();
 }
 
@@ -1240,6 +1242,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [CATransaction setAnimationDuration:duration];
     [CATransaction setDisableActions:NO];
     [CATransaction setCompletionBlock:completionBlock];
+
+    [[NSAnimationContext currentContext] setDuration:duration];
 
     animations();
 

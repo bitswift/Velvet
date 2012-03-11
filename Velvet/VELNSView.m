@@ -125,7 +125,7 @@
     #ifdef DEBUG
     CALayer *hostDebugLayer = [CALayer layer];
     hostDebugLayer.backgroundColor = [NSColor blueColor].CGColor;
-    hostDebugLayer.opacity = 0.2;
+    hostDebugLayer.opacity = 0.3;
     hostDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
     hostDebugLayer.zPosition = CGFLOAT_MAX;
 

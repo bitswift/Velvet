@@ -76,6 +76,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
      * An observer for `VELHostViewDebugModeChangedNotification`.
      */
     id m_hostViewDebugModeObserver;
+
+    /**
+     * Overlays each hosted subview of the receiver when in <VELHostView> debug
+     * mode.
+     */
+    CAShapeLayer *m_subviewDebugLayer;
     #endif
 }
 
@@ -256,6 +262,39 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     // enable layer-backing for this view
     [self setWantsLayer:YES];
 
+    #ifdef DEBUG
+    CALayer *hostDebugLayer = [CALayer layer];
+    hostDebugLayer.backgroundColor = [NSColor redColor].CGColor;
+    hostDebugLayer.opacity = 0.3;
+    hostDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    hostDebugLayer.zPosition = CGFLOAT_MAX;
+
+    // overlay NSView subviews here, because we can do a better job than
+    // VELNSView
+    m_subviewDebugLayer = [CAShapeLayer layer];
+    m_subviewDebugLayer.fillColor = [NSColor blueColor].CGColor;
+    m_subviewDebugLayer.opacity = 0.3;
+    m_subviewDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    m_subviewDebugLayer.zPosition = CGFLOAT_MAX;
+    [hostDebugLayer addSublayer:m_subviewDebugLayer];
+
+    m_hostViewDebugModeObserver = [[NSNotificationCenter defaultCenter]
+        addObserverForName:VELHostViewDebugModeChangedNotification
+        object:nil
+        queue:[NSOperationQueue mainQueue]
+        usingBlock:^(NSNotification *notification){
+            BOOL enabled = [[notification.userInfo objectForKey:VELHostViewDebugModeIsEnabledKey] boolValue];
+
+            if (enabled) {
+                hostDebugLayer.frame = self.bounds;
+                [self.layer addSublayer:hostDebugLayer];
+            } else {
+                [hostDebugLayer removeFromSuperlayer];
+            }
+        }
+    ];
+    #endif
+
     m_velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
     m_velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self addSubview:m_velvetHostView];
@@ -282,42 +321,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     self.allDraggingDestinations = [NSMutableSet set];
 
     [self updateTrackingAreas];
-
-    #ifdef DEBUG
-    CALayer *hostDebugLayer = [CALayer layer];
-    hostDebugLayer.backgroundColor = [NSColor redColor].CGColor;
-    hostDebugLayer.opacity = 0.3;
-    hostDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-    hostDebugLayer.zPosition = CGFLOAT_MAX;
-
-    // overlay NSView subviews here, because we can do a better job than
-    // VELNSView
-    CALayer *subviewDebugLayer = [CALayer layer];
-    subviewDebugLayer.backgroundColor = [NSColor blueColor].CGColor;
-    subviewDebugLayer.opacity = 0.2;
-    subviewDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-    subviewDebugLayer.zPosition = CGFLOAT_MAX;
-
-    m_hostViewDebugModeObserver = [[NSNotificationCenter defaultCenter]
-        addObserverForName:VELHostViewDebugModeChangedNotification
-        object:nil
-        queue:[NSOperationQueue mainQueue]
-        usingBlock:^(NSNotification *notification){
-            BOOL enabled = [[notification.userInfo objectForKey:VELHostViewDebugModeIsEnabledKey] boolValue];
-
-            if (enabled) {
-                hostDebugLayer.frame = self.bounds;
-                subviewDebugLayer.frame = self.bounds;
-
-                [self.layer addSublayer:hostDebugLayer];
-                [self.appKitHostView.layer addSublayer:subviewDebugLayer];
-            } else {
-                [hostDebugLayer removeFromSuperlayer];
-                [subviewDebugLayer removeFromSuperlayer];
-            }
-        }
-    ];
-    #endif
 }
 
 - (void)dealloc {
@@ -468,6 +471,18 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     // mask them all at once (so fast!)
     self.maskLayer.path = path;
     CGPathRelease(path);
+
+    #ifdef DEBUG
+    // also update our VELNSView debugging layer
+    path = CGPathCreateMutable();
+
+    for (NSView *view in self.appKitHostView.subviews) {
+        CGPathAddRect(path, NULL, view.frame);
+    }
+
+    m_subviewDebugLayer.path = path;
+    CGPathRelease(path);
+    #endif
 }
 
 #pragma mark Dragging

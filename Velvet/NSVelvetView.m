@@ -485,7 +485,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         CGRect frame = view.frame;
 
         // make the line into an inset border
-        // (don't ask about this math, but it seems to work)
         frame = CGRectChop(frame, ceil(lineWidth / 2), CGRectMinXEdge);
         frame = CGRectChop(frame, ceil(lineWidth / 2), CGRectMinYEdge);
         frame = CGRectChop(frame, floor(lineWidth / 2), CGRectMaxXEdge);

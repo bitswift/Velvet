@@ -10,6 +10,7 @@
 #import "CALayer+GeometryAdditions.h"
 #import "CATransaction+BlockAdditions.h"
 #import "EXTScope.h"
+#import "NSColor+CoreGraphicsAdditions.h"
 #import "NSVelvetHostView.h"
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
@@ -69,6 +70,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         BOOL opaque;
         BOOL userInteractionEnabled;
     } m_flags;
+
+    #ifdef DEBUG
+    /**
+     * An observer for `VELHostViewDebugModeChangedNotification`.
+     */
+    id m_hostViewDebugModeObserver;
+    #endif
 }
 
 @property (nonatomic, readonly, strong) NSView *appKitHostView;
@@ -274,9 +282,40 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     self.allDraggingDestinations = [NSMutableSet set];
 
     [self updateTrackingAreas];
+
+    #ifdef DEBUG
+    CALayer *debugModeLayer = [CALayer layer];
+    debugModeLayer.backgroundColor = [NSColor redColor].CGColor;
+    debugModeLayer.opacity = 0.3;
+    debugModeLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    debugModeLayer.zPosition = CGFLOAT_MAX;
+
+    m_hostViewDebugModeObserver = [[NSNotificationCenter defaultCenter]
+        addObserverForName:VELHostViewDebugModeChangedNotification
+        object:nil
+        queue:[NSOperationQueue mainQueue]
+        usingBlock:^(NSNotification *notification){
+            BOOL enabled = [[notification.userInfo objectForKey:VELHostViewDebugModeIsEnabledKey] boolValue];
+
+            if (enabled) {
+                debugModeLayer.frame = self.bounds;
+                [self.layer addSublayer:debugModeLayer];
+            } else {
+                [debugModeLayer removeFromSuperlayer];
+            }
+        }
+    ];
+    #endif
 }
 
 - (void)dealloc {
+    #ifdef DEBUG
+    if (m_hostViewDebugModeObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:m_hostViewDebugModeObserver];
+        m_hostViewDebugModeObserver = nil;
+    }
+    #endif
+
     self.guestView.hostView = nil;
 }
 
@@ -599,7 +638,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     m_trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds
         options:(NSTrackingActiveInKeyWindow | NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited)
         owner:self
-        userInfo:NULL];
+        userInfo:NULL
+    ];
+
     [self addTrackingArea:self.trackingArea];
 }
 

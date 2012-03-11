@@ -103,6 +103,8 @@
 		D0DB8A7D149028D60082D3DA /* VELLabelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0DB8A7C149028D60082D3DA /* VELLabelTests.m */; };
 		D0E8B35414831419003980B4 /* VELImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0E8B35214831419003980B4 /* VELImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0E8B35514831419003980B4 /* VELImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0E8B35314831419003980B4 /* VELImageView.m */; };
+		D0EB4A41150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0EB4A3F150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0EB4A42150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EB4A40150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.m */; };
 		D0EFFC05147851A80095AB35 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC04147851A80095AB35 /* Cocoa.framework */; };
 		D0EFFC0F147851A80095AB35 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D0EFFC0D147851A80095AB35 /* InfoPlist.strings */; };
 		D0EFFC1B147851A80095AB35 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0EFFC1A147851A80095AB35 /* SenTestingKit.framework */; };
@@ -312,6 +314,8 @@
 		D0DB8A7C149028D60082D3DA /* VELLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabelTests.m; sourceTree = "<group>"; };
 		D0E8B35214831419003980B4 /* VELImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELImageView.h; sourceTree = "<group>"; };
 		D0E8B35314831419003980B4 /* VELImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELImageView.m; sourceTree = "<group>"; };
+		D0EB4A3F150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGContext+CoreAnimationAdditions.h"; sourceTree = "<group>"; };
+		D0EB4A40150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGContext+CoreAnimationAdditions.m"; sourceTree = "<group>"; };
 		D0EFFC01147851A80095AB35 /* Velvet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Velvet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EFFC04147851A80095AB35 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		D0EFFC07147851A80095AB35 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -416,6 +420,8 @@
 				1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */,
 				1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */,
 				1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */,
+				D0EB4A3F150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h */,
+				D0EB4A40150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.m */,
 				D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */,
 				D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */,
 				D08B7BB914FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h */,
@@ -816,6 +822,7 @@
 				D0B616791506E33D00DD9FB0 /* VELKeyPress.h in Headers */,
 				D0B616631506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h in Headers */,
 				D069F4C615096E4400ED37DC /* NSEvent+ButtonStateAdditions.h in Headers */,
+				D0EB4A41150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1036,6 +1043,7 @@
 				D0B6167A1506E33D00DD9FB0 /* VELKeyPress.m in Sources */,
 				D0B616641506E0B100DD9FB0 /* VELKeyPressEventRecognizer.m in Sources */,
 				D069F4C715096E4400ED37DC /* NSEvent+ButtonStateAdditions.m in Sources */,
+				D0EB4A42150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.m in Sources */,
 				D05AC4B3150BB92A0043F6DE /* VELAnimationManager.m in Sources */,
 				D05AC67C150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.m in Sources */,
 				D04B7E67150C72CF00A73996 /* VELHostView.m in Sources */,

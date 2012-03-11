@@ -246,7 +246,8 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     m_maskLayer = [CAShapeLayer layer];
 
     // enable layer-backing for this view
-    [self setWantsLayer:YES];
+    self.wantsLayer = YES;
+    self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawNever;
 
     m_velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
     m_velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -255,7 +256,8 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     m_appKitHostView = [[NSView alloc] initWithFrame:self.bounds];
     m_appKitHostView.autoresizesSubviews = NO;
     m_appKitHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    [m_appKitHostView setWantsLayer:YES];
+    m_appKitHostView.wantsLayer = YES;
+    m_appKitHostView.layerContentsRedrawPolicy = NSViewLayerContentsRedrawNever;
     [self addSubview:m_appKitHostView];
 
     // set up masking on the AppKit host view, and make ourselves the layout

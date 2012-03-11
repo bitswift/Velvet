@@ -9,6 +9,7 @@
 #import "NSVelvetView.h"
 #import "CALayer+GeometryAdditions.h"
 #import "CATransaction+BlockAdditions.h"
+#import "CGContext+CoreAnimationAdditions.h"
 #import "EXTScope.h"
 #import "NSVelvetHostView.h"
 #import "NSVelvetViewPrivate.h"
@@ -314,6 +315,20 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     }];
 
     return result;
+}
+
+#pragma mark Drawing
+
+- (void)drawRect:(NSRect)rect {
+    NSGraphicsContext *currentContext = [NSGraphicsContext currentContext];
+    if ([currentContext isDrawingToScreen]) {
+        return;
+    }
+
+    // we're probably printing or drawing to a PDF, and AppKit doesn't support
+    // rendering layer trees for us, so do it ourselves
+    CGContextDrawCALayer(currentContext.graphicsPort, self.velvetHostView.layer);
+    CGContextDrawCALayer(currentContext.graphicsPort, self.appKitHostView.layer);
 }
 
 #pragma mark CALayer delegate

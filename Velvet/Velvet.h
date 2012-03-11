@@ -10,6 +10,7 @@
 #import <Velvet/CALayer+GeometryAdditions.h>
 #import <Velvet/CATransaction+BlockAdditions.h>
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
+#import <Velvet/CGContext+CoreAnimationAdditions.h>
 #import <Velvet/CGGeometry+ConvenienceAdditions.h>
 #import <Velvet/NSClipView+VELScrollViewAdditions.h>
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>

@@ -123,17 +123,11 @@
     self.contentMode = VELViewContentModeScaleToFill;
 
     #ifdef DEBUG
-    CALayer *(^debuggingLayer)(void) = ^{
-        CALayer *layer = [CALayer layer];
-        layer.backgroundColor = [NSColor blueColor].CGColor;
-        layer.opacity = 0.2;
-        layer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-        layer.zPosition = CGFLOAT_MAX;
-        return layer;
-    };
-
-    CALayer *hostLayer = debuggingLayer();
-    CALayer *guestLayer = debuggingLayer();
+    CALayer *hostDebugLayer = [CALayer layer];
+    hostDebugLayer.backgroundColor = [NSColor blueColor].CGColor;
+    hostDebugLayer.opacity = 0.2;
+    hostDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    hostDebugLayer.zPosition = CGFLOAT_MAX;
 
     m_hostViewDebugModeObserver = [[NSNotificationCenter defaultCenter]
         addObserverForName:VELHostViewDebugModeChangedNotification
@@ -143,14 +137,12 @@
             BOOL enabled = [[notification.userInfo objectForKey:VELHostViewDebugModeIsEnabledKey] boolValue];
 
             if (enabled) {
-                hostLayer.frame = self.bounds;
-                guestLayer.frame = self.guestView.bounds;
-
-                [self.layer addSublayer:hostLayer];
-                [self.guestView.layer addSublayer:guestLayer];
+                hostDebugLayer.frame = self.bounds;
+                
+                // NSVelvetView takes care of the overlay on our guestView
+                [self.layer addSublayer:hostDebugLayer];
             } else {
-                [hostLayer removeFromSuperlayer];
-                [guestLayer removeFromSuperlayer];
+                [hostDebugLayer removeFromSuperlayer];
             }
         }
     ];

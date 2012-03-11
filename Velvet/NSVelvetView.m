@@ -284,11 +284,19 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     [self updateTrackingAreas];
 
     #ifdef DEBUG
-    CALayer *debugModeLayer = [CALayer layer];
-    debugModeLayer.backgroundColor = [NSColor redColor].CGColor;
-    debugModeLayer.opacity = 0.3;
-    debugModeLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-    debugModeLayer.zPosition = CGFLOAT_MAX;
+    CALayer *hostDebugLayer = [CALayer layer];
+    hostDebugLayer.backgroundColor = [NSColor redColor].CGColor;
+    hostDebugLayer.opacity = 0.3;
+    hostDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    hostDebugLayer.zPosition = CGFLOAT_MAX;
+
+    // overlay NSView subviews here, because we can do a better job than
+    // VELNSView
+    CALayer *subviewDebugLayer = [CALayer layer];
+    subviewDebugLayer.backgroundColor = [NSColor blueColor].CGColor;
+    subviewDebugLayer.opacity = 0.2;
+    subviewDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    subviewDebugLayer.zPosition = CGFLOAT_MAX;
 
     m_hostViewDebugModeObserver = [[NSNotificationCenter defaultCenter]
         addObserverForName:VELHostViewDebugModeChangedNotification
@@ -298,10 +306,14 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
             BOOL enabled = [[notification.userInfo objectForKey:VELHostViewDebugModeIsEnabledKey] boolValue];
 
             if (enabled) {
-                debugModeLayer.frame = self.bounds;
-                [self.layer addSublayer:debugModeLayer];
+                hostDebugLayer.frame = self.bounds;
+                subviewDebugLayer.frame = self.bounds;
+
+                [self.layer addSublayer:hostDebugLayer];
+                [self.appKitHostView.layer addSublayer:subviewDebugLayer];
             } else {
-                [debugModeLayer removeFromSuperlayer];
+                [hostDebugLayer removeFromSuperlayer];
+                [subviewDebugLayer removeFromSuperlayer];
             }
         }
     ];

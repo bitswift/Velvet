@@ -97,6 +97,9 @@
     if (![obj isKindOfClass:[VELKeyPress class]])
         return NO;
 
+    if (!(self.charactersIgnoringModifiers.length == obj.charactersIgnoringModifiers.length))
+        return NO;
+
     if (self.charactersIgnoringModifiers && ![self.charactersIgnoringModifiers isEqual:obj.charactersIgnoringModifiers])
         return NO;
 

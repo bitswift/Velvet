@@ -7,14 +7,16 @@
 //
 
 #import "VELWindow.h"
+#import "EXTScope.h"
 #import "NSVelvetView.h"
+#import "NSView+VELBridgedViewAdditions.h"
+#import "VELKeyPress.h"
+#import "VELKeyPressEventRecognizer.h"
 
 @class NSVelvetHostView;
 
 NSString * const VELWindowFirstResponderDidChangeNotification = @"VELWindowFirstResponderDidChangeNotification";
-
 NSString * const VELWindowOldFirstResponderKey = @"VELWindowOldFirstResponderKey";
-
 NSString * const VELWindowNewFirstResponderKey = @"VELWindowNewFirstResponderKey";
 
 @implementation VELWindow
@@ -37,6 +39,41 @@ NSString * const VELWindowNewFirstResponderKey = @"VELWindowNewFirstResponderKey
 
     contentView.guestView = view;
 }
+
+// set up slo-mo mode using an event recognizer on the content view
+#ifdef DEBUG
+- (void)setContentView:(NSView *)view {
+    NSMutableArray *keyPresses = [NSMutableArray array];
+    for (unsigned i = 0; i < 3; ++i) {
+        VELKeyPress *keyPress = [[VELKeyPress alloc] initWithCharactersIgnoringModifiers:nil modifierFlags:NSShiftKeyMask];
+        [keyPresses addObject:keyPress];
+    }
+
+    VELKeyPressEventRecognizer *recognizer = [[VELKeyPressEventRecognizer alloc] init];
+    recognizer.view = view;
+    recognizer.keyPressesToRecognize = keyPresses;
+
+    __weak NSView *weakView = view;
+    __unsafe_unretained VELWindow *weakWindow = self;
+    __block BOOL slowMotionEnabled = NO;
+
+    [recognizer addActionUsingBlock:^(VELKeyPressEventRecognizer *recognizer){
+        if (!recognizer.active)
+            return;
+
+        slowMotionEnabled = !slowMotionEnabled;
+        if (slowMotionEnabled) {
+            NSLog(@"*** Enabling slow-motion animations for window \"%@\"", weakWindow.title);
+            weakView.layer.speed = 0.1;
+        } else {
+            NSLog(@"*** Disabling slow-motion animations for window \"%@\"", weakWindow.title);
+            weakView.layer.speed = 1;
+        }
+    }];
+
+    [super setContentView:view];
+}
+#endif
 
 #pragma mark Lifecycle
 

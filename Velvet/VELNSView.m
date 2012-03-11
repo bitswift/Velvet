@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CATransaction+BlockAdditions.h"
 #import "CGBitmapContext+PixelFormatAdditions.h"
+#import "NSColor+CoreGraphicsAdditions.h"
 #import "NSVelvetView.h"
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
@@ -23,6 +24,13 @@
      * are in effect.
      */
     NSUInteger m_renderingContainedViewCount;
+
+    #ifdef DEBUG
+    /**
+     * An observer for `VELHostViewDebugModeChangedNotification`.
+     */
+    id m_hostViewDebugModeObserver;
+    #endif
 }
 
 - (void)synchronizeNSViewGeometry;
@@ -113,7 +121,6 @@
     // prevents the layer from displaying until we need to render our contained
     // view
     self.contentMode = VELViewContentModeScaleToFill;
-
     return self;
 }
 
@@ -130,6 +137,13 @@
 }
 
 - (void)dealloc {
+    #ifdef DEBUG
+    if (m_hostViewDebugModeObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:m_hostViewDebugModeObserver];
+        m_hostViewDebugModeObserver = nil;
+    }
+    #endif
+
     self.guestView.hostView = nil;
 }
 

@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "CATransaction+BlockAdditions.h"
 #import "CGBitmapContext+PixelFormatAdditions.h"
+#import "NSColor+CoreGraphicsAdditions.h"
 #import "NSVelvetView.h"
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
@@ -23,6 +24,13 @@
      * are in effect.
      */
     NSUInteger m_renderingContainedViewCount;
+
+    #ifdef DEBUG
+    /**
+     * An observer for `VELHostViewDebugModeChangedNotification`.
+     */
+    id m_hostViewDebugModeObserver;
+    #endif
 }
 
 - (void)synchronizeNSViewGeometry;
@@ -114,6 +122,40 @@
     // view
     self.contentMode = VELViewContentModeScaleToFill;
 
+    #ifdef DEBUG
+    CALayer *(^debuggingLayer)(void) = ^{
+        CALayer *layer = [CALayer layer];
+        layer.backgroundColor = [NSColor blueColor].CGColor;
+        layer.opacity = 0.2;
+        layer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+        layer.zPosition = CGFLOAT_MAX;
+        return layer;
+    };
+
+    CALayer *hostLayer = debuggingLayer();
+    CALayer *guestLayer = debuggingLayer();
+
+    m_hostViewDebugModeObserver = [[NSNotificationCenter defaultCenter]
+        addObserverForName:VELHostViewDebugModeChangedNotification
+        object:nil
+        queue:[NSOperationQueue mainQueue]
+        usingBlock:^(NSNotification *notification){
+            BOOL enabled = [[notification.userInfo objectForKey:VELHostViewDebugModeIsEnabledKey] boolValue];
+
+            if (enabled) {
+                hostLayer.frame = self.bounds;
+                guestLayer.frame = self.guestView.bounds;
+
+                [self.layer addSublayer:hostLayer];
+                [self.guestView.layer addSublayer:guestLayer];
+            } else {
+                [hostLayer removeFromSuperlayer];
+                [guestLayer removeFromSuperlayer];
+            }
+        }
+    ];
+    #endif
+
     return self;
 }
 
@@ -130,6 +172,13 @@
 }
 
 - (void)dealloc {
+    #ifdef DEBUG
+    if (m_hostViewDebugModeObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:m_hostViewDebugModeObserver];
+        m_hostViewDebugModeObserver = nil;
+    }
+    #endif
+
     self.guestView.hostView = nil;
 }
 

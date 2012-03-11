@@ -13,7 +13,6 @@
 #import "NSVelvetView.h"
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
-#import "VELNSViewLayerDelegateProxy.h"
 #import "VELNSViewPrivate.h"
 #import "EXTScope.h"
 
@@ -28,12 +27,6 @@
 - (void)synchronizeNSViewGeometry;
 - (void)startRenderingContainedView;
 - (void)stopRenderingContainedView;
-
-/*
- * An object for proxying the layer delegate of the `NSView` (typically the
- * `NSView` itself), used to disable implicit animations.
- */
-@property (nonatomic, strong) VELNSViewLayerDelegateProxy *layerDelegateProxy;
 @end
 
 @implementation VELNSView
@@ -41,7 +34,6 @@
 #pragma mark Properties
 
 @synthesize guestView = m_guestView;
-@synthesize layerDelegateProxy = m_layerDelegateProxy;
 
 - (void)setGuestView:(NSView *)view {
     NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
@@ -60,8 +52,6 @@
         [m_guestView setWantsLayer:YES];
         [m_guestView setNeedsDisplay:YES];
 
-        self.layerDelegateProxy = [VELNSViewLayerDelegateProxy layerDelegateProxyWithLayer:m_guestView.layer];
-
         [velvetView.appKitHostView addSubview:m_guestView];
         m_guestView.hostView = self;
 
@@ -70,8 +60,6 @@
         m_guestView.nextResponder = self;
         [self synchronizeNSViewGeometry];
     } else {
-        self.layerDelegateProxy = nil;
-
         // remove the old view from the NSVelvetView's clipping path
         [velvetView recalculateNSViewClipping];
     }

@@ -60,10 +60,13 @@
 - (void)stopRenderingNSViewOfView:(VELNSView *)view;
 
 /*
- * Schedules the given block to execute when the animation of the current
- * `CATransaction` completes.
+ * Schedules the given block to execute when the animation represented by the
+ * receiver completes.
+ *
+ * @param block A block to be run when the animation completes.
+ * @param layer The layer that the receiver is attached to.
  */
-- (void)runWhenAnimationCompletes:(void (^)(void))block;
+- (void)runWhenAnimationCompletes:(void (^)(void))block forLayer:(CALayer *)layer;
 
 /*
  * Returns `YES` if objects of this class add features to actions for the given
@@ -164,6 +167,7 @@
 
 - (void)runActionForKey:(NSString *)key object:(id)anObject arguments:(NSDictionary *)dict {
     [self.innerAction runActionForKey:key object:anObject arguments:dict];
+
     CAAnimation *animation = [anObject animationForKey:key];
     if (!animation)
         return;
@@ -204,7 +208,7 @@
         [cachedViews enumerateObjectsUsingBlock:^(VELNSView *view, NSUInteger idx, BOOL *stop) {
             [self stopRenderingNSViewOfView:view];
         }];
-    }];
+    } forLayer:layer];
 }
 
 - (void)opacityChangedForLayer:(CALayer *)layer; {
@@ -216,7 +220,7 @@
             [self enumerateVELNSViewsInLayer:layer block:^(VELNSView *view) {
                 [self stopRenderingNSViewOfView:view];
             }];
-        }];
+        } forLayer:layer];
     } else {
         // For all contained VELNSViews, render their NSView into their layer
         // and hide the NSView. Now the visual element is part of the layer
@@ -227,8 +231,29 @@
     }
 }
 
-- (void)runWhenAnimationCompletes:(void (^)(void))block; {
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)([CATransaction animationDuration] * NSEC_PER_SEC));
+- (void)runWhenAnimationCompletes:(void (^)(void))block forLayer:(CALayer *)layer; {
+    NSParameterAssert(block != nil);
+    NSParameterAssert(layer != nil);
+
+    CFTimeInterval duration = [CATransaction animationDuration];
+
+    if ([(id)self.innerAction isKindOfClass:[CAAnimation class]]) {
+        CAAnimation *animation = (id)self.innerAction;
+        if (animation.duration)
+            duration = animation.duration;
+
+        duration += animation.beginTime;
+        duration /= animation.speed;
+
+        do {
+            duration += layer.beginTime - layer.timeOffset;
+            duration /= layer.speed;
+
+            layer = layer.superlayer;
+        } while (layer);
+    }
+
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), block);
 }
 

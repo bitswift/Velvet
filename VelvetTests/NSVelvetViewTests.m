@@ -89,8 +89,9 @@ SpecEnd
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view {
     [super didMoveFromNSVelvetView:view];
 
-    // The NSVelvetView's guestView should be self.
-    NSAssert(self.ancestorNSVelvetView.guestView == self, @"");
+    // The NSVelvetView's guestView should be self, unless it's clearing out the
+    // guestView (perhaps during deallocation).
+    NSAssert(self.ancestorNSVelvetView.guestView == self || !self.ancestorNSVelvetView.guestView, @"");
 }
 
 @end

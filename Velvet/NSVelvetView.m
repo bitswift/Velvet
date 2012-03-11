@@ -15,7 +15,6 @@
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
 #import "VELNSView.h"
-#import "VELNSViewLayerDelegateProxy.h"
 #import "VELNSViewPrivate.h"
 #import "VELScrollView.h"
 #import "VELView.h"
@@ -130,12 +129,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @property (nonatomic, strong) CAShapeLayer *maskLayer;
 
 /*
- * The <VELNSViewLayerDelegateProxy> that is the delegate of the receiver's
- * layer.
- */
-@property (nonatomic, strong, readonly) VELNSViewLayerDelegateProxy *selfLayerDelegateProxy;
-
-/*
  * Returns any existing AppKit-created focus ring layer for the given view, or
  * `nil` if one could not be found.
  */
@@ -179,7 +172,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize trackingArea = m_trackingArea;
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
-@synthesize selfLayerDelegateProxy = m_selfLayerDelegateProxy;
 
 - (BOOL)isUserInteractionEnabled {
     return m_flags.userInteractionEnabled;
@@ -247,7 +239,8 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     m_maskLayer = [CAShapeLayer layer];
 
     // enable layer-backing for this view
-    [self setWantsLayer:YES];
+    self.wantsLayer = YES;
+    self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawNever;
 
     m_velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
     m_velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -256,19 +249,16 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     m_appKitHostView = [[NSView alloc] initWithFrame:self.bounds];
     m_appKitHostView.autoresizesSubviews = NO;
     m_appKitHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    [m_appKitHostView setWantsLayer:YES];
+    m_appKitHostView.wantsLayer = YES;
+    m_appKitHostView.layerContentsRedrawPolicy = NSViewLayerContentsRedrawNever;
     [self addSubview:m_appKitHostView];
+
+    self.guestView = [[VELView alloc] init];
 
     // set up masking on the AppKit host view, and make ourselves the layout
     // manager, so that we'll know when new sublayers are added
     self.appKitHostView.layer.mask = self.maskLayer;
     self.appKitHostView.layer.layoutManager = self;
-
-    // setting this up should create a proxy for self.appKitHostView as well
-    m_selfLayerDelegateProxy = [VELNSViewLayerDelegateProxy layerDelegateProxyWithLayer:self.layer];
-
-    self.guestView = [[VELView alloc] init];
-
     [self recalculateNSViewClipping];
 
     // Set up to record dragging destinations

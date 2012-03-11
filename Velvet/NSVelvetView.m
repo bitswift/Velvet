@@ -9,6 +9,7 @@
 #import "NSVelvetView.h"
 #import "CALayer+GeometryAdditions.h"
 #import "CATransaction+BlockAdditions.h"
+#import "CGGeometry+ConvenienceAdditions.h"
 #import "EXTScope.h"
 #import "NSColor+CoreGraphicsAdditions.h"
 #import "NSVelvetHostView.h"
@@ -264,16 +265,18 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 
     #ifdef DEBUG
     CALayer *hostDebugLayer = [CALayer layer];
-    hostDebugLayer.backgroundColor = [NSColor redColor].CGColor;
-    hostDebugLayer.opacity = 0.3;
+    hostDebugLayer.backgroundColor = [NSColor colorWithCalibratedRed:1 green:0 blue:0 alpha:0.1].CGColor;
+    hostDebugLayer.borderColor = [NSColor colorWithCalibratedRed:1 green:0 blue:0 alpha:0.75].CGColor;
+    hostDebugLayer.borderWidth = 3;
     hostDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
     hostDebugLayer.zPosition = CGFLOAT_MAX;
 
     // overlay NSView subviews here, because we can do a better job than
     // VELNSView
     m_subviewDebugLayer = [CAShapeLayer layer];
-    m_subviewDebugLayer.fillColor = [NSColor blueColor].CGColor;
-    m_subviewDebugLayer.opacity = 0.3;
+    m_subviewDebugLayer.fillColor = [NSColor colorWithCalibratedRed:0 green:0 blue:1 alpha:0.1].CGColor;
+    m_subviewDebugLayer.strokeColor = [NSColor colorWithCalibratedRed:0 green:0 blue:1 alpha:0.75].CGColor;
+    m_subviewDebugLayer.lineWidth = 3;
     m_subviewDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
     m_subviewDebugLayer.zPosition = CGFLOAT_MAX;
     [hostDebugLayer addSublayer:m_subviewDebugLayer];
@@ -476,8 +479,22 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     // also update our VELNSView debugging layer
     path = CGPathCreateMutable();
 
+    CGFloat lineWidth = m_subviewDebugLayer.lineWidth;
+
     for (NSView *view in self.appKitHostView.subviews) {
-        CGPathAddRect(path, NULL, view.frame);
+        CGRect frame = view.frame;
+
+        // make the line into an inset border
+        // (don't ask about this math, but it seems to work)
+        frame = CGRectChop(frame, ceil(lineWidth / 2), CGRectMinXEdge);
+        frame = CGRectChop(frame, ceil(lineWidth / 2), CGRectMinYEdge);
+        frame = CGRectChop(frame, floor(lineWidth / 2), CGRectMaxXEdge);
+        frame = CGRectChop(frame, floor(lineWidth / 2), CGRectMaxYEdge);
+
+        // offset so that the line draws on whole points
+        frame = CGRectOffset(frame, -0.5, -0.5);
+
+        CGPathAddRect(path, NULL, frame);
     }
 
     m_subviewDebugLayer.path = path;

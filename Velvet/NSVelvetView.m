@@ -10,7 +10,9 @@
 #import "CALayer+GeometryAdditions.h"
 #import "CATransaction+BlockAdditions.h"
 #import "CGContext+CoreAnimationAdditions.h"
+#import "CGGeometry+ConvenienceAdditions.h"
 #import "EXTScope.h"
+#import "NSColor+CoreGraphicsAdditions.h"
 #import "NSVelvetHostView.h"
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
@@ -69,6 +71,19 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
         BOOL opaque;
         BOOL userInteractionEnabled;
     } m_flags;
+
+    #ifdef DEBUG
+    /**
+     * An observer for `VELHostViewDebugModeChangedNotification`.
+     */
+    id m_hostViewDebugModeObserver;
+
+    /**
+     * Overlays each hosted subview of the receiver when in <VELHostView> debug
+     * mode.
+     */
+    CAShapeLayer *m_subviewDebugLayer;
+    #endif
 }
 
 @property (nonatomic, readonly, strong) NSView *appKitHostView;
@@ -242,6 +257,41 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     self.wantsLayer = YES;
     self.layerContentsRedrawPolicy = NSViewLayerContentsRedrawNever;
 
+    #ifdef DEBUG
+    CALayer *hostDebugLayer = [CALayer layer];
+    hostDebugLayer.backgroundColor = [NSColor colorWithCalibratedRed:1 green:0 blue:0 alpha:0.1].CGColor;
+    hostDebugLayer.borderColor = [NSColor colorWithCalibratedRed:1 green:0 blue:0 alpha:0.75].CGColor;
+    hostDebugLayer.borderWidth = 3;
+    hostDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    hostDebugLayer.zPosition = CGFLOAT_MAX;
+
+    // overlay NSView subviews here, because we can do a better job than
+    // VELNSView
+    m_subviewDebugLayer = [CAShapeLayer layer];
+    m_subviewDebugLayer.fillColor = [NSColor colorWithCalibratedRed:0 green:0 blue:1 alpha:0.1].CGColor;
+    m_subviewDebugLayer.strokeColor = [NSColor colorWithCalibratedRed:0 green:0 blue:1 alpha:0.75].CGColor;
+    m_subviewDebugLayer.lineWidth = 3;
+    m_subviewDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
+    m_subviewDebugLayer.zPosition = CGFLOAT_MAX;
+    [hostDebugLayer addSublayer:m_subviewDebugLayer];
+
+    m_hostViewDebugModeObserver = [[NSNotificationCenter defaultCenter]
+        addObserverForName:VELHostViewDebugModeChangedNotification
+        object:nil
+        queue:[NSOperationQueue mainQueue]
+        usingBlock:^(NSNotification *notification){
+            BOOL enabled = [[notification.userInfo objectForKey:VELHostViewDebugModeIsEnabledKey] boolValue];
+
+            if (enabled) {
+                hostDebugLayer.frame = self.bounds;
+                [self.layer addSublayer:hostDebugLayer];
+            } else {
+                [hostDebugLayer removeFromSuperlayer];
+            }
+        }
+    ];
+    #endif
+
     m_velvetHostView = [[NSVelvetHostView alloc] initWithFrame:self.bounds];
     m_velvetHostView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self addSubview:m_velvetHostView];
@@ -268,6 +318,13 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 }
 
 - (void)dealloc {
+    #ifdef DEBUG
+    if (m_hostViewDebugModeObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:m_hostViewDebugModeObserver];
+        m_hostViewDebugModeObserver = nil;
+    }
+    #endif
+
     self.guestView.hostView = nil;
 }
 
@@ -422,6 +479,31 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     // mask them all at once (so fast!)
     self.maskLayer.path = path;
     CGPathRelease(path);
+
+    #ifdef DEBUG
+    // also update our VELNSView debugging layer
+    path = CGPathCreateMutable();
+
+    CGFloat lineWidth = m_subviewDebugLayer.lineWidth;
+
+    for (NSView *view in self.appKitHostView.subviews) {
+        CGRect frame = view.frame;
+
+        // make the line into an inset border
+        frame = CGRectChop(frame, ceil(lineWidth / 2), CGRectMinXEdge);
+        frame = CGRectChop(frame, ceil(lineWidth / 2), CGRectMinYEdge);
+        frame = CGRectChop(frame, floor(lineWidth / 2), CGRectMaxXEdge);
+        frame = CGRectChop(frame, floor(lineWidth / 2), CGRectMaxYEdge);
+
+        // offset so that the line draws on whole points
+        frame = CGRectOffset(frame, -0.5, -0.5);
+
+        CGPathAddRect(path, NULL, frame);
+    }
+
+    m_subviewDebugLayer.path = path;
+    CGPathRelease(path);
+    #endif
 }
 
 #pragma mark Dragging
@@ -604,7 +686,9 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     m_trackingArea = [[NSTrackingArea alloc] initWithRect:self.bounds
         options:(NSTrackingActiveInKeyWindow | NSTrackingMouseMoved | NSTrackingMouseEnteredAndExited)
         owner:self
-        userInfo:NULL];
+        userInfo:NULL
+    ];
+
     [self addTrackingArea:self.trackingArea];
 }
 

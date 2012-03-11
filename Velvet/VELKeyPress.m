@@ -25,10 +25,15 @@
 - (id)initWithEvent:(NSEvent *)event; {
     NSParameterAssert(event != nil);
 
-    if (event.type != NSKeyDown && event.type != NSKeyUp)
-        return nil;
+    NSString *characters = nil;
 
-    self = [self initWithCharactersIgnoringModifiers:event.charactersIgnoringModifiers modifierFlags:event.modifierFlags];
+    if (event.type == NSKeyDown || event.type == NSKeyUp) {
+        characters = event.charactersIgnoringModifiers;
+    } else if (event.type != NSFlagsChanged) {
+        return nil;
+    }
+
+    self = [self initWithCharactersIgnoringModifiers:characters modifierFlags:event.modifierFlags];
     if (!self)
         return nil;
 
@@ -41,7 +46,9 @@
     if (!self)
         return nil;
 
-    m_charactersIgnoringModifiers = [charactersIgnoringModifiers copy];
+    if (charactersIgnoringModifiers.length)
+        m_charactersIgnoringModifiers = [charactersIgnoringModifiers copy];
+
     m_modifierFlags = modifierFlags;
     return self;
 }
@@ -79,7 +86,7 @@
 #pragma mark NSObject overrides
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@: %p>( characters = \"%@\", modifiers = %lu )", [self class], self, self.charactersIgnoringModifiers, (unsigned long)self.modifierFlags];
+    return [NSString stringWithFormat:@"<%@: %p>( characters = \"%@\", modifiers = %#lx )", [self class], self, self.charactersIgnoringModifiers, (unsigned long)self.modifierFlags];
 }
 
 - (NSUInteger)hash {
@@ -90,7 +97,7 @@
     if (![obj isKindOfClass:[VELKeyPress class]])
         return NO;
 
-    if ((self.charactersIgnoringModifiers.length == 0) != (obj.charactersIgnoringModifiers.length == 0))
+    if (!(self.charactersIgnoringModifiers.length == obj.charactersIgnoringModifiers.length))
         return NO;
 
     if (self.charactersIgnoringModifiers && ![self.charactersIgnoringModifiers isEqual:obj.charactersIgnoringModifiers])

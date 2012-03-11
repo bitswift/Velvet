@@ -428,6 +428,10 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
             // assume this kind of event would go to the first responder, so
             // dispatch to any event recognizers for it
             id view = [event.window firstResponder];
+            if (view == event.window) {
+                view = event.window.contentView;
+            }
+
             if (view && ![view conformsToProtocol:@protocol(VELBridgedView)])
                 return NO;
 

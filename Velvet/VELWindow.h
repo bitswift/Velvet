@@ -39,6 +39,16 @@ extern NSString * const VELWindowNewFirstResponderKey;
 
 /**
  * An `NSWindow` automatically set up with a Velvet hierarchy.
+ *
+ * This class provides a few additional capabilities useful for Velvet
+ * applications:
+ *
+ *  - It fixes a bug where layer tree renderers sometimes don't get re-enabled
+ *  after fast user switching.
+ *  - It posts a notification (`VELWindowFirstResponderDidChangeNotification`)
+ *  when the first responder changes.
+ *  - It provides a slow-motion animation mode in Debug builds, which can be
+ *  activated by pressing Shift three times while the window has focus.
  */
 @interface VELWindow : NSWindow
 

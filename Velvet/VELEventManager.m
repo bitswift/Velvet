@@ -521,6 +521,9 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
     CGPoint windowLocation;
     
     for (NSWindow *window in [NSApp windows]) {
+        if (![window isVisible])
+            continue;
+
         CGPoint screenPoint = event.locationInWindow;
         if (!CGRectContainsPoint(window.frame, screenPoint))
             continue;

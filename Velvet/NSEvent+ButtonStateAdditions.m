@@ -158,6 +158,8 @@ static BOOL getEventButtonState (NSEvent *event, NSUInteger *buttonMaskPtr, NSUI
 
         if (newEvent) {
             NSEvent *event = [NSEvent eventWithCGEvent:newEvent];
+            CFRelease(newEvent);
+
             [events addObject:event];
         }
     }

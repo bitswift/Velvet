@@ -263,7 +263,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     hostDebugLayer.borderColor = [NSColor colorWithCalibratedRed:1 green:0 blue:0 alpha:0.75].CGColor;
     hostDebugLayer.borderWidth = 3;
     hostDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-    hostDebugLayer.zPosition = CGFLOAT_MAX;
+    hostDebugLayer.zPosition = 100000;
 
     // overlay NSView subviews here, because we can do a better job than
     // VELNSView
@@ -272,7 +272,6 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     m_subviewDebugLayer.strokeColor = [NSColor colorWithCalibratedRed:0 green:0 blue:1 alpha:0.75].CGColor;
     m_subviewDebugLayer.lineWidth = 3;
     m_subviewDebugLayer.autoresizingMask = kCALayerWidthSizable | kCALayerHeightSizable;
-    m_subviewDebugLayer.zPosition = CGFLOAT_MAX;
     [hostDebugLayer addSublayer:m_subviewDebugLayer];
 
     m_hostViewDebugModeObserver = [[NSNotificationCenter defaultCenter]

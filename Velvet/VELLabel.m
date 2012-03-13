@@ -245,14 +245,12 @@ static NSRange NSRangeFromCFRange(CFRange range) {
     } else if (numberOfLinesToDraw < lines.count) {
         NSAssert(shouldTruncate, @"Should only have a reduced number of lines if we're truncating");
 
-        CFAttributedStringRef ellipsisAttributedString = CFAttributedStringCreate(NULL, (CFStringRef) @"…", NULL);
-        @onExit {
-            CFRelease(ellipsisAttributedString);
-        };
-        CTLineRef ellipsisLine = NULL;
-        ellipsisLine = CTLineCreateWithAttributedString(ellipsisAttributedString);
-        @onExit {
-            CFRelease(ellipsisLine);
+        CTLineRef (^ellipsisLineRefWithAttributesFromString) (NSAttributedString *) = ^(NSAttributedString *attributedString) {
+            NSMutableAttributedString *mutableEllipsisString = [[NSMutableAttributedString alloc] initWithString:@"…"];
+            NSDictionary *attributes = [attributedString attributesAtIndex:[attributedString length] - 1 effectiveRange:NULL];
+
+            [mutableEllipsisString setAttributes:attributes range:NSMakeRange(0, mutableEllipsisString.length)];
+            return CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)mutableEllipsisString);
         };
 
         if (self.lineBreakMode == VELLineBreakModeHeadTruncation) {
@@ -267,6 +265,11 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             NSAttributedString *firstLineAttrStr = [attributedString attributedSubstringFromRange:firstLineRange];
 
             CTLineRef firstLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)firstLineAttrStr);
+            CTLineRef ellipsisLine = ellipsisLineRefWithAttributesFromString(firstLineAttrStr);
+            @onExit {
+                CFRelease(ellipsisLine);   
+            };
+
             CTLineRef lineToDraw = CTLineCreateTruncatedLine(firstLine, drawableWidth, kCTLineTruncationStart, ellipsisLine);
 
             if (!lineToDraw)
@@ -301,6 +304,11 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             }
 
             CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
+            CTLineRef ellipsisLine = ellipsisLineRefWithAttributesFromString(lastLineAttrStr);
+            @onExit {
+                CFRelease(ellipsisLine);   
+            };
+
             CTLineRef lineToDraw = CTLineCreateTruncatedLine(lastLine, drawableWidth, truncationType, ellipsisLine);
 
             if (!lineToDraw)

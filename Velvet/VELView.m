@@ -277,9 +277,9 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setCenter:(CGPoint)center {
-    if (self.alignsToIntegralPixels) {
-        CGSize size = self.bounds.size;
-
+    CGSize size = self.bounds.size;
+    
+    if (self.alignsToIntegralPixels && !CGSizeEqualToSize(CGSizeZero, size)) {
         CGRect resultingFrame = CGRectMake(
             center.x - size.width / 2,
             center.y - size.height / 2,

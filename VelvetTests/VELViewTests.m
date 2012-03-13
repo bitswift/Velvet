@@ -221,11 +221,19 @@ describe(@"VELView", ^{
     });
 
     it(@"aligns to integral points when setting a misaligned center", ^{
+        view.frame = CGRectMake(0, 0, 50, 50);
         view.center = CGPointMake(13.7, 14.3);
 
         CGPoint expectedCenter = CGPointMake(13, 15);
         expect(CGPointEqualToPoint(view.center, expectedCenter)).toBeTruthy();
     });
+
+    it(@"respects a misaligned center when its size is CGSizeZero", ^{
+        CGPoint expectedCenter = CGPointMake(13.7, 14.3);
+        view.center = expectedCenter;
+        expect(CGPointEqualToPoint(view.center, expectedCenter)).toBeTruthy();
+    });
+    
 
     it(@"aligns to integral points when setting a center resulting in a misaligned frame", ^{
         VELView *view = [[VELView alloc] initWithFrame:CGRectMake(0, 0, 5, 5)];

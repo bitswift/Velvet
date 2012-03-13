@@ -245,7 +245,7 @@ static NSRange NSRangeFromCFRange(CFRange range) {
     } else if (numberOfLinesToDraw < lines.count) {
         NSAssert(shouldTruncate, @"Should only have a reduced number of lines if we're truncating");
 
-        CTLineRef (^ellipsisLineRefWithAttributesFromString) (NSAttributedString *) = ^(NSAttributedString *attributedString) {
+        CTLineRef (^createEllipsisLineRefWithAttributesFromString) (NSAttributedString *) = ^(NSAttributedString *attributedString) {
             NSMutableAttributedString *mutableEllipsisString = [[NSMutableAttributedString alloc] initWithString:@"…"];
             NSDictionary *attributes = [attributedString attributesAtIndex:[attributedString length] - 1 effectiveRange:NULL];
 
@@ -265,7 +265,7 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             NSAttributedString *firstLineAttrStr = [attributedString attributedSubstringFromRange:firstLineRange];
 
             CTLineRef firstLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)firstLineAttrStr);
-            CTLineRef ellipsisLine = ellipsisLineRefWithAttributesFromString(firstLineAttrStr);
+            CTLineRef ellipsisLine = createEllipsisLineRefWithAttributesFromString(firstLineAttrStr);
             @onExit {
                 CFRelease(ellipsisLine);   
             };
@@ -304,7 +304,7 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             }
 
             CTLineRef lastLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)lastLineAttrStr);
-            CTLineRef ellipsisLine = ellipsisLineRefWithAttributesFromString(lastLineAttrStr);
+            CTLineRef ellipsisLine = createEllipsisLineRefWithAttributesFromString(lastLineAttrStr);
             @onExit {
                 CFRelease(ellipsisLine);   
             };

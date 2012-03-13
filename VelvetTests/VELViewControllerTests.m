@@ -19,6 +19,7 @@ static BOOL testViewControllerDidUnloadCalled = NO;
 @property (nonatomic) BOOL viewDidAppearCalled;
 @property (nonatomic) BOOL viewWillDisappearCalled;
 @property (nonatomic) BOOL viewDidDisappearCalled;
+- (void)notificationFired:(NSNotification *)notification;
 @end
 
 SpecBegin(VELViewController)
@@ -60,6 +61,23 @@ SpecBegin(VELViewController)
 
         // the undo stack should be empty after the view is deallocated
         expect(undoManager.canUndo).toBeFalsy();
+    });
+
+    it(@"should remove itself as an observer to any notifications", ^{
+        __weak __block TestViewController *testVC;
+        
+        @autoreleasepool {
+            __attribute__((objc_precise_lifetime)) TestViewController *viewController = [[TestViewController alloc] init];
+            testVC = viewController;
+            
+            [[NSNotificationCenter defaultCenter] addObserver:viewController selector:@selector(notificationFired:) name:@"Test Notification" object:nil];
+
+            expect([^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"Test Notification" object:nil];
+            } copy]).toInvoke(viewController, @selector(notificationFired:));
+        }  
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"Test Notification" object:nil];    
     });
 
     describe(@"VELViewController", ^{
@@ -311,6 +329,10 @@ SpecEnd
     NSAssert(!self.viewLoaded, @"");
 
     testViewControllerDidUnloadCalled = YES;
+}
+
+- (void)notificationFired:(NSNotification *)notification {
+
 }
 
 @end

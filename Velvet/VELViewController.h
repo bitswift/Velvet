@@ -24,7 +24,8 @@
  *  3. Otherwise, there is no next responder.
  *
  * Upon deallocation, a `VELViewController` instance automatically removes undo
- * actions targeting itself from any `-[NSResponder undoManager]`.
+ * actions targeting itself from any `-[NSResponder undoManager]` and removes itself
+ * as an observer from `NSNotificationCenter`.
  */
 @interface VELViewController : NSResponder
 

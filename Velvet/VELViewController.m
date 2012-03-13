@@ -107,6 +107,7 @@
     self.view = nil;
 
     [self.undoManager removeAllActionsWithTarget:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark Presentation

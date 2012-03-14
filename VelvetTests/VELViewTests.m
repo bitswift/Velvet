@@ -48,6 +48,12 @@ describe(@"VELView", ^{
         view = [[VELView alloc] init];
     });
 
+    after(^{
+        // tear down the view before the window containing it
+        view = nil;
+        window = nil;
+    });
+
     it(@"initializes", ^{
         expect(view.alignsToIntegralPixels).toBeTruthy();
         expect(view.clearsContextBeforeDrawing).toBeTruthy();

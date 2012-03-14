@@ -40,9 +40,9 @@
 		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
 		D03FD8A614C39D760062B7A3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
+		D04B7E67150C72CF00A73996 /* VELHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04B7E66150C72CF00A73996 /* VELHostView.m */; };
 		D05AC4B3150BB92A0043F6DE /* VELAnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D05AC4B1150BB92A0043F6DE /* VELAnimationManager.m */; };
 		D05AC67C150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D05AC67A150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.m */; };
-		D04B7E67150C72CF00A73996 /* VELHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04B7E66150C72CF00A73996 /* VELHostView.m */; };
 		D05DC49414BD084C00A0D6C8 /* VELDraggingDestination.h in Headers */ = {isa = PBXBuildFile; fileRef = D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D05DC49B14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */; };
 		D0604C8F14CD59DD008B9A7A /* VELNSViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D0604C8D14CD59DD008B9A7A /* VELNSViewLayer.m */; };
@@ -241,11 +241,11 @@
 		D0305D781486FC960081D6EA /* VELControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELControl.h; sourceTree = "<group>"; };
 		D0305D791486FC960081D6EA /* VELControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELControl.m; sourceTree = "<group>"; };
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
+		D04B7E66150C72CF00A73996 /* VELHostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELHostView.m; sourceTree = "<group>"; };
 		D05AC4B0150BB92A0043F6DE /* VELAnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELAnimationManager.h; sourceTree = "<group>"; };
 		D05AC4B1150BB92A0043F6DE /* VELAnimationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELAnimationManager.m; sourceTree = "<group>"; };
 		D05AC679150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTextView+AntialiasingAdditions.h"; sourceTree = "<group>"; };
 		D05AC67A150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTextView+AntialiasingAdditions.m"; sourceTree = "<group>"; };
-		D04B7E66150C72CF00A73996 /* VELHostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELHostView.m; sourceTree = "<group>"; };
 		D05DC49314BD084C00A0D6C8 /* VELDraggingDestination.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDraggingDestination.h; sourceTree = "<group>"; };
 		D05DC49914BD0AA500A0D6C8 /* VELViewDragAndDropTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewDragAndDropTests.h; sourceTree = "<group>"; };
 		D05DC49A14BD0AA500A0D6C8 /* VELViewDragAndDropTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewDragAndDropTests.m; sourceTree = "<group>"; };

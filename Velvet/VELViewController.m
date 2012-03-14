@@ -10,6 +10,7 @@
 #import "VELHostView.h"
 #import "VELView.h"
 #import "VELViewPrivate.h"
+#import "VELWindow.h"
 
 @interface VELViewController ()
 @property (nonatomic, strong, readwrite) VELView *view;
@@ -33,6 +34,13 @@
 #pragma mark Properties
 
 @synthesize view = m_view;
+@synthesize focused = m_focused;
+
+- (void)setFocused:(BOOL)focused {
+    m_focused = focused;
+
+    self.view.focused = focused;
+}
 
 - (BOOL)isViewLoaded {
     return m_view != nil;
@@ -113,15 +121,37 @@
 #pragma mark Presentation
 
 - (void)viewWillAppear; {
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
+        selector:@selector(firstResponderDidChange:)
+        name:VELWindowFirstResponderDidChangeNotification
+        object:nil
+     ];
 }
 
 - (void)viewDidAppear; {
 }
 
 - (void)viewWillDisappear; {
+    [[NSNotificationCenter defaultCenter]
+        removeObserver:self
+        name:VELWindowFirstResponderDidChangeNotification
+        object:nil
+     ];
 }
 
 - (void)viewDidDisappear; {
+}
+
+- (void)firstResponderDidChange:(NSNotification *)notification {
+    NSResponder *responder = [[notification userInfo] objectForKey:VELWindowNewFirstResponderKey];
+    if (responder == self.view.window) {
+        self.focused = NO;
+        return;
+    }
+
+    VELView *view = [self ancestorVELViewOfBridgedView:(id)responder];
+    self.focused = [view isDescendantOfView:self.view];
 }
 
 #pragma mark Responder chain

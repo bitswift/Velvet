@@ -10,7 +10,7 @@
 #import "VELHostView.h"
 #import "VELView.h"
 #import "VELViewPrivate.h"
-#import "VELWindow.h"
+#import "NSWindow+ResponderChainAdditions.h"
 
 @interface VELViewController ()
 @property (nonatomic, strong, readwrite) VELView *view;
@@ -29,7 +29,7 @@
 - (VELView *)ancestorVELViewOfBridgedView:(id<VELBridgedView>)bridgedView;
 
 /**
- * Action triggered when the `VELWindowFirstResponderDidChangeNotification`
+ * Action triggered when the `NSWindowFirstResponderDidChangeNotification`
  * is fired.
  *
  * Sets <focused> when the new first responder is one of its descendant views.
@@ -136,7 +136,7 @@
     [[NSNotificationCenter defaultCenter]
         addObserver:self
         selector:@selector(firstResponderDidChange:)
-        name:VELWindowFirstResponderDidChangeNotification
+        name:NSWindowFirstResponderDidChangeNotification
         object:nil
      ];
 }
@@ -147,7 +147,7 @@
 - (void)viewWillDisappear; {
     [[NSNotificationCenter defaultCenter]
         removeObserver:self
-        name:VELWindowFirstResponderDidChangeNotification
+        name:NSWindowFirstResponderDidChangeNotification
         object:nil
      ];
 }
@@ -156,8 +156,8 @@
 }
 
 - (void)firstResponderDidChange:(NSNotification *)notification {
-    NSResponder *responder = [[notification userInfo] objectForKey:VELWindowNewFirstResponderKey];
-    if (responder == self.view.window) {
+    NSResponder *responder = [[notification userInfo] objectForKey:NSWindowNewFirstResponderKey];
+    if (![responder conformsToProtocol:@protocol(VELBridgedView)]) {
         self.focused = NO;
         return;
     }

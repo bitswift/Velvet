@@ -15,10 +15,6 @@
 
 @class NSVelvetHostView;
 
-NSString * const VELWindowFirstResponderDidChangeNotification = @"VELWindowFirstResponderDidChangeNotification";
-NSString * const VELWindowOldFirstResponderKey = @"VELWindowOldFirstResponderKey";
-NSString * const VELWindowNewFirstResponderKey = @"VELWindowNewFirstResponderKey";
-
 @implementation VELWindow
 
 #pragma mark Properties
@@ -114,32 +110,6 @@ NSString * const VELWindowNewFirstResponderKey = @"VELWindowNewFirstResponderKey
     self.contentView.guestView = self.contentView.guestView;
 
     [self makeFirstResponder:firstResponder];
-}
-
-#pragma mark First Responder
-
-- (BOOL)makeFirstResponder:(NSResponder *)responder {
-    id previousResponder = self.firstResponder ?: [NSNull null];
-
-    BOOL success = [super makeFirstResponder:responder];
-    if (!success)
-        return NO;
-
-    id newResponder = self.firstResponder ?: [NSNull null];
-
-    NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-        previousResponder, VELWindowOldFirstResponderKey,
-        newResponder, VELWindowNewFirstResponderKey,
-        nil
-    ];
-
-    [[NSNotificationCenter defaultCenter]
-        postNotificationName:VELWindowFirstResponderDidChangeNotification
-        object:self
-        userInfo:userInfo
-    ];
-
-    return success;
 }
 
 @end

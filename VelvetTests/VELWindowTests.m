@@ -62,7 +62,7 @@ SpecBegin(VELWindow)
         id newResponder = window.contentView;
 
         [[NSNotificationCenter defaultCenter]
-            addObserverForName:VELWindowFirstResponderDidChangeNotification
+            addObserverForName:NSWindowFirstResponderDidChangeNotification
             object:nil
             queue:nil
             usingBlock:^(NSNotification *notification) {

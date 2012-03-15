@@ -156,6 +156,10 @@ typedef enum {
 @property (nonatomic, assign) VELLineBreakMode lineBreakMode;
 
 /**
+ * @name Text Alignment
+ */
+
+/**
  * How the text of the label should be aligned.
  *
  * Setting this property will apply a paragraph style to the whole
@@ -167,4 +171,17 @@ typedef enum {
  */
 @property (nonatomic, assign) VELTextAlignment textAlignment;
 
+/**
+  * Convert an <NSTextAlignment> to its counterpart <VELTextAlignment>.
+  *
+  * @param alignment The <NSTextAlignment> value to convert.
+ */
+- (VELTextAlignment)VELTextAlignmentFromNSTextAlignment:(NSTextAlignment)alignment;
+
+/**
+ * Convert an <VELTextAlignment> to its counterpart <NSTextAlignment>.
+ *
+ * @param alignment The <VELTextAlignment> value to convert.
+ */
+- (NSTextAlignment)NSTextAlignmentFromNSTextAlignment:(VELTextAlignment)alignment;
 @end

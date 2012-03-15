@@ -68,8 +68,8 @@ SpecBegin(VELWindow)
             usingBlock:^(NSNotification *notification) {
                 didMakeFirstResponder = YES;
                 NSDictionary *userInfo = [notification userInfo];
-                expect([userInfo objectForKey:VELWindowOldFirstResponderKey]).toEqual(previousResponder);
-                expect([userInfo objectForKey:VELWindowNewFirstResponderKey]).toEqual(newResponder);
+                expect([userInfo objectForKey:VELNSWindowOldFirstResponderKey]).toEqual(previousResponder);
+                expect([userInfo objectForKey:VELNSWindowNewFirstResponderKey]).toEqual(newResponder);
             }
         ];
 

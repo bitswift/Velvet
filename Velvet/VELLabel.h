@@ -172,16 +172,16 @@ typedef enum {
 @property (nonatomic, assign) VELTextAlignment textAlignment;
 
 /**
-  * Returns the `VELTextAlignment` to `alignment`.
+  * Returns the `VELTextAlignment` counterpart of `alignment`.
   *
   * @param alignment The `NSTextAlignment` value to convert.
  */
 VELTextAlignment VELTextAlignmentFromNSTextAlignment(NSTextAlignment alignment);
 
 /**
- * Returns the `NSTextAlignment` to `alignment`.
+ * Returns the `NSTextAlignment` counterpart to `alignment`.
  *
  * @param alignment The `VELTextAlignment` value to convert.
  */
-NSTextAlignment NSTextAlignmentFromNSTextAlignment(VELTextAlignment alignment);
+NSTextAlignment NSTextAlignmentFromVELTextAlignment(VELTextAlignment alignment);
 @end

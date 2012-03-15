@@ -457,7 +457,7 @@ VELTextAlignment VELTextAlignmentFromNSTextAlignment(NSTextAlignment alignment) 
     }
 }
 
-NSTextAlignment NSTextAlignmentFromNSTextAlignment(VELTextAlignment alignment) {
+NSTextAlignment NSTextAlignmentFromVELTextAlignment(VELTextAlignment alignment) {
     switch (alignment) {
         case VELTextAlignmentCenter: return(NSCenterTextAlignment);
         case VELTextAlignmentRight: return(NSRightTextAlignment);

@@ -55,26 +55,4 @@ SpecBegin(VELWindow)
         expect(rootView.hostView).toEqual(window.contentView);
     });
 
-    it(@"posts a notification when a view is made first responder", ^{
-        __block BOOL didMakeFirstResponder = NO;
-
-        id previousResponder = window.firstResponder;
-        id newResponder = window.contentView;
-
-        [[NSNotificationCenter defaultCenter]
-            addObserverForName:VELNSWindowFirstResponderDidChangeNotification
-            object:nil
-            queue:nil
-            usingBlock:^(NSNotification *notification) {
-                didMakeFirstResponder = YES;
-                NSDictionary *userInfo = [notification userInfo];
-                expect([userInfo objectForKey:VELNSWindowOldFirstResponderKey]).toEqual(previousResponder);
-                expect([userInfo objectForKey:VELNSWindowNewFirstResponderKey]).toEqual(newResponder);
-            }
-        ];
-
-        [window makeFirstResponder:newResponder];
-        expect(didMakeFirstResponder).isGoing.toBeTruthy();
-    });
-
 SpecEnd

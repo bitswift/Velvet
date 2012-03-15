@@ -50,7 +50,7 @@
     objc_setAssociatedObject(self, @selector(isFocused), [NSNumber numberWithBool:focused], OBJC_ASSOCIATION_COPY_NONATOMIC);
 
     for (NSView *view in self.subviews) {
-        self.focused = focused;
+        view.focused = focused;
     }
 }
 

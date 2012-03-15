@@ -140,7 +140,7 @@
         selector:@selector(firstResponderDidChange:)
         name:VELNSWindowFirstResponderDidChangeNotification
         object:nil
-     ];
+    ];
 }
 
 - (void)viewDidAppear; {
@@ -151,7 +151,7 @@
         removeObserver:self
         name:VELNSWindowFirstResponderDidChangeNotification
         object:nil
-     ];
+    ];
 }
 
 - (void)viewDidDisappear; {

@@ -186,11 +186,15 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (BOOL)isFocused {
-    return m_flags.focused;    
+    return m_flags.focused;
 }
 
 - (void)setFocused:(BOOL)focused {
     m_flags.focused = focused;
+    
+    for (VELView *subview in self.subviews)  {
+        subview.focused = focused;
+    }
 }
 
 - (BOOL)clearsContextBeforeDrawing {

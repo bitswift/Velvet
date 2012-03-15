@@ -151,6 +151,17 @@
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view;
 
 /**
+ * @name Focused State
+ */
+
+/**
+ * Indicates whether the receiver is focused.
+ *
+ * The default value for this property is `NO`.
+ */
+@property (nonatomic, getter = isFocused) BOOL focused;
+
+/**
  * @name Hit Testing
  */
 

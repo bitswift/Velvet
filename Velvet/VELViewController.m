@@ -27,6 +27,18 @@
  * is a <VELView>, it is returned.
  */
 - (VELView *)ancestorVELViewOfBridgedView:(id<VELBridgedView>)bridgedView;
+
+/**
+ * Action triggered when the `VELWindowFirstResponderDidChangeNotification`
+ * is fired.
+ *
+ * Sets <focused> when the new first responder is one of its descendant views.
+ *
+ * @param notification A notification posted when the window's
+ * `firstResponder` changes.
+ */
+- (void)firstResponderDidChange:(NSNotification *)notification;
+
 @end
 
 @implementation VELViewController

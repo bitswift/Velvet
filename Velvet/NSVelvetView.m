@@ -177,6 +177,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 // implemented by NSView
 @dynamic layer;
 
+@synthesize focused = m_focused;
 @synthesize hostView = m_hostView;
 @synthesize guestView = m_guestView;
 @synthesize velvetHostView = m_velvetHostView;

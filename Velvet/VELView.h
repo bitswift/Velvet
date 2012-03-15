@@ -767,15 +767,4 @@ typedef enum {
  */
 @property (nonatomic, readonly, strong) CALayer *layer;
 
-/**
- * @name Focused State
- */
-
-/**
- * Indicates whether a subview of the receiver's <viewController>
- * is currently `firstResponder`.
- *
- * The default value for this property is `NO`.
- */
-@property (nonatomic, getter = isFocused) BOOL focused;
 @end

@@ -32,10 +32,11 @@
  * Action triggered when the `VELNSWindowFirstResponderDidChangeNotification`
  * is fired.
  *
- * Sets <focused> when the new first responder is one of its descendant views.
+ * Sets <focused> when the new first responder is one of the 
+ * receiver's descendant views.
  *
  * @param notification A notification posted when the window's
- * `firstResponder` changes.
+ * first responder changes.
  */
 - (void)firstResponderDidChange:(NSNotification *)notification;
 

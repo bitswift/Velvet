@@ -55,6 +55,8 @@
 		D0682AB414C773EF001CA434 /* CGGeometryAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */; };
 		D069F4C615096E4400ED37DC /* NSEvent+ButtonStateAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D069F4C415096E4400ED37DC /* NSEvent+ButtonStateAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D069F4C715096E4400ED37DC /* NSEvent+ButtonStateAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */; };
+		D06C7E6215127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D06C7E6015127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D06C7E6315127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D06C7E6115127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m */; };
 		D06EF03C14B39CFA0035E239 /* VELEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D06EF03A14B39CFA0035E239 /* VELEventManager.m */; };
 		D06EF04014B3A0590035E239 /* NSWindow+EventHandlingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D06EF03E14B3A0590035E239 /* NSWindow+EventHandlingAdditions.m */; };
 		D07B72A514C4FC5500AA19DD /* VELControlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D07B72A414C4FC5500AA19DD /* VELControlTests.m */; };
@@ -260,6 +262,8 @@
 		D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CGGeometryAdditionsTests.m; sourceTree = "<group>"; };
 		D069F4C415096E4400ED37DC /* NSEvent+ButtonStateAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSEvent+ButtonStateAdditions.h"; sourceTree = "<group>"; };
 		D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSEvent+ButtonStateAdditions.m"; sourceTree = "<group>"; };
+		D06C7E6015127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSResponder+ErrorPresentationAdditions.h"; sourceTree = "<group>"; };
+		D06C7E6115127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSResponder+ErrorPresentationAdditions.m"; sourceTree = "<group>"; };
 		D06EF03914B39CFA0035E239 /* VELEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELEventManager.h; sourceTree = "<group>"; };
 		D06EF03A14B39CFA0035E239 /* VELEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELEventManager.m; sourceTree = "<group>"; };
 		D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSWindow+EventHandlingAdditions.h"; sourceTree = "<group>"; };
@@ -432,6 +436,8 @@
 				D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */,
 				D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */,
 				D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */,
+				D06C7E6015127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h */,
+				D06C7E6115127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m */,
 				D025619A15004999008A71B6 /* NSResponder+ResponderChainAdditions.h */,
 				D025619B15004999008A71B6 /* NSResponder+ResponderChainAdditions.m */,
 				D08B7BE414FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.h */,
@@ -823,6 +829,7 @@
 				D0B616631506E0B100DD9FB0 /* VELKeyPressEventRecognizer.h in Headers */,
 				D069F4C615096E4400ED37DC /* NSEvent+ButtonStateAdditions.h in Headers */,
 				D0EB4A41150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h in Headers */,
+				D06C7E6215127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1047,6 +1054,7 @@
 				D05AC4B3150BB92A0043F6DE /* VELAnimationManager.m in Sources */,
 				D05AC67C150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.m in Sources */,
 				D04B7E67150C72CF00A73996 /* VELHostView.m in Sources */,
+				D06C7E6315127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

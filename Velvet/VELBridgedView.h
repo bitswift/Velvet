@@ -157,6 +157,12 @@
 /**
  * Indicates whether the receiver is focused.
  *
+ * The receiver is focused if:
+ *
+ * - It is hosted directly or indirectly within the most descendant
+ *   <VELViewController>.
+ * - A subview of the <VELViewController> is currently `firstResponder`.
+ *
  * The default value for this property is `NO`.
  */
 @property (nonatomic, getter = isFocused) BOOL focused;

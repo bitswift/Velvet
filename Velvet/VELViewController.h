@@ -141,8 +141,12 @@
  */
 
 /**
- * Indicates whether a subview of the receiver's <view> is
- * currently `firstResponder`.
+ * Indicates whether the receiver is focused.
+ *
+ * The receiver is focused if:
+ *
+ * - It is the most descendant view controller hosting the `firstResponder`.
+ * - A subview of the receiver's <view> is currently `firstResponder`.
  *
  * The default value for this property is `NO`.
  */

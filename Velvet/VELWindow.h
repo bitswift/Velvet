@@ -14,7 +14,7 @@
 /**
  * An `NSWindow` automatically set up with a Velvet hierarchy.
  *
- * This class provides a few additional capabilities useful for Velvet
+ * This class provides a couple of additional capabilities useful for Velvet
  * applications:
  *
  *  - It fixes a bug where layer tree renderers sometimes don't get re-enabled

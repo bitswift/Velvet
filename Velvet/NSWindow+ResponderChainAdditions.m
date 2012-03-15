@@ -19,25 +19,25 @@ static BOOL (*originalMakeFirstResponderIMP)(id, SEL, NSResponder *);
 
 static BOOL makeFirstResponderAndPostNotification (NSWindow *self, SEL _cmd, NSResponder *responder) {
     id previousResponder = self.firstResponder ?: [NSNull null];
-    
+
     BOOL success = originalMakeFirstResponderIMP(self, _cmd, responder);
     if (!success)
         return NO;
-    
+
     id newResponder = self.firstResponder ?: [NSNull null];
-    
+
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
         previousResponder, VELNSWindowOldFirstResponderKey,
         newResponder, VELNSWindowNewFirstResponderKey,
         nil
     ];
-    
+
     [[NSNotificationCenter defaultCenter]
         postNotificationName:VELNSWindowFirstResponderDidChangeNotification
         object:self
         userInfo:userInfo
-     ];
-    
+    ];
+
     return success;
     
 }
@@ -55,7 +55,7 @@ static BOOL makeFirstResponderAndPostNotification (NSWindow *self, SEL _cmd, NSR
 
 @end
 
-@implementation NSWindow (FirstResponderAdditions)
+@implementation NSWindow (UnsafeResponderChainAdditions)
 
 + (void)load {
     Method makeFirstResponder = class_getInstanceMethod(self, @selector(makeFirstResponder:));

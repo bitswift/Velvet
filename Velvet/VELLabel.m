@@ -451,7 +451,9 @@ VELTextAlignment VELTextAlignmentFromNSTextAlignment(NSTextAlignment alignment) 
         case NSRightTextAlignment: return(VELTextAlignmentRight);
         case NSJustifiedTextAlignment: return(VELTextAlignmentJustified);
         case NSNaturalTextAlignment: return(VELTextAlignmentNatural);
-        case NSLeftTextAlignment: default: return(VELTextAlignmentLeft);
+        case NSLeftTextAlignment:
+        default:
+            return(VELTextAlignmentLeft);
     }
 }
 
@@ -461,7 +463,9 @@ NSTextAlignment NSTextAlignmentFromNSTextAlignment(VELTextAlignment alignment) {
         case VELTextAlignmentRight: return(NSRightTextAlignment);
         case VELTextAlignmentJustified: return(NSJustifiedTextAlignment);
         case VELTextAlignmentNatural: return(NSNaturalTextAlignment);
-        case VELTextAlignmentLeft: default: return(NSLeftTextAlignment);
+        case VELTextAlignmentLeft:
+        default:
+            return(NSLeftTextAlignment);
     }
 }
 @end

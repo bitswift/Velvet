@@ -161,7 +161,7 @@
  *
  * - It is hosted directly or indirectly within the most descendant
  *   <VELViewController>.
- * - A subview of the <VELViewController> is currently `firstResponder`.
+ * - A subview of that <VELViewController> is currently the first responder.
  *
  * The default value for this property is `NO`.
  */

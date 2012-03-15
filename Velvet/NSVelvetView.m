@@ -189,6 +189,12 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
 @synthesize maskLayer = m_maskLayer;
 @synthesize velvetRegisteredDragTypes = m_velvetRegisteredDragTypes;
 
+- (void)setFocused:(BOOL)focused {
+    m_focused = focused;
+
+    self.guestView.focused = focused;
+}
+
 - (BOOL)isUserInteractionEnabled {
     return m_flags.userInteractionEnabled;
 }

@@ -43,6 +43,12 @@
 
 @synthesize guestView = m_guestView;
 
+- (void)setFocused:(BOOL)focused {
+    [super setFocused:focused];
+
+    self.guestView.focused = focused;
+}
+
 - (void)setGuestView:(NSView *)view {
     NSAssert1([NSThread isMainThread], @"%s should only be called from the main thread", __func__);
 

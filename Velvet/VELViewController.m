@@ -158,15 +158,19 @@
 }
 
 - (void)firstResponderDidChange:(NSNotification *)notification {
-    NSResponder *responder = [[notification userInfo] objectForKey:VELNSWindowNewFirstResponderKey];
-    if (![responder conformsToProtocol:@protocol(VELBridgedView)]) {
-        self.focused = NO;
-        return;
-    }
+    id responder = [[notification userInfo] objectForKey:VELNSWindowNewFirstResponderKey];
+    
+    while (responder && ![responder conformsToProtocol:@protocol(VELBridgedView)])
+        responder = [responder nextResponder];
 
-    VELView *view = [self ancestorVELViewOfBridgedView:(id)responder];
-    if ([view isDescendantOfView:self.view])
-        self.focused = YES;
+    while (responder) {
+        if (responder == self.view) {
+            self.focused = YES;
+            return;
+        }
+        
+        responder = [responder immediateParentView];
+    }
 }
 
 #pragma mark Responder chain

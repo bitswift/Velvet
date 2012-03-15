@@ -106,6 +106,17 @@ SpecBegin(VELViewController)
             expect(CGRectIsEmpty(view.frame)).toBeTruthy();
         });
 
+        it(@"should become focused when its subview becomes first responder", ^{
+            [window.rootView addSubview:controller.view];
+            VELView *view = [[VELView alloc] init];
+            [controller.view addSubview:view];
+
+            expect(controller.focused).toBeFalsy();
+            [window makeFirstResponder:view];
+            expect(controller.focused).toBeTruthy();
+        });
+
+
         describe(@"responder chain", ^{
             before(^{
                 expect(controller.view.nextResponder).toEqual(controller);
@@ -151,6 +162,28 @@ SpecBegin(VELViewController)
                 [controller.view addSubview:subviewController.view];
 
                 expect(subviewController.parentViewController).toEqual(controller);
+            });
+
+            it(@"should not be focused when a descendant view controller's view becomes first responder", ^{
+                VELViewController *subviewController = [[VELViewController alloc] init];
+                [controller.view addSubview:subviewController.view];
+                [window.rootView addSubview:controller.view];
+                VELView *subview = [[VELView alloc] init];
+
+                [subviewController.view addSubview:subview];
+                expect(controller.focused).toBeFalsy();
+                expect(controller.view.focused).toBeFalsy();
+                expect(subviewController.focused).toBeFalsy();
+                expect(subviewController.view.focused).toBeFalsy();
+                expect(subview.focused).toBeFalsy();
+
+                [window makeFirstResponder:subview];
+
+                expect(controller.focused).toBeFalsy();
+                expect(controller.view.focused).toBeFalsy();
+                expect(subviewController.focused).toBeTruthy();
+                expect(subviewController.view.focused).toBeTruthy();
+                expect(subview.focused).toBeTruthy();
             });
 
             it(@"should be the parent view controller of a descendant", ^{

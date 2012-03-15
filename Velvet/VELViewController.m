@@ -51,6 +51,7 @@
 - (void)setFocused:(BOOL)focused {
     m_focused = focused;
 
+    self.parentViewController.focused = NO;
     self.view.focused = focused;
 }
 

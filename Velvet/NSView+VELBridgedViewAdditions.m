@@ -49,7 +49,9 @@
 - (void)setFocused:(BOOL)focused {
     objc_setAssociatedObject(self, @selector(isFocused), [NSNumber numberWithBool:focused], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
-    [self.subviews makeObjectsPerformSelector:_cmd withObject:[NSNumber numberWithBool:focused]];
+    for (NSView *view in self.subviews) {
+        self.focused = focused;
+    }
 }
 
 - (void)ancestorDidLayout; {

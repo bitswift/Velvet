@@ -25,6 +25,10 @@
 - (void)reset;
 @end
 
+@interface TestEditorDelegate : NSObject
+- (void)editor:(id)editor didCommit:(BOOL)didCommit contextInfo:(void *)contextInfo;
+@end
+
 // Tests BS-1324
 @interface FrameSettingView : VELView
 @property (nonatomic, strong, readonly) VELView *subview;
@@ -745,6 +749,35 @@ describe(@"VELView", ^{
             [view.layer layoutIfNeeded];
         });
     });
+
+    describe(@"<NSEditor> support", ^{
+        it(@"should return success for commitEditing", ^{
+            expect([^{
+                expect([view commitEditing]).toBeTruthy();
+            } copy]).toInvoke(view, @selector(commitEditingAndPerform:));
+        });
+
+        it(@"should return success for commitEditingAndReturnError:", ^{
+            expect([^{
+                __block NSError *error = nil;
+                expect([view commitEditingAndReturnError:&error]).toBeTruthy();
+                expect(error).toBeNil();
+            } copy]).toInvoke(view, @selector(commitEditingAndPerform:));
+        });
+
+        it(@"should return success for commitEditingWithDelegate:didCommitSelector:contextInfo:", ^{
+            TestEditorDelegate *delegate = [[TestEditorDelegate alloc] init];
+            expect([^{
+                expect([^{
+                    [view commitEditingWithDelegate:delegate didCommitSelector:@selector(editor:didCommit:contextInfo:) contextInfo:NULL];
+                } copy]).toInvoke(delegate, @selector(editor:didCommit:contextInfo:));
+            } copy]).toInvoke(view, @selector(commitEditingAndPerform:));
+        });
+
+        it(@"should not do anything for discardEditing", ^{
+            [view discardEditing];
+        });
+    });
 });
 
 SpecEnd
@@ -865,6 +898,13 @@ SpecEnd
     self.subview.frame = CGRectInset(self.subview.frame, -1, -1);
     self.subview.bounds = CGRectInset(self.subview.bounds, -1, -1);
     self.subview.center = CGPointMake(self.subview.center.x + 1, self.subview.center.y + 1);
+}
+
+@end
+
+@implementation TestEditorDelegate
+
+- (void)editor:(id)editor didCommit:(BOOL)didCommit contextInfo:(void *)contextInfo; {
 }
 
 @end

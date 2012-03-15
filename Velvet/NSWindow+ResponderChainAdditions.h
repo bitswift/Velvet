@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 /**
- * The name of the `NSNotification` posted when the window's `firstResponder`
+ * The name of the `NSNotification` posted when a window's `firstResponder`
  * changes.
  *
  * The user info dictionary for this notification will contain the following

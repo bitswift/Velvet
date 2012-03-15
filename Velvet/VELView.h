@@ -767,4 +767,68 @@ typedef enum {
  */
 @property (nonatomic, readonly, strong) CALayer *layer;
 
+/**
+ * @name NSEditor
+ */
+
+/**
+ * Attempts to commit any pending edits, returning whether the commit was
+ * successful.
+ *
+ * This default implementation of this method invokes
+ * <commitEditingAndPerform:>. If an error occurs, it is presented in a sheet
+ * attached to the receiver's window.
+ */
+- (BOOL)commitEditing;
+
+/**
+ * Attempts to commit any pending edits, returning whether the commit was
+ * successful.
+ *
+ * This default implementation of this method invokes
+ * <commitEditingAndPerform:>. Unlike <commitEditing> or
+ * <commitEditingWithDelegate:didCommitSelector:contextInfo:>, this method will
+ * not automatically present an error to the user upon failure.
+ *
+ * @param error If not `NULL`, and this method returns `NO`, this may be filled
+ * in with detailed information about the error that occurred.
+ */
+- (BOOL)commitEditingAndReturnError:(NSError **)error;
+
+/**
+ * Attempts to commit any pending edits, invoking the given selector upon either
+ * success or failure.
+ *
+ * This default implementation of this method invokes
+ * <commitEditingAndPerform:>. If an error occurs, it is presented in a sheet
+ * attached to the receiver's window.
+ *
+ * @param delegate A delegate upon which to invoke `didCommitSelector`.
+ * @param didCommitSelector A selector to invoke on the `delegate`. This
+ * selector should match the following signature:
+ * `- (void)editor:(id)editor didCommit:(BOOL)didCommit contextInfo:(void *)contextInfo`
+ * @param contextInfo An opaque pointer to send with the `didCommitSelector`.
+ */
+- (void)commitEditingWithDelegate:(id)delegate didCommitSelector:(SEL)didCommitSelector contextInfo:(void *)contextInfo;
+
+/**
+ * Attempts to commit any pending edits, invoking the given block upon either
+ * success or failure.
+ *
+ * The default implementation of this method simply invokes `block` with `YES`
+ * and without an error. Subclasses only need to override this method in order
+ * to implement support for editing.
+ *
+ * @param block A block to invoke when the receiver has finished committing or
+ * failed to commit its changes.
+ */
+- (void)commitEditingAndPerform:(void (^)(BOOL commitSuccessful, NSError *error))block;
+
+/**
+ * Discards any pending edits, restoring the previous values.
+ *
+ * The default implementation of this method does nothing.
+ */
+- (void)discardEditing;
+
 @end

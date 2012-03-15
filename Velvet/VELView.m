@@ -10,8 +10,10 @@
 #import "CALayer+GeometryAdditions.h"
 #import "CATransaction+BlockAdditions.h"
 #import "CGBitmapContext+PixelFormatAdditions.h"
+#import "EXTScope.h"
 #import "NSColor+CoreGraphicsAdditions.h"
 #import "NSImage+CoreGraphicsAdditions.h"
+#import "NSResponder+ErrorPresentationAdditions.h"
 #import "NSVelvetView.h"
 #import "NSVelvetViewPrivate.h"
 #import "NSView+VELBridgedViewAdditions.h"
@@ -24,7 +26,6 @@
 #import "VELViewLayer.h"
 #import "VELViewPrivate.h"
 #import <objc/runtime.h>
-#import "EXTScope.h"
 
 /*
  * The number of animation blocks currently being run.
@@ -1295,6 +1296,68 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 + (BOOL)isDefiningAnimation; {
     return VELViewCurrentAnimationBlockDepth > 0;
+}
+
+#pragma mark NSEditor
+
+- (void)discardEditing; {
+}
+
+- (BOOL)commitEditing; {
+    __block BOOL success = NO;
+
+    [self commitEditingAndPerform:^(BOOL commitSuccessful, NSError *error){
+        success = commitSuccessful;
+        if (!commitSuccessful)
+            [self presentError:error modalForWindow:self.window];
+    }];
+
+    return success;
+}
+
+- (BOOL)commitEditingAndReturnError:(NSError **)errorPtr; {
+    __block BOOL success = NO;
+
+    [self commitEditingAndPerform:^(BOOL commitSuccessful, NSError *error){
+        success = commitSuccessful;
+        if (!commitSuccessful && errorPtr) {
+            *errorPtr = error;
+        }
+    }];
+
+    return success;
+}
+
+- (void)commitEditingWithDelegate:(id)delegate didCommitSelector:(SEL)selector contextInfo:(void *)contextInfo; {
+    [self commitEditingAndPerform:^(BOOL commitSuccessful, NSError *error){
+        if (!commitSuccessful) {
+            [self presentError:error modalForWindow:self.window];
+        }
+
+        if (!delegate)
+            return;
+
+        NSMethodSignature *signature = [delegate methodSignatureForSelector:selector];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+
+        [invocation setTarget:delegate];
+        [invocation setSelector:selector];
+
+        __unsafe_unretained id editor = self;
+        [invocation setArgument:&editor atIndex:2];
+        [invocation setArgument:&commitSuccessful atIndex:3];
+
+        void *context = contextInfo;
+        [invocation setArgument:&context atIndex:4];
+
+        [invocation invoke];
+    }];
+}
+
+- (void)commitEditingAndPerform:(void (^)(BOOL, NSError *))block; {
+    NSParameterAssert(block != nil);
+
+    block(YES, nil);
 }
 
 #pragma mark NSObject overrides

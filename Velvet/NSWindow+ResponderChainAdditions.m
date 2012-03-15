@@ -11,9 +11,9 @@
 #import "EXTSafeCategory.h"
 #import <objc/runtime.h>
 
-NSString * const NSWindowFirstResponderDidChangeNotification = @"NSWindowFirstResponderDidChangeNotification";
-NSString * const NSWindowOldFirstResponderKey = @"NSWindowOldFirstResponderKey";
-NSString * const NSWindowNewFirstResponderKey = @"NSWindowNewFirstResponderKey";
+NSString * const VELNSWindowFirstResponderDidChangeNotification = @"VELNSWindowFirstResponderDidChangeNotification";
+NSString * const VELNSWindowOldFirstResponderKey = @"VELNSWindowOldFirstResponderKey";
+NSString * const VELNSWindowNewFirstResponderKey = @"VELNSWindowNewFirstResponderKey";
 
 static BOOL (*originalMakeFirstResponderIMP)(id, SEL, NSResponder *);
 
@@ -27,13 +27,13 @@ static BOOL makeFirstResponderAndPostNotification (NSWindow *self, SEL _cmd, NSR
     id newResponder = self.firstResponder ?: [NSNull null];
     
     NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-        previousResponder, NSWindowOldFirstResponderKey,
-        newResponder, NSWindowNewFirstResponderKey,
+        previousResponder, VELNSWindowOldFirstResponderKey,
+        newResponder, VELNSWindowNewFirstResponderKey,
         nil
     ];
     
     [[NSNotificationCenter defaultCenter]
-        postNotificationName:NSWindowFirstResponderDidChangeNotification
+        postNotificationName:VELNSWindowFirstResponderDidChangeNotification
         object:self
         userInfo:userInfo
      ];
@@ -41,8 +41,6 @@ static BOOL makeFirstResponderAndPostNotification (NSWindow *self, SEL _cmd, NSR
     return success;
     
 }
-
-
 
 @safecategory (NSWindow, ResponderChainAdditions)
 

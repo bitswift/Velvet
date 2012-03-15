@@ -29,7 +29,7 @@
 - (VELView *)ancestorVELViewOfBridgedView:(id<VELBridgedView>)bridgedView;
 
 /**
- * Action triggered when the `NSWindowFirstResponderDidChangeNotification`
+ * Action triggered when the `VELNSWindowFirstResponderDidChangeNotification`
  * is fired.
  *
  * Sets <focused> when the new first responder is one of its descendant views.
@@ -136,7 +136,7 @@
     [[NSNotificationCenter defaultCenter]
         addObserver:self
         selector:@selector(firstResponderDidChange:)
-        name:NSWindowFirstResponderDidChangeNotification
+        name:VELNSWindowFirstResponderDidChangeNotification
         object:nil
      ];
 }
@@ -147,7 +147,7 @@
 - (void)viewWillDisappear; {
     [[NSNotificationCenter defaultCenter]
         removeObserver:self
-        name:NSWindowFirstResponderDidChangeNotification
+        name:VELNSWindowFirstResponderDidChangeNotification
         object:nil
      ];
 }
@@ -156,7 +156,7 @@
 }
 
 - (void)firstResponderDidChange:(NSNotification *)notification {
-    NSResponder *responder = [[notification userInfo] objectForKey:NSWindowNewFirstResponderKey];
+    NSResponder *responder = [[notification userInfo] objectForKey:VELNSWindowNewFirstResponderKey];
     if (![responder conformsToProtocol:@protocol(VELBridgedView)]) {
         self.focused = NO;
         return;

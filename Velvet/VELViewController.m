@@ -164,7 +164,8 @@
     }
 
     VELView *view = [self ancestorVELViewOfBridgedView:(id)responder];
-    self.focused = [view isDescendantOfView:self.view];
+    if ([view isDescendantOfView:self.view])
+        self.focused = YES;
 }
 
 #pragma mark Responder chain

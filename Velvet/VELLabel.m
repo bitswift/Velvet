@@ -443,4 +443,29 @@ static NSRange NSRangeFromCFRange(CFRange range) {
     [self setAttribute:NSParagraphStyleAttributeName value:(__bridge_transfer id)paragraphStyle];
 }
 
+#pragma mark Alignment
+
+VELTextAlignment VELTextAlignmentFromNSTextAlignment(NSTextAlignment alignment) {
+    switch (alignment) {
+        case NSCenterTextAlignment: return(VELTextAlignmentCenter);
+        case NSRightTextAlignment: return(VELTextAlignmentRight);
+        case NSJustifiedTextAlignment: return(VELTextAlignmentJustified);
+        case NSNaturalTextAlignment: return(VELTextAlignmentNatural);
+        case NSLeftTextAlignment:
+        default:
+            return(VELTextAlignmentLeft);
+    }
+}
+
+NSTextAlignment NSTextAlignmentFromNSTextAlignment(VELTextAlignment alignment) {
+    switch (alignment) {
+        case VELTextAlignmentCenter: return(NSCenterTextAlignment);
+        case VELTextAlignmentRight: return(NSRightTextAlignment);
+        case VELTextAlignmentJustified: return(NSJustifiedTextAlignment);
+        case VELTextAlignmentNatural: return(NSNaturalTextAlignment);
+        case VELTextAlignmentLeft:
+        default:
+            return(NSLeftTextAlignment);
+    }
+}
 @end

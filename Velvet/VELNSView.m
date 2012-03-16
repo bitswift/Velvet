@@ -167,8 +167,9 @@
 - (void)startRenderingContainedView; {
     if (m_renderingContainedViewCount++ == 0) {
         [CATransaction performWithDisabledActions:^{
-            [self.layer setNeedsDisplay];
-            [self.layer displayIfNeeded];
+            [self synchronizeNSViewGeometry];
+            [self.guestView displayIfNeeded];
+            [self.layer display];
         }];
     }
 }

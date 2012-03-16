@@ -77,19 +77,19 @@ SpecBegin(NSWindowAdditions)
             id newResponder = window.contentView;
             
             id observer = [[NSNotificationCenter defaultCenter]
-             addObserverForName:VELNSWindowFirstResponderDidChangeNotification
-             object:nil
-             queue:nil
-             usingBlock:^(NSNotification *notification) {
-                 didMakeFirstResponder = YES;
-                 NSDictionary *userInfo = [notification userInfo];
-                 expect([userInfo objectForKey:VELNSWindowOldFirstResponderKey]).toEqual(previousResponder);
-                 expect([userInfo objectForKey:VELNSWindowNewFirstResponderKey]).toEqual(newResponder);
+                addObserverForName:VELNSWindowFirstResponderDidChangeNotification
+                object:nil
+                queue:nil
+                usingBlock:^(NSNotification *notification) {
+                    didMakeFirstResponder = YES;
+                    NSDictionary *userInfo = [notification userInfo];
+                    expect([userInfo objectForKey:VELNSWindowOldFirstResponderKey]).toEqual(previousResponder);
+                    expect([userInfo objectForKey:VELNSWindowNewFirstResponderKey]).toEqual(newResponder);
                 }
             ];
             
             [window makeFirstResponder:newResponder];
-            expect(didMakeFirstResponder).isGoing.toBeTruthy();
+            expect(didMakeFirstResponder).toBeTruthy();
             
             [[NSNotificationCenter defaultCenter] removeObserver:observer];
         });

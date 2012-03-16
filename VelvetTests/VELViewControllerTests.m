@@ -136,18 +136,18 @@ SpecBegin(VELViewController)
                     expect(subview.focused).toBeTruthy();
                 });
                 
-                it(@"should become focused when a descendant subview becomes first responder", ^{
+                it(@"should become focused when a descendant view becomes first responder", ^{
                     VELView *subview = [[VELView alloc] init];
-                    VELView *descendantSubview = [[VELView alloc] init];
+                    VELView *descendantView = [[VELView alloc] init];
                     
-                    [subview addSubview:descendantSubview];
+                    [subview addSubview:descendantView];
                     [controller.view addSubview:subview];
                     
-                    expect(descendantSubview.focused).toBeFalsy();
+                    expect(descendantView.focused).toBeFalsy();
                     
-                    [window makeFirstResponder:descendantSubview];
+                    [window makeFirstResponder:descendantView];
                     
-                    expect(descendantSubview.focused).toBeTruthy();
+                    expect(descendantView.focused).toBeTruthy();
                 });
                 
                 it(@"should unfocus if the window becomes first responder", ^{

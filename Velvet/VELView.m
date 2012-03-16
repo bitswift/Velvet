@@ -76,6 +76,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
         unsigned alignsToIntegralPixels:1;
         unsigned replacingSubviews:1;
         unsigned matchesWindowScaleFactor:1;
+        unsigned focused:1;
     } m_flags;
 
     /*
@@ -183,6 +184,18 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setUserInteractionEnabled:(BOOL)userInteractionEnabled {
     m_flags.userInteractionEnabled = userInteractionEnabled;
+}
+
+- (BOOL)isFocused {
+    return m_flags.focused;
+}
+
+- (void)setFocused:(BOOL)focused {
+    m_flags.focused = focused;
+    
+    for (VELView *subview in self.subviews)  {
+        subview.focused = focused;
+    }
 }
 
 - (BOOL)clearsContextBeforeDrawing {

@@ -136,4 +136,17 @@
  */
 @property (nonatomic, weak, readonly) VELViewController *parentViewController;
 
+/**
+ * @name Focused State
+ */
+
+/**
+ * Indicates whether the receiver is focused.
+ *
+ * The receiver is focused if its view or any of its descendants is currently the first responder.
+ *
+ * The default value for this property is `NO`.
+ */
+@property (nonatomic, getter = isFocused, readonly) BOOL focused;
+
 @end

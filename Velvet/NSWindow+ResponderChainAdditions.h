@@ -9,6 +9,32 @@
 #import <Cocoa/Cocoa.h>
 
 /**
+ * The name of the `NSNotification` posted when a window's `firstResponder`
+ * changes.
+ *
+ * The user info dictionary for this notification will contain the following
+ * keys:
+ *
+ * - <VELNSWindowOldFirstResponderKey>
+ * - <VELNSWindowNewFirstResponderKey>
+ */
+extern NSString * const VELNSWindowFirstResponderDidChangeNotification;
+
+/**
+ * An `NSNotification` user info key associated with the previous `firstResponder`.
+ *
+ * This key will be associated with `NSNull` when the old first responder is `nil`.
+ */
+extern NSString * const VELNSWindowOldFirstResponderKey;
+
+/**
+ * An `NSNotification` user info key associated with the new `firstResponder`.
+ *
+ * This key will be associated with `NSNull` when the new first responder is `nil`.
+ */
+extern NSString * const VELNSWindowNewFirstResponderKey;
+
+/**
  * Extensions to `NSWindow` that support manipulating the responder chain.
  */
 @interface NSWindow (ResponderChainAdditions)

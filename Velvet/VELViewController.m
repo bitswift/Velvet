@@ -52,7 +52,6 @@
 - (void)setFocused:(BOOL)focused {
     m_focused = focused;
 
-    self.parentViewController.focused = NO;
     self.view.focused = focused;
 }
 
@@ -159,18 +158,21 @@
 
 - (void)firstResponderDidChange:(NSNotification *)notification {
     id responder = [[notification userInfo] objectForKey:VELNSWindowNewFirstResponderKey];
-    
+
     while (responder && ![responder conformsToProtocol:@protocol(VELBridgedView)])
         responder = [responder nextResponder];
 
     while (responder) {
         if (responder == self.view) {
+            self.parentViewController.focused = NO;
             self.focused = YES;
             return;
         }
         
         responder = [responder immediateParentView];
     }
+    
+    self.focused = NO;
 }
 
 #pragma mark Responder chain

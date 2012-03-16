@@ -148,6 +148,15 @@ SpecBegin(VELViewController)
                 
                 expect(descendantSubview.focused).toBeTruthy();
             });
+            
+            it(@"should unfocus if the window becomes first responder", ^{
+                [window makeFirstResponder:controller.view];
+                [window makeFirstResponder:nil]; 
+
+                expect(controller.focused).toBeFalsy();
+                
+                [window makeFirstResponder:controller.view];
+            });
         });
 
         describe(@"responder chain", ^{

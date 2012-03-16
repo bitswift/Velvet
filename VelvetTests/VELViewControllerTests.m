@@ -113,49 +113,89 @@ SpecBegin(VELViewController)
                 expect(controller.focused).toBeFalsy();
                 expect(controller.view.focused).toBeFalsy();
             });
-            
-            after(^{
-                expect(controller.view.focused).toBeTruthy();
-                expect(controller.focused).toBeTruthy();
-            });
-            
-            it(@"should become focused when its view becomes first responder", ^{
-                [window makeFirstResponder:controller.view];
-            });
-            
-            it(@"should become focused when its subview becomes first responder", ^{
-                VELView *subview = [[VELView alloc] init];
-                
-                [controller.view addSubview:subview];
-                
-                expect(subview.focused).toBeFalsy();
-                
-                [window makeFirstResponder:subview];
-                
-                expect(subview.focused).toBeTruthy();
-            });
-            
-            it(@"should become focused when a descendant subview becomes first responder", ^{
-                VELView *subview = [[VELView alloc] init];
-                VELView *descendantSubview = [[VELView alloc] init];
-                
-                [subview addSubview:descendantSubview];
-                [controller.view addSubview:subview];
-                
-                expect(descendantSubview.focused).toBeFalsy();
-                
-                [window makeFirstResponder:descendantSubview];
-                
-                expect(descendantSubview.focused).toBeTruthy();
-            });
-            
-            it(@"should unfocus if the window becomes first responder", ^{
-                [window makeFirstResponder:controller.view];
-                [window makeFirstResponder:nil]; 
 
-                expect(controller.focused).toBeFalsy();
+            describe(@"with one view controller", ^{
+                after(^{
+                    expect(controller.view.focused).toBeTruthy();
+                    expect(controller.focused).toBeTruthy();
+                });
                 
-                [window makeFirstResponder:controller.view];
+                it(@"should become focused when its view becomes first responder", ^{
+                    [window makeFirstResponder:controller.view];
+                });
+                
+                it(@"should become focused when its subview becomes first responder", ^{
+                    VELView *subview = [[VELView alloc] init];
+                    
+                    [controller.view addSubview:subview];
+                    
+                    expect(subview.focused).toBeFalsy();
+                    
+                    [window makeFirstResponder:subview];
+                    
+                    expect(subview.focused).toBeTruthy();
+                });
+                
+                it(@"should become focused when a descendant subview becomes first responder", ^{
+                    VELView *subview = [[VELView alloc] init];
+                    VELView *descendantSubview = [[VELView alloc] init];
+                    
+                    [subview addSubview:descendantSubview];
+                    [controller.view addSubview:subview];
+                    
+                    expect(descendantSubview.focused).toBeFalsy();
+                    
+                    [window makeFirstResponder:descendantSubview];
+                    
+                    expect(descendantSubview.focused).toBeTruthy();
+                });
+                
+                it(@"should unfocus if the window becomes first responder", ^{
+                    [window makeFirstResponder:controller.view];
+                    [window makeFirstResponder:nil]; 
+
+                    expect(controller.focused).toBeFalsy();
+                    
+                    [window makeFirstResponder:controller.view];
+                });
+            });
+
+            describe(@"with sub view controllers", ^{
+                __block VELViewController *subviewController;
+                __block VELView *subview;
+
+                before(^{
+                    subviewController = [[VELViewController alloc] init];
+                    subview = [[VELView alloc] init];
+
+                    [subviewController.view addSubview:subview];
+                    [controller.view addSubview:subviewController.view];
+
+                    expect(subviewController.focused).toBeFalsy();
+                    expect(subviewController.view.focused).toBeFalsy();
+                    expect(subview.focused).toBeFalsy();
+                });
+
+                after(^{
+                    expect(controller.focused).toBeFalsy();
+                    expect(controller.view.focused).toBeFalsy();
+                    expect(subviewController.focused).toBeTruthy();
+                    expect(subviewController.view.focused).toBeTruthy();
+                    expect(subview.focused).toBeTruthy();
+                });
+
+                it(@"should not be focused when a descendant view controller's view becomes first responder", ^{
+                    [window makeFirstResponder:subview];
+                });
+
+                it(@"should lose focus when it is focused and a descendant view controller's view becomes first responder", ^{
+                    [window makeFirstResponder:controller.view];
+
+                    expect(controller.focused).toBeTruthy();
+                    expect(controller.view.focused).toBeTruthy();
+
+                    [window makeFirstResponder:subview];
+                });
             });
         });
 
@@ -228,46 +268,6 @@ SpecBegin(VELViewController)
                 expect(subviewController.parentViewController).toEqual(controller);
             });
 
-            describe(@"focused state", ^{
-                __block VELViewController *subviewController;
-                __block VELView *subview;
-
-                before(^{
-                    subviewController = [[VELViewController alloc] init];
-                    subview = [[VELView alloc] init];
-
-                    [subviewController.view addSubview:subview];
-                    [controller.view addSubview:subviewController.view];
-                    [window.rootView addSubview:controller.view];
-
-                    expect(controller.focused).toBeFalsy();
-                    expect(controller.view.focused).toBeFalsy();
-                    expect(subviewController.focused).toBeFalsy();
-                    expect(subviewController.view.focused).toBeFalsy();
-                    expect(subview.focused).toBeFalsy();
-                });
-
-                after(^{
-                    expect(controller.focused).toBeFalsy();
-                    expect(controller.view.focused).toBeFalsy();
-                    expect(subviewController.focused).toBeTruthy();
-                    expect(subviewController.view.focused).toBeTruthy();
-                    expect(subview.focused).toBeTruthy();
-                });
-
-                it(@"should not be focused when a descendant view controller's view becomes first responder", ^{
-                    [window makeFirstResponder:subview];
-                });
-
-                it(@"should lose focus when it is focused and a descendant view controller's view becomes first responder", ^{
-                    [window makeFirstResponder:controller.view];
-
-                    expect(controller.focused).toBeTruthy();
-                    expect(controller.view.focused).toBeTruthy();
-
-                    [window makeFirstResponder:subview];
-                });
-            });
         });
     });
 

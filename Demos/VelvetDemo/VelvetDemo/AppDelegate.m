@@ -125,6 +125,17 @@
         nsScrollView.backgroundColor = [NSColor whiteColor];
         nsScrollView.drawsBackground = YES;
 
+        VELClickEventRecognizer *clickRecognizer = [[VELClickEventRecognizer alloc] init];
+        clickRecognizer.numberOfClicksRequired = 2;
+        clickRecognizer.delaysEventDelivery = NO;
+        clickRecognizer.view = nsScrollView;
+        clickRecognizer.handlesEventsAfterDescendants = YES;
+
+        [clickRecognizer addActionUsingBlock:^(VELClickEventRecognizer *clickRecognizer){
+            if (clickRecognizer.active)
+                NSLog(@"Scroll view double-click at %@", NSStringFromPoint([clickRecognizer locationInView:nsScrollView]));
+        }];
+
         VELNSView *scrollViewHost = [[VELNSView alloc] initWithNSView:nsScrollView];
         scrollViewHost.backgroundColor = [NSColor yellowColor];
 
@@ -203,7 +214,7 @@
 
         [doubleClickRecognizer addActionUsingBlock:^(VELClickEventRecognizer *doubleClickRecognizer){
             if ([doubleClickRecognizer isActive])
-                NSLog(@"Event recognizer double-click at %@", NSStringFromPoint([doubleClickRecognizer locationInView:self.control]));
+                NSLog(@"Square view event recognizer double-click at %@", NSStringFromPoint([doubleClickRecognizer locationInView:self.control]));
         }];
 
         VELClickEventRecognizer *quadrupleClickRecognizer = [[VELClickEventRecognizer alloc] init];
@@ -224,7 +235,7 @@
 
         [quadrupleClickRecognizer addActionUsingBlock:^(VELClickEventRecognizer *quadrupleClickRecognizer){
             if ([quadrupleClickRecognizer isActive])
-                NSLog(@"Event recognizer quadruple click at %@", NSStringFromPoint([quadrupleClickRecognizer locationInView:self.control]));
+                NSLog(@"Square view event recognizer quadruple click at %@", NSStringFromPoint([quadrupleClickRecognizer locationInView:self.control]));
         }];
 
         [self.scrollView addSubview:self.control];

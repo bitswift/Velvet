@@ -104,12 +104,12 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  *
  * When an event is about to be dispatched to any view that has attached
  * recognizers, or any ancestors with attached recognizers, the event will be
- * delivered to any recognizers before being delivered to any of the views.
- * Ancestor recognizers (those attached to views higher up in the hierarchy)
- * will receive the event first, followed by their immediate descendants, and so
- * on. If <delaysEventDelivery> is `YES` for any recognizer in the chain, the
- * original view (the one that was going to receive the event) will not receive
- * the event until that recognizer has transitioned states.
+ * delivered to any recognizers before being delivered to any of the views. The
+ * order in which the event is delivered to the recognizers depends on the value
+ * of <handlesEventsAfterDescendants>. If <delaysEventDelivery> is `YES` for any
+ * recognizer in the chain, the original view (the one that was going to receive
+ * the event) will not receive the event until that recognizer has transitioned
+ * states.
  *
  * If a given recognizer depends on another,
  * <shouldPreventEventRecognizer:fromReceivingEvent:>,
@@ -230,6 +230,22 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
 /**
  * @name Recognizer Dependencies
  */
+
+/**
+ * Whether the receiver should only receive each event after any applicable
+ * descendant recognizers have received the event.
+ *
+ * If set to `NO`, ancestor recognizers (those attached to views higher up in
+ * the hierarchy) will receive the event first, followed by their immediate
+ * descendants, and so on. If set to `YES` on both a recognizer and its child,
+ * the former will receive events after the latter.
+ *
+ * This flag does not affect _which_ recognizers receive the event -- only the
+ * order in which they do.
+ *
+ * The default value for this property is `NO`.
+ */
+@property (nonatomic, assign) BOOL handlesEventsAfterDescendants;
 
 /**
  * Contains other <VELEventRecognizer> instances that are required to fail

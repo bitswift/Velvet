@@ -117,51 +117,33 @@ static BOOL getEventButtonState (NSEvent *event, NSUInteger *buttonMaskPtr, NSUI
             continue;
 
         BOOL buttonPressed = (buttonMask & 0x1);
-        CGEventRef newEvent = NULL;
+
+        CGEventRef newEvent = CGEventCreateCopy(selfCGEvent);
+        if (!newEvent) {
+            NSAssert(NO, @"Could not create new mouse event for button index %u (pressed: %i)", (unsigned)buttonIndex, (int)buttonPressed);
+            continue;
+        }
 
         switch (buttonIndex) {
-            case 0: {
-                newEvent = CGEventCreateMouseEvent(
-                    eventSource,
-                    (buttonPressed ? kCGEventLeftMouseDown : kCGEventLeftMouseUp),
-                    location,
-                    kCGMouseButtonLeft
-                );
-
+            case 0:
+                CGEventSetType(newEvent, buttonPressed ? kCGEventLeftMouseDown : kCGEventLeftMouseUp);
+                CGEventSetIntegerValueField(newEvent, kCGMouseEventButtonNumber, kCGMouseButtonLeft);
                 break;
-            }
 
-            case 1: {
-                newEvent = CGEventCreateMouseEvent(
-                    eventSource,
-                    (buttonPressed ? kCGEventRightMouseDown : kCGEventRightMouseUp),
-                    location,
-                    kCGMouseButtonRight
-                );
-
+            case 1:
+                CGEventSetType(newEvent, buttonPressed ? kCGEventRightMouseDown : kCGEventRightMouseUp);
+                CGEventSetIntegerValueField(newEvent, kCGMouseEventButtonNumber, kCGMouseButtonRight);
                 break;
-            }
 
-            default: {
-                newEvent = CGEventCreateMouseEvent(
-                    eventSource,
-                    (buttonPressed ? kCGEventOtherMouseDown : kCGEventOtherMouseUp),
-                    location,
-                    (CGMouseButton)buttonIndex
-                );
-
-                break;
-            }
+            default:
+                CGEventSetType(newEvent, buttonPressed ? kCGEventOtherMouseDown : kCGEventOtherMouseUp);
+                CGEventSetIntegerValueField(newEvent, kCGMouseEventButtonNumber, buttonIndex);
         }
 
-        NSAssert(newEvent, @"Could not create new mouse event for button index %u (pressed: %i)", (unsigned)buttonIndex, (int)buttonPressed);
+        NSEvent *event = [NSEvent eventWithCGEvent:newEvent];
+        CFRelease(newEvent);
 
-        if (newEvent) {
-            NSEvent *event = [NSEvent eventWithCGEvent:newEvent];
-            CFRelease(newEvent);
-
-            [events addObject:event];
-        }
+        [events addObject:event];
     }
 
     return events;

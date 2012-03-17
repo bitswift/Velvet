@@ -21,9 +21,9 @@
  * Walks up the hierarchy of the given view, collecting all enabled event
  * recognizers into the given array.
  *
- * The recognizers added to the given array will be in order that events should
- * be dispatched (i.e., with ancestor recognizers first). Any disabled
- * recognizers will be omitted from the array.
+ * The given array will contain ancestor recognizers first, followed by their
+ * immediate children, and so on. Any disabled recognizers will be omitted from
+ * the array.
  *
  * @param recognizers A mutable array to add recognizers to. This should be
  * provided as an empty array.
@@ -36,6 +36,13 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
     if (!view)
         return;
 
+    /*
+     * We shouldn't consider <[VELEventRecognizer
+     * handlesEventsAfterDescendants]> in here, because we always want the
+     * prevention blocks (invoked in <dispatchEvent:toEventRecognizersForView:>)
+     * to be called descendants-first. Adjusting the order of the array here
+     * would violate that guarantee.
+     */
     getEventRecognizersFromViewHierarchy(recognizers, view.immediateParentView);
 
     NSArray *attachedRecognizers = [VELEventRecognizer eventRecognizersForView:view];
@@ -43,6 +50,57 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
         if (recognizer.enabled)
             [recognizers addObject:recognizer];
     }
+}
+
+/**
+ * Dispatches the given event to the recognizers at and after the given index.
+ * Returns whether the event should still be passed to the view.
+ *
+ * This function takes into account the value of <[VELEventRecognizer
+ * handlesEventsAfterDescendants]>, to make sure that ancestors with that flag
+ * enabled are only invoked after the rest of the recognizers (the descendants)
+ * have received the event.
+ *
+ * @param event The event to dispatch.
+ * @param recognizers An array of event recognizers, with ancestors at the
+ * beginning of the array.
+ * @param index The index into `recognizers` at which to begin event dispatch.
+ * If this index is out-of-bounds, the function returns `YES` immediately.
+ */
+static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *recognizers, NSUInteger index) {
+    NSCParameterAssert(event);
+    NSCParameterAssert(recognizers);
+
+    if (index >= recognizers.count)
+        return YES;
+
+    VELEventRecognizer *recognizer = [recognizers objectAtIndex:index];
+    BOOL dispatchToView = YES;
+
+    BOOL handlesAfterDescendants = recognizer.handlesEventsAfterDescendants;
+    if (handlesAfterDescendants) {
+        // dispatch to descendants first
+        dispatchToView &= dispatchEventToRecognizersStartingAtIndex(event, recognizers, index + 1);
+    }
+
+    if ([recognizer.eventsToIgnore containsObject:event]) {
+        [recognizer.eventsToIgnore removeObject:event];
+    } else {
+        BOOL handled = [recognizer handleEvent:event];
+
+        // don't forward the event to the view if this recognizer wants it
+        // delayed
+        if (handled && recognizer.delaysEventDelivery)
+            dispatchToView = NO;
+    }
+
+    if (!handlesAfterDescendants) {
+        // dispatch to descendants after this recognizer has had a chance to
+        // process the event
+        dispatchToView &= dispatchEventToRecognizersStartingAtIndex(event, recognizers, index + 1);
+    }
+
+    return dispatchToView;
 }
 
 @interface VELEventManager ()
@@ -312,8 +370,6 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
     if (!recognizers.count)
         return YES;
 
-    BOOL dispatchToView = YES;
-
     // find recognizers that prevent each other (descendants first, so that they
     // can prevent ancestors)
     NSUInteger i = recognizers.count - 1;
@@ -337,18 +393,7 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
         } while (j-- > 0);
     } while (i-- > 0);
 
-    for (VELEventRecognizer *recognizer in recognizers) {
-        if ([recognizer.eventsToIgnore containsObject:event]) {
-            [recognizer.eventsToIgnore removeObject:event];
-            continue;
-        }
-
-        BOOL handled = [recognizer handleEvent:event];
-        if (handled && recognizer.delaysEventDelivery)
-            dispatchToView = NO;
-    }
-
-    return dispatchToView;
+    return dispatchEventToRecognizersStartingAtIndex(event, recognizers, 0);
 }
 
 - (BOOL)handleVelvetEvent:(NSEvent *)event; {

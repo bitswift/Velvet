@@ -28,6 +28,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     struct {
         unsigned enabled:1;
         unsigned delaysEventDelivery:1;
+        unsigned handlesEventsAfterDescendants:1;
     } m_flags;
 }
 
@@ -163,6 +164,14 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
         [self sendDelayedEvents];
         self.delayedEvents = nil;
     }
+}
+
+- (BOOL)handlesEventsAfterDescendants {
+    return m_flags.handlesEventsAfterDescendants;
+}
+
+- (void)setHandlesEventsAfterDescendants:(BOOL)value {
+    m_flags.handlesEventsAfterDescendants = value;
 }
 
 // this method should never short-circuit if already in the given state,

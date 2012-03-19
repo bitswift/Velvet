@@ -31,8 +31,8 @@ static void dismissPopUpUnregisteringAsEditor (NSPopUpButtonCell *self, SEL _cmd
     if (self.registersAsEditorWhileTracking) {
         // end editing after one run loop iteration, so the message is only sent
         // after any model change has occurred
-        [self performSelector:@selector(notifyBoundObjectsOfDidEndEditing) withObject:nil];
-        [controlView performSelector:@selector(notifyBoundObjectsOfDidEndEditing) withObject:nil];
+        [self performSelector:@selector(notifyBoundObjectsOfDidEndEditing) withObject:nil afterDelay:0];
+        [controlView performSelector:@selector(notifyBoundObjectsOfDidEndEditing) withObject:nil afterDelay:0];
     }
 }
 

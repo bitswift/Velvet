@@ -12,10 +12,12 @@
 #import <Velvet/CGBitmapContext+PixelFormatAdditions.h>
 #import <Velvet/CGContext+CoreAnimationAdditions.h>
 #import <Velvet/CGGeometry+ConvenienceAdditions.h>
+#import <Velvet/NSCell+EditorAdditions.h>
 #import <Velvet/NSClipView+VELScrollViewAdditions.h>
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSEvent+ButtonStateAdditions.h>
 #import <Velvet/NSImage+CoreGraphicsAdditions.h>
+#import <Velvet/NSObject+BindingsAdditions.h>
 #import <Velvet/NSResponder+ErrorPresentationAdditions.h>
 #import <Velvet/NSResponder+ResponderChainAdditions.h>
 #import <Velvet/NSScrollView+VELScrollViewAdditions.h>

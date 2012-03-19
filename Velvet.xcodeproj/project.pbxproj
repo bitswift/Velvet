@@ -25,6 +25,9 @@
 		1EA3D71014B37F4A0007E4C4 /* NSVelvetHostViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */; };
 		D002AEEF14CE031F0062AEFC /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D002AED714CE030C0062AEFC /* libExpecta.a */; };
 		D002AEF014CE031F0062AEFC /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D002AEE314CE030C0062AEFC /* libSpecta.a */; };
+		D00D3A7B1516F97E00466B84 /* NSObject+BindingsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D00D3A791516F97E00466B84 /* NSObject+BindingsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D00D3A7C1516F97E00466B84 /* NSObject+BindingsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D00D3A7A1516F97E00466B84 /* NSObject+BindingsAdditions.m */; };
+		D00D3A901516FC2600466B84 /* NSObjectAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D00D3A8F1516FC2600466B84 /* NSObjectAdditionsTests.m */; };
 		D01B962F14C1956100CBDD8E /* VELViewLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = D01B962D14C1956100CBDD8E /* VELViewLayer.m */; };
 		D01CF3D41479B18400C88D2B /* VELNSView.h in Headers */ = {isa = PBXBuildFile; fileRef = D01CF3D21479B18400C88D2B /* VELNSView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D01CF3D51479B18400C88D2B /* VELNSView.m in Sources */ = {isa = PBXBuildFile; fileRef = D01CF3D31479B18400C88D2B /* VELNSView.m */; };
@@ -228,6 +231,9 @@
 		D002AEC614CE030B0062AEFC /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = Libraries/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		D002AEC914CE030B0062AEFC /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = Libraries/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		D002AEF114CE03820062AEFC /* VelvetTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VelvetTests-Prefix.pch"; sourceTree = "<group>"; };
+		D00D3A791516F97E00466B84 /* NSObject+BindingsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BindingsAdditions.h"; sourceTree = "<group>"; };
+		D00D3A7A1516F97E00466B84 /* NSObject+BindingsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+BindingsAdditions.m"; sourceTree = "<group>"; };
+		D00D3A8F1516FC2600466B84 /* NSObjectAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSObjectAdditionsTests.m; sourceTree = "<group>"; };
 		D0150FE914790A1700126F09 /* VELViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewPrivate.h; sourceTree = "<group>"; };
 		D01B962C14C1956100CBDD8E /* VELViewLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELViewLayer.h; sourceTree = "<group>"; };
 		D01B962D14C1956100CBDD8E /* VELViewLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELViewLayer.m; sourceTree = "<group>"; };
@@ -510,6 +516,7 @@
 			children = (
 				D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */,
 				D08B7BBE14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m */,
+				D00D3A8F1516FC2600466B84 /* NSObjectAdditionsTests.m */,
 				D025619E15004A79008A71B6 /* NSResponderAdditionsTests.m */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
 				1E71313514B7B79800D6D7DF /* NSVelvetViewTests.m */,
@@ -569,6 +576,8 @@
 				D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */,
 				D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */,
 				D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */,
+				D00D3A791516F97E00466B84 /* NSObject+BindingsAdditions.h */,
+				D00D3A7A1516F97E00466B84 /* NSObject+BindingsAdditions.m */,
 				D06C7E6015127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h */,
 				D06C7E6115127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m */,
 				D025619A15004999008A71B6 /* NSResponder+ResponderChainAdditions.h */,
@@ -861,6 +870,7 @@
 				D0EB4A41150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h in Headers */,
 				D06C7E6215127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h in Headers */,
 				D0D0E9921516EFB5009A4AE8 /* NSCell+EditorAdditions.h in Headers */,
+				D00D3A7B1516F97E00466B84 /* NSObject+BindingsAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1087,6 +1097,7 @@
 				D04B7E67150C72CF00A73996 /* VELHostView.m in Sources */,
 				D06C7E6315127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m in Sources */,
 				D0D0E9911516EF9C009A4AE8 /* NSCell+EditorAdditions.m in Sources */,
+				D00D3A7C1516F97E00466B84 /* NSObject+BindingsAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1116,6 +1127,7 @@
 				D025619F15004A79008A71B6 /* NSResponderAdditionsTests.m in Sources */,
 				D0A112D71501B7ED00F3DC16 /* VELEventRecognizerTests.m in Sources */,
 				D0B6168E1506E7B000DD9FB0 /* VELKeyPressTests.m in Sources */,
+				D00D3A901516FC2600466B84 /* NSObjectAdditionsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

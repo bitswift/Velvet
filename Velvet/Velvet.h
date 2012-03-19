@@ -17,6 +17,7 @@
 #import <Velvet/NSColor+CoreGraphicsAdditions.h>
 #import <Velvet/NSEvent+ButtonStateAdditions.h>
 #import <Velvet/NSImage+CoreGraphicsAdditions.h>
+#import <Velvet/NSObject+BindingsAdditions.h>
 #import <Velvet/NSResponder+ErrorPresentationAdditions.h>
 #import <Velvet/NSResponder+ResponderChainAdditions.h>
 #import <Velvet/NSScrollView+VELScrollViewAdditions.h>

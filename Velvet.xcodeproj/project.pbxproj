@@ -92,6 +92,8 @@
 		D0B75C6F14918EB9005C81D5 /* VELViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0B75C6E14918EB9005C81D5 /* VELViewTests.m */; };
 		D0CACD35147C86C0008C42B2 /* VELBridgedView.h in Headers */ = {isa = PBXBuildFile; fileRef = D0CACD34147C86C0008C42B2 /* VELBridgedView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0CE951014B3842F003581C8 /* VELWindowTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0CE950F14B3842F003581C8 /* VELWindowTests.m */; };
+		D0D0E9911516EF9C009A4AE8 /* NSCell+EditorAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D0E98F1516EF9C009A4AE8 /* NSCell+EditorAdditions.m */; };
+		D0D0E9921516EFB5009A4AE8 /* NSCell+EditorAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D0E98E1516EF9C009A4AE8 /* NSCell+EditorAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D51CFA14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0D51CFB14880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		D0D51D0A14880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -305,6 +307,8 @@
 		D0CACD34147C86C0008C42B2 /* VELBridgedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELBridgedView.h; sourceTree = "<group>"; };
 		D0CE950E14B3842F003581C8 /* VELWindowTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELWindowTests.h; sourceTree = "<group>"; };
 		D0CE950F14B3842F003581C8 /* VELWindowTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELWindowTests.m; sourceTree = "<group>"; };
+		D0D0E98E1516EF9C009A4AE8 /* NSCell+EditorAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSCell+EditorAdditions.h"; sourceTree = "<group>"; };
+		D0D0E98F1516EF9C009A4AE8 /* NSCell+EditorAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSCell+EditorAdditions.m"; sourceTree = "<group>"; };
 		D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+CoreGraphicsAdditions.h"; sourceTree = "<group>"; };
 		D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+CoreGraphicsAdditions.m"; sourceTree = "<group>"; };
 		D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+CoreGraphicsAdditions.h"; sourceTree = "<group>"; };
@@ -416,42 +420,9 @@
 		D0150FF414790BF500126F09 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D0A96C0314B7AE8B00A64F6F /* AppKit+GeometryAdditions.h */,
-				D0A96C0414B7AE8B00A64F6F /* AppKit+GeometryAdditions.m */,
-				1E28194C1481EB14006A747C /* CALayer+GeometryAdditions.h */,
-				1E28194D1481EB14006A747C /* CALayer+GeometryAdditions.m */,
-				1E28194E1481EB14006A747C /* CATransaction+BlockAdditions.h */,
-				1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */,
-				1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */,
-				1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */,
-				D0EB4A3F150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h */,
-				D0EB4A40150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.m */,
-				D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */,
-				D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */,
-				D08B7BB914FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h */,
-				D08B7BBA14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m */,
-				D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */,
-				D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */,
-				D069F4C415096E4400ED37DC /* NSEvent+ButtonStateAdditions.h */,
-				D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */,
-				D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */,
-				D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */,
-				D06C7E6015127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h */,
-				D06C7E6115127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m */,
-				D025619A15004999008A71B6 /* NSResponder+ResponderChainAdditions.h */,
-				D025619B15004999008A71B6 /* NSResponder+ResponderChainAdditions.m */,
-				D08B7BE414FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.h */,
-				D08B7BE514FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.m */,
-				D05AC679150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.h */,
-				D05AC67A150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.m */,
-				D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */,
-				D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */,
-				D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */,
-				D06EF03E14B3A0590035E239 /* NSWindow+EventHandlingAdditions.m */,
-				D020F49114C3959500C466E1 /* NSWindow+InitializationAdditions.h */,
-				D020F49214C3959500C466E1 /* NSWindow+InitializationAdditions.m */,
-				D02561B215004C75008A71B6 /* NSWindow+ResponderChainAdditions.h */,
-				D02561B315004C75008A71B6 /* NSWindow+ResponderChainAdditions.m */,
+				D0D0E98B1516EF6B009A4AE8 /* AppKit */,
+				D0D0E98D1516EF72009A4AE8 /* Core Animation */,
+				D0D0E98C1516EF6F009A4AE8 /* Core Graphics */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -581,6 +552,65 @@
 				D0B616621506E0B100DD9FB0 /* VELKeyPressEventRecognizer.m */,
 			);
 			name = "Event Recognizers";
+			sourceTree = "<group>";
+		};
+		D0D0E98B1516EF6B009A4AE8 /* AppKit */ = {
+			isa = PBXGroup;
+			children = (
+				D0A96C0314B7AE8B00A64F6F /* AppKit+GeometryAdditions.h */,
+				D0A96C0414B7AE8B00A64F6F /* AppKit+GeometryAdditions.m */,
+				D0D0E98E1516EF9C009A4AE8 /* NSCell+EditorAdditions.h */,
+				D0D0E98F1516EF9C009A4AE8 /* NSCell+EditorAdditions.m */,
+				D08B7BB914FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.h */,
+				D08B7BBA14FEC63B00F8BD17 /* NSClipView+VELScrollViewAdditions.m */,
+				D0D51CF814880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.h */,
+				D0D51CF914880A0D00F15DA9 /* NSColor+CoreGraphicsAdditions.m */,
+				D069F4C415096E4400ED37DC /* NSEvent+ButtonStateAdditions.h */,
+				D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */,
+				D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */,
+				D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */,
+				D06C7E6015127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h */,
+				D06C7E6115127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m */,
+				D025619A15004999008A71B6 /* NSResponder+ResponderChainAdditions.h */,
+				D025619B15004999008A71B6 /* NSResponder+ResponderChainAdditions.m */,
+				D08B7BE414FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.h */,
+				D08B7BE514FECD1A00F8BD17 /* NSScrollView+VELScrollViewAdditions.m */,
+				D05AC679150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.h */,
+				D05AC67A150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.m */,
+				D0911B1B147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.h */,
+				D0911B1C147C93AD00C7DF4E /* NSView+VELBridgedViewAdditions.m */,
+				D06EF03D14B3A0590035E239 /* NSWindow+EventHandlingAdditions.h */,
+				D06EF03E14B3A0590035E239 /* NSWindow+EventHandlingAdditions.m */,
+				D020F49114C3959500C466E1 /* NSWindow+InitializationAdditions.h */,
+				D020F49214C3959500C466E1 /* NSWindow+InitializationAdditions.m */,
+				D02561B215004C75008A71B6 /* NSWindow+ResponderChainAdditions.h */,
+				D02561B315004C75008A71B6 /* NSWindow+ResponderChainAdditions.m */,
+			);
+			name = AppKit;
+			sourceTree = "<group>";
+		};
+		D0D0E98C1516EF6F009A4AE8 /* Core Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				1E2819501481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.h */,
+				1E2819511481EB14006A747C /* CGBitmapContext+PixelFormatAdditions.m */,
+				D0EB4A3F150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h */,
+				D0EB4A40150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.m */,
+				D0682AAD14C77307001CA434 /* CGGeometry+ConvenienceAdditions.h */,
+				D0682AAE14C77307001CA434 /* CGGeometry+ConvenienceAdditions.m */,
+			);
+			name = "Core Graphics";
+			sourceTree = "<group>";
+		};
+		D0D0E98D1516EF72009A4AE8 /* Core Animation */ = {
+			isa = PBXGroup;
+			children = (
+				1E28194C1481EB14006A747C /* CALayer+GeometryAdditions.h */,
+				1E28194D1481EB14006A747C /* CALayer+GeometryAdditions.m */,
+				1E28194E1481EB14006A747C /* CATransaction+BlockAdditions.h */,
+				1E28194F1481EB14006A747C /* CATransaction+BlockAdditions.m */,
+			);
+			name = "Core Animation";
 			sourceTree = "<group>";
 		};
 		D0D7305A147C860900090122 /* Protocols */ = {
@@ -830,6 +860,7 @@
 				D069F4C615096E4400ED37DC /* NSEvent+ButtonStateAdditions.h in Headers */,
 				D0EB4A41150D3F5B00D71E56 /* CGContext+CoreAnimationAdditions.h in Headers */,
 				D06C7E6215127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h in Headers */,
+				D0D0E9921516EFB5009A4AE8 /* NSCell+EditorAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1055,6 +1086,7 @@
 				D05AC67C150BC6D90043F6DE /* NSTextView+AntialiasingAdditions.m in Sources */,
 				D04B7E67150C72CF00A73996 /* VELHostView.m in Sources */,
 				D06C7E6315127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m in Sources */,
+				D0D0E9911516EF9C009A4AE8 /* NSCell+EditorAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -83,15 +83,17 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
         dispatchToView &= dispatchEventToRecognizersStartingAtIndex(event, recognizers, index + 1);
     }
 
-    if ([recognizer.eventsToIgnore containsObject:event]) {
-        [recognizer.eventsToIgnore removeObject:event];
-    } else {
-        BOOL handled = [recognizer handleEvent:event];
+    if (!recognizer.shouldReceiveEventBlock || recognizer.shouldReceiveEventBlock(event)) {
+        if ([recognizer.eventsToIgnore containsObject:event]) {
+            [recognizer.eventsToIgnore removeObject:event];
+        } else {
+            BOOL handled = [recognizer handleEvent:event];
 
-        // don't forward the event to the view if this recognizer wants it
-        // delayed
-        if (handled && recognizer.delaysEventDelivery)
-            dispatchToView = NO;
+            // don't forward the event to the view if this recognizer wants it
+            // delayed
+            if (handled && recognizer.delaysEventDelivery)
+                dispatchToView = NO;
+        }
     }
 
     if (!handlesAfterDescendants) {

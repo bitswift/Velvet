@@ -116,6 +116,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 @synthesize actions = m_actions;
 @synthesize shouldPreventEventRecognizerBlock = m_shouldPreventEventRecognizerBlock;
 @synthesize shouldBePreventedByEventRecognizerBlock = m_shouldBePreventedByEventRecognizerBlock;
+@synthesize shouldReceiveEventBlock = m_shouldReceiveEventBlock;
 
 - (BOOL)isActive {
     switch (self.state) {

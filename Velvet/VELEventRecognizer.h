@@ -177,6 +177,16 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
 @property (nonatomic, getter = isEnabled) BOOL enabled;
 
 /**
+ * Invoked to test whether the receiver should handle the given event.
+ *
+ * If this block returns `NO`, `event` will not be delivered to the receiver.
+ *
+ * The default value for this property is `nil`, which means that all events
+ * should be received (assuming no other recognizers prevent their delivery).
+ */
+@property (nonatomic, copy) BOOL (^shouldReceiveEventBlock)(NSEvent *event);
+
+/**
  * Resets the receiver's <state> to `VELEventRecognizerStatePossible`.
  *
  * This method may be overridden by subclasses to perform any additional cleanup

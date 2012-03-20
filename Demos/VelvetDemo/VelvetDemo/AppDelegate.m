@@ -136,6 +136,15 @@
                 NSLog(@"Scroll view double-click at %@", NSStringFromPoint([clickRecognizer locationInView:nsScrollView]));
         }];
 
+        clickRecognizer.shouldReceiveEventBlock = ^(NSEvent *event){
+            if (event.locationInWindow.x > 300) {
+                NSLog(@"Discarding event at X > 300: %@", event);
+                return NO;
+            }
+
+            return YES;
+        };
+
         VELNSView *scrollViewHost = [[VELNSView alloc] initWithNSView:nsScrollView];
         scrollViewHost.backgroundColor = [NSColor yellowColor];
 

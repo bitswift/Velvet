@@ -164,7 +164,6 @@ SpecBegin(VELEventRecognizer)
                 expect(recognizer.active).toBeTruthy();
 
                 invoked = YES;
-                [recognizer removeAllActions];
             }];
 
             expect([^{
@@ -172,6 +171,7 @@ SpecBegin(VELEventRecognizer)
             } copy]).toInvoke(recognizer, @selector(willTransitionToState:));
 
             expect(invoked).toBeTruthy();
+            expect(recognizer.didReset).toBeFalsy();
         });
 
         it(@"should do nothing while disabled", ^{
@@ -194,24 +194,21 @@ SpecBegin(VELEventRecognizer)
         });
 
         it(@"should transition back to possible state after recognition", ^{
-            __block BOOL invoked = NO;
-
-            [recognizer addActionUsingBlock:^(VELEventRecognizer *recognizer){
-                if (recognizer.state == VELEventRecognizerStateRecognized)
-                    return;
-
-                expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
-                expect(recognizer.active).toBeFalsy();
-
-                invoked = YES;
-                [recognizer removeAllActions];
-            }];
-
             expect([^{
                 [recognizer handleEvent:event];
             } copy]).toInvoke(recognizer, @selector(willTransitionToState:));
 
-            expect(invoked).toBeTruthy();
+            __block BOOL invoked = NO;
+
+            [recognizer addActionUsingBlock:^(VELEventRecognizer *recognizer){
+                expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
+                expect(recognizer.active).toBeFalsy();
+
+                invoked = YES;
+            }];
+
+            expect(invoked).isGoing.toBeTruthy();
+            expect(recognizer.didReset).toBeTruthy();
         });
 
         it(@"should fail to recognize an invalid discrete event", ^{
@@ -222,7 +219,6 @@ SpecBegin(VELEventRecognizer)
                 expect(recognizer.active).toBeFalsy();
 
                 invoked = YES;
-                [recognizer removeAllActions];
             }];
 
             expect([^{
@@ -230,26 +226,24 @@ SpecBegin(VELEventRecognizer)
             } copy]).toInvoke(recognizer, @selector(willTransitionToState:));
 
             expect(invoked).toBeTruthy();
+            expect(recognizer.didReset).toBeFalsy();
         });
 
         it(@"should transition back to possible state after failure", ^{
+            expect([^{
+                [recognizer handleEvent:unrecognizedEvent];
+            } copy]).toInvoke(recognizer, @selector(willTransitionToState:));
+
             __block BOOL invoked = NO;
 
             [recognizer addActionUsingBlock:^(VELEventRecognizer *recognizer){
-                if (recognizer.state == VELEventRecognizerStateFailed)
-                    return;
-
                 expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
                 expect(recognizer.active).toBeFalsy();
 
                 invoked = YES;
             }];
 
-            expect([^{
-                [recognizer handleEvent:unrecognizedEvent];
-            } copy]).toInvoke(recognizer, @selector(willTransitionToState:));
-
-            expect(invoked).toBeTruthy();
+            expect(invoked).isGoing.toBeTruthy();
             expect(recognizer.didReset).toBeTruthy();
         });
 
@@ -391,7 +385,8 @@ SpecBegin(VELEventRecognizer)
                 expect(ended).toBeTruthy();
                 expect(cancelled).toBeFalsy();
 
-                expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
+                expect(recognizer.didReset).toBeFalsy();
+                expect(recognizer.state).isGoing.toEqual(VELEventRecognizerStatePossible);
                 expect(recognizer.didReset).toBeTruthy();
 
                 expect(began).toBeTruthy();
@@ -419,7 +414,8 @@ SpecBegin(VELEventRecognizer)
                 expect(ended).toBeFalsy();
                 expect(cancelled).toBeTruthy();
 
-                expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
+                expect(recognizer.didReset).toBeFalsy();
+                expect(recognizer.state).isGoing.toEqual(VELEventRecognizerStatePossible);
                 expect(recognizer.didReset).toBeTruthy();
 
                 expect(began).toBeTruthy();
@@ -447,7 +443,8 @@ SpecBegin(VELEventRecognizer)
                 expect(ended).toBeTruthy();
                 expect(cancelled).toBeFalsy();
 
-                expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
+                expect(recognizer.didReset).toBeFalsy();
+                expect(recognizer.state).isGoing.toEqual(VELEventRecognizerStatePossible);
                 expect(recognizer.didReset).toBeTruthy();
 
                 expect(began).toBeTruthy();
@@ -509,7 +506,6 @@ SpecBegin(VELEventRecognizer)
                 expect(recognizer.active).toBeTruthy();
 
                 ++invokeCount;
-                [recognizer removeAllActions];
             }];
 
             expect([^{
@@ -546,7 +542,6 @@ SpecBegin(VELEventRecognizer)
                 expect(recognizer.active).toBeFalsy();
 
                 ++invokeCount;
-                [recognizer removeAllActions];
             }];
 
             NSMutableArray *events = [recognizer.eventsToRecognize mutableCopy];
@@ -558,6 +553,7 @@ SpecBegin(VELEventRecognizer)
             } copy]).toInvoke(recognizer, @selector(willTransitionToState:));
 
             expect(invokeCount).toEqual(1);
+            expect(recognizer.didReset).toBeFalsy();
         });
     });
 
@@ -609,63 +605,54 @@ SpecBegin(VELEventRecognizer)
         });
 
         it(@"should not handle events while any dependency has not failed", ^{
+            [firstDependency handleEvent:unrecognizedEvent];
+            expect(firstDependency.state).toEqual(VELEventRecognizerStateFailed);
+
             [recognizer handleEvent:event];
             expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
+        });
 
+        it(@"should handle events after all dependencies have failed", ^{
             [firstDependency handleEvent:unrecognizedEvent];
+            expect(firstDependency.state).toEqual(VELEventRecognizerStateFailed);
 
-            expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
+            [secondDependency handleEvent:unrecognizedEvent];
+            expect(secondDependency.state).toEqual(VELEventRecognizerStateFailed);
+
+            [recognizer handleEvent:event];
+            expect(recognizer.state).toEqual(VELEventRecognizerStateRecognized);
         });
 
         it(@"should queue events until all dependencies have failed", ^{
-            __block BOOL invoked = NO;
-
-            [recognizer addActionUsingBlock:^(VELEventRecognizer *recognizer){
-                expect(recognizer.state).toEqual(VELEventRecognizerStateRecognized);
-                expect(recognizer.active).toBeTruthy();
-
-                invoked = YES;
-                [recognizer removeAllActions];
-            }];
-
             [recognizer handleEvent:event];
-            expect(invoked).toBeFalsy();
+            expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
 
             [firstDependency handleEvent:unrecognizedEvent];
-            expect(invoked).toBeFalsy();
+            expect(firstDependency.state).toEqual(VELEventRecognizerStateFailed);
 
-            [secondDependency handleEvent:unrecognizedEvent];
-            expect(invoked).toBeTruthy();
+            expect([^{
+                [secondDependency handleEvent:unrecognizedEvent];
+            } copy]).toInvoke(recognizer, @selector(willTransitionToState:));
+
+            expect(secondDependency.state).toEqual(VELEventRecognizerStateFailed);
+            expect(recognizer.state).toEqual(VELEventRecognizerStateRecognized);
         });
 
         it(@"should not handle events after dependencies, even if they later fail", ^{
-            __block BOOL invoked = NO;
-
-            [recognizer addActionUsingBlock:^(VELEventRecognizer *recognizer){
-                expect(recognizer.state).toEqual(VELEventRecognizerStateFailed);
-                expect(recognizer.active).toBeFalsy();
-
-                invoked = YES;
-                [recognizer removeAllActions];
-            }];
-
             [recognizer handleEvent:event];
             expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
 
             [firstDependency handleEvent:event];
+            expect(firstDependency.state).toEqual(VELEventRecognizerStateRecognized);
 
-            expect(invoked).toBeTruthy();
+            expect(recognizer.state).toEqual(VELEventRecognizerStateFailed);
             [firstDependency reset];
-
-            invoked = NO;
-            [recognizer addActionUsingBlock:^(VELEventRecognizer *recognizer){
-                invoked = YES;
-            }];
 
             [firstDependency handleEvent:unrecognizedEvent];
             [secondDependency handleEvent:unrecognizedEvent];
 
-            expect(invoked).toBeFalsy();
+            expect(recognizer.state).toEqual(VELEventRecognizerStateFailed);
+            expect(recognizer.state).isGoing.toEqual(VELEventRecognizerStatePossible);
         });
 
         it(@"should return NO without a shouldPreventEventRecognizerBlock", ^{

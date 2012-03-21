@@ -145,7 +145,7 @@
             VELEventRecognizerState transitionToState = VELEventRecognizerStateChanged;
 
             if (self.active) {
-                shouldUpdate = YES;
+                shouldUpdate = (self.state != VELEventRecognizerStateEnded);
 
                 if (event.type == NSLeftMouseUp)
                     transitionToState = VELEventRecognizerStateEnded;

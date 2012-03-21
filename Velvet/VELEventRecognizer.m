@@ -206,8 +206,6 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
             ++dependenciesOutstanding;
 
-            __weak __block id weakAction = nil;
-
             id action = [dependency addActionUsingBlock:^(VELEventRecognizer *dependency){
                 switch (dependency.state) {
                     case VELEventRecognizerStateBegan:
@@ -229,8 +227,6 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
                     case VELEventRecognizerStateFailed: {
                         // the dependency failed -- wait on the rest or
                         // perform our transition
-                        [dependency removeAction:weakAction];
-
                         --dependenciesOutstanding;
                         transitionIfDependenciesFailed();
 
@@ -242,14 +238,12 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
                 }
             }];
 
-            weakAction = action;
-
             // compose this with other actions that will need to be removed
             void (^originalRemoveAddedActions)(void) = removeAddedActions;
 
             removeAddedActions = [^{
                 originalRemoveAddedActions();
-                [dependency removeAction:weakAction];
+                [dependency removeAction:action];
             } copy];
         }
 
@@ -494,7 +488,6 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
         [self.delayedEvents removeAllObjects];
     }
 
-    BOOL shouldReset = NO;
     switch (newState) {
         case VELEventRecognizerStatePossible:
         case VELEventRecognizerStateFailed: {
@@ -505,9 +498,10 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
         case VELEventRecognizerStateEnded:
         case VELEventRecognizerStateCancelled:
-            // move to the Possible state
-            shouldReset = YES;
-            break;
+            // move to the Possible state on the next run loop iteration
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self reset];
+            });
         }
 
         default:
@@ -520,9 +514,6 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
 
     if (self.enabled)
         [self sendAction];
-
-    if (shouldReset)
-        [self reset];
 }
 
 #pragma mark Actions

@@ -289,8 +289,8 @@ static NSAttributedString *attributedEllipsisForString(NSAttributedString *attri
             // its ownership to ARC in the same step)
             [lines replaceObjectAtIndex:0 withObject:(__bridge_transfer id)lineToDraw];
         } else {
-            // Calculate the truncated last line if we have more lines than will be drawn
-            //   and the label has truncation affecting the last line
+            // Calculate the truncated last line if we have more lines than will
+            // be drawn and the label has truncation affecting the last line
             CTLineRef lastVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:numberOfLinesToDraw - 1];
             NSRange lastLineRange = NSRangeFromCFRange(CTLineGetStringRange(lastVisibleLine));
             lastLineRange.length = attributedString.length - lastLineRange.location;
@@ -314,6 +314,8 @@ static NSAttributedString *attributedEllipsisForString(NSAttributedString *attri
                 CFRelease(ellipsisLine);   
             };
 
+            // If we have some amount of text we need to be sure that at a
+            // minimum, the first character is shown with the ellipsis.
             if (lastLineAttrStr.length > 0) {
                 NSMutableAttributedString *oneCharacterString = [[lastLineAttrStr attributedSubstringFromRange:NSMakeRange(0, 1)] mutableCopy];
                 NSAttributedString *ellipsisString = attributedEllipsisForString(oneCharacterString);
@@ -324,7 +326,9 @@ static NSAttributedString *attributedEllipsisForString(NSAttributedString *attri
                     CFRelease(line);
                 };
 
-                // make sure we draw at least the first character followed by an elipsis
+                // Make sure the drawing width at least fits the first character
+                // and the ellipsis. Actually drawn text may still be clipped by
+                // the layer.
                 drawableWidth = fmax(drawableWidth, ceil(CTLineGetTypographicBounds(line, NULL, NULL, NULL)));
             }
 

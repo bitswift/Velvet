@@ -7,6 +7,7 @@
 //
 
 #import "VELEventManager.h"
+#import "CGGeometry+ConvenienceAdditions.h"
 #import "EXTScope.h"
 #import "NSEvent+ButtonStateAdditions.h"
 #import "NSWindow+EventHandlingAdditions.h"
@@ -526,6 +527,27 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
                 BOOL consumed = NO;
                 for (NSEvent *mouseEvent in mouseEvents) {
                     NSEvent *windowedMouseEvent = [self mouseEventByAddingWindow:mouseEvent];
+
+                    // see if the next mouse event would duplicate this one
+                    NSEvent *nextMouseEvent = [NSApp
+                        nextEventMatchingMask:NSEventMaskFromType(windowedMouseEvent.type)
+                        untilDate:nil
+                        inMode:NSDefaultRunLoopMode
+                        dequeue:NO
+                    ];
+
+                    BOOL duplicateOfNextMouseEvent = 
+                        [windowedMouseEvent.window isEqual:nextMouseEvent.window] &&
+                        CGPointEqualToPointWithAccuracy(windowedMouseEvent.locationInWindow, nextMouseEvent.locationInWindow, 0.1) &&
+                        fabs(windowedMouseEvent.timestamp - nextMouseEvent.timestamp) < 0.1
+                    ;
+
+                    if (duplicateOfNextMouseEvent) {
+                        // don't dispatch the converted NSSystemDefined event,
+                        // since the actual one coming through would result in
+                        // duplicate event dispatch
+                        continue;
+                    }
 
                     if (!view) {
                         view = [windowedMouseEvent.window bridgedHitTest:windowedMouseEvent.locationInWindow withEvent:windowedMouseEvent];

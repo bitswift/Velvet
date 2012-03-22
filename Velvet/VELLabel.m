@@ -190,6 +190,14 @@ static NSRange NSRangeFromCFRange(CFRange range) {
 
 #pragma mark Drawing
 
+static NSAttributedString *attributedEllipsisForString(NSAttributedString *attributedString) {
+    NSMutableAttributedString *mutableEllipsisString = [[NSMutableAttributedString alloc] initWithString:@"…"];
+    NSDictionary *attributes = [attributedString attributesAtIndex:[attributedString length] - 1 effectiveRange:NULL];
+
+    [mutableEllipsisString setAttributes:attributes range:NSMakeRange(0, mutableEllipsisString.length)];
+    return mutableEllipsisString;
+}
+
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = [NSGraphicsContext currentContext].graphicsPort;
 
@@ -246,11 +254,8 @@ static NSRange NSRangeFromCFRange(CFRange range) {
         NSAssert(shouldTruncate, @"Should only have a reduced number of lines if we're truncating");
 
         CTLineRef (^createEllipsisLineRefWithAttributesFromString) (NSAttributedString *) = ^(NSAttributedString *attributedString) {
-            NSMutableAttributedString *mutableEllipsisString = [[NSMutableAttributedString alloc] initWithString:@"…"];
-            NSDictionary *attributes = [attributedString attributesAtIndex:[attributedString length] - 1 effectiveRange:NULL];
-
-            [mutableEllipsisString setAttributes:attributes range:NSMakeRange(0, mutableEllipsisString.length)];
-            return CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)mutableEllipsisString);
+            NSAttributedString *ellipsisString = attributedEllipsisForString(attributedString);
+            return CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)ellipsisString);
         };
 
         if (self.lineBreakMode == VELLineBreakModeHeadTruncation) {
@@ -284,8 +289,8 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             // its ownership to ARC in the same step)
             [lines replaceObjectAtIndex:0 withObject:(__bridge_transfer id)lineToDraw];
         } else {
-            // Calculate the truncated last line if we have more lines than will be drawn
-            //   and the label has truncation affecting the last line
+            // Calculate the truncated last line if we have more lines than will
+            // be drawn and the label has truncation affecting the last line
             CTLineRef lastVisibleLine = (__bridge CTLineRef)[lines objectAtIndex:numberOfLinesToDraw - 1];
             NSRange lastLineRange = NSRangeFromCFRange(CTLineGetStringRange(lastVisibleLine));
             lastLineRange.length = attributedString.length - lastLineRange.location;
@@ -308,6 +313,24 @@ static NSRange NSRangeFromCFRange(CFRange range) {
             @onExit {
                 CFRelease(ellipsisLine);   
             };
+
+            // If we have some amount of text we need to be sure that at a
+            // minimum, the first character is shown with the ellipsis.
+            if (lastLineAttrStr.length > 0) {
+                NSMutableAttributedString *oneCharacterString = [[lastLineAttrStr attributedSubstringFromRange:NSMakeRange(0, 1)] mutableCopy];
+                NSAttributedString *ellipsisString = attributedEllipsisForString(oneCharacterString);
+                [oneCharacterString appendAttributedString:ellipsisString];
+
+                CTLineRef line = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)oneCharacterString);
+                @onExit {
+                    CFRelease(line);
+                };
+
+                // Make sure the drawing width at least fits the first character
+                // and the ellipsis. Actually drawn text may still be clipped by
+                // the layer.
+                drawableWidth = fmax(drawableWidth, ceil(CTLineGetTypographicBounds(line, NULL, NULL, NULL)));
+            }
 
             CTLineRef lineToDraw = CTLineCreateTruncatedLine(lastLine, drawableWidth, truncationType, ellipsisLine);
 

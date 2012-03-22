@@ -451,7 +451,6 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
             // else fall through
 
         case VELEventRecognizerStateChanged:
-        case VELEventRecognizerStateCancelled:
             if (!self.continuous) {
                 transitionValid = NO;
                 break;
@@ -461,13 +460,27 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
             break;
         }
 
+        case VELEventRecognizerStateCancelled: {
+            if (!self.continuous) {
+                transitionValid = NO;
+                break;
+            }
+
+            // allow "transitions" from Cancelled -> Cancelled to occur in the
+            // same run loop iteration
+            transitionValid = (oldState == VELEventRecognizerStateBegan || oldState == VELEventRecognizerStateChanged || oldState == newState);
+            break;
+        }
+
         case VELEventRecognizerStateFailed: {
             if (!self.discrete) {
                 transitionValid = NO;
                 break;
             }
 
-            transitionValid = (oldState == VELEventRecognizerStatePossible);
+            // allow "transitions" from Failed -> Failed to occur in the
+            // same run loop iteration
+            transitionValid = (oldState == VELEventRecognizerStatePossible || oldState == newState);
             break;
         }
 

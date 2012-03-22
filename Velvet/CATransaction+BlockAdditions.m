@@ -15,10 +15,9 @@
         // actions are already disabled
         block();
     } else {
-        [self begin];
         [self setDisableActions:YES];
         block();
-        [self commit];
+        [self setDisableActions:NO];
     }
 }
 

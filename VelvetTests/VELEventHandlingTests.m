@@ -170,7 +170,7 @@ SpecBegin(VELEventHandling)
         __block NSEvent *systemDefinedEvent;
 
         before(^{
-            window = [[VELWindow alloc] initWithContentRect:NSMakeRect(112, 237, 500, 1000)];
+            window = [[VELWindow alloc] initWithContentRect:NSMakeRect(101, 223, 500, 1000)];
             expect(window).not.toBeNil();
 
             [window makeKeyAndOrderFront:nil];
@@ -182,12 +182,23 @@ SpecBegin(VELEventHandling)
 
             __block NSInteger eventNumber = trueMouseEventNumberMinimum;
 
+            CGPoint location = CGPointMake(215, 657);
+
+            systemDefinedEvent = [NSEvent
+                systemDefinedMouseEventAtLocation:location
+                mouseButtonStateMask:BUTTON_MASK_FOR_BUTTONS(0)
+                mouseButtonStateChangedMask:BUTTON_MASK_FOR_BUTTONS(0, 1)
+            ];
+
             NSEvent *(^mouseEventAtWindowLocation)(NSEventType, CGPoint) = ^(NSEventType type, CGPoint point){
+                CGRect locationRect = CGRectMake(location.x, location.y, 1, 1);
+                CGRect windowRect = [window convertRectFromScreen:locationRect];
+
                 return [NSEvent
                     mouseEventWithType:type
-                    location:point
-                    modifierFlags:0
-                    timestamp:[[NSProcessInfo processInfo] systemUptime]
+                    location:windowRect.origin
+                    modifierFlags:systemDefinedEvent.modifierFlags
+                    timestamp:systemDefinedEvent.timestamp
                     windowNumber:window.windowNumber
                     context:window.graphicsContext
                     eventNumber:eventNumber++
@@ -196,16 +207,8 @@ SpecBegin(VELEventHandling)
                 ];
             };
 
-            CGPoint location = CGPointMake(215, 657);
-
             leftMouseDownEvent = mouseEventAtWindowLocation(NSLeftMouseDown, location);
             rightMouseUpEvent = mouseEventAtWindowLocation(NSRightMouseUp, location);
-
-            systemDefinedEvent = [NSEvent
-                systemDefinedMouseEventAtLocation:location
-                mouseButtonStateMask:BUTTON_MASK_FOR_BUTTONS(0)
-                mouseButtonStateChangedMask:BUTTON_MASK_FOR_BUTTONS(0, 1)
-            ];
 
             recognizer.expectedEventMask = NSLeftMouseDownMask | NSRightMouseUpMask;
         });

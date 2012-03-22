@@ -77,7 +77,7 @@ SpecBegin(VELEventRecognizer)
             expect(recognizer.state).toEqual(VELEventRecognizerStatePossible);
             expect(recognizer.active).toBeFalsy();
             expect(recognizer.enabled).toBeTruthy();
-            expect(recognizer.recognizersRequiredToFail).toBeNil();
+            expect(recognizer.recognizersRequiredToFail).toEqual([NSSet set]);
             expect(recognizer.delaysEventDelivery).toBeFalsy();
             expect(recognizer.didReset).toBeFalsy();
             expect(recognizer.willTransitionInvoked).toBeFalsy();
@@ -140,6 +140,11 @@ SpecBegin(VELEventRecognizer)
 
         NSArray *recognizers = [VELEventRecognizer eventRecognizersForView:anotherView];
         expect(recognizers).toBeNil();
+    });
+
+    it(@"should not set recognizersRequiredToFail to nil", ^{
+        recognizer.recognizersRequiredToFail = nil;
+        expect(recognizer.recognizersRequiredToFail).toEqual([NSSet set]);
     });
 
     describe(@"one event to recognize", ^{

@@ -175,6 +175,16 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     m_flags.handlesEventsAfterDescendants = value;
 }
 
+- (void)setRecognizersRequiredToFail:(NSSet *)recognizers {
+    if (m_recognizersRequiredToFail == recognizers)
+        return;
+
+    if (recognizers.count)
+        m_recognizersRequiredToFail = [recognizers copy];
+    else
+        m_recognizersRequiredToFail = [NSSet set];
+}
+
 // this method should never short-circuit if already in the given state,
 // since every call to this setter should be interpreted as a new transition
 - (void)setState:(VELEventRecognizerState)state {
@@ -283,6 +293,7 @@ static void * const VELAttachedEventRecognizersKey = "VELAttachedEventRecognizer
     m_actions = [NSCountedSet set];
     m_flags.enabled = YES;
     m_eventsToIgnore = [NSMutableSet set];
+    m_recognizersRequiredToFail = [NSSet set];
 
     return self;
 }

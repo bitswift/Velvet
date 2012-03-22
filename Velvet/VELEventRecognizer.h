@@ -266,7 +266,8 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  * words, the receiver cannot succeed if any one of the specified recognizers
  * succeed first.
  *
- * The default value for this property is `nil`.
+ * The default value for this property is an empty set. If set to `nil`, an
+ * empty set is used instead, such that this property will never be `nil`.
  */
 @property (nonatomic, copy) NSSet *recognizersRequiredToFail;
 

@@ -19,6 +19,23 @@
 #import "VELView.h"
 
 /**
+ * An event mask for all mouse button or movement events.
+ */
+static const NSUInteger VELMouseEventMask =
+    NSLeftMouseDownMask | NSLeftMouseUpMask | NSLeftMouseDraggedMask |
+    NSRightMouseDownMask | NSRightMouseUpMask | NSRightMouseDraggedMask |
+    NSOtherMouseDownMask | NSOtherMouseUpMask | NSOtherMouseDraggedMask |
+    NSMouseEnteredMask | NSMouseExitedMask |
+    NSMouseMovedMask
+;
+
+/**
+ * If this many seconds have passed since the timestamp of a mouse event in
+ * <[VELEventManager mouseEventsToDeduplicate]>, remove the event.
+ */
+static const NSTimeInterval VELMouseEventDeduplicationStalenessInterval = 1;
+
+/**
  * Walks up the hierarchy of the given view, collecting all enabled event
  * recognizers into the given array.
  *
@@ -106,6 +123,29 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
     return dispatchToView;
 }
 
+/**
+ * Returns whether the two given mouse events are the "same" and can be
+ * deduplicated.
+ *
+ * @param left One mouse event.
+ * @param right Another mouse event.
+ */
+static BOOL mouseEventsAreEffectivelyTheSame (NSEvent *left, NSEvent *right) {
+    if (left.type != right.type)
+        return NO;
+
+    if (left.buttonNumber != right.buttonNumber)
+        return NO;
+
+    if (left.window != right.window)
+        return NO;
+
+    if (!CGPointEqualToPointWithAccuracy(left.locationInWindow, right.locationInWindow, 0.01))
+        return NO;
+
+    return fabs(left.timestamp - right.timestamp) < 0.1;
+}
+
 @interface VELEventManager ()
 /**
  * Any Velvet-hosted responder currently handling a continuous gesture event.
@@ -132,6 +172,17 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
  * messages eventually jump back up to event monitors.
  */
 @property (nonatomic, assign, getter = isHandlingEvent) BOOL handlingEvent;
+
+/**
+ * Mouse events that have already been received that may be associated with
+ * future `NSSystemDefined` events to ignore.
+ *
+ * In other words, this array contains mouse events which should _not_ be
+ * synthesized and dispatched from an `NSSystemDefined` event.
+ *
+ * Outdated events in this array will be removed periodically.
+ */
+@property (nonatomic, strong, readonly) NSMutableArray *mouseEventsToDeduplicate;
 
 /**
  * Turns an event into an `NSResponder` message, and attempts to send it to the
@@ -162,6 +213,19 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
  * superviews or a <[VELBridgedView hostView]> with attached event recognizers.
  */
 - (BOOL)dispatchEvent:(NSEvent *)event toEventRecognizersForView:(id<VELBridgedView>)view;
+
+/**
+ * Dispatches the given event, which must be an `NSSystemDefined` event, to the
+ * appropriate event recognizers. Returns whether the event should still be
+ * handled normally by AppKit.
+ *
+ * Views do not need to receive `NSSystemDefined` events, as normal mouse events
+ * will correctly be sent in all cases.
+ *
+ * @param event The `NSSystemDefined` event to dispatch to the appropriate event
+ * recognizers.
+ */
+- (BOOL)dispatchSystemDefinedMouseEvent:(NSEvent *)event;
 
 /**
  * Attempts to dispatch the given mouse tracking event (`NSMouseEntered`,
@@ -205,6 +269,7 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
 @synthesize currentMouseDownResponder = m_currentMouseDownResponder;
 @synthesize handlingEvent = m_handlingEvent;
 @synthesize lastMouseTrackingResponder = m_lastMouseTrackingResponder;
+@synthesize mouseEventsToDeduplicate = m_mouseEventsToDeduplicate;
 
 #pragma mark Lifecycle
 
@@ -259,6 +324,15 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
     });
 
     return singleton;
+}
+
+- (id)init {
+    self = [super init];
+    if (!self)
+        return nil;
+
+    m_mouseEventsToDeduplicate = [NSMutableArray array];
+    return self;
 }
 
 #pragma mark Event handling
@@ -410,6 +484,25 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
         self.handlingEvent = NO;
     };
 
+    // purge stale mouse events
+    NSTimeInterval currentTimestamp = event.timestamp;
+    NSMutableIndexSet *mouseEventsToRemove = [NSMutableIndexSet indexSet];
+
+    [self.mouseEventsToDeduplicate enumerateObjectsUsingBlock:^(NSEvent *event, NSUInteger index, BOOL *stop){
+        if (currentTimestamp > event.timestamp + VELMouseEventDeduplicationStalenessInterval) {
+            // this event is stale
+            [mouseEventsToRemove addIndex:index];
+        }
+    }];
+
+    [self.mouseEventsToDeduplicate removeObjectsAtIndexes:mouseEventsToRemove];
+
+    // if this is a mouse event, make sure to deduplicate any NSSystemDefined
+    // events coming afterward
+    if (NSEventMaskFromType(event.type) & VELMouseEventMask) {
+        [self.mouseEventsToDeduplicate addObject:event];
+    }
+
     __block id respondingView = nil;
 
     // whether the event was received by an event recognizer and delayed from
@@ -465,6 +558,26 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
             self.currentMouseDownResponder = respondingView;
             return YES;
 
+        case NSLeftMouseUp:
+        case NSRightMouseUp:
+        case NSOtherMouseUp:
+            respondingView = (id)self.currentMouseDownResponder ?: [event.window firstResponder];
+
+            self.currentMouseDownResponder = nil;
+            break;
+
+        case NSLeftMouseDragged:
+        case NSRightMouseDragged:
+        case NSOtherMouseDragged:
+            respondingView = (id)self.currentMouseDownResponder ?: [event.window firstResponder];
+            break;
+
+        case NSMouseMoved:
+        case NSMouseEntered:
+        case NSMouseExited:
+            [self handleMouseTrackingEvent:event];
+            return NO;
+
         case NSScrollWheel:
         case NSEventTypeMagnify:
         case NSEventTypeSwipe:
@@ -486,27 +599,14 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
 
             break;
 
-        case NSLeftMouseUp:
-        case NSRightMouseUp:
-        case NSOtherMouseUp:
-            respondingView = (id)self.currentMouseDownResponder ?: [event.window firstResponder];
-
-            self.currentMouseDownResponder = nil;
-            break;
-
-        case NSLeftMouseDragged:
-        case NSRightMouseDragged:
-        case NSOtherMouseDragged:
-            respondingView = (id)self.currentMouseDownResponder ?: [event.window firstResponder];
-            break;
-
-        case NSMouseMoved:
-        case NSMouseEntered:
-        case NSMouseExited:
-            [self handleMouseTrackingEvent:event];
-            return NO;
-
         default: {
+            // this might be some kind of event that isn't technically a mouse
+            // event, but still has that kind of information
+            if (event.hasMouseButtonState) {
+                // hide the event from AppKit if it was consumed by a recognizer
+                return ![self dispatchSystemDefinedMouseEvent:event];
+            }
+
             // assume this kind of event would go to the first responder, so
             // dispatch to any event recognizers for it
             id view = [event.window firstResponder];
@@ -514,54 +614,8 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
                 view = event.window.contentView;
             }
 
-            if (view && ![view conformsToProtocol:@protocol(VELBridgedView)])
-                return NO;
-
-            // this might be some kind of event that isn't technically a mouse
-            // event, but still has that kind of information
-            if (event.hasMouseButtonState) {
-                // convert to actual mouse events, and dispatch only to our
-                // event recognizers
-                NSArray *mouseEvents = event.correspondingMouseEvents;
-
-                BOOL consumed = NO;
-                for (NSEvent *mouseEvent in mouseEvents) {
-                    NSEvent *windowedMouseEvent = [self mouseEventByAddingWindow:mouseEvent];
-
-                    // see if the next mouse event would duplicate this one
-                    NSEvent *nextMouseEvent = [NSApp
-                        nextEventMatchingMask:NSEventMaskFromType(windowedMouseEvent.type)
-                        untilDate:nil
-                        inMode:NSDefaultRunLoopMode
-                        dequeue:NO
-                    ];
-
-                    BOOL duplicateOfNextMouseEvent = 
-                        [windowedMouseEvent.window isEqual:nextMouseEvent.window] &&
-                        CGPointEqualToPointWithAccuracy(windowedMouseEvent.locationInWindow, nextMouseEvent.locationInWindow, 0.1) &&
-                        fabs(windowedMouseEvent.timestamp - nextMouseEvent.timestamp) < 0.1
-                    ;
-
-                    if (duplicateOfNextMouseEvent) {
-                        // don't dispatch the converted NSSystemDefined event,
-                        // since the actual one coming through would result in
-                        // duplicate event dispatch
-                        continue;
-                    }
-
-                    if (!view) {
-                        view = [windowedMouseEvent.window bridgedHitTest:windowedMouseEvent.locationInWindow withEvent:windowedMouseEvent];
-                        if (!view)
-                            continue;
-                    }
-
-                    consumed |= [self dispatchEvent:windowedMouseEvent toEventRecognizersForView:view];
-                }
-
-                if (consumed)
-                    return YES;
-            } else if (view) {
-                // otherwise, just pass it down normally
+            if ([view conformsToProtocol:@protocol(VELBridgedView)]) {
+                // dispatch to recognizers, and hide the event from AppKit if consumed
                 if (![self dispatchEvent:event toEventRecognizersForView:view])
                     return YES;
             }
@@ -571,6 +625,55 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
     }
 
     return dispatchToView();
+}
+
+- (BOOL)dispatchSystemDefinedMouseEvent:(NSEvent *)event; {
+    if (!event.hasMouseButtonState)
+        return YES;
+
+    // convert to actual mouse events, and dispatch only to our
+    // event recognizers
+    NSArray *mouseEvents = event.correspondingMouseEvents;
+
+    BOOL consumed = NO;
+    for (NSEvent *mouseEvent in mouseEvents) {
+        NSEvent *windowedMouseEvent = [self mouseEventByAddingWindow:mouseEvent];
+
+        // see if this is a duplicate of any previous mouse events
+        NSUInteger previousMouseEventIndex = [self.mouseEventsToDeduplicate indexOfObjectPassingTest:^(NSEvent *previousMouseEvent, NSUInteger index, BOOL *stop){
+            return mouseEventsAreEffectivelyTheSame(windowedMouseEvent, previousMouseEvent);
+        }];
+        
+        if (previousMouseEventIndex != NSNotFound) {
+            [self.mouseEventsToDeduplicate removeObjectAtIndex:previousMouseEventIndex];
+            
+            // don't dispatch this (duplicate) event
+            continue;
+        }
+
+        // see if the next mouse event would duplicate this one
+        NSEvent *nextMouseEvent = [NSApp
+            nextEventMatchingMask:NSEventMaskFromType(windowedMouseEvent.type)
+            untilDate:nil
+            inMode:NSDefaultRunLoopMode
+            dequeue:NO
+        ];
+
+        if (mouseEventsAreEffectivelyTheSame(windowedMouseEvent, nextMouseEvent)) {
+            // don't dispatch the converted NSSystemDefined event,
+            // since the actual one coming through would result in
+            // duplicate event dispatch
+            continue;
+        }
+
+        id<VELBridgedView> view = [windowedMouseEvent.window bridgedHitTest:windowedMouseEvent.locationInWindow withEvent:windowedMouseEvent];
+        if (!view)
+            continue;
+
+        consumed |= [self dispatchEvent:windowedMouseEvent toEventRecognizersForView:view];
+    }
+
+    return !consumed;
 }
 
 - (NSPoint)convertScreenPoint:(NSPoint)point toWindow:(NSWindow *)window {

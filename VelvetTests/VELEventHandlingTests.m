@@ -262,7 +262,8 @@ SpecEnd
 + (void)stopEventLoop; {
     [NSApp stop:nil];
 
-    NSEvent *event = [NSEvent otherEventWithType: NSApplicationDefined
+    NSEvent *event = [NSEvent
+        otherEventWithType:NSApplicationDefined
         location:CGPointZero
         modifierFlags:0
         timestamp:0.0

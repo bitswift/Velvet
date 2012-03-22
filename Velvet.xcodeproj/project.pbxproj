@@ -25,6 +25,7 @@
 		1EA3D71014B37F4A0007E4C4 /* NSVelvetHostViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */; };
 		D002AEEF14CE031F0062AEFC /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D002AED714CE030C0062AEFC /* libExpecta.a */; };
 		D002AEF014CE031F0062AEFC /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D002AEE314CE030C0062AEFC /* libSpecta.a */; };
+		D00A0F47151B9783009DD468 /* VELEventHandlingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D00A0F46151B9783009DD468 /* VELEventHandlingTests.m */; };
 		D00D3A4F1516F83F00466B84 /* NSPopUpButtonCell+EditorAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D00D3A4D1516F83F00466B84 /* NSPopUpButtonCell+EditorAdditions.m */; };
 		D00D3A7B1516F97E00466B84 /* NSObject+BindingsAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D00D3A791516F97E00466B84 /* NSObject+BindingsAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D00D3A7C1516F97E00466B84 /* NSObject+BindingsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D00D3A7A1516F97E00466B84 /* NSObject+BindingsAdditions.m */; };
@@ -232,6 +233,7 @@
 		D002AEC614CE030B0062AEFC /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = Libraries/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		D002AEC914CE030B0062AEFC /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = Libraries/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
 		D002AEF114CE03820062AEFC /* VelvetTests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "VelvetTests-Prefix.pch"; sourceTree = "<group>"; };
+		D00A0F46151B9783009DD468 /* VELEventHandlingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELEventHandlingTests.m; sourceTree = "<group>"; };
 		D00D3A4C1516F83F00466B84 /* NSPopUpButtonCell+EditorAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSPopUpButtonCell+EditorAdditions.h"; sourceTree = "<group>"; };
 		D00D3A4D1516F83F00466B84 /* NSPopUpButtonCell+EditorAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSPopUpButtonCell+EditorAdditions.m"; sourceTree = "<group>"; };
 		D00D3A791516F97E00466B84 /* NSObject+BindingsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+BindingsAdditions.h"; sourceTree = "<group>"; };
@@ -528,6 +530,7 @@
 				D0A96C0C14B7AF1F00A64F6F /* VELAppKitAdditionsTests.m */,
 				D07B72A314C4FC5500AA19DD /* VELControlTests.h */,
 				D07B72A414C4FC5500AA19DD /* VELControlTests.m */,
+				D00A0F46151B9783009DD468 /* VELEventHandlingTests.m */,
 				D0A112D61501B7ED00F3DC16 /* VELEventRecognizerTests.m */,
 				D0B23AF71491872B009CF46A /* VELImageViewTests.h */,
 				D0B23AF81491872B009CF46A /* VELImageViewTests.m */,
@@ -1134,6 +1137,7 @@
 				D0A112D71501B7ED00F3DC16 /* VELEventRecognizerTests.m in Sources */,
 				D0B6168E1506E7B000DD9FB0 /* VELKeyPressTests.m in Sources */,
 				D00D3A901516FC2600466B84 /* NSObjectAdditionsTests.m in Sources */,
+				D00A0F47151B9783009DD468 /* VELEventHandlingTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

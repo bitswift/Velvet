@@ -7,6 +7,7 @@
 //
 
 #import <Velvet/Velvet.h>
+#import <Velvet/VELEventRecognizerProtected.h>
 
 // returns an NSUInteger mask combining the given mouse button numbers
 #define BUTTON_MASK_FOR_BUTTONS(...) \
@@ -23,8 +24,26 @@
         return mask; \
     }()
 
+// the starting eventNumber for "true" mouse events (created in our tests)
+//
+// NSSystemDefined events (also created in our tests) will have an event number
+// below this
+static const NSInteger trueMouseEventNumberMinimum = 1000;
+
+@interface DeduplicationTestRecognizer : VELEventRecognizer
+/**
+ * A mask for events that this recognizer should accept.
+ *
+ * Once the recognizer receives an event matching this mask, that bit in the
+ * mask is cleared (such that another event of the same type will fail).
+ */
+@property (nonatomic, assign) NSUInteger expectedEventMask;
+@end
+
 @interface NSEvent (SystemDefinedEventCreation)
 + (NSEvent *)systemDefinedMouseEventAtLocation:(CGPoint)location mouseButtonStateMask:(NSUInteger)buttonStateMask mouseButtonStateChangedMask:(NSUInteger)buttonStateChangedMask;
+
++ (void)stopEventLoop;
 @end
 
 SpecBegin(VELEventHandling)
@@ -142,6 +161,84 @@ SpecBegin(VELEventHandling)
         });
     });
 
+    describe(@"deduplicating system-defined events", ^{
+        __block VELWindow *window;
+        __block DeduplicationTestRecognizer *recognizer;
+
+        __block NSEvent *leftMouseDownEvent;
+        __block NSEvent *rightMouseUpEvent;
+        __block NSEvent *systemDefinedEvent;
+
+        before(^{
+            window = [[VELWindow alloc] initWithContentRect:NSMakeRect(112, 237, 500, 1000)];
+            expect(window).not.toBeNil();
+
+            [window makeKeyAndOrderFront:nil];
+
+            recognizer = [[DeduplicationTestRecognizer alloc] init];
+            expect(recognizer).not.toBeNil();
+
+            recognizer.view = window.rootView;
+
+            __block NSInteger eventNumber = trueMouseEventNumberMinimum;
+
+            NSEvent *(^mouseEventAtWindowLocation)(NSEventType, CGPoint) = ^(NSEventType type, CGPoint point){
+                return [NSEvent
+                    mouseEventWithType:type
+                    location:point
+                    modifierFlags:0
+                    timestamp:[[NSProcessInfo processInfo] systemUptime]
+                    windowNumber:window.windowNumber
+                    context:window.graphicsContext
+                    eventNumber:eventNumber++
+                    clickCount:1
+                    pressure:1
+                ];
+            };
+
+            CGPoint location = CGPointMake(215, 657);
+
+            leftMouseDownEvent = mouseEventAtWindowLocation(NSLeftMouseDown, location);
+            rightMouseUpEvent = mouseEventAtWindowLocation(NSRightMouseUp, location);
+
+            systemDefinedEvent = [NSEvent
+                systemDefinedMouseEventAtLocation:location
+                mouseButtonStateMask:BUTTON_MASK_FOR_BUTTONS(0)
+                mouseButtonStateChangedMask:BUTTON_MASK_FOR_BUTTONS(0, 1)
+            ];
+
+            recognizer.expectedEventMask = NSLeftMouseDownMask | NSRightMouseUpMask;
+        });
+
+        after(^{
+            [NSEvent performSelector:@selector(stopEventLoop) withObject:nil afterDelay:0.1];
+            [[NSApplication sharedApplication] run];
+
+            // the recognizer should not be expecting any further events
+            expect(recognizer.expectedEventMask).toEqual(0);
+
+            recognizer = nil;
+        });
+
+        it(@"should deduplicate an NSSystemDefined event arriving after mouse events", ^{
+            [NSApp postEvent:leftMouseDownEvent atStart:NO];
+            [NSApp postEvent:rightMouseUpEvent atStart:NO];
+            [NSApp postEvent:systemDefinedEvent atStart:NO];
+        });
+
+        it(@"should deduplicate an NSSystemDefined event queued before mouse events", ^{
+            [NSApp postEvent:systemDefinedEvent atStart:NO];
+            [NSApp postEvent:leftMouseDownEvent atStart:NO];
+            [NSApp postEvent:rightMouseUpEvent atStart:NO];
+        });
+
+        it(@"should deduplicate an NSSystemDefined event arriving in-between mouse events", ^{
+            [NSApp postEvent:systemDefinedEvent atStart:NO];
+            [NSApp postEvent:leftMouseDownEvent atStart:NO];
+            [NSApp postEvent:rightMouseUpEvent atStart:NO];
+        });
+    });
+
 SpecEnd
 
 @implementation NSEvent (SystemDefinedEventCreation)
@@ -158,4 +255,43 @@ SpecEnd
         data2:(NSInteger)buttonStateMask
     ];
 }
+
++ (void)stopEventLoop; {
+    [NSApp stop:nil];
+
+    NSEvent *event = [NSEvent otherEventWithType: NSApplicationDefined
+        location:CGPointZero
+        modifierFlags:0
+        timestamp:0.0
+        windowNumber:0
+        context:nil
+        subtype:0
+        data1:0
+        data2:0
+    ];
+    
+    [NSApp postEvent:event atStart:YES];
+}
+@end
+
+@implementation DeduplicationTestRecognizer
+@synthesize expectedEventMask = m_expectedEventMask;
+
+- (BOOL)handleEvent:(NSEvent *)event {
+    // this should not be an NSSystemDefined event
+    expect(event.eventNumber).toBeLessThan(trueMouseEventNumberMinimum);
+
+    NSUInteger eventMask = NSEventMaskFromType(event.type);
+    expect(self.expectedEventMask & eventMask).toEqual(eventMask);
+
+    [super handleEvent:event];
+
+    // remove this event's mask
+    self.expectedEventMask &= (~eventMask);
+
+    // don't consume or actually "accept" any events -- we just want to test
+    // event deduplication
+    return NO;
+}
+
 @end

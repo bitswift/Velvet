@@ -64,6 +64,26 @@ SpecBegin(VELEventHandling)
             location = CGPointMake(320, 480);
         });
 
+        after(^{
+            // verify some invariants about the system event
+            expect(systemEvent).not.toBeNil();
+            expect(systemEvent.hasMouseButtonState).toBeTruthy();
+            expect(systemEvent.mouseButtonStateMask).toEqual(buttonMask);
+            expect(systemEvent.mouseButtonStateChangedMask).toEqual(changeMask);
+            expect(systemEvent.window).toBeNil();
+
+            // and the corresponding mouse events
+            NSArray *mouseEvents = systemEvent.correspondingMouseEvents;
+            expect(mouseEvents.count).toBeGreaterThan(0);
+
+            for (NSEvent *event in mouseEvents) {
+                expect(fabs(event.timestamp - systemEvent.timestamp)).toBeLessThan(0.0001);
+                expect(event.window).toBeNil();
+
+                expect(event.locationInWindow).toEqual(systemEvent.locationInWindow);
+            }
+        });
+
         it(@"should convert a left mouse down event", ^{
             buttonMask = BUTTON_MASK_FOR_BUTTONS(0);
             changeMask = BUTTON_MASK_FOR_BUTTONS(0);
@@ -137,26 +157,6 @@ SpecBegin(VELEventHandling)
                 expect(event.buttonNumber).toEqual(button);
 
                 ++button;
-            }
-        });
-
-        after(^{
-            // verify some invariants about the system event
-            expect(systemEvent).not.toBeNil();
-            expect(systemEvent.hasMouseButtonState).toBeTruthy();
-            expect(systemEvent.mouseButtonStateMask).toEqual(buttonMask);
-            expect(systemEvent.mouseButtonStateChangedMask).toEqual(changeMask);
-            expect(systemEvent.window).toBeNil();
-
-            // and the corresponding mouse events
-            NSArray *mouseEvents = systemEvent.correspondingMouseEvents;
-            expect(mouseEvents.count).toBeGreaterThan(0);
-
-            for (NSEvent *event in mouseEvents) {
-                expect(fabs(event.timestamp - systemEvent.timestamp)).toBeLessThan(0.0001);
-                expect(event.window).toBeNil();
-
-                expect(event.locationInWindow).toEqual(systemEvent.locationInWindow);
             }
         });
     });
@@ -233,8 +233,8 @@ SpecBegin(VELEventHandling)
         });
 
         it(@"should deduplicate an NSSystemDefined event arriving in-between mouse events", ^{
-            [NSApp postEvent:systemDefinedEvent atStart:NO];
             [NSApp postEvent:leftMouseDownEvent atStart:NO];
+            [NSApp postEvent:systemDefinedEvent atStart:NO];
             [NSApp postEvent:rightMouseUpEvent atStart:NO];
         });
     });
@@ -278,16 +278,22 @@ SpecEnd
 @synthesize expectedEventMask = m_expectedEventMask;
 
 - (BOOL)handleEvent:(NSEvent *)event {
-    // this should not be an NSSystemDefined event
-    expect(event.eventNumber).toBeLessThan(trueMouseEventNumberMinimum);
+    @try {
+        // this should not be a converted NSSystemDefined event
+        expect(event.eventNumber).toBeGreaterThanOrEqualTo(trueMouseEventNumberMinimum);
 
-    NSUInteger eventMask = NSEventMaskFromType(event.type);
-    expect(self.expectedEventMask & eventMask).toEqual(eventMask);
+        NSUInteger eventMask = NSEventMaskFromType(event.type);
+        expect(self.expectedEventMask & eventMask).toEqual(eventMask);
 
-    [super handleEvent:event];
+        [super handleEvent:event];
 
-    // remove this event's mask
-    self.expectedEventMask &= (~eventMask);
+        // remove this event's mask
+        self.expectedEventMask &= (~eventMask);
+    } @catch (NSException *ex) {
+        // manually abort from exceptions, since AppKit likes to catch them
+        NSLog(@"Exception thrown: %@", ex);
+        abort();
+    }
 
     // don't consume or actually "accept" any events -- we just want to test
     // event deduplication

@@ -331,6 +331,7 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     }
     #endif
 
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     self.guestView.hostView = nil;
 }
 
@@ -510,6 +511,34 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     m_subviewDebugLayer.path = path;
     CGPathRelease(path);
     #endif
+}
+
+#pragma mark Window Changes
+
+- (void)viewWillMoveToWindow:(NSWindow *)window {
+    if (!self.window)
+        return;
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidBecomeKeyNotification object:self.window];
+}
+
+- (void)viewDidMoveToWindow {
+    if (!self.window)
+        return;
+
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
+        selector:@selector(windowDidBecomeKey:)
+        name:NSWindowDidBecomeKeyNotification
+        object:self.window
+    ];
+}
+
+- (void)windowDidBecomeKey:(NSNotification *)notification {
+    // this works around an issue where a disappearing sheet can cause the
+    // window behind it to go crazy (like showing the window's background color
+    // in slices _through_ the layer)
+    [self.layer display];
 }
 
 #pragma mark Dragging

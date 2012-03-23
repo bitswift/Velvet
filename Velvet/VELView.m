@@ -10,6 +10,7 @@
 #import "CALayer+GeometryAdditions.h"
 #import "CATransaction+BlockAdditions.h"
 #import "CGBitmapContext+PixelFormatAdditions.h"
+#import "CGGeometry+ConvenienceAdditions.h"
 #import "EXTScope.h"
 #import "NSColor+CoreGraphicsAdditions.h"
 #import "NSImage+CoreGraphicsAdditions.h"
@@ -248,12 +249,13 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setFrame:(CGRect)frame {
-    if (self.alignsToIntegralPixels) {
+    CGSize newSize = frame.size;
+
+    if (self.alignsToIntegralPixels && !CGSizeEqualToSize(newSize, CGSizeZero)) {
         frame = [self backingAlignedRect:frame];
     }
 
     CGSize originalSize = self.layer.frame.size;
-    CGSize newSize = frame.size;
 
     [self changeLayerProperties:^{
         self.layer.frame = frame;
@@ -272,7 +274,18 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)setBounds:(CGRect)bounds {
     if (self.alignsToIntegralPixels) {
-        bounds = [self backingAlignedRect:bounds];
+        CGPoint center = self.center;
+        CGSize size = bounds.size;
+
+        // set and align the frame instead
+        self.frame = CGRectMake(
+            center.x - size.width / 2,
+            center.y - size.height / 2,
+            size.width,
+            size.height
+        );
+
+        return;
     }
 
     BOOL needsLayout = !CGRectEqualToRect(bounds, self.layer.bounds);
@@ -291,21 +304,18 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 - (void)setCenter:(CGPoint)center {
-    CGSize size = self.bounds.size;
-    
-    if (self.alignsToIntegralPixels && !CGSizeEqualToSize(CGSizeZero, size)) {
-        CGRect resultingFrame = CGRectMake(
+    if (self.alignsToIntegralPixels) {
+        CGSize size = self.bounds.size;
+
+        // set and align the frame instead
+        self.frame = CGRectMake(
             center.x - size.width / 2,
             center.y - size.height / 2,
             size.width,
             size.height
         );
 
-        CGRect integralFrame = [self backingAlignedRect:resultingFrame];
-
-        // this point may have fractional coordinates in it, but it'll result in
-        // a frame which lands on whole pixels
-        center = CGPointMake(CGRectGetMidX(integralFrame), CGRectGetMidY(integralFrame));
+        return;
     }
 
     [self changeLayerProperties:^{
@@ -997,13 +1007,13 @@ static BOOL VELViewPerformingDeepLayout = NO;
         return CGRectApplyAffineTransform(backingRect, CGAffineTransformInvert(transformToBacking));
     }
 
-    CGRect windowRect = [self convertToWindowRect:rect];
+    CGRect windowRect = [self.immediateParentView convertToWindowRect:rect];
 
     // the documentation says that the input rect is in view coordinates, but
     // it's actually window coordinates
     windowRect = [velvetView backingAlignedRect:windowRect options:alignmentOptions];
 
-    return [self convertFromWindowRect:windowRect];
+    return [self.immediateParentView convertFromWindowRect:windowRect];
 }
 
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view; {
@@ -1171,11 +1181,8 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 - (void)centeredSizeToFit; {
     [CATransaction performWithDisabledActions:^{
-        CGPoint center = self.center;
         CGSize size = [self sizeThatFits:CGSizeZero];
-
-        self.bounds = CGRectMake(0, 0, size.width, size.height);
-        self.center = center;
+        self.bounds = CGRectWithSize(size);
     }];
 }
 

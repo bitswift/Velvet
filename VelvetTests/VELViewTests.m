@@ -34,6 +34,10 @@
 @property (nonatomic, strong, readonly) VELView *subview;
 @end
 
+// Tests BS-1891
+@interface OddFittingSizeView : VELView
+@end
+
 SpecBegin(VELView)
 
 describe(@"VELView", ^{
@@ -243,7 +247,6 @@ describe(@"VELView", ^{
         view.center = expectedCenter;
         expect(CGPointEqualToPoint(view.center, expectedCenter)).toBeTruthy();
     });
-    
 
     it(@"aligns to integral points when setting a center resulting in a misaligned frame", ^{
         VELView *view = [[VELView alloc] initWithFrame:CGRectMake(0, 0, 5, 5)];
@@ -265,6 +268,28 @@ describe(@"VELView", ^{
 
         CGRect expectedSubviewFrame = CGRectMake(2, 3, 20, 20);
         expect(subview.frame).toEqual(expectedSubviewFrame);
+    });
+
+    it(@"aligns to integral points when sizing to fit, even starting on half-pixels", ^{
+        OddFittingSizeView *oddView = [[OddFittingSizeView alloc] initWithFrame:CGRectZero];
+        [window.rootView addSubview:oddView];
+
+        oddView.layer.bounds = CGRectMake(-0.5, 0, 2, 2);
+
+        CGPoint oldCenter = oddView.center;
+        [oddView centeredSizeToFit];
+
+        CGRect expectedRect = CGRectFloor(CGRectMake(
+            oldCenter.x - oddView.bounds.size.width / 2,
+            oldCenter.y - oddView.bounds.size.height / 2,
+            oddView.bounds.size.width,
+            oddView.bounds.size.height
+        ));
+        
+        NSLog(@"oddView.frame: %@", NSStringFromRect(oddView.frame));
+        NSLog(@"expectedRect: %@", NSStringFromRect(expectedRect));
+
+        expect(oddView.frame).toEqual(expectedRect);
     });
 
     it(@"conforms to VELBridgedView", ^{
@@ -905,6 +930,14 @@ SpecEnd
 @implementation TestEditorDelegate
 
 - (void)editor:(id)editor didCommit:(BOOL)didCommit contextInfo:(void *)contextInfo; {
+}
+
+@end
+
+@implementation OddFittingSizeView
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    return CGSizeMake(13, 27);
 }
 
 @end

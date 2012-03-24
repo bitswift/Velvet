@@ -82,6 +82,14 @@
     self.contentView.guestView.backgroundColor = [NSColor windowBackgroundColor];
     self.contentView.opaque = YES;
 
+    // sent when display resolution (or density) changes
+    [[NSNotificationCenter defaultCenter]
+        addObserver:self
+        selector:@selector(screenDidChange:)
+        name:NSWindowDidChangeScreenNotification
+        object:self
+    ];
+   
     // this fixes an issue refreshing our Velvet views when returning from fast user switching
     [[[NSWorkspace sharedWorkspace] notificationCenter]
         addObserver:self
@@ -95,9 +103,17 @@
 
 - (void)dealloc {
     [[[NSWorkspace sharedWorkspace] notificationCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark Notifications
+
+- (void)screenDidChange:(NSNotification *)notification {
+    // re-attach the view hierarchy, which will deeply notify all views of the
+    // switch in window, causing them to redisplay at the new scale factor (or
+    // not redisplay, if it's the same)
+    self.contentView.guestView = self.contentView.guestView;
+}
 
 - (void)workspaceSessionDidBecomeActive:(NSNotification *)notification {
     // save the first responder, since resetting the hierarchy will lose it

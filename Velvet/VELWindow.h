@@ -17,10 +17,13 @@
  * This class provides a couple of additional capabilities useful for Velvet
  * applications:
  *
- *  - It fixes a bug where layer tree renderers sometimes don't get re-enabled
+ *  - A fix for a bug where layer tree renderers sometimes don't get re-enabled
  *  after fast user switching.
- *  - It provides a slow-motion animation mode in Debug builds, which can be
- *  activated by pressing Shift three times while the window has focus.
+ *  - A slow-motion animation mode in Debug builds, which can be activated by
+ *  pressing Shift three times while the window has focus.
+ *  - Automatic switching into and out of HiDPI mode when the window changes
+ *  screens. (Although, currently, only <VELView> instances automatically
+ *  respond to density changes.)
  */
 @interface VELWindow : NSWindow
 

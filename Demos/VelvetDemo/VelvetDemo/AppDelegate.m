@@ -207,6 +207,14 @@
         [self.window.rootView addSubview:label];
     }
 
+    // Automatic @2x images
+    {
+        VELImageView *imageView = [[VELImageView alloc] initWithFrame:CGRectMake(300, 320, 204, 44)];
+        imageView.image = [NSImage imageNamed:@"image"];
+
+        [self.window.rootView addSubview:imageView];
+    }
+
     // VELControl subclass
     {
         self.control = [[SquareView alloc] initWithFrame:CGRectMake(60, 60, 100, 100)];

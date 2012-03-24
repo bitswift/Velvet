@@ -10,6 +10,8 @@
 		1A0D066C14846766007558AE /* lolcats.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 1A0D066B14846766007558AE /* lolcats.jpg */; };
 		1A80FE6914E43E5400A0C1EF /* MouseTrackingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A80FE6814E43E5400A0C1EF /* MouseTrackingView.m */; };
 		1E23712F14858240005B222B /* VELDraggingDestinationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E23712E14858240005B222B /* VELDraggingDestinationView.m */; };
+		D0352296151D89DE0051BEA9 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = D0352294151D89DE0051BEA9 /* image.png */; };
+		D0352297151D89DE0051BEA9 /* image@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D0352295151D89DE0051BEA9 /* image@2x.png */; };
 		D0927BA51479C1E2008F04C4 /* iceberg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D0927BA41479C1E2008F04C4 /* iceberg.jpg */; };
 		D0D8C3AF14785CFD00FC9015 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */; };
 		D0D8C3BC14786AFD00FC9015 /* SquareView.m in Sources */ = {isa = PBXBuildFile; fileRef = D0D8C3BB14786AFD00FC9015 /* SquareView.m */; };
@@ -78,6 +80,8 @@
 		1A80FE6814E43E5400A0C1EF /* MouseTrackingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MouseTrackingView.m; sourceTree = "<group>"; };
 		1E23712D14858240005B222B /* VELDraggingDestinationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELDraggingDestinationView.h; sourceTree = "<group>"; };
 		1E23712E14858240005B222B /* VELDraggingDestinationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELDraggingDestinationView.m; sourceTree = "<group>"; };
+		D0352294151D89DE0051BEA9 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
+		D0352295151D89DE0051BEA9 /* image@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "image@2x.png"; sourceTree = "<group>"; };
 		D0927BA41479C1E2008F04C4 /* iceberg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = iceberg.jpg; sourceTree = "<group>"; };
 		D0D8C3AE14785CFD00FC9015 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		D0D8C3BA14786AFD00FC9015 /* SquareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SquareView.h; sourceTree = "<group>"; };
@@ -220,6 +224,8 @@
 		D0EFFCAB147852A70095AB35 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D0352294151D89DE0051BEA9 /* image.png */,
+				D0352295151D89DE0051BEA9 /* image@2x.png */,
 				D0927BA41479C1E2008F04C4 /* iceberg.jpg */,
 				1A0D066B14846766007558AE /* lolcats.jpg */,
 				D0EFFCAC147852A70095AB35 /* VelvetDemo-Info.plist */,
@@ -423,6 +429,8 @@
 				D0EFFCBB147852A70095AB35 /* MainMenu.xib in Resources */,
 				D0927BA51479C1E2008F04C4 /* iceberg.jpg in Resources */,
 				1A0D066C14846766007558AE /* lolcats.jpg in Resources */,
+				D0352296151D89DE0051BEA9 /* image.png in Resources */,
+				D0352297151D89DE0051BEA9 /* image@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

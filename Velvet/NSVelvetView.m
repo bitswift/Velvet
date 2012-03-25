@@ -741,6 +741,22 @@ static NSComparisonResult compareNSViewOrdering (NSView *viewA, NSView *viewB, v
     return [self.guestView descendantViewAtPoint:point] ?: self;
 }
 
+- (BOOL)enumerateDescendantsUsingBlock:(void (^)(id<VELBridgedView> view, BOOL *stop))block; {
+    if (![super enumerateDescendantsUsingBlock:block])
+        return NO;
+
+    if (!self.guestView)
+        return YES;
+
+    BOOL stop = NO;
+    block(self.guestView, &stop);
+
+    if (stop)
+        return NO;
+
+    return [self.guestView enumerateDescendantsUsingBlock:block];
+}
+
 - (void)viewHierarchyDidChange {
     [super viewHierarchyDidChange];
     [self.guestView viewHierarchyDidChange];

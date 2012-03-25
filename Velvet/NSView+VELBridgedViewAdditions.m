@@ -78,6 +78,35 @@
     return self.immediateParentView.ancestorScrollView;
 }
 
+- (BOOL)enumerateAncestorsUsingBlock:(void (^)(id<VELBridgedView> view, BOOL *stop))block; {
+    id<VELBridgedView> parentView = self.immediateParentView;
+    if (!parentView)
+        return YES;
+
+    BOOL stop = NO;
+    block(parentView, &stop);
+
+    if (stop)
+        return NO;
+
+    return [parentView enumerateAncestorsUsingBlock:block];
+}
+
+- (BOOL)enumerateDescendantsUsingBlock:(void (^)(id<VELBridgedView> view, BOOL *stop))block; {
+    BOOL stop = NO;
+
+    for (NSView *subview in self.subviews) {
+        block(subview, &stop);
+        if (stop)
+            return NO;
+
+        if (![subview enumerateDescendantsUsingBlock:block])
+            return NO;
+    }
+
+    return YES;
+}
+
 #pragma mark Geometry
 
 - (CGPoint)convertFromWindowPoint:(CGPoint)point; {

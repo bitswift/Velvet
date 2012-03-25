@@ -417,13 +417,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
         return self.superview.hostView;
 }
 
-- (id<VELBridgedView>)immediateParentView {
-    if (m_hostView)
-        return m_hostView;
-    else
-        return self.superview;
-}
-
 - (void)setHostView:(id<VELHostView>)view {
     if (view == m_hostView)
         return;
@@ -1067,6 +1060,13 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 #pragma mark VELBridgedView
 
+- (id<VELBridgedView>)immediateParentView {
+    if (m_hostView)
+        return m_hostView;
+    else
+        return self.superview;
+}
+
 - (CGPoint)convertToWindowPoint:(CGPoint)point {
     NSAssert(self.window, @"%@ window is nil!",self);
 
@@ -1118,6 +1118,34 @@ static BOOL VELViewPerformingDeepLayout = NO;
         return (id)hostView;
 
     return hostView.ancestorNSVelvetView;
+}
+
+- (BOOL)enumerateAncestorsUsingBlock:(void (^)(id<VELBridgedView> view, BOOL *stop))block; {
+    if (!self.immediateParentView)
+        return YES;
+
+    BOOL stop = NO;
+    block(self.immediateParentView, &stop);
+
+    if (stop)
+        return NO;
+
+    return [self.immediateParentView enumerateAncestorsUsingBlock:block];
+}
+
+- (BOOL)enumerateDescendantsUsingBlock:(void (^)(id<VELBridgedView> view, BOOL *stop))block; {
+    BOOL stop = NO;
+
+    for (VELView *subview in self.subviews) {
+        block(subview, &stop);
+        if (stop)
+            return NO;
+
+        if (![subview enumerateDescendantsUsingBlock:block])
+            return NO;
+    }
+
+    return YES;
 }
 
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view; {

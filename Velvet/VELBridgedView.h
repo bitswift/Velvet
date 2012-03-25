@@ -90,6 +90,54 @@
 - (id<VELBridgedView>)immediateParentView;
 
 /**
+ * Traverses all of the bridged ancestors of the receiver, executing the given
+ * block on each one. Returns whether enumeration finished without stopping.
+ *
+ * An implementation of this method should:
+ *  
+ *  1. If the receiver has no <immediateParentView>, return `YES`.
+ *  2. Invoke the given block with the receiver's <immediateParentView> for
+ *  `view`, and a pointer to a boolean `NO` for `stop`.
+ *  3. If `stop` was set to `YES` from within the block, return `NO`.
+ *  4. Otherwise, re-invoke this method on the <immediateParentView>, passing in
+ *  the same block, and return the result.
+ *
+ * This method should _not_ invoke the given block with the receiver as the
+ * argument.
+ *
+ * @param block A block to execute with each ancestor of the receiver (not
+ * including the receiver).
+ */
+- (BOOL)enumerateAncestorsUsingBlock:(void (^)(id<VELBridgedView> view, BOOL *stop))block;
+
+/**
+ * Performs a depth-first traversal of all of the bridged descendants of the
+ * receiver, executing the given block on each one. Returns whether enumeration
+ * finished without stopping.
+ *
+ * An implementation of this method should enumerate the receiver's subviews
+ * and <[VELHostView guestView]>, and at each view:
+ *
+ *  1. Invoke the given block, passing in that view for `view`, and a pointer to
+ *  a boolean `NO` for `stop`.
+ *  2. If `stop` was set to `YES` from within the block, stop enumerating and
+ *  return `NO`.
+ *  3. Otherwise, re-invoke this method on that view, passing in the same block.
+ *  If this invocation returns `NO`, stop enumerating and return `NO`.
+ *
+ * If the receiver has no subviews or <[VELHostView guestView]>, this method
+ * should return `YES`. This method should _not_ invoke the given block with the
+ * receiver as the argument.
+ *
+ * @param block A block to execute with each descendant of the receiver (not
+ * including the receiver).
+ *
+ * @warning **Important:** The order in which subviews are traversed, relative to
+ * each other and relative to any <[VELHostView guestView]>, is unspecified.
+ */
+- (BOOL)enumerateDescendantsUsingBlock:(void (^)(id<VELBridgedView> view, BOOL *stop))block;
+
+/**
  * Invoked any time an ancestor of the receiver has relaid itself out,
  * potentially moving or clipping the receiver relative to one of its ancestor
  * views.

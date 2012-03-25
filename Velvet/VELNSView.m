@@ -259,6 +259,22 @@
     return [self.guestView descendantViewAtPoint:NSViewPoint];
 }
 
+- (BOOL)enumerateDescendantsUsingBlock:(void (^)(id<VELBridgedView> view, BOOL *stop))block; {
+    if (![super enumerateDescendantsUsingBlock:block])
+        return NO;
+
+    if (!self.guestView)
+        return YES;
+
+    BOOL stop = NO;
+    block(self.guestView, &stop);
+
+    if (stop)
+        return NO;
+
+    return [self.guestView enumerateDescendantsUsingBlock:block];
+}
+
 #pragma mark Layout
 
 - (void)layoutSubviews {

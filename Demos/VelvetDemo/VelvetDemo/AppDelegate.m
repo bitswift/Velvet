@@ -115,6 +115,28 @@
 }
 
 - (void)hierarchyTests {
+    // VELLabel
+    {
+        VELLabel *label = [[VELLabel alloc] initWithFrame:CGRectMake(0, 320, 100, 60)];
+        label.backgroundColor = [NSColor whiteColor];
+        label.opaque = YES;
+
+        label.text = @"Justified text!";
+        label.textColor = [NSColor blackColor];
+        label.font = [NSFont systemFontOfSize:16];
+        label.textAlignment = VELTextAlignmentJustified;
+
+        [self.window.rootView addSubview:label];
+    }
+
+    // Automatic @2x images
+    {
+        VELImageView *imageView = [[VELImageView alloc] initWithFrame:CGRectMake(300, 320, 204, 44)];
+        imageView.image = [NSImage imageNamed:@"image"];
+
+        [self.window.rootView addSubview:imageView];
+    }
+
     // NSScrollView
     {
         NSScrollView *nsScrollView = [[NSScrollView alloc] initWithFrame:CGRectMake(20, 20, 300, 300)];
@@ -167,44 +189,6 @@
         self.imageView.endCapInsets = NSEdgeInsetsMake(44, 44, 44, 44);
 
         [self.scrollView addSubview:self.imageView];
-    }
-
-    // NSTextField
-    {
-        NSTextField *textField = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 180, 91, 22)];
-        [textField.cell setUsesSingleLineMode:YES];
-        [textField.cell setScrollable:YES];
-
-        VELKeyPressEventRecognizer *recognizer = [[VELKeyPressEventRecognizer alloc] init];
-        recognizer.view = textField;
-        recognizer.keyPressesToRecognize = [NSArray arrayWithObjects:
-            [[VELKeyPress alloc] initWithCharactersIgnoringModifiers:@"h" modifierFlags:0],
-            [[VELKeyPress alloc] initWithCharactersIgnoringModifiers:@"i" modifierFlags:0],
-            nil
-        ];
-
-        [recognizer addActionUsingBlock:^(VELKeyPressEventRecognizer *recognizer){
-            if (recognizer.active)
-                NSLog(@"Hi to you too!");
-        }];
-
-        VELNSView *textFieldHost = [[VELNSView alloc] initWithNSView:textField];
-        textFieldHost.backgroundColor = [NSColor greenColor];
-        [self.scrollView addSubview:textFieldHost];
-    }
-
-    // VELLabel
-    {
-        VELLabel *label = [[VELLabel alloc] initWithFrame:CGRectMake(0, 320, 100, 60)];
-        label.backgroundColor = [NSColor whiteColor];
-        label.opaque = YES;
-
-        label.text = @"Justified text!";
-        label.textColor = [NSColor blackColor];
-        label.font = [NSFont systemFontOfSize:16];
-        label.textAlignment = VELTextAlignmentJustified;
-
-        [self.window.rootView addSubview:label];
     }
 
     // VELControl subclass
@@ -273,6 +257,30 @@
         innerTrackingView.normalColor = [NSColor colorWithCalibratedRed:0.2 green:0.3 blue:0.4 alpha:1.0];
         innerTrackingView.dotColor = [NSColor colorWithCalibratedRed:0.6 green:0.1 blue:0.1 alpha:1.0];
         [trackingView addSubview:innerTrackingView];
+    }
+
+    // NSTextField
+    {
+        NSTextField *textField = [[NSTextField alloc] initWithFrame:NSMakeRect(20, 180, 91, 22)];
+        [textField.cell setUsesSingleLineMode:YES];
+        [textField.cell setScrollable:YES];
+
+        VELKeyPressEventRecognizer *recognizer = [[VELKeyPressEventRecognizer alloc] init];
+        recognizer.view = textField;
+        recognizer.keyPressesToRecognize = [NSArray arrayWithObjects:
+            [[VELKeyPress alloc] initWithCharactersIgnoringModifiers:@"h" modifierFlags:0],
+            [[VELKeyPress alloc] initWithCharactersIgnoringModifiers:@"i" modifierFlags:0],
+            nil
+        ];
+
+        [recognizer addActionUsingBlock:^(VELKeyPressEventRecognizer *recognizer){
+            if (recognizer.active)
+                NSLog(@"Hi to you too!");
+        }];
+
+        VELNSView *textFieldHost = [[VELNSView alloc] initWithNSView:textField];
+        textFieldHost.backgroundColor = [NSColor greenColor];
+        [self.scrollView addSubview:textFieldHost];
     }
 }
 

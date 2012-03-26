@@ -22,6 +22,8 @@
 		1E7BBD40147B157C0010375D /* VELLabel.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E7BBD3E147B157B0010375D /* VELLabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1E7BBD41147B157C0010375D /* VELLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E7BBD3F147B157B0010375D /* VELLabel.m */; };
 		1E7BBD4C147B17400010375D /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E7BBD4B147B17400010375D /* ApplicationServices.framework */; };
+		1E93701615211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 1E93701415211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1E93701715211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E93701515211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.m */; };
 		1EA3D71014B37F4A0007E4C4 /* NSVelvetHostViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */; };
 		D002AEEF14CE031F0062AEFC /* libExpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D002AED714CE030C0062AEFC /* libExpecta.a */; };
 		D002AEF014CE031F0062AEFC /* libSpecta.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D002AEE314CE030C0062AEFC /* libSpecta.a */; };
@@ -229,6 +231,8 @@
 		1E7BBD3E147B157B0010375D /* VELLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELLabel.h; sourceTree = "<group>"; };
 		1E7BBD3F147B157B0010375D /* VELLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELLabel.m; sourceTree = "<group>"; };
 		1E7BBD4B147B17400010375D /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		1E93701415211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDocument+ErrorPresentationAdditions.h"; sourceTree = "<group>"; };
+		1E93701515211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDocument+ErrorPresentationAdditions.m"; sourceTree = "<group>"; };
 		1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSVelvetHostViewTests.m; sourceTree = "<group>"; };
 		D002AEC614CE030B0062AEFC /* Expecta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Expecta.xcodeproj; path = Libraries/Expecta/Expecta.xcodeproj; sourceTree = "<group>"; };
 		D002AEC914CE030B0062AEFC /* Specta.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Specta.xcodeproj; path = Libraries/Specta/Specta.xcodeproj; sourceTree = "<group>"; };
@@ -586,6 +590,8 @@
 				D00D3A7A1516F97E00466B84 /* NSObject+BindingsAdditions.m */,
 				D00D3A4C1516F83F00466B84 /* NSPopUpButtonCell+EditorAdditions.h */,
 				D00D3A4D1516F83F00466B84 /* NSPopUpButtonCell+EditorAdditions.m */,
+				1E93701415211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.h */,
+				1E93701515211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.m */,
 				D06C7E6015127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h */,
 				D06C7E6115127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.m */,
 				D025619A15004999008A71B6 /* NSResponder+ResponderChainAdditions.h */,
@@ -879,6 +885,7 @@
 				D06C7E6215127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h in Headers */,
 				D0D0E9921516EFB5009A4AE8 /* NSCell+EditorAdditions.h in Headers */,
 				D00D3A7B1516F97E00466B84 /* NSObject+BindingsAdditions.h in Headers */,
+				1E93701615211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1107,6 +1114,7 @@
 				D0D0E9911516EF9C009A4AE8 /* NSCell+EditorAdditions.m in Sources */,
 				D00D3A7C1516F97E00466B84 /* NSObject+BindingsAdditions.m in Sources */,
 				D00D3A4F1516F83F00466B84 /* NSPopUpButtonCell+EditorAdditions.m in Sources */,
+				1E93701715211BF50030A4F2 /* NSDocument+ErrorPresentationAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

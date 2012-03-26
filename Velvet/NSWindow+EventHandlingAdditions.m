@@ -16,6 +16,11 @@
 
 @safecategory (NSWindow, EventHandlingAdditions)
 - (id<VELBridgedView>)bridgedHitTest:(CGPoint)windowPoint withEvent:(NSEvent *)event; {
+    // returns whether the event should be sent to the given view
+    BOOL (^shouldDispatchToNSView)(NSView *) = ^ BOOL (NSView *view){
+        return event.type != NSLeftMouseDown || [self isKeyWindow] || [view acceptsFirstMouse:event];
+    };
+
     NSView *nsView = self.contentView;
 
     NSView *frameHitTestedView = [[nsView superview] hitTest:windowPoint];
@@ -29,11 +34,10 @@
         id testView = [nsView hitTest:viewPoint];
 
         if (![testView isKindOfClass:[NSVelvetView class]]) {
-            if (event.type != NSLeftMouseDown || [self isKeyWindow] || [testView acceptsFirstMouse:event]) {
+            if (shouldDispatchToNSView(testView))
                 return testView;
-            } else {
+            else
                 return nil;
-            }
         }
 
         NSVelvetView *hostView = testView;
@@ -44,8 +48,10 @@
 
         if ([testView isKindOfClass:[VELNSView class]]) {
             nsView = [(VELNSView *)testView guestView];
-        } else {
+        } else if (shouldDispatchToNSView(hostView)) {
             return testView;
+        } else {
+            return nil;
         }
     }
 

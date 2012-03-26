@@ -46,6 +46,11 @@ static const NSInteger trueMouseEventNumberMinimum = 1000;
 + (void)stopEventLoop;
 @end
 
+// used so that events will always be received even though the test window is
+// not truly key and active
+@interface AlwaysKeyVELWindow : VELWindow
+@end
+
 SpecBegin(VELEventHandling)
 
     describe(@"converting system-defined events to real mouse events", ^{
@@ -170,7 +175,7 @@ SpecBegin(VELEventHandling)
         __block NSEvent *systemDefinedEvent;
 
         before(^{
-            window = [[VELWindow alloc] initWithContentRect:NSMakeRect(101, 223, 500, 1000)];
+            window = [[AlwaysKeyVELWindow alloc] initWithContentRect:NSMakeRect(101, 223, 500, 1000)];
             expect(window).not.toBeNil();
 
             [window makeKeyAndOrderFront:nil];
@@ -304,4 +309,10 @@ SpecEnd
     return NO;
 }
 
+@end
+
+@implementation AlwaysKeyVELWindow
+- (BOOL)isKeyWindow {
+    return YES;
+}
 @end

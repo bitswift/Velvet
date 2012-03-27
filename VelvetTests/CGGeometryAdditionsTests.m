@@ -279,6 +279,15 @@ describe(@"CGGeometryAdditions", ^{
         });
     });
 
+    describe(@"CGSizeScale", ^{
+        it(@"should scale each component", ^{
+            CGSize original = CGSizeMake(-5, 3.4);
+            CGFloat scale = -3.5;
+            CGSize expected = CGSizeMake(17.5, -11.9);
+            expect(CGSizeScale(original, scale)).toEqual(expected);
+        });
+    });
+
     describe(@"CGPointAdd", ^{
         it(@"adds two points together, element-wise", ^{
             CGPoint point1 = CGPointMake(-1, 5);

@@ -223,6 +223,10 @@ BOOL CGSizeEqualToSizeWithAccuracy (CGSize size, CGSize size2, CGFloat epsilon) 
     return (fabs(size.width - size2.width) <= epsilon) && (fabs(size.height - size2.height) <= epsilon);
 }
 
+CGSize CGSizeScale(CGSize size, CGFloat scale) {
+    return CGSizeMake(size.width * scale, size.height * scale);
+}
+
 CGPoint CGPointFloor(CGPoint point) {
     return CGPointMake(floor(point.x), ceil(point.y));
 }

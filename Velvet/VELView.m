@@ -344,6 +344,10 @@ static BOOL VELViewPerformingDeepLayout = NO;
 - (void)setTransform:(CGAffineTransform)transform {
     [self changeLayerProperties:^{
         self.layer.transform = CATransform3DMakeAffineTransform(transform);
+
+        if (self.alignsToIntegralPixels) {
+            self.layer.frame = [self backingAlignedRect:self.frame];
+        }
     }];
 }
 

@@ -242,6 +242,14 @@ describe(@"VELView", ^{
         expect(CGPointEqualToPoint(view.center, expectedCenter)).toBeTruthy();
     });
 
+    it(@"aligns to integral points when setting a transform", ^{
+        view.frame = CGRectMake(5, 0, 10, 15);
+        view.transform = CGAffineTransformMakeScale(0.5, 0.5);
+
+        CGRect expectedFrame = CGRectMake(7, 4, 5, 7);
+        expect(view.frame).toEqual(expectedFrame);
+    });
+
     it(@"respects a misaligned center when its size is CGSizeZero", ^{
         CGPoint expectedCenter = CGPointMake(13.7, 14.3);
         view.center = expectedCenter;

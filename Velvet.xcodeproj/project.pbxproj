@@ -44,6 +44,10 @@
 		D02561B515004C75008A71B6 /* NSWindow+ResponderChainAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D02561B315004C75008A71B6 /* NSWindow+ResponderChainAdditions.m */; };
 		D0305D7A1486FC960081D6EA /* VELControl.h in Headers */ = {isa = PBXBuildFile; fileRef = D0305D781486FC960081D6EA /* VELControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D0305D7B1486FC960081D6EA /* VELControl.m in Sources */ = {isa = PBXBuildFile; fileRef = D0305D791486FC960081D6EA /* VELControl.m */; };
+		D0395F581524DDD7000F7D58 /* NSImage+TransformationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D0395F561524DDD7000F7D58 /* NSImage+TransformationAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D0395F591524DDD7000F7D58 /* NSImage+TransformationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D0395F571524DDD7000F7D58 /* NSImage+TransformationAdditions.m */; };
+		D0395F5B1524DFCD000F7D58 /* high-density-test.png in Resources */ = {isa = PBXBuildFile; fileRef = D0395F5A1524DFCD000F7D58 /* high-density-test.png */; };
+		D0395F5D1524DFE0000F7D58 /* NSImageAdditionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0395F5C1524DFE0000F7D58 /* NSImageAdditionsTests.m */; };
 		D03FD8A614C39D760062B7A3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D0D8C3AC14785CED00FC9015 /* QuartzCore.framework */; };
 		D04B7E67150C72CF00A73996 /* VELHostView.m in Sources */ = {isa = PBXBuildFile; fileRef = D04B7E66150C72CF00A73996 /* VELHostView.m */; };
 		D05AC4B3150BB92A0043F6DE /* VELAnimationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D05AC4B1150BB92A0043F6DE /* VELAnimationManager.m */; };
@@ -255,6 +259,10 @@
 		D02561B315004C75008A71B6 /* NSWindow+ResponderChainAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSWindow+ResponderChainAdditions.m"; sourceTree = "<group>"; };
 		D0305D781486FC960081D6EA /* VELControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELControl.h; sourceTree = "<group>"; };
 		D0305D791486FC960081D6EA /* VELControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELControl.m; sourceTree = "<group>"; };
+		D0395F561524DDD7000F7D58 /* NSImage+TransformationAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSImage+TransformationAdditions.h"; sourceTree = "<group>"; };
+		D0395F571524DDD7000F7D58 /* NSImage+TransformationAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSImage+TransformationAdditions.m"; sourceTree = "<group>"; };
+		D0395F5A1524DFCD000F7D58 /* high-density-test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "high-density-test.png"; sourceTree = "<group>"; };
+		D0395F5C1524DFE0000F7D58 /* NSImageAdditionsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSImageAdditionsTests.m; sourceTree = "<group>"; };
 		D03E64501482717D00E99AA2 /* NSVelvetViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSVelvetViewPrivate.h; sourceTree = "<group>"; };
 		D04B7E66150C72CF00A73996 /* VELHostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VELHostView.m; sourceTree = "<group>"; };
 		D05AC4B0150BB92A0043F6DE /* VELAnimationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VELAnimationManager.h; sourceTree = "<group>"; };
@@ -521,6 +529,7 @@
 			children = (
 				D0682AB314C773EF001CA434 /* CGGeometryAdditionsTests.m */,
 				D08B7BBE14FEC6DF00F8BD17 /* NSClipViewAdditionsTests.m */,
+				D0395F5C1524DFE0000F7D58 /* NSImageAdditionsTests.m */,
 				D00D3A8F1516FC2600466B84 /* NSObjectAdditionsTests.m */,
 				D025619E15004A79008A71B6 /* NSResponderAdditionsTests.m */,
 				1EA3D70914B37F3B0007E4C4 /* NSVelvetHostViewTests.m */,
@@ -582,6 +591,8 @@
 				D069F4C515096E4400ED37DC /* NSEvent+ButtonStateAdditions.m */,
 				D0D51D0814880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.h */,
 				D0D51D0914880EEB00F15DA9 /* NSImage+CoreGraphicsAdditions.m */,
+				D0395F561524DDD7000F7D58 /* NSImage+TransformationAdditions.h */,
+				D0395F571524DDD7000F7D58 /* NSImage+TransformationAdditions.m */,
 				D00D3A791516F97E00466B84 /* NSObject+BindingsAdditions.h */,
 				D00D3A7A1516F97E00466B84 /* NSObject+BindingsAdditions.m */,
 				D00D3A4C1516F83F00466B84 /* NSPopUpButtonCell+EditorAdditions.h */,
@@ -727,6 +738,7 @@
 			isa = PBXGroup;
 			children = (
 				D0EFFC23147851A80095AB35 /* InfoPlist.strings */,
+				D0395F5A1524DFCD000F7D58 /* high-density-test.png */,
 				D0B75C67149188FD005C81D5 /* testimage.jpg */,
 				D067DC7114F2074E00B58AC4 /* testnib.xib */,
 				D0EFFC22147851A80095AB35 /* VelvetTests-Info.plist */,
@@ -879,6 +891,7 @@
 				D06C7E6215127AD200FA74A3 /* NSResponder+ErrorPresentationAdditions.h in Headers */,
 				D0D0E9921516EFB5009A4AE8 /* NSCell+EditorAdditions.h in Headers */,
 				D00D3A7B1516F97E00466B84 /* NSObject+BindingsAdditions.h in Headers */,
+				D0395F581524DDD7000F7D58 /* NSImage+TransformationAdditions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1036,6 +1049,7 @@
 				D0EFFC25147851A80095AB35 /* InfoPlist.strings in Resources */,
 				D0B75C68149188FD005C81D5 /* testimage.jpg in Resources */,
 				D067DC7214F2074E00B58AC4 /* testnib.xib in Resources */,
+				D0395F5B1524DFCD000F7D58 /* high-density-test.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1107,6 +1121,7 @@
 				D0D0E9911516EF9C009A4AE8 /* NSCell+EditorAdditions.m in Sources */,
 				D00D3A7C1516F97E00466B84 /* NSObject+BindingsAdditions.m in Sources */,
 				D00D3A4F1516F83F00466B84 /* NSPopUpButtonCell+EditorAdditions.m in Sources */,
+				D0395F591524DDD7000F7D58 /* NSImage+TransformationAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1138,6 +1153,7 @@
 				D0B6168E1506E7B000DD9FB0 /* VELKeyPressTests.m in Sources */,
 				D00D3A901516FC2600466B84 /* NSObjectAdditionsTests.m in Sources */,
 				D00A0F47151B9783009DD468 /* VELEventHandlingTests.m in Sources */,
+				D0395F5D1524DFE0000F7D58 /* NSImageAdditionsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

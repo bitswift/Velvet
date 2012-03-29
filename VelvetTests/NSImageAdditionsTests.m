@@ -38,12 +38,12 @@ SpecBegin(NSImageAdditions)
 
     it(@"should return a new image with scale factor 0.5", ^{
         NSImage *scaledImage = [highDensityImage imageWithScale:0.5];
-        expect(scaledImage.size).toEqual(CGSizeMake(256, 256));
+        expect(scaledImage.size).toEqual(CGSizeMake(1024, 1024));
     });
 
     it(@"should return a new image with scale factor 2", ^{
         NSImage *scaledImage = [highDensityImage imageWithScale:2];
-        expect(scaledImage.size).toEqual(CGSizeMake(1024, 1024));
+        expect(scaledImage.size).toEqual(CGSizeMake(256, 256));
     });
 
 SpecEnd

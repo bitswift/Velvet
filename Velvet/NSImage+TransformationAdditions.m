@@ -27,7 +27,7 @@
     }
 
     NSImage *newImage = [self copy];
-    newImage.size = CGSizeMake(width * scale, height * scale);
+    newImage.size = CGSizeMake(width / scale, height / scale);
 
     return newImage;
 }

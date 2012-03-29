@@ -19,7 +19,7 @@
 
 /**
  * Returns a copy of the receiver with a size equal to the pixel dimensions of
- * the largest representation, multiplied by the given scale.
+ * the largest representation, divided by the given scale.
  *
  * In other words, this adjusts the density of the image, such that one point
  * equals `scale` pixels.

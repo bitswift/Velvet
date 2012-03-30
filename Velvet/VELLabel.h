@@ -26,7 +26,7 @@ typedef enum {
     /**
      * Clip rendered text when the end of the drawing rectangle is reached.
      * 
-     * @warning `VELLineBreakModeClip` ignores <[VELLabel numberOfLines]>.
+     * @bug `VELLineBreakModeClip` ignores <[VELLabel numberOfLines]>.
      */
     VELLineBreakModeClip = kCTLineBreakByClipping,
 
@@ -150,8 +150,7 @@ typedef enum {
  * How the the text of the label should wrap or truncate, if it is too large for
  * the label's bounds.
  *
- * @warning **Important:** The line break mode is not applied to
- * <formattedText>.
+ * @note The line break mode is not applied to <formattedText>.
  */
 @property (nonatomic, assign) VELLineBreakMode lineBreakMode;
 

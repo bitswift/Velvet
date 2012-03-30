@@ -19,13 +19,13 @@
  *
  *  1. If the <view> has a <[VELView superview]>, the superview is the next
  *  responder.
- *  2. If the <view> has a <[VELView hostView]>, the host view is the next
- *  responder.
+ *  2. If the <view> has a <[VELBridgedView hostView]>, the host view is the
+ *  next responder.
  *  3. Otherwise, there is no next responder.
  *
  * Upon deallocation, a `VELViewController` instance automatically removes undo
  * actions targeting itself from any `-[NSResponder undoManager]` and removes itself
- * as an observer from `NSNotificationCenter`.
+ * as an observer from the default `NSNotificationCenter`.
  */
 @interface VELViewController : NSResponder
 
@@ -71,7 +71,7 @@
  * Unlike UIKit, this method is guaranteed to always be called before the view
  * controller is destroyed.
  *
- * @warning Unlike UIKit, the preferred pattern in Velvet is to use `weak`
+ * @note Unlike UIKit, the preferred pattern in Velvet is to use `weak`
  * references for all subviews, so that they can be automatically cleaned up
  * when the view is destroyed.
  */

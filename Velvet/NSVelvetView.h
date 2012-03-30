@@ -11,8 +11,9 @@
 #import <Velvet/VELView.h>
 
 /**
- * A layer-hosted `NSView` that is used to host a <VELView> hierarchy. You must
- * use this class to present a <VELView> and allow it to respond to events.
+ * A layer-backed `NSView` that is used to host a <VELView> hierarchy. Velvet
+ * views must ultimately be rooted at an instance of this class in order to be
+ * presented on-screen and respond to events.
  */
 @interface NSVelvetView : NSView <VELHostView>
 

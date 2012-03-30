@@ -78,8 +78,7 @@
  * Implementing classes may require that this property be of a more specific
  * type.
  *
- * @warning **Important:** This property should not be set except by the
- * <VELHostView> itself.
+ * @note This property should not be set except by the <VELHostView> itself.
  */
 @property (nonatomic, unsafe_unretained) id<VELHostView> hostView;
 
@@ -94,8 +93,8 @@
  * potentially moving or clipping the receiver relative to one of its ancestor
  * views.
  *
- * @warning **Important:** The receiver _must_ forward this message to all of
- * its subviews and any <[VELHostView guestView]>.
+ * @note The receiver _must_ forward this message to all of its subviews and any
+ * <[VELHostView guestView]>.
  */
 - (void)ancestorDidLayout;
 
@@ -107,8 +106,8 @@
  * changes superviews, changes host views, is reordered within its superview,
  * etc.
  *
- * @warning **Important:** The receiver _must_ forward this message to all of
- * its subviews and any <[VELHostView guestView]>.
+ * @note The receiver _must_ forward this message to all of its subviews and any
+ * <[VELHostView guestView]>.
  */
 - (void)viewHierarchyDidChange;
 
@@ -134,8 +133,8 @@
  * @param view The new <NSVelvetView> that will host the receiver, or `nil` if
  * the receiver is being detached from its current <ancestorNSVelvetView>.
  *
- * @warning **Important:** The receiver _must_ forward this message to all of
- * its subviews and any <[VELHostView guestView]>.
+ * @note The receiver _must_ forward this message to all of its subviews and any
+ * <[VELHostView guestView]>.
  */
 - (void)willMoveToNSVelvetView:(NSVelvetView *)view;
 
@@ -145,8 +144,8 @@
  * @param view The <NSVelvetView> that was previously hosting the receiver, or
  * `nil` if the receiver was not hosted.
  *
- * @warning **Important:** The receiver _must_ forward this message to all of
- * its subviews and any <[VELHostView guestView]>.
+ * @note The receiver _must_ forward this message to all of its subviews and any
+ * <[VELHostView guestView]>.
  */
 - (void)didMoveFromNSVelvetView:(NSVelvetView *)view;
 

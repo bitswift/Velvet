@@ -271,8 +271,7 @@ typedef enum {
  *
  * The default value for this property is `YES`.
  *
- * @warning **Important:** This property may not work with a custom
- * <layerClass>.
+ * @warning This property may not work with a custom <layerClass>.
  */
 @property (nonatomic, assign) BOOL alignsToIntegralPixels;
 
@@ -282,9 +281,9 @@ typedef enum {
  * This will get and set the underlying `CATransform3D` of the receiver's
  * <layer>.
  *
- * @warning **Important:** When reading the property, if the layer has an existing
- * 3D transform that cannot be represented as an affine transform,
- * `CGAffineTransformIdentity` is returned.
+ * When reading this property, if the layer has an existing 3D transform that
+ * cannot be represented as an affine transform, `CGAffineTransformIdentity` is
+ * returned.
  */
 @property (nonatomic, assign) CGAffineTransform transform;
 
@@ -310,8 +309,7 @@ typedef enum {
  * @param point The point to transform into the receiver's coordinate system.
  * @param view The view whose coordinate system `point` is represented in.
  *
- * @warning **Important:** The receiver and `view` must be rooted at the same
- * window.
+ * @note The receiver and `view` must have a common ancestor.
  */
 - (CGPoint)convertPoint:(CGPoint)point fromView:(id<VELBridgedView>)view;
 
@@ -322,8 +320,7 @@ typedef enum {
  * @param point The point in the receiver's coordinate system.
  * @param view The view whose coordinate system `point` should be represented in.
  *
- * @warning **Important:** The receiver and `view` must be rooted at the same
- * window.
+ * @note The receiver and `view` must have a common ancestor.
  */
 - (CGPoint)convertPoint:(CGPoint)point toView:(id<VELBridgedView>)view;
 
@@ -334,8 +331,7 @@ typedef enum {
  * @param rect The rectangle to transform into the receiver's coordinate system.
  * @param view The view whose coordinate system `rect` is represented in.
  *
- * @warning **Important:** The receiver and `view` must be rooted at the same
- * window.
+ * @note The receiver and `view` must have a common ancestor.
  */
 - (CGRect)convertRect:(CGRect)rect fromView:(id<VELBridgedView>)view;
 
@@ -346,8 +342,7 @@ typedef enum {
  * @param rect The rectangle in the receiver's coordinate system.
  * @param view The view whose coordinate system `rect` should be represented in.
  *
- * @warning **Important:** The receiver and `view` must be rooted at the same
- * window.
+ * @note The receiver and `view` must have a common ancestor.
  */
 - (CGRect)convertRect:(CGRect)rect toView:(id<VELBridgedView>)view;
 
@@ -389,10 +384,14 @@ typedef enum {
 /**
  * Inserts the given view as a subview of the receiver, at the given index.
  *
+ * The added view will appear on top of any <subviews> below the given index,
+ * assuming that the `zPosition` of each layer has not been modified.
+ *
  * @param view The view to add as a subview. This view is removed from its
  * current superview before being added.
+ * @param index The index in the <subviews> array at which to insert the view.
  *
- * @warning If a `VELView` has subviews, but other sublayers have been added to its
+ * @note If a `VELView` has subviews, but other sublayers have been added to its
  * layer, the ordering between its subviews and its other layers is undefined.
  */
 - (void)insertSubview:(VELView *)view atIndex:(NSUInteger)index;
@@ -514,9 +513,11 @@ typedef enum {
  * If set to `NO`, subviews will remain visible when positioned outside of the
  * receiver's <bounds>.
  *
- * @warning **Important:** Setting this property to `NO` will not affect event
- * handling. Events that are outside of the bounds of the receiver will still be
- * ignored by default.
+ * The default value is `NO`.
+ *
+ * @note Setting this property to `NO` will not affect event handling. Events
+ * that are outside of the bounds of the receiver will still be ignored by
+ * default.
  */
 @property (nonatomic, assign) BOOL clipsToBounds;
 
@@ -613,7 +614,7 @@ typedef enum {
  * The default value for this property is `nil`, meaning that no background is
  * automatically drawn.
  */
-@property (nonatomic, strong) NSColor *backgroundColor;
+@property (nonatomic, copy) NSColor *backgroundColor;
 
 /**
  * Whether the receiver is opaque.
@@ -664,6 +665,22 @@ typedef enum {
  *
  * @param rect The rectangle of the receiver which needs redrawing, specified in
  * the receiver's coordinate system.
+ *
+ * @note The default values for the following properties depend on whether this
+ * method is reimplemented:
+ *  
+ *  - <clearsContextBeforeDrawing>
+ *  - <contentMode>
+ *  - <matchesWindowScaleFactor>
+ *
+ * This behavior is based on the assumption that a subclass overriding this
+ * method intends to perform custom drawing. The behavior of a view doing custom
+ * drawing differs significantly from one that simply displays a prerendered
+ * image (or something similar, like a <backgroundColor>), and requires
+ * different performance and correctness considerations.
+ *
+ * In light of all of the above, this method should only overridden if truly
+ * necessary.
  */
 - (void)drawRect:(CGRect)rect;
 
@@ -790,7 +807,10 @@ typedef enum {
  */
 
 /**
- * The class of Core Animation layer to use for this view's backing store.
+ * The class of Core Animation layer to use for instances of the receiver.
+ *
+ * This method may be overridden to initialize views with a different <layer>
+ * from the default.
  */
 + (Class)layerClass;
 

@@ -43,9 +43,8 @@
  *
  * @param view The <VELNSView> hosting the `NSView`.
  *
- * @warning **Important:** <stopRenderingNSViewOfView:> should be invoked
- * to restore the normal rendering of the `NSView`. Calls to these methods
- * cannot be nested.
+ * @note <stopRenderingNSViewOfView:> should be invoked to restore the normal
+ * rendering of the `NSView`. Calls to these methods cannot be nested.
  */
 - (void)startRenderingNSViewOfView:(VELNSView *)view;
 
@@ -55,7 +54,7 @@
  *
  * @param view The <VELNSView> hosting the `NSView`.
  *
- * @warning **Important:** Calls to this method cannot be nested.
+ * @note Calls to this method cannot be nested.
  */
 - (void)stopRenderingNSViewOfView:(VELNSView *)view;
 

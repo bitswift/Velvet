@@ -21,7 +21,7 @@
  * @param context The graphics context to draw into.
  * @param layer The root of the layer tree that should be drawn.
  *
- * @warning **Important:** This function may not support all features of the
- * Core Animation rendering and compositing model.
+ * @bug This function may not support all features of the Core Animation
+ * rendering and compositing model.
  */
 void CGContextDrawCALayer (CGContextRef context, CALayer *layer);

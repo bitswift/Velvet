@@ -138,8 +138,8 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  * attach it to the new one. If this is set to `nil`, the receiver will not be
  * attached to any view.
  *
- * @warning **Important:** The view set here will automatically retain the
- * receiver until this is set to `nil` or the view is deallocated.
+ * @note The view set here will automatically retain the receiver until this is
+ * set to `nil` or the view is deallocated.
  */
 @property (nonatomic, weak) id<VELBridgedView> view;
 
@@ -192,8 +192,8 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  * This method may be overridden by subclasses to perform any additional cleanup
  * required before being able to recognize another event.
  *
- * @warning **Important:** If <delaysEventDelivery> is `YES`, this will drop all
- * delayed events without delivering them to the receiver's <view>.
+ * @warning If <delaysEventDelivery> is `YES`, this will drop all delayed events
+ * without delivering them to the receiver's <view>.
  */
 - (void)reset;
 
@@ -330,7 +330,7 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  * descendants a chance to prevent event delivery to recognizers further up the
  * chain.
  *
- * The default implementation of this method invokes and
+ * The default implementation of this method invokes any
  * <shouldBePreventedByEventRecognizerBlock> that has been set, and returns the
  * result. If no <shouldBePreventedByEventRecognizerBlock> has been set, `NO` is
  * returned.

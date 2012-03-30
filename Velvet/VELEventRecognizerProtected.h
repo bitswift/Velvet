@@ -13,25 +13,28 @@
  * should not be invoked by consumers of the class.
  */
 @interface VELEventRecognizer (Protected)
+@property (nonatomic, assign, readwrite) VELEventRecognizerState state;
 
 /**
  * @name Recognizer State
  */
 
 /**
- * The current state of the event recognizer.
+ * Updates the current state of the event recognizer.
  *
- * It is undefined behavior to set this property to a state that cannot be
- * validly transitioned to from the existing state.
+ * It is undefined behavior to set a state that cannot be validly transitioned
+ * to from the existing state.
  *
- * This property must not be overridden.
+ * This setter must not be overridden.
+ *
+ * @param state The new state for the recognizer.
  *
  * @warning **Important:** Setting this property may not immediately change its
  * value (for example, if there are still outstanding <[VELEventRecognizer
  * recognizersRequiredToFail]>). Use <willTransitionToState:> and
  * <didTransitionFromState:> to be notified of a successful state transition.
  */
-@property (nonatomic, assign, readwrite) VELEventRecognizerState state;
+- (void)setState:(VELEventRecognizerState)state;
 
 /**
  * Invoked immediately before the receiver transitions to the given state.

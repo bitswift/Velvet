@@ -71,7 +71,7 @@
  * Unlike UIKit, this method is guaranteed to always be called before the view
  * controller is destroyed.
  *
- * @warning Unlike UIKit, the preferred pattern in Velvet is to use `weak`
+ * @note Unlike UIKit, the preferred pattern in Velvet is to use `weak`
  * references for all subviews, so that they can be automatically cleaned up
  * when the view is destroyed.
  */

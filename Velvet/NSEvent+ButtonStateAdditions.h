@@ -54,8 +54,7 @@
  * in mouse button state encapsulated by the receiver. If <hasMouseButtonState>
  * is `NO`, this method returns `nil`.
  *
- * @warning **Important:** The returned events will not be associated with an
- * application window.
+ * @note The returned events will not be associated with an application window.
  */
 - (NSArray *)correspondingMouseEvents;
 

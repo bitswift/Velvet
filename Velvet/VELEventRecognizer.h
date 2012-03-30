@@ -138,8 +138,8 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  * attach it to the new one. If this is set to `nil`, the receiver will not be
  * attached to any view.
  *
- * @warning **Important:** The view set here will automatically retain the
- * receiver until this is set to `nil` or the view is deallocated.
+ * @note The view set here will automatically retain the receiver until this is
+ * set to `nil` or the view is deallocated.
  */
 @property (nonatomic, weak) id<VELBridgedView> view;
 

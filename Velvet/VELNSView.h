@@ -14,8 +14,8 @@
  * A view that is responsible for displaying and handling an `NSView` within the
  * normal Velvet view hierarchy.
  *
- * @warning *Important:* `VELNSView` is powerful, but very fragile, and many of
- * its interactions with AppKit rely upon assumptions, magic, or unspecified
+ * @warning `VELNSView` is powerful, but very fragile, and many of its
+ * interactions with AppKit rely upon assumptions, magic, or unspecified
  * behavior. To that end, there are several restrictions on what you can do with
  * `VELNSView`:
  *

@@ -27,8 +27,8 @@
  *
  * @param state The new state for the recognizer.
  *
- * @warning **Important:** Setting this property may not immediately change its
- * value (for example, if there are still outstanding <[VELEventRecognizer
+ * @warning Setting this property may not immediately change its value (for
+ * example, if there are still outstanding <[VELEventRecognizer
  * recognizersRequiredToFail]>). Use <willTransitionToState:> and
  * <didTransitionFromState:> to be notified of a successful state transition.
  */

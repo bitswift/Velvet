@@ -760,7 +760,10 @@ typedef enum {
  */
 
 /**
- * The class of Core Animation layer to use for this view's backing store.
+ * The class of Core Animation layer to use for instances of the receiver.
+ *
+ * This method may be overridden to initialize views with a different <layer>
+ * from the default.
  */
 + (Class)layerClass;
 

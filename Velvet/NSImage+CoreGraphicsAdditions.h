@@ -20,7 +20,7 @@
 /**
  * The `CGImage` corresponding to the receiver.
  *
- * @note The image returned may not scaled to the pixel density of the screen.
+ * @note The image returned may not be scaled to the pixel density of the screen.
  */
 @property (nonatomic, readonly) CGImageRef CGImage;
 

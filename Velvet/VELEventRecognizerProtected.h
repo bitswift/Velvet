@@ -71,6 +71,8 @@
  * You should invoke the implementation of `super` if you will return `YES` from
  * this method, but not if you will return `NO`.
  *
+ * @param event An event currently being dispatched.
+ *
  * @warning **Important:** Invoking `super` after performing state transitions
  * will result in undefined behavior.
  */

@@ -169,7 +169,38 @@ typedef enum {
      * Lay out the superview of any animating view after all properties have
      * been updated, but before committing or executing the animation.
      */
-    VELViewAnimationOptionLayoutSuperview = (1 << 1)
+    VELViewAnimationOptionLayoutSuperview = (1 << 1),
+
+    /**
+     * Animate with ease-in ease-out pacing.
+     *
+     * This will make the animation begin slowly, accelerate through the middle
+     * of its duration, and then slow again before completion.
+     */
+    VELViewAnimationOptionCurveEaseInEaseOut = (1 << 16),
+
+    /**
+     * Animate with ease-in pacing.
+     *
+     * This will make the animation begin slowly, then accelerate through its
+     * duration.
+     */
+    VELViewAnimationOptionCurveEaseIn = (2 << 16),
+
+    /**
+     * Animate with ease-out pacing.
+     *
+     * This will make the animation begin quickly, then decelerate through its
+     * duration.
+     */
+    VELViewAnimationOptionCurveEaseOut = (3 << 16),
+
+    /**
+     * Animate with linear pacing.
+     *
+     * This will make the animation proceed evenly across its duration.
+     */
+    VELViewAnimationOptionCurveLinear = (4 << 16)
 } VELViewAnimationOptions;
 
 /**

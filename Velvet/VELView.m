@@ -93,14 +93,15 @@ static BOOL VELViewPerformingDeepLayout = NO;
 @property (nonatomic, readwrite, weak) VELView *superview;
 @property (nonatomic, weak) VELViewController *viewController;
 
-/*
- * True if we're inside the `actionForLayer:forKey:` method. This is used so we
- * can get the original action for the key, and wrap it with extra functionality,
- * without entering an infinite loop.
+/**
+ * Whether we're inside the <actionForLayer:forKey:> method.
+ *
+ * This is used so we can get the original action for the key, and wrap it with
+ * extra functionality, without entering an infinite loop. 
  */
 @property (nonatomic, assign, getter = isRecursingActionForLayer) BOOL recursingActionForLayer;
 
-/*
+/**
  * Whether the receiver is currently in the process of replacing all its
  * subviews.
  *
@@ -110,7 +111,7 @@ static BOOL VELViewPerformingDeepLayout = NO;
  */
 @property (nonatomic, assign, getter = isReplacingSubviews) BOOL replacingSubviews;
 
-/*
+/**
  * Runs a block to change properties on one or more layers, taking into account
  * whether <VELView> animations are currently enabled.
  *
@@ -130,21 +131,26 @@ static BOOL VELViewPerformingDeepLayout = NO;
  */
 + (BOOL)isDefiningAnimation;
 
-/*
- * Call the given block on the receiver and all of its subviews, recursively.
+/**
+ * Invokes the given block with the receiver and all of its <subviews>,
+ * recursively.
+ *
+ * @param block The block to invoke for each view.
  */
 - (void)recursivelyEnumerateViewsUsingBlock:(void (^)(VELView *))block;
 
-/*
+/**
  * Removes the given view from the receiver's subview array, if present.
  *
  * This method modifies <subviews> and the layer hierarchy, and
  * updates the responder chain -- it does no additional bookkeeping and
  * does not invoke other methods.
+ *
+ * @param subview The view to remove from the receiver's <subviews>.
  */
 - (void)removeSubview:(VELView *)subview;
 
-/*
+/**
  * Updates the next responder of the receiver and the receiver's view
  * controller.
  */

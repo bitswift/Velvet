@@ -8,10 +8,8 @@
 
 #import <Velvet/VELEventRecognizer.h>
 
-/**
- * Exposes <VELEventRecognizer> methods that subclasses may override, but that
- * should not be invoked by consumers of the class.
- */
+// Exposes <VELEventRecognizer> methods that subclasses may override, but that
+// should not be invoked by consumers of the class.
 @interface VELEventRecognizer (Protected)
 @property (nonatomic, assign, readwrite) VELEventRecognizerState state;
 

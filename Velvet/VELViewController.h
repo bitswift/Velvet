@@ -19,8 +19,8 @@
  *
  *  1. If the <view> has a <[VELView superview]>, the superview is the next
  *  responder.
- *  2. If the <view> has a <[VELView hostView]>, the host view is the next
- *  responder.
+ *  2. If the <view> has a <[VELBridgedView hostView]>, the host view is the
+ *  next responder.
  *  3. Otherwise, there is no next responder.
  *
  * Upon deallocation, a `VELViewController` instance automatically removes undo

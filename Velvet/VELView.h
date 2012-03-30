@@ -487,6 +487,8 @@ typedef enum {
  * If set to `NO`, subviews will remain visible when positioned outside of the
  * receiver's <bounds>.
  *
+ * The default value is `NO`.
+ *
  * @warning **Important:** Setting this property to `NO` will not affect event
  * handling. Events that are outside of the bounds of the receiver will still be
  * ignored by default.

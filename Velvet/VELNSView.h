@@ -59,8 +59,6 @@
 
 /**
  * The view displayed by the receiver.
- *
- * This property is not thread-safe. It must be set from the main thread.
  */
 @property (nonatomic, strong) NSView *guestView;
 @end

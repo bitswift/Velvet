@@ -358,8 +358,12 @@ typedef enum {
 /**
  * Inserts the given view as a subview of the receiver, at the given index.
  *
+ * The added view will appear on top of any <subviews> below the given index,
+ * assuming that the `zPosition` of each layer has not been modified.
+ *
  * @param view The view to add as a subview. This view is removed from its
  * current superview before being added.
+ * @param index The index in the <subviews> array at which to insert the view.
  *
  * @warning If a `VELView` has subviews, but other sublayers have been added to its
  * layer, the ordering between its subviews and its other layers is undefined.

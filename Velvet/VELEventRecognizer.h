@@ -330,7 +330,7 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  * descendants a chance to prevent event delivery to recognizers further up the
  * chain.
  *
- * The default implementation of this method invokes and
+ * The default implementation of this method invokes any
  * <shouldBePreventedByEventRecognizerBlock> that has been set, and returns the
  * result. If no <shouldBePreventedByEventRecognizerBlock> has been set, `NO` is
  * returned.

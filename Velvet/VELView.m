@@ -124,6 +124,17 @@ static BOOL VELViewPerformingDeepLayout = NO;
 - (void)changeLayerProperties:(void (^)(void))changesBlock;
 
 /**
+ * Animates changes to one or more views.
+ *
+ * @param setupBlock A block to invoke to set up the current transaction.
+ * @param animations A block containing the changes to make that should be
+ * animated, or work to perform after the animations have been enqueued.
+ * @param completionBlock A block to execute when the effect of the animation
+ * completes.
+ */
++ (void)animateWithSetupBlock:(void (^)(void))setupBlock animations:(void (^)(void))animations completion:(void (^)(void))completionBlock;
+
+/**
  * Whether changes are currently being added to an animation.
  *
  * This is not whether an animation is currently in progress, but whether the
@@ -1198,11 +1209,12 @@ static BOOL VELViewPerformingDeepLayout = NO;
 
 #pragma mark Animations
 
-+ (void)animate:(void (^)(void))animations; {
-    [self animate:animations completion:^{}];
-}
++ (void)animateWithSetupBlock:(void (^)(void))setupBlock animations:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
+    NSParameterAssert(setupBlock);
+    NSParameterAssert(animations);
+    
+    NSAssert([NSThread isMainThread], @"Animations should only be enqueued on the main thread");
 
-+ (void)animate:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
     [CATransaction flush];
 
     VELViewAnimationOptions lastAnimationOptions = VELViewCurrentAnimationOptions;
@@ -1218,9 +1230,6 @@ static BOOL VELViewPerformingDeepLayout = NO;
         [CATransaction commit];
     };
 
-    VELViewCurrentAnimationOptions = 0;
-    VELViewCurrentAnimationLayersNeedingLayout = nil;
-
     ++VELViewCurrentAnimationBlockDepth;
     @onExit {
         --VELViewCurrentAnimationBlockDepth;
@@ -1229,9 +1238,24 @@ static BOOL VELViewPerformingDeepLayout = NO;
     [CATransaction setDisableActions:NO];
     [CATransaction setCompletionBlock:completionBlock];
 
+    setupBlock();
+
     [[NSAnimationContext currentContext] setDuration:[CATransaction animationDuration]];
 
     animations();
+}
+
++ (void)animate:(void (^)(void))animations; {
+    [self animate:animations completion:^{}];
+}
+
++ (void)animate:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
+    void (^setup)(void) = ^{
+        VELViewCurrentAnimationOptions = 0;
+        VELViewCurrentAnimationLayersNeedingLayout = nil;
+    };
+
+    [self animateWithSetupBlock:setup animations:animations completion:completionBlock];
 }
 
 + (void)animateWithDuration:(NSTimeInterval)duration animations:(void (^)(void))animations; {
@@ -1247,43 +1271,25 @@ static BOOL VELViewPerformingDeepLayout = NO;
 }
 
 + (void)animateWithDuration:(NSTimeInterval)duration options:(VELViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(void))completionBlock; {
-    [CATransaction flush];
+    void (^setup)(void) = ^{
+        VELViewCurrentAnimationOptions = options;
+        VELViewCurrentAnimationLayersNeedingLayout = [[NSMutableSet alloc] init];
 
-    VELViewAnimationOptions lastAnimationOptions = VELViewCurrentAnimationOptions;
-    NSMutableSet *lastLayersNeedingLayout = VELViewCurrentAnimationLayersNeedingLayout;
-
-    @onExit {
-        VELViewCurrentAnimationOptions = lastAnimationOptions;
-        VELViewCurrentAnimationLayersNeedingLayout = lastLayersNeedingLayout;
+        [CATransaction setAnimationDuration:duration];
     };
 
-    [CATransaction begin];
-    @onExit {
-        [CATransaction commit];
+    void (^animationsPlusLayout)(void) = ^{
+        animations();
+
+        NSSet *layersNeedingLayout = VELViewCurrentAnimationLayersNeedingLayout;
+
+        // don't allow any new layers to get marked as needing layout
+        VELViewCurrentAnimationLayersNeedingLayout = nil;
+
+        [layersNeedingLayout makeObjectsPerformSelector:@selector(layoutIfNeeded)];
     };
 
-    VELViewCurrentAnimationOptions = options;
-    VELViewCurrentAnimationLayersNeedingLayout = [[NSMutableSet alloc] init];
-
-    ++VELViewCurrentAnimationBlockDepth;
-    @onExit {
-        --VELViewCurrentAnimationBlockDepth;
-    };
-
-    [CATransaction setAnimationDuration:duration];
-    [CATransaction setDisableActions:NO];
-    [CATransaction setCompletionBlock:completionBlock];
-
-    [[NSAnimationContext currentContext] setDuration:duration];
-
-    animations();
-
-    NSSet *layersNeedingLayout = VELViewCurrentAnimationLayersNeedingLayout;
-
-    // don't allow any new layers to get marked as needing layout
-    VELViewCurrentAnimationLayersNeedingLayout = nil;
-
-    [layersNeedingLayout makeObjectsPerformSelector:@selector(layoutIfNeeded)];
+    [self animateWithSetupBlock:setup animations:animationsPlusLayout completion:completionBlock];
 }
 
 - (void)changeLayerProperties:(void (^)(void))changesBlock; {

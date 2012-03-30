@@ -583,7 +583,7 @@ typedef enum {
  * The default value for this property is `nil`, meaning that no background is
  * automatically drawn.
  */
-@property (nonatomic, strong) NSColor *backgroundColor;
+@property (nonatomic, copy) NSColor *backgroundColor;
 
 /**
  * Whether the receiver is opaque.

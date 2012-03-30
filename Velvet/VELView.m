@@ -69,6 +69,16 @@ static IMP VELViewDrawRectIMP = NULL;
  */
 static BOOL VELViewPerformingDeepLayout = NO;
 
+/**
+ * A mask for the <VELViewAnimationOptions> that specify animation curves.
+ */
+static const VELViewAnimationOptions VELViewAnimationOptionCurveMask =
+    VELViewAnimationOptionCurveEaseInEaseOut |
+    VELViewAnimationOptionCurveEaseIn |
+    VELViewAnimationOptionCurveEaseOut |
+    VELViewAnimationOptionCurveLinear
+;
+
 @interface VELView () {
     struct {
         unsigned userInteractionEnabled:1;
@@ -1276,6 +1286,30 @@ static BOOL VELViewPerformingDeepLayout = NO;
         VELViewCurrentAnimationLayersNeedingLayout = [[NSMutableSet alloc] init];
 
         [CATransaction setAnimationDuration:duration];
+
+        switch (options & VELViewAnimationOptionCurveMask) {
+            case VELViewAnimationOptionCurveEaseInEaseOut:
+                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+                break;
+
+            case VELViewAnimationOptionCurveEaseIn:
+                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn]];
+                break;
+
+            case VELViewAnimationOptionCurveEaseOut:
+                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+                break;
+
+            case VELViewAnimationOptionCurveLinear:
+                [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+                break;
+
+            case 0:
+                break;
+
+            default:
+                NSAssert(NO, @"Unrecognized animation curve in VELViewAnimationOptions %i", (int)options);
+        }
     };
 
     void (^animationsPlusLayout)(void) = ^{

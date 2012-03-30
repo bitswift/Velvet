@@ -192,8 +192,8 @@ NSString *NSStringFromVELEventRecognizerState(VELEventRecognizerState state);
  * This method may be overridden by subclasses to perform any additional cleanup
  * required before being able to recognize another event.
  *
- * @warning **Important:** If <delaysEventDelivery> is `YES`, this will drop all
- * delayed events without delivering them to the receiver's <view>.
+ * @warning If <delaysEventDelivery> is `YES`, this will drop all delayed events
+ * without delivering them to the receiver's <view>.
  */
 - (void)reset;
 

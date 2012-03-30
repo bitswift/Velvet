@@ -71,8 +71,8 @@
  *
  * @param event An event currently being dispatched.
  *
- * @warning **Important:** Invoking `super` after performing state transitions
- * will result in undefined behavior.
+ * @warning Invoking `super` after performing state transitions will result in
+ * undefined behavior.
  */
 - (BOOL)handleEvent:(NSEvent *)event;
 

@@ -634,6 +634,22 @@ typedef enum {
  *
  * @param rect The rectangle of the receiver which needs redrawing, specified in
  * the receiver's coordinate system.
+ *
+ * @note The default values for the following properties depend on whether this
+ * method is reimplemented:
+ *  
+ *  - <clearsContextBeforeDrawing>
+ *  - <contentMode>
+ *  - <matchesWindowScaleFactor>
+ *
+ * This behavior is based on the assumption that a subclass overriding this
+ * method intends to perform custom drawing. The behavior of a view doing custom
+ * drawing differs significantly from one that simply displays a prerendered
+ * image (or something similar, like a <backgroundColor>), and requires
+ * different performance and correctness considerations.
+ *
+ * In light of all of the above, this method should only overridden if truly
+ * necessary.
  */
 - (void)drawRect:(CGRect)rect;
 

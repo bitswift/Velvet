@@ -71,6 +71,30 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
 }
 
 /**
+ * Returns whether `event` is prevented from being delivered to `recognizer`
+ * by any other recognizer in `blockingRecognizers`.
+ *
+ * @param event The event whose delivery may be prevented.
+ * @param recognizer The event recognizer for which event delivery may be
+ * prevented.
+ * @param blockingRecognizers The event recognizers that have the opportunity
+ * to prevent event delivery.
+ */
+static BOOL eventIsPreventedToRecognizer(NSEvent *event, VELEventRecognizer *recognizer, NSArray *blockingRecognizers) {
+    for (NSInteger i = blockingRecognizers.count - 1; i >= 0; --i) {
+        VELEventRecognizer *blocker = [blockingRecognizers objectAtIndex:i];
+        if (blocker == recognizer)
+            continue;
+
+        if ([blocker shouldPreventEventRecognizer:recognizer fromReceivingEvent:event] || [recognizer shouldBePreventedByEventRecognizer:blocker fromReceivingEvent:event]) {
+            return YES;
+        }
+    }
+
+    return NO;
+}
+
+/**
  * Dispatches the given event to the recognizers at and after the given index.
  * Returns whether the event should still be passed to the view.
  *
@@ -81,11 +105,12 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
  *
  * @param event The event to dispatch.
  * @param recognizers An array of event recognizers, with ancestors at the
- * beginning of the array.
+ * beginning of the array. This will be modified by this function, so that
+ * prevented recognizers are removed.
  * @param index The index into `recognizers` at which to begin event dispatch.
  * If this index is out-of-bounds, the function returns `YES` immediately.
  */
-static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *recognizers, NSUInteger index) {
+static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSMutableArray *recognizers, NSUInteger index) {
     NSCParameterAssert(event);
     NSCParameterAssert(recognizers);
 
@@ -101,7 +126,9 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSArray *
         dispatchToView &= dispatchEventToRecognizersStartingAtIndex(event, recognizers, index + 1);
     }
 
-    if (!recognizer.shouldReceiveEventBlock || recognizer.shouldReceiveEventBlock(event)) {
+    if (eventIsPreventedToRecognizer(event, recognizer, recognizers)) {
+        [recognizers removeObjectAtIndex:index];
+    } else if (!recognizer.shouldReceiveEventBlock || recognizer.shouldReceiveEventBlock(event)) {
         if ([recognizer.eventsToIgnore containsObject:event]) {
             [recognizer.eventsToIgnore removeObject:event];
         } else {
@@ -446,29 +473,6 @@ static BOOL mouseEventsAreEffectivelyTheSame (NSEvent *left, NSEvent *right) {
 
     if (!recognizers.count)
         return YES;
-
-    // find recognizers that prevent each other (descendants first, so that they
-    // can prevent ancestors)
-    NSUInteger i = recognizers.count - 1;
-    do {
-        VELEventRecognizer *first = [recognizers objectAtIndex:i];
-
-        NSUInteger j = recognizers.count - 1;
-        do {
-            if (i == j) {
-                // this is the same recognizer, skip it
-                continue;
-            }
-
-            VELEventRecognizer *second = [recognizers objectAtIndex:j];
-            if ([first shouldPreventEventRecognizer:second fromReceivingEvent:event] || [second shouldBePreventedByEventRecognizer:first fromReceivingEvent:event]) {
-                [recognizers removeObjectAtIndex:j];
-
-                if (i > j)
-                    --i;
-            }
-        } while (j-- > 0);
-    } while (i-- > 0);
 
     return dispatchEventToRecognizersStartingAtIndex(event, recognizers, 0);
 }

@@ -126,7 +126,7 @@ static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSMutable
     }
 
     if (eventIsPreventedToRecognizer(event, recognizer, recognizers)) {
-        [recognizers removeObjectAtIndex:index];
+        [recognizers removeObjectAtIndex:index--];
     } else if (!recognizer.shouldReceiveEventBlock || recognizer.shouldReceiveEventBlock(event)) {
         if ([recognizer.eventsToIgnore containsObject:event]) {
             [recognizer.eventsToIgnore removeObject:event];

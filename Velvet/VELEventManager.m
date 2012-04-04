@@ -109,11 +109,11 @@ static BOOL eventIsPreventedToRecognizer(NSEvent *event, VELEventRecognizer *rec
  * @param index The index into `recognizers` at which to begin event dispatch.
  * If this index is out-of-bounds, the function returns `YES` immediately.
  */
-static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSMutableArray *recognizers, NSUInteger index) {
+static BOOL dispatchEventToRecognizersStartingAtIndex (NSEvent *event, NSMutableArray *recognizers, NSInteger index) {
     NSCParameterAssert(event);
     NSCParameterAssert(recognizers);
 
-    if (index >= recognizers.count)
+    if (index >= (NSInteger)recognizers.count)
         return YES;
 
     VELEventRecognizer *recognizer = [recognizers objectAtIndex:index];

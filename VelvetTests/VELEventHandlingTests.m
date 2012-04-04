@@ -296,10 +296,11 @@ SpecBegin(VELEventHandling)
                 __block BOOL shouldPreventRecognizerCalledAfterHandlingEvent = NO;
 
                 firstRecognizer.shouldPreventEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
-                    if (recognizer == weakSecondRecognizer && event == weakFirstRecognizer.lastEvent) {
+                    if (recognizer == weakSecondRecognizer && [event isEqual:weakFirstRecognizer.lastEvent]) {
                         shouldPreventRecognizerCalledAfterHandlingEvent = YES;
                         return YES;
                     }
+
                     return NO;
                 };
 
@@ -316,10 +317,11 @@ SpecBegin(VELEventHandling)
                 __block BOOL shouldBePreventedCalledAfterHandlingEvent = NO;
 
                 secondRecognizer.shouldBePreventedByEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
-                    if (recognizer == weakFirstRecognizer && event == weakFirstRecognizer.lastEvent) {
+                    if (recognizer == weakFirstRecognizer && [event isEqual:weakFirstRecognizer.lastEvent]) {
                         shouldBePreventedCalledAfterHandlingEvent = YES;
                         return YES;
                     }
+
                     return NO;
                 };
 

@@ -262,7 +262,7 @@ SpecBegin(VELEventHandling)
             });
         });
 
-        describe(@"event prevention should happen at the point of delivery", ^{
+        describe(@"event prevention", ^{
             __block PreventionTestRecognizer *firstRecognizer;
             __block PreventionTestRecognizer *secondRecognizer;
             __block PreventionTestRecognizer *thirdRecognizer;
@@ -298,7 +298,7 @@ SpecBegin(VELEventHandling)
                 thirdRecognizer = nil;
             });
 
-            it(@"prevents later recognizers after handling an event", ^{
+            it(@"should happen at the point of delivery", ^{
                 __block BOOL shouldPreventRecognizerCalledAfterHandlingEvent = NO;
 
                 firstRecognizer.shouldPreventEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
@@ -319,7 +319,7 @@ SpecBegin(VELEventHandling)
                 expect(secondRecognizer.lastEvent).toBeNil();
             });
 
-            it(@"prevents later recognizers after handling an event", ^{
+            it(@"should happen at the point of delivery", ^{
                 __block BOOL shouldBePreventedCalledAfterHandlingEvent = NO;
 
                 secondRecognizer.shouldBePreventedByEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
@@ -338,6 +338,25 @@ SpecBegin(VELEventHandling)
                 expect(shouldBePreventedCalledAfterHandlingEvent).toBeTruthy();
                 expect(firstRecognizer.lastEvent).not.toBeNil();
                 expect(secondRecognizer.lastEvent).toBeNil();
+            });
+
+            it(@"prevented recognizers should not prevent others", ^{
+                firstRecognizer.shouldPreventEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
+                    return (recognizer == weakSecondRecognizer);
+                };
+
+                secondRecognizer.shouldPreventEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
+                    expect(recognizer).not.toEqual(thirdRecognizer);
+                    return (recognizer == thirdRecognizer);
+                };
+
+                [NSApp postEvent:leftMouseDownEvent atStart:NO];
+
+                runEventLoop();
+
+                expect(firstRecognizer.lastEvent).not.toBeNil();
+                expect(secondRecognizer.lastEvent).toBeNil();
+                expect(thirdRecognizer.lastEvent).not.toBeNil();
             });
         });
     });

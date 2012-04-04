@@ -265,6 +265,7 @@ SpecBegin(VELEventHandling)
         describe(@"event prevention should happen at the point of delivery", ^{
             __block PreventionTestRecognizer *firstRecognizer;
             __block PreventionTestRecognizer *secondRecognizer;
+            __block PreventionTestRecognizer *thirdRecognizer;
 
             __block __weak PreventionTestRecognizer *weakFirstRecognizer;
             __block __weak PreventionTestRecognizer *weakSecondRecognizer;
@@ -283,6 +284,10 @@ SpecBegin(VELEventHandling)
                 expect(secondRecognizer).not.toBeNil();
                 secondRecognizer.view = innerView;
 
+                thirdRecognizer = [[PreventionTestRecognizer alloc] init];
+                expect(thirdRecognizer).not.toBeNil();
+                thirdRecognizer.view = innerView;
+
                 weakFirstRecognizer = firstRecognizer;
                 weakSecondRecognizer = secondRecognizer;
             });
@@ -290,6 +295,7 @@ SpecBegin(VELEventHandling)
             after(^{
                 firstRecognizer = nil;
                 secondRecognizer = nil;
+                thirdRecognizer = nil;
             });
 
             it(@"prevents later recognizers after handling an event", ^{

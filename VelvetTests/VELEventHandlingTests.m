@@ -40,6 +40,13 @@ static const NSInteger trueMouseEventNumberMinimum = 1000;
 @property (nonatomic, assign) NSUInteger expectedEventMask;
 @end
 
+@interface PreventionTestRecognizer : VELEventRecognizer
+/**
+ * The last event that was passed to <handleEvent:> for this recognizer.
+ */
+@property (nonatomic, copy) NSEvent *lastEvent;
+@end
+
 @interface NSEvent (SystemDefinedEventCreation)
 + (NSEvent *)systemDefinedMouseEventAtLocation:(CGPoint)location mouseButtonStateMask:(NSUInteger)buttonStateMask mouseButtonStateChangedMask:(NSUInteger)buttonStateChangedMask;
 
@@ -166,24 +173,23 @@ SpecBegin(VELEventHandling)
         });
     });
 
-    describe(@"deduplicating system-defined events", ^{
+    describe(@"event handling", ^{
         __block VELWindow *window;
-        __block DeduplicationTestRecognizer *recognizer;
 
         __block NSEvent *leftMouseDownEvent;
         __block NSEvent *rightMouseUpEvent;
         __block NSEvent *systemDefinedEvent;
+
+        void (^runEventLoop)(void) = ^{
+            [NSEvent performSelector:@selector(stopEventLoop) withObject:nil afterDelay:0.1];
+            [[NSApplication sharedApplication] run];
+        };
 
         before(^{
             window = [[AlwaysKeyVELWindow alloc] initWithContentRect:NSMakeRect(101, 223, 500, 1000)];
             expect(window).not.toBeNil();
 
             [window makeKeyAndOrderFront:nil];
-
-            recognizer = [[DeduplicationTestRecognizer alloc] init];
-            expect(recognizer).not.toBeNil();
-
-            recognizer.view = window.rootView;
 
             __block NSInteger eventNumber = trueMouseEventNumberMinimum;
 
@@ -214,36 +220,142 @@ SpecBegin(VELEventHandling)
 
             leftMouseDownEvent = mouseEventAtWindowLocation(NSLeftMouseDown, location);
             rightMouseUpEvent = mouseEventAtWindowLocation(NSRightMouseUp, location);
-
-            recognizer.expectedEventMask = NSLeftMouseDownMask | NSRightMouseUpMask;
         });
 
-        after(^{
-            [NSEvent performSelector:@selector(stopEventLoop) withObject:nil afterDelay:0.1];
-            [[NSApplication sharedApplication] run];
+        describe(@"deduplicating system-defined events", ^{
+            __block DeduplicationTestRecognizer *recognizer;
 
-            // the recognizer should not be expecting any further events
-            expect(recognizer.expectedEventMask).toEqual(0);
+            before(^{
+                recognizer = [[DeduplicationTestRecognizer alloc] init];
+                expect(recognizer).not.toBeNil();
 
-            recognizer = nil;
+                recognizer.view = window.rootView;
+
+                recognizer.expectedEventMask = NSLeftMouseDownMask | NSRightMouseUpMask;
+            });
+
+            after(^{
+                runEventLoop();
+
+                // the recognizer should not be expecting any further events
+                expect(recognizer.expectedEventMask).toEqual(0);
+
+                recognizer = nil;
+            });
+
+            it(@"should deduplicate an NSSystemDefined event arriving after mouse events", ^{
+                [NSApp postEvent:leftMouseDownEvent atStart:NO];
+                [NSApp postEvent:rightMouseUpEvent atStart:NO];
+                [NSApp postEvent:systemDefinedEvent atStart:NO];
+            });
+
+            it(@"should deduplicate an NSSystemDefined event queued before mouse events", ^{
+                [NSApp postEvent:systemDefinedEvent atStart:NO];
+                [NSApp postEvent:leftMouseDownEvent atStart:NO];
+                [NSApp postEvent:rightMouseUpEvent atStart:NO];
+            });
+
+            it(@"should deduplicate an NSSystemDefined event arriving in-between mouse events", ^{
+                [NSApp postEvent:leftMouseDownEvent atStart:NO];
+                [NSApp postEvent:systemDefinedEvent atStart:NO];
+                [NSApp postEvent:rightMouseUpEvent atStart:NO];
+            });
         });
 
-        it(@"should deduplicate an NSSystemDefined event arriving after mouse events", ^{
-            [NSApp postEvent:leftMouseDownEvent atStart:NO];
-            [NSApp postEvent:rightMouseUpEvent atStart:NO];
-            [NSApp postEvent:systemDefinedEvent atStart:NO];
-        });
+        describe(@"event prevention", ^{
+            __block PreventionTestRecognizer *firstRecognizer;
+            __block PreventionTestRecognizer *secondRecognizer;
+            __block PreventionTestRecognizer *thirdRecognizer;
 
-        it(@"should deduplicate an NSSystemDefined event queued before mouse events", ^{
-            [NSApp postEvent:systemDefinedEvent atStart:NO];
-            [NSApp postEvent:leftMouseDownEvent atStart:NO];
-            [NSApp postEvent:rightMouseUpEvent atStart:NO];
-        });
+            __block __weak PreventionTestRecognizer *weakFirstRecognizer;
+            __block __weak PreventionTestRecognizer *weakSecondRecognizer;
 
-        it(@"should deduplicate an NSSystemDefined event arriving in-between mouse events", ^{
-            [NSApp postEvent:leftMouseDownEvent atStart:NO];
-            [NSApp postEvent:systemDefinedEvent atStart:NO];
-            [NSApp postEvent:rightMouseUpEvent atStart:NO];
+            before(^{
+                VELView *innerView = [[VELView alloc] initWithFrame:window.rootView.bounds];
+                [window.rootView addSubview:innerView];
+
+                firstRecognizer = [[PreventionTestRecognizer alloc] init];
+                expect(firstRecognizer).not.toBeNil();
+                firstRecognizer.view = window.rootView;
+
+                secondRecognizer = [[PreventionTestRecognizer alloc] init];
+                expect(secondRecognizer).not.toBeNil();
+                secondRecognizer.view = innerView;
+
+                thirdRecognizer = [[PreventionTestRecognizer alloc] init];
+                expect(thirdRecognizer).not.toBeNil();
+                thirdRecognizer.view = innerView;
+
+                weakFirstRecognizer = firstRecognizer;
+                weakSecondRecognizer = secondRecognizer;
+            });
+
+            after(^{
+                firstRecognizer = nil;
+                secondRecognizer = nil;
+                thirdRecognizer = nil;
+            });
+
+            it(@"should prevent at the point of delivery", ^{
+                __block BOOL shouldPreventRecognizerCalledAfterHandlingEvent = NO;
+
+                firstRecognizer.shouldPreventEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
+                    if (recognizer == weakSecondRecognizer && [event isEqual:weakFirstRecognizer.lastEvent]) {
+                        shouldPreventRecognizerCalledAfterHandlingEvent = YES;
+                        return YES;
+                    }
+
+                    return NO;
+                };
+
+                [NSApp postEvent:leftMouseDownEvent atStart:NO];
+
+                runEventLoop();
+
+                expect(shouldPreventRecognizerCalledAfterHandlingEvent).toBeTruthy();
+                expect(firstRecognizer.lastEvent).not.toBeNil();
+                expect(secondRecognizer.lastEvent).toBeNil();
+            });
+
+            it(@"should be prevented at the point of delivery", ^{
+                __block BOOL shouldBePreventedCalledAfterHandlingEvent = NO;
+
+                secondRecognizer.shouldBePreventedByEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
+                    if (recognizer == weakFirstRecognizer && [event isEqual:weakFirstRecognizer.lastEvent]) {
+                        shouldBePreventedCalledAfterHandlingEvent = YES;
+                        return YES;
+                    }
+
+                    return NO;
+                };
+
+                [NSApp postEvent:leftMouseDownEvent atStart:NO];
+
+                runEventLoop();
+
+                expect(shouldBePreventedCalledAfterHandlingEvent).toBeTruthy();
+                expect(firstRecognizer.lastEvent).not.toBeNil();
+                expect(secondRecognizer.lastEvent).toBeNil();
+            });
+
+            it(@"prevented recognizers should not prevent others", ^{
+                firstRecognizer.shouldPreventEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
+                    return (recognizer == weakSecondRecognizer);
+                };
+
+                secondRecognizer.shouldPreventEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
+                    expect(recognizer).not.toEqual(thirdRecognizer);
+                    return (recognizer == thirdRecognizer);
+                };
+
+                [NSApp postEvent:leftMouseDownEvent atStart:NO];
+
+                runEventLoop();
+
+                expect(firstRecognizer.lastEvent).not.toBeNil();
+                expect(secondRecognizer.lastEvent).toBeNil();
+                expect(thirdRecognizer.lastEvent).not.toBeNil();
+            });
         });
     });
 
@@ -315,4 +427,14 @@ SpecEnd
 - (BOOL)isKeyWindow {
     return YES;
 }
+@end
+
+@implementation PreventionTestRecognizer
+@synthesize lastEvent = m_lastEvent;
+
+- (BOOL)handleEvent:(NSEvent *)event {
+    self.lastEvent = event;
+    return [super handleEvent:event];
+}
+
 @end

@@ -19,7 +19,7 @@
  *
  * This method should return the same value for as long as it is part of a view
  * hierarchy on screen. In other words, this array may only change while the
- * view doesn't have a <[VELView hostView]>.
+ * view doesn't have a <[VELBridgedView hostView]>.
  */
 - (NSArray *)supportedDragTypes;
 @end

@@ -27,7 +27,7 @@
  * @param layer The layer whose coordinate system `rect` should be represented
  * in.
  *
- * @warning *Important:* The receiver and `layer` must have a common ancestor.
+ * @note The receiver and `layer` must have a common ancestor.
  */
 - (CGRect)convertAndClipRect:(CGRect)rect toLayer:(CALayer *)layer;
 
@@ -41,7 +41,7 @@
  * @param rect A rectangle to be converted to the receiver's coordinate system.
  * @param layer The layer whose coordinate system `rect` is in.
  *
- * @warning *Important:* The receiver and `layer` must have a common ancestor.
+ * @note The receiver and `layer` must have a common ancestor.
  */
 - (CGRect)convertAndClipRect:(CGRect)rect fromLayer:(CALayer *)layer;
 @end

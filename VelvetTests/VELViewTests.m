@@ -242,6 +242,14 @@ describe(@"VELView", ^{
         expect(CGPointEqualToPoint(view.center, expectedCenter)).toBeTruthy();
     });
 
+    it(@"aligns to integral points when setting a transform", ^{
+        view.frame = CGRectMake(5, 0, 10, 15);
+        view.transform = CGAffineTransformMakeScale(0.5, 0.5);
+
+        CGRect expectedFrame = CGRectMake(7, 4, 5, 7);
+        expect(view.frame).toEqual(expectedFrame);
+    });
+
     it(@"respects a misaligned center when its size is CGSizeZero", ^{
         CGPoint expectedCenter = CGPointMake(13.7, 14.3);
         view.center = expectedCenter;
@@ -704,6 +712,55 @@ describe(@"VELView", ^{
             }];
 
             expect(testView.layoutSubviewsInvoked).toBeTruthy();
+        });
+
+        describe(@"animation curves", ^{
+            __block CAMediaTimingFunction *expectedFunction;
+            __block VELViewAnimationOptions animationOptions;
+
+            before(^{
+                expectedFunction = nil;
+                animationOptions = 0;
+
+                [CATransaction begin];
+            });
+
+            after(^{
+                [VELView animateWithDuration:0 options:animationOptions animations:^{
+                    expect([CATransaction animationTimingFunction]).toEqual(expectedFunction);
+                }];
+
+                [CATransaction commit];
+            });
+
+            it(@"should animate without a timing function by default ", ^{
+                expectedFunction = nil;
+            });
+
+            it(@"should animate with the current transaction's timing function", ^{
+                expectedFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
+                [CATransaction setAnimationTimingFunction:expectedFunction];
+            });
+
+            it(@"should animate with ease-in ease-out curve", ^{
+                expectedFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+                animationOptions = VELViewAnimationOptionCurveEaseInEaseOut;
+            });
+
+            it(@"should animate with ease-in curve", ^{
+                expectedFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+                animationOptions = VELViewAnimationOptionCurveEaseIn;
+            });
+
+            it(@"should animate with ease-out curve", ^{
+                expectedFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+                animationOptions = VELViewAnimationOptionCurveEaseOut;
+            });
+
+            it(@"should animate with linear curve", ^{
+                expectedFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+                animationOptions = VELViewAnimationOptionCurveLinear;
+            });
         });
 
         describe(@"inserts subviews at a specific index", ^{

@@ -47,9 +47,8 @@ extern NSString * const VELHostViewDebugModeIsEnabledKey;
  * Implementing classes may require that this property be of a more specific
  * type.
  *
- * @warning **Important:** When this property is set, the given view's
- * <[VELBridgedView hostView]> property should automatically be set to the
- * receiver.
+ * @note When this property is set, the given view's <[VELBridgedView hostView]>
+ * property should automatically be set to the receiver.
  */
 @property (nonatomic, strong) id<VELBridgedView> guestView;
 

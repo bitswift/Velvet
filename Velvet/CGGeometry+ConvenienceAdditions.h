@@ -163,6 +163,14 @@ BOOL CGRectEqualToRectWithAccuracy (CGRect rect, CGRect rect2, CGFloat epsilon);
 BOOL CGSizeEqualToSizeWithAccuracy (CGSize size, CGSize size2, CGFloat epsilon);
 
 /**
+ * Scales the components of `size` by `scale`.
+ *
+ * @param size The size to be scaled.
+ * @param scale The scale factor.
+ */
+CGSize CGSizeScale(CGSize size, CGFloat scale);
+
+/**
  * Returns a point with `x` and `y` components rounded to whole numbers. The
  * point will always be moved up and left, in view coordinates, so `x` will be
  * rounded down and `y` will be rounded up.

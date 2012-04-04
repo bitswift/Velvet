@@ -81,8 +81,7 @@ static void getEventRecognizersFromViewHierarchy (NSMutableArray *recognizers, i
  * to prevent event delivery.
  */
 static BOOL eventIsPreventedToRecognizer(NSEvent *event, VELEventRecognizer *recognizer, NSArray *blockingRecognizers) {
-    for (NSInteger i = blockingRecognizers.count - 1; i >= 0; --i) {
-        VELEventRecognizer *blocker = [blockingRecognizers objectAtIndex:i];
+    for (VELEventRecognizer *blocker in blockingRecognizers) {
         if (blocker == recognizer)
             continue;
 

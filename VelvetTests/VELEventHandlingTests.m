@@ -296,7 +296,7 @@ SpecBegin(VELEventHandling)
                 thirdRecognizer = nil;
             });
 
-            it(@"should happen at the point of delivery", ^{
+            it(@"should prevent at the point of delivery", ^{
                 __block BOOL shouldPreventRecognizerCalledAfterHandlingEvent = NO;
 
                 firstRecognizer.shouldPreventEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
@@ -317,7 +317,7 @@ SpecBegin(VELEventHandling)
                 expect(secondRecognizer.lastEvent).toBeNil();
             });
 
-            it(@"should happen at the point of delivery", ^{
+            it(@"should be prevented at the point of delivery", ^{
                 __block BOOL shouldBePreventedCalledAfterHandlingEvent = NO;
 
                 secondRecognizer.shouldBePreventedByEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {

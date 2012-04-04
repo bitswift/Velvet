@@ -40,6 +40,13 @@ static const NSInteger trueMouseEventNumberMinimum = 1000;
 @property (nonatomic, assign) NSUInteger expectedEventMask;
 @end
 
+@interface PreventionTestRecognizer : VELEventRecognizer
+/**
+ * The last event that was passed to <handleEvent:> for this recognizer.
+ */
+@property (nonatomic, retain) NSEvent *lastEvent;
+@end
+
 @interface NSEvent (SystemDefinedEventCreation)
 + (NSEvent *)systemDefinedMouseEventAtLocation:(CGPoint)location mouseButtonStateMask:(NSUInteger)buttonStateMask mouseButtonStateChangedMask:(NSUInteger)buttonStateChangedMask;
 
@@ -247,6 +254,86 @@ SpecBegin(VELEventHandling)
         });
     });
 
+    describe(@"event prevention should happen at the point of delivery", ^{
+        __block VELWindow *window;
+        __block PreventionTestRecognizer *firstRecognizer;
+        __block PreventionTestRecognizer *secondRecognizer;
+
+        __block NSEvent *leftMouseDownEvent;
+        __block BOOL shouldPreventRecognizerCalled;
+        __block BOOL shouldBePreventedByRecognizerCalled;
+
+        before(^{
+            window = [[AlwaysKeyVELWindow alloc] initWithContentRect:NSMakeRect(101, 223, 500, 1000)];
+            expect(window).not.toBeNil();
+
+            VELView *innerView = [[VELView alloc] initWithFrame:window.rootView.bounds];
+            [window.rootView addSubview:innerView];
+            NSLog(@"innerView.frame = %@", NSStringFromRect(innerView.frame));
+
+            [window makeKeyAndOrderFront:nil];
+
+            firstRecognizer = [[PreventionTestRecognizer alloc] init];
+            expect(firstRecognizer).not.toBeNil();
+            firstRecognizer.view = window.rootView;
+
+            secondRecognizer = [[PreventionTestRecognizer alloc] init];
+            expect(secondRecognizer).not.toBeNil();
+            secondRecognizer.view = innerView;
+
+            shouldPreventRecognizerCalled = NO;
+            shouldBePreventedByRecognizerCalled = NO;
+
+            __block NSInteger eventNumber = trueMouseEventNumberMinimum;
+
+            CGPoint location = CGPointMake(20, 20);
+
+            leftMouseDownEvent = [NSEvent
+                mouseEventWithType:NSLeftMouseDown
+                location:location
+                modifierFlags:0
+                timestamp:[[NSProcessInfo processInfo] systemUptime]
+                windowNumber:window.windowNumber
+                context:window.graphicsContext
+                eventNumber:eventNumber++
+                clickCount:1
+                pressure:1
+            ];
+        });
+
+        after(^{
+            [NSEvent performSelector:@selector(stopEventLoop) withObject:nil afterDelay:0.1];
+            [[NSApplication sharedApplication] run];
+
+            expect(shouldPreventRecognizerCalled).toBeTruthy();
+            expect(shouldBePreventedByRecognizerCalled).toBeTruthy();
+
+            firstRecognizer = nil;
+            secondRecognizer = nil;
+        });
+
+        it(@"prevents later recognizers after handling an event", ^{
+            __block PreventionTestRecognizer *weakFirstRecognizer = firstRecognizer;
+            __block PreventionTestRecognizer *weakSecondRecognizer = secondRecognizer;
+
+            firstRecognizer.shouldPreventEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
+                if (recognizer == weakSecondRecognizer && event == weakFirstRecognizer.lastEvent) {
+                    shouldPreventRecognizerCalled = YES;
+                }
+                return NO;
+            };
+
+            secondRecognizer.shouldBePreventedByEventRecognizerBlock = ^ BOOL (VELEventRecognizer *recognizer, NSEvent *event) {
+                if (recognizer == weakFirstRecognizer && event == weakFirstRecognizer.lastEvent) {
+                    shouldBePreventedByRecognizerCalled = YES;
+                }
+                return NO;
+            };
+
+            [NSApp postEvent:leftMouseDownEvent atStart:NO];
+        });
+    });
+
 SpecEnd
 
 @implementation NSEvent (SystemDefinedEventCreation)
@@ -315,4 +402,14 @@ SpecEnd
 - (BOOL)isKeyWindow {
     return YES;
 }
+@end
+
+@implementation PreventionTestRecognizer
+@synthesize lastEvent = m_lastEvent;
+
+- (BOOL)handleEvent:(NSEvent *)event {
+    self.lastEvent = event;
+    return [super handleEvent:event];
+}
+
 @end

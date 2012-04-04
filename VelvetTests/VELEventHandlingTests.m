@@ -44,7 +44,7 @@ static const NSInteger trueMouseEventNumberMinimum = 1000;
 /**
  * The last event that was passed to <handleEvent:> for this recognizer.
  */
-@property (nonatomic, retain) NSEvent *lastEvent;
+@property (nonatomic, copy) NSEvent *lastEvent;
 @end
 
 @interface NSEvent (SystemDefinedEventCreation)
@@ -273,8 +273,6 @@ SpecBegin(VELEventHandling)
             before(^{
                 VELView *innerView = [[VELView alloc] initWithFrame:window.rootView.bounds];
                 [window.rootView addSubview:innerView];
-
-                [window makeKeyAndOrderFront:nil];
 
                 firstRecognizer = [[PreventionTestRecognizer alloc] init];
                 expect(firstRecognizer).not.toBeNil();

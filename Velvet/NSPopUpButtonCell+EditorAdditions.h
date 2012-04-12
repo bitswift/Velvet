@@ -12,4 +12,13 @@
  * Implements <[NSCell registersAsEditorWhileTracking]> for `NSPopUpButtonCell`.
  */
 @interface NSPopUpButtonCell (EditorAdditions)
+
+/**
+ * @name Editing Status
+ */
+
+/**
+ * Whether the receiver is currently registered as editing.
+ */
+@property (nonatomic, getter = isEditing, assign) BOOL editing;
 @end

@@ -29,4 +29,4 @@ All dependencies can be retrieved by running `git submodule update --init --recu
 
 # License
 
-Velvet is released under the 3-clause BSD license. See the LICENSE file for more information.
+Velvet is released under a modified version of the 3-clause BSD license. See the LICENSE file for more information.

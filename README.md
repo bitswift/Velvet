@@ -19,6 +19,14 @@ Additionally, most of the above features are unit tested, to validate the typica
 
 See also [our fork of TwUI](http://github.com/bitswift/twui), which integrates Velvet and adds view classes to bridge into and out of TwUI.
 
+# Dependencies
+
+All dependencies can be retrieved by running `git submodule update --init --recursive` from the top level of the repository.
+
+ - Xcode projects in the repository are configured using prebuilt [xcconfigs](http://github.com/jspahrsummers/xcconfigs)
+ - The unit tests for Velvet are written using [Specta](http://github.com/bitswift/specta) and [Expecta](http://github.com/bitswift/expecta)
+ - Parts of [libextobjc](http://github.com/jspahrsummers/libextobjc) are used in Velvet (but are already present in the repository)
+
 # License
 
 Velvet is released under the 3-clause BSD license. See the LICENSE file for more information.

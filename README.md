@@ -1,4 +1,4 @@
-Velvet is a UI bridging framework for Mac OS X, built to allow AppKit to interoperate with layer-based UIs. In particular, Velvet allows the use of normal Cocoa views and fucntionality in conjunction with frameworks like [TwUI](http://github.com/bitswift/twui) and [Chameleon](http://github.com/BigZaphod/Chameleon).
+Velvet is a UI bridging framework for Mac OS X, built to allow AppKit to interoperate with layer-based UIs. In particular, Velvet allows the use of normal Cocoa views and functionality in conjunction with frameworks like [TwUI](http://github.com/bitswift/twui) and [Chameleon](http://github.com/BigZaphod/Chameleon).
 
 # Features
 
